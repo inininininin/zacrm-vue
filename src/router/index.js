@@ -28,8 +28,8 @@ const globalRoutes = [
 const mainRoutes = [
   {
     path: '/',
-    name: 'index',
-    component: ()=>import( '@/components/index.vue')
+    name: 'login',
+    component: ()=>import( '@/components/login.vue')
   },
   {
     path: '/index',

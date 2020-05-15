@@ -8,15 +8,17 @@
 			<div class="topselect">
 
 				<div style="width: 100%;height: 80px;">
-					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span> <a class="addHos" href="addHos.html"
+					<h2 class="peoname">{{peoname}}</h2>
+					<span class="shuju" style="margin: 0 10px;"></span> <a class="addHos" href="addHos.html"
 					 target="_blank">新增医院</a> 
 					 <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
 					 <a class="lookBefore" href="historyDetail.html" target="_blank">查看昨日工作记录</a>
 					 <span class="lastHis" @click="lastHisFn" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: 80px;">
-					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" /> 
-					<select class="urgentLevel">
+					<button class="searchThis" @click="searchThisFn">搜索</button>
+					<input type="text" class="keyword" placeholder="关键字" v-model="kw"/> 
+					<select class="urgentLevel" >
 						<option value="">-级别-</option>
 						<option value="0">加急客户</option>
 						<option value="1">暂不感兴趣</option>
@@ -24,18 +26,19 @@
 						<option value="3">非常感兴趣</option>
 						<option value="4">近期可考察</option>
 						<option value="5">线上可签单</option>
+						{{level || urgent}}
 					</select>
 					<select class="address province">
-						<option value="">-省-</option>
+						<option :value="area1Id">-省-</option>
 					</select>
 					<select class="address city">
-						<option value="">-市-</option>
+						<option :value="area2Id">-市-</option>
 					</select>
 					<select class="address town">
 						<option value="">-区-</option>
 					</select>
 					<select class="nature">
-						<option value="" selected>-性质-</option>
+						<option :value="nature" selected>-性质-</option>
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
 					</select>
@@ -85,97 +88,131 @@
 </template>
 
 <script>
-import '../../src/assets/page/jquery-1.11.1.min.js'
-import '../../src/assets/page/paging.js'
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-        kw : '',
-				level : '',
-				nature : '',
-				area1Id : '',
-				area2Id : '',
-				area3Id : '',
-				ps : 15,
-				urgent : '',
-				pn : 1,
-				totalNum : '',
-				layer:''
-    }
-  },
-  activated(){
-    this.getData();
-	this.lastPageNo();
-	var layer;
-			layui.use('layer', function() {
-				layer = layui.layer;
-			});
-  },
-  methods:{
-    lastHisFn(){
-      $.ajax({
-					url: '/cache/get',
-					type: 'get',
-					data: 'name=' + $('.peoname').html(),
-					async: true,
-					success: function(res) {
-						if (res.code == 0) {
-							console.log(JSON.parse(res.data.value))
-							var data = JSON.parse(res.data.value)
-							kw = data.kw
-							this.level = data.level
-							this.nature = data.nature
-							this.area1Id = data.area1Id
-							this.area2Id = data.area2Id
-							this.urgent = data.urgent
-							pn = data.page
-							totalNum = data.totalNum
-							$('.keyword').val(kw)
-							$('.urgentLevel').val(level || urgent)
-							$('.nature').val(nature)
-							$('.province').val(area1Id)
-							$('.city').val(area2Id)
-							console.log(data.page)
-							// $('.keyword').val(kw)
-							$('#box').paging({
-								initPageNo: pn, // 初始页码
-								totalPages: totalNum, //总页数
-								//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-								slideSpeed: 600, // 缓动速度。单位毫秒
-								jump: true, //是否支持跳转
-								callback: function(page) { // 回调函数
-									// memberList1(1,page);
-									var nature = $('.nature').val()
-									pn = page
-									console.log(pn)
-									lastPage(page, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level)
-								}
-							})
+	name: 'HelloWorld',
+	data () {
+		return {
+			kw : '',
+			level : '',
+			nature : '',
+			area1Id : '',
+			area2Id : '',
+			area3Id : '',
+			ps : 15,
+			urgent : '',
+			pn : 1,
+			totalNum : '',
+			layer:'',
+			peoname:''
+		}
+	},
+	activated(){
+		// alert('layer.open '+layer.open)
+		// alert('$ '+$)
+		// alert('$().paging '+$('#box').paging)
 
+		// this.getData();
+		// this.lastPageNo();
+		// this.lastPageNo();
+		
+	},
+	methods:{
+		lastHisFn(){
+			$.ajax({
+				url: '/cache/get',
+				type: 'get',
+				data: 'name=' + this.peoname,
+				async: true,
+				success: function(res) {
+				if (res.code == 0) {
+					console.log(JSON.parse(res.data.value))
+					var data = JSON.parse(res.data.value)
+					this.kw = data.kw
+					this.level = data.level
+					this.nature = data.nature
+					this.area1Id = data.area1Id
+					this.area2Id = data.area2Id
+					this.urgent = data.urgent
+					this.pn = data.page
+					this.totalNum = data.totalNum
+					// $('.keyword').val(kw)
+						$('#box').paging({
+							initPageNo: this.pn, // 初始页码
+							totalPages: this.totalNum, //总页数
+							// totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+							slideSpeed: 600, // 缓动速度。单位毫秒
+							jump: true, //是否支持跳转
+							callback: function(page) { // 回调函数
+							// memberList1(1,page);
+							var nature = this.nature
+							this.pn = this.page
+							console.log(this.pn)
+							lastPage(this.page, this.ps, this.kw, this.nature,this.area1Id, this.area2Id, this.area3Id, this.urgent, this.level)
 						}
-					}
-				})
-    },
-    getData(){
-      $.ajax({
+					})
+				}
+			}
+		})
+		},
+		getData(){
+			$.ajax({
 				url: '/login-refresh',
 				type: 'POST',
 				async: true,
 				success: function(res) {
 					if (res.code == 0) {
-						$('.peoname').html(res.data.nickname)
-						//         window.location.href='index.html'
+						this.peoname = res.data.nickname
 					} else {
-						
 						setTimeout(function() {
 							location.href = 'login.html'
 						}, 1000)
 					}
 				}
 			})
-    }
-  }
+		},
+		lastPageNo(){
+			$.ajax({
+				url: '/my-customer/customer-list-sum',
+				type: 'GET',
+				data: 'kw=' + this.kw + '&level=' + this.level + '&nature=' + this.nature + '&area1Id=' + this.area1Id + '&area2Id=' + this.area2Id +
+					'&area3Id=' + this.area3Id + '&urgent=' + this.urgent,
+				async: true,
+				success: function(res) {
+					if (res.code == 0) {
+						totalNum = Math.ceil(res.data.itemCount / ps)
+						$('.shuju').html('( 共' + res.data.itemCount + '条数据 )')
+						$('#box').paging({
+							initPageNo: 1, // 初始页码
+							totalPages: this.totalNum, //总页数
+							//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+							slideSpeed: 600, // 缓动速度。单位毫秒
+							jump: true, //是否支持跳转
+							callback: function(page) { // 回调函数
+								// memberList1(1,page);
+								this.pn = this.page
+								lastPage(this.page, this.ps, this.kw, this.nature, this.area1Id, this.area2Id, this.area3Id, this.urgent, this.level)
+							}
+						})
+						
+					}
+				}
+			})
+		},
+		searchThisFn(){
+			this.lastPageNo
+			$('#box').paging({
+					initPageNo: 1, // 初始页码
+					totalPages: this.totalNum, //总页数
+					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+					slideSpeed: 600, // 缓动速度。单位毫秒
+					jump: true, //是否支持跳转
+					callback: function(page) { // 回调函数
+						this.pn = this.page
+						lastPage(this.page, this.ps, this.kw, this.nature, this.area1Id, this.area2Id, this.area3Id, this.urgent, this.level)
+					}
+				})
+		}
+	}		
 }
 </script>
 
