@@ -7,7 +7,6 @@ var wW = window.innerWidth;// 当前窗口的宽度
 
 // var navWidth=$('.title_list_box').width();
 // var navWidths=$('.topLine_list_box').width();
-console.log(rem,wW)
 if(wW>=1920){
     wW = 1920;
 }

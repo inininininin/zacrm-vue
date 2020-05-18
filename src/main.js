@@ -15,6 +15,7 @@ import '../static/js/rem.js'
 // layui.use('layer', function() {
 //   layer = layui.layer;
 // });
+
 Vue.config.productionTip = false
 // console.dir(window.layui)
 // Vue.prototype.$layui = window.layui

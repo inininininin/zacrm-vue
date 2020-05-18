@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div  id="login" class="login">
         <div class="logo smargin">
 			<img src="../assets/image/logo.png" alt="" />
 			<h2>忠安客户漏斗管理系统</h2>
