@@ -7,7 +7,7 @@
 
 
 		<div class="number phone">
-			<input class="name" type="text" v-model="name"/>
+			<input class="name" type="text"/>
 			<div>
 				<img src="../assets/image/zhanghu.png" alt="" />
 				<span>用户名</span>
@@ -70,7 +70,7 @@
     <span>用户名</span> 
 </div>
 </div><div class="number oldpwd" style="margin-top: 24px">
-    <input class="passwords" autocomplete="off"  type="password"/><div><img src="image/mima.png" alt=""/> <span>旧密码</span></div></div><div class="number newpwd" style="margin-top: 24px"><input autocomplete="off"  class="passwords1" type="password"/><div><img src="image/mima.png" alt=""/><span>新密码</span></div></div><div class="pwdbtn" style="margin-top: 50px;"><button @click="changepwd()">确认</button></div>
+    <input class="passwords" autocomplete="off"  type="password"/><div><img src="../assets/image/mima.png" alt=""/> <span>旧密码</span></div></div><div class="number newpwd" style="margin-top: 24px"><input autocomplete="off"  class="passwords1" type="password"/><div><img src="image/mima.png" alt=""/><span>新密码</span></div></div><div class="pwdbtn" style="margin-top: 50px;"><button @click="changepwd()">确认</button></div>
 
 <!-- </div> -->
 </div>
@@ -99,9 +99,9 @@ export default {
 	},
 	methods:{
          changepwd(){
-           var name = $('.names').val()
-				var oldPassword = $('.passwords').val()
-				var newPassword = $('.passwords1').val()
+           var name = $('#login .names').val()
+				var oldPassword = $('#login .passwords').val()
+				var newPassword = $('#login .passwords1').val()
 				$.ajax({
 					url: '/alter-password-by-name-old-password',
 					type: 'post',
@@ -129,9 +129,9 @@ export default {
 					area: ['700px', '530px'],
 					fix: false, //不固定
 					maxmin: true,
-					content: $('#updatePwdPad'),
+					content: $('#login #updatePwdPad'),
 					success: function(layero, index) {
-                        $('.login').append(layero);
+                        $('#login .login').append(layero);
 
                     },
 					end: function() {
@@ -189,8 +189,8 @@ export default {
         },
 		submitFn(){
             var _this = this
-            var name = $('.name').val()
-				var password = $('.password').val()
+            var name = $('#login .name').val()
+				var password = $('#login .password').val()
 				if (password == '' || name == '') {
 					layer.msg('请先填写用户名和密码')
 				} else {
@@ -210,8 +210,8 @@ export default {
 									async: true,
 									success: function(res) {
 										if (res.code == 0) {
-											$('.password').val('')
-                                            _this.$router.push({path:'/index'})
+											$('#login .password').val('')
+                                            _this.$router.push({path:'/index',params:{from:'/login'}})
 										} else {
 											layer.msg(res.codeMsg)
 										}

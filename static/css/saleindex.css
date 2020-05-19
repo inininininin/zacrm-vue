@@ -1,0 +1,186 @@
+.mainbox{
+	width: 80%;
+	min-width: 1200px;
+	margin: 0 auto;
+}
+.topselect{
+	width: 100%;
+	
+}
+.selectOption{
+	width: 100%;
+	height: 80px;
+	line-height:80px;
+	font-size: 16px;
+	color: #333333;
+}
+.topselect h2{
+	display: inline-block;
+	margin: 0;
+	line-height: 80px;
+	font-size: 30px;
+}
+
+.addHos{
+	width: 100px;
+	height: 40px;
+	border-radius: 5px;
+	border: 1px solid #e5e5e5;
+	display: inline-block;
+	/* float: right; */
+	font-size: 16px;
+	line-height: 40px;
+	margin-top: 20px;
+	margin-left: 30px;
+	text-align: center;
+	background: #409eff;
+		color: #FFFFFF;
+	text-decoration: none;
+}
+.lookBefore{
+	float: right;
+	line-height: 80px;
+}
+
+.lastHis{
+	float: right;
+	font-size: 16px;
+	cursor: pointer;
+	color: #337ab7;
+}
+
+.selectOption input{
+	width: 150px;
+	height: 38px;
+	border-radius: 4px;
+	outline: none;
+	border:1px solid #e5e5e5;
+	margin-right:15px;
+	padding: 0 10px;
+
+}
+.selectOption button{
+	width: 80px;
+	height: 38px;
+	border-radius: 4px;
+	line-height: 38px;
+	outline: none;
+	border:1px solid #e5e5e5;
+	margin-right:15px;
+	background:#409eff;
+	color: #FFFFFF;
+	vertical-align: middle;
+	margin-top: -3px;
+}
+.selectOption select{
+	width: 140px;
+	height: 38px;
+	border-radius: 4rpx;
+	outline: none;
+	margin-right:15px;
+	border:1px solid #e5e5e5;
+}
+.tableBox{
+	width: 100%;
+	height: auto;
+}
+.tableBox table{
+	width: 100%;
+	height: auto;
+	
+}
+.tableBox table thead tr th,.tableBox table tbody tr td{
+	height: 40px;
+	line-height: 40px;
+	width: auto;
+	text-align: center;
+}
+.tableBox table tbody tr td{
+	padding: 0 10px;
+	border: 1px solid #e5e5e5;
+	
+}
+.tableBox table tbody tr td:nth-child(2){
+	cursor: pointer;
+	text-align: left;
+}
+.tableBox table tbody tr td:nth-child(4){
+	cursor: pointer;
+}
+
+/* .selectOption .province,.selectOption  .city,.selectOption  .town{
+	width: 100px;
+	margin-right: 5px;
+}
+ */
+
+.a29905{
+	background: rgba(229,229,229,0.5);
+}
+.a29902{
+	background: rgba(229,229,229,0.2);
+}
+
+
+.phoneNow{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9;
+	display: none;
+	/* background: rgba(0,0,0,0.2); */
+	/* background: #000000; */
+	/* opacity: 0.2; */
+}
+.phoneNow>div:nth-child(1){
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.6);
+}
+.phoneNow p{
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+	font-size: 18px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	text-align: center;
+	top: 35%;
+	color: #fff;
+	
+}
+.phoneNow .phoneEnd{
+	position: fixed;
+	width: 250px;
+	height: 60px;
+	background: #ffffff;
+	border-radius: 5px;
+	color: #bd0000;
+	font-size: 20px;
+	z-index: 10;
+	top: 42%;
+	left: 50%;
+	margin-left: -125px;
+	text-align: center;
+	cursor: pointer;
+	line-height: 60px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.phoneNow .phoneEnd img{
+	width: 24px;
+	height: 24px;
+}
+.phoneNow .phoneEnd span{
+	color: #E2403F;
+	margin-left:5px;
+	font-size: 22px;
+	line-height: 40px;
+	cursor: pointer;
+	display: inline-block;
+	width: 100px;
+	height: 40px;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	background: #ffffff;
+}

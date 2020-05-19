@@ -432,8 +432,10 @@ function changeDateFormat(cellval) {
 //window.rem = rem;
 //获取url参数
 function GetQueryString(name) {
+    debugger
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
+    //var r = window.location.search.substr(1).match(reg);
+    var r = window.location.href.substr(window.location.href.indexOf('?')+1).match(reg);
     if (r != null)return unescape(r[2]);
     return null;
 }

@@ -1,1 +1,1 @@
-// module.exports = file => resolve => require(['@/' + file + '.vue'], resolve)
+module.exports = file => () => import ('@/components/' + file + '.vue')
