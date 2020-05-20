@@ -67,11 +67,11 @@ var socket;
                 var data=JSON.parse(eve.data)
 			console.log(data)
 //			if(data.type==707){
-//				  $('.phoneNow').css('display','block')
+//				  $('#phoneNow').css('display','block')
 //			}
 			 if(data.type==704){	
 				 socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
-            	$('.phoneNow').css('display','none')
+            	$('#phoneNow').css('display','none')
                 //socket.close();
 				
 			}
@@ -83,7 +83,7 @@ var socket;
                 console.log('断开连接')
 				
                 //socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
-            	$('.phoneNow').css('display','none')
+            	$('#phoneNow').css('display','none')
 
                 $win.find('#btn_conn').attr('disabled', false);
                 $win.find('#btn_close').attr('disabled', true);
@@ -107,7 +107,7 @@ var socket;
         		$win.find('.mainbox').append('<a class="aClose" href="Webshell://hello" ></a>')
                 $('.aClose')[0].click()
 //				return '2131312';
-				$('.phoneNow').css('display','none')
+				$('#phoneNow').css('display','none')
 				if(socket){
 					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 		        setTimeout(function(){
@@ -117,7 +117,7 @@ var socket;
 	});
         $win.find('#btn_close').click(function () {
         	
-			$('.phoneNow').css('display','none')
+			$('#phoneNow').css('display','none')
 			var  initMsg='{"req":"HP_HangUpCtrl","rid":4,"para":{}}'
 		    //if (socket) {
 		    	console.log(initMsg)
@@ -144,7 +144,7 @@ var socket;
 //          	socket.send(msg);
 //          	
 //              socket.close();
-//              $('.phoneNow').css('display','none')
+//              $('#phoneNow').css('display','none')
 //          }
 //      });
         $win.find('#btn_send').click(function () {
@@ -167,7 +167,7 @@ var socket;
 
         function dialog(){
             socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}')
-        $('.phoneNow').css('display','block')
+        $('#phoneNow').css('display','block')
       var phoneNum=$('#inp_send').val()
       console.log(phoneNum,phoneNum.substring(0,1))
       if(phoneNum&&phoneNum.substring(0,1)==1){

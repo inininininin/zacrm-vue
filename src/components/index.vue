@@ -111,7 +111,7 @@ export default {
         // 跳转上次最后一条数据
         if(this.query != JSON.stringify(this.$route.query)){
 			this.query = JSON.stringify(this.$route.query);
-            $('#index .lastHis').click(function() {
+            $('#index .lastHis').unbind("click").click(function() {
 				$.ajax({
 					url: '/cache/get',
 					type: 'get',
@@ -211,7 +211,7 @@ export default {
 			// // window.open ("login.html", "", "height=100, width=100,top=0, left=0,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=n o,status=no")
             // })
         // 搜索
-			$('#index .searchThis').click(function() {
+			$('#index .searchThis').unbind("click").click(function() {
 				thisValue.kw = $('#index .keyword').val()
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
@@ -345,7 +345,7 @@ export default {
 		    thisValue.area3Id = $(this).val()
         })
         // 清空全部搜索条件
-			$('#index .refresh').click(function() {
+			$('#index .refresh').unbind("click").click(function() {
 				$('#index .keyword').val('')
 				$('#index .province').val('')
 				$('#index .city').val('')
@@ -393,7 +393,7 @@ export default {
 		// {
 		//     alert("取消离开");
         // }
-        $('#index .loginout').click(function(){
+        $('#index .loginout').unbind("click").click(function(){
 			$.ajax({
 				type:"post",
 				url:"/logout",

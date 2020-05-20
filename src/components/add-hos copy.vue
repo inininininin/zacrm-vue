@@ -1999,7 +1999,7 @@ export default {
 }
 
 
-.phoneNow{
+#phoneNow{
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -2011,12 +2011,12 @@ export default {
 	/* background: #000000; */
 	/* opacity: 0.2; */
 }
-.phoneNow>div:nth-child(1){
+#phoneNow>div:nth-child(1){
 	width: 100%;
 	height: 100%;
 	background: rgba(0,0,0,0.6);
 }
-.phoneNow p{
+#phoneNow p{
 	position: fixed;
 	z-index: 10;
 	width: 100%;
@@ -2027,7 +2027,7 @@ export default {
 	color: #fff;
 	
 }
-.phoneNow .phoneEnd{
+#phoneNow .phoneEnd{
 	position: fixed;
 	width: 250px;
 	height: 60px;
@@ -2044,11 +2044,11 @@ export default {
 	line-height: 60px;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.phoneNow .phoneEnd img{
+#phoneNow .phoneEnd img{
 	width: 24px;
 	height: 24px;
 }
-.phoneNow .phoneEnd span{
+#phoneNow .phoneEnd span{
 	color: #E2403F;
 	margin-left:5px;
 	font-size: 22px;
