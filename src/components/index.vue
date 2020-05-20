@@ -25,7 +25,10 @@
 					</router-link>
                     <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
 					 <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
-					 <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a>
+					 <router-link :to="{path:'/history-detail'}"  class="lookBefore">
+						查看昨日工作记录
+					 </router-link>
+					 <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
 					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: 80px;">
