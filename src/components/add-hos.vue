@@ -21,7 +21,7 @@
 					<span>固定电话 : </span><input class="hostel" placeholder="" type='text' onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
 					 maxlength=20 />
 					<!-- <i class="linkHos" style="margin-right: 15px;margin-left: -10px;display: none;cursor: pointer;" class="layui-icon">&#xe678;</i> -->
-					<img src="../assets/image/connent.png" class="linkHos" style="margin-right: 15px;margin-left: -20px;display: none;cursor: pointer;width: 20px;height: 20px;">
+					<img src="../assets/img/connent.png" class="linkHos" style="margin-right: 15px;margin-left: -20px;display: none;cursor: pointer;width: 20px;height: 20px;">
 					<!-- <span class="linkHos" style="margin-right: 20px;font-size: 14px;color: #337ab7;cursor: pointer;">联系医院</span> -->
 					<span>区域 : </span>
 					<select class="address province">
@@ -176,7 +176,7 @@
 			<div>
 				<p>正在通话中. . .</p>
 				<div class="phoneEnd" id="btn_close">
-					<img src="../assets/image/phoneEnd.png" alt="">
+					<img src="../assets/img/phoneEnd.png" alt="">
 					<span>挂断电话</span>
 				</div>
 			</div>
