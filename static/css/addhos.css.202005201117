@@ -74,7 +74,7 @@
 	display: inline-block;
 	margin-right: 30px;
 }
-#add-hos .hosIntroBox span{
+#add-hos .hosIntroBox b{
 	display: block;
 }
 #add-hos .hosIntroBox textarea{
@@ -89,10 +89,10 @@
 	font-size: 16px;
 	line-height: 30px;
 	padding: 0 15px;
-	/* resize: none; */
+	resize: none;
 }
 
-#add-hos .selectOption span{
+#add-hos .selectOption b{
 	line-height: 60px;
 }
 #add-hos .addPeople{
@@ -352,7 +352,7 @@
 	margin-left: 220px;
 	cursor: pointer;
 }
-#add-hos .addphoen span,#add-hos .addphoeShow span{
+#add-hos .addphoen b,#add-hos .addphoeShow b{
 	display: inline-block;
 	margin: 0 10px;
 }
@@ -369,7 +369,7 @@
 	padding: 0 10px;
 	font-size: 14px;
 }
-#add-hos .addphoen span:last-child,#add-hos .addphoeShow span:last-child{
+#add-hos .addphoen span,#add-hos .addphoeShow span{
 	display: block;
 	width: 70px;
 	height: 30px;

@@ -1,8 +1,12 @@
 <template>
     <div id="add-hos">
-        <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
-		
-
+        <input type='' id='userName' hidden=''>
+		<span class="record1" hidden=""></span>
+		<span class="record2" hidden=""></span>
+		<span class="record3" hidden=""></span>
+		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+		<input type="" name="" id="inp_send" hidden="">
+		<button id="btn_conn" hidden="">发送</button>
 		<div class="thiscontent" style="display: none;">
 			<div class="contentThis"></div>
 		</div>
@@ -12,16 +16,14 @@
 				<h2 class="title">医院基本信息</h2> <button class="addHos" href="javascript:;">确认新增</button><button style="display: none;"
 				 class="modifyHos" href="javascript:;">确认修改</button>
 				<div class="selectOption">
-					<b>医院名称 : </b><input class="hosname" type="text" placeholder="" />
+					<span>医院名称 : </span><input class="hosname" type="text" placeholder="" />
 					<!-- onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" -->
-					<b>固定电话 : </b><input class="hostel" placeholder="" type='text' onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
+					<span>固定电话 : </span><input class="hostel" placeholder="" type='text' onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
 					 maxlength=20 />
-					 
-					 
 					<!-- <i class="linkHos" style="margin-right: 15px;margin-left: -10px;display: none;cursor: pointer;" class="layui-icon">&#xe678;</i> -->
 					<img src="../assets/image/connent.png" class="linkHos" style="margin-right: 15px;margin-left: -20px;display: none;cursor: pointer;width: 20px;height: 20px;">
 					<!-- <span class="linkHos" style="margin-right: 20px;font-size: 14px;color: #337ab7;cursor: pointer;">联系医院</span> -->
-					<b>区域 : </b>
+					<span>区域 : </span>
 					<select class="address province">
 						<option value="">-省-</option>
 					</select>
@@ -31,18 +33,16 @@
 					<select class="address town">
 						<option value="">-区-</option>
 					</select>
-					<b>性质 : </b>
+					<span>性质 : </span>
 					<select class="hosnature">
 						<option value="1" selected>民营医院</option>
 						<option value="2">公立医院</option>
 					</select>
 					<button class="addNewTel">新增电话</button>
 					<div class="linePhoneList">
-						
-						
 					</div>
 					<div class="hosIntroBox">
-						<b>简介 : </b>
+						<span>简介 : </span>
 						<textarea class="hosIntro" rows="3" cols="20"></textarea>
 					</div>
 				</div>
@@ -152,26 +152,35 @@
 
 			<div class="addphoen">
 				<i class="layui-icon closeAdd">&#x1006;</i>
-				<div><b>电话1:</b><input class="phoneInput1" maxlength="13" type="text"><i class="layui-icon closeThis">&#xe640;</i></div>
-				<div><b>电话2:</b><input class="phoneInput2" maxlength="13" type="text"><i class="layui-icon closeThis">&#xe640;</i></div>
-				<div><b>电话3:</b><input class="phoneInput3" maxlength="13" type="text"><i class="layui-icon closeThis">&#xe640;</i></div>
+				<div><span>电话1:</span><input class="phoneInput1" maxlength="13" type="text"><i class="layui-icon closeThis">&#xe640;</i></div>
+				<div><span>电话2:</span><input class="phoneInput2" maxlength="13" type="text"><i class="layui-icon closeThis">&#xe640;</i></div>
+				<div><span>电话3:</span><input class="phoneInput3" maxlength="13" type="text"><i class="layui-icon closeThis">&#xe640;</i></div>
 				<span>完成</span>
 			</div>
 			<div class="addphoeShow">
 				<i class="layui-icon closeAdd">&#x1006;</i>
-				<div><b>电话1:</b>
+				<div><span>电话1:</span>
 					<p class="phoneps phonep1"></p>
 				</div>
-				<div><b>电话2:</b>
+				<div><span>电话2:</span>
 					<p class="phoneps phonep2"></p>
 				</div>
-				<div><b>电话3:</b>
+				<div><span>电话3:</span>
 					<p class="phoneps phonep3"></p>
 				</div>
 				<span>编辑电话</span>
 			</div>
 		</div>
-		
+		<!-- <div class="phoneNow">
+			<div></div>
+			<div>
+				<p>正在通话中. . .</p>
+				<div class="phoneEnd" id="btn_close">
+					<img src="../assets/image/phoneEnd.png" alt="">
+					<span>挂断电话</span>
+				</div>
+			</div>
+		</div> -->
 		<div class="addNewTelBox">
 			<div></div>
 			<div id="addNewTelMid">
@@ -185,61 +194,69 @@
 </template>
 <script>
 export default {
-    name: 'add-hos',
+	name: 'index',
 	data () {
 		return {
-            provinceList:undefined,
-            cityList:undefined,
-            townList:undefined,
-            cityItem:undefined,
-            townItem:undefined,
-            paiBanCustomerWorkerId:'',
-            timerMove:'',
-            customerId :GetQueryString('id'),
-            levelLs:'',
-            customerWorkerIdLs:'',
-            modifyVal:'',
-            time:'',
-            customerWorkerIdZz:'',
-            // 点击弹出修改号码
+            query:'',
+            provinceList : undefined,
+            cityList : undefined,
+            townList : undefined, 
+            cityItem : undefined, 
+            townItem : undefined,
+            nickname : '',
+            paiBanCustomerWorkerId : '',
+            timerMove : '',
+            customerId:'',
+            levelLs : '',
+            customerWorkerIdLs : '',
+            // 修改相关人员信息
+            modifyVal : '',
+            time : '',
+            customerWorkerIdZz : '',
             timeIs : '',
-            provinceText:undefined,
-            cityText:undefined,
             
 		}
-    },
-    activated(){
-		debugger
-		
-        let thisVue=this
-        // 省市区三级联动
+	},
+	activated(){
+        let thisValue = this
+        if(this.query != JSON.stringify(this.$route.query)){
+            this.query = JSON.stringify(this.$route.query);
+            // 省市区三级联动
 			// TODO 后期待优化
 			$.ajax({
-				url: '/assets/js/area.json',
+				url: 'js/area.json',
 				type: 'get',
 				async: false,
 				success: function(res) {
-					thisVue.provinceList = res
+					thisValue.provinceList = res
 					$.each(res, function(i, field) {
-						$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
+						$('.province').append('<option value="' + field.value + '">' + field.label + '</option>')
 					});
 				}
             })
-            
-        $('#add-hos .province').change(function() {
-				thisVue.provinceText = $(this).val();
-				$.each(thisVue.provinceList, function(i, item) {
-					if (thisVue.provinceText == item.value) {
-						thisVue.cityItem = i;
-						// return thisVue.cityItem
+            // $.getJSON("js/area.json", function(res) {
+			// 	thisValue.provinceList = res
+			// 	// $('.province').html('<option value="">-请选择-</option>')
+			// 	$.each(res, function(i, field) {
+			
+			// 		$('.province').append('<option value="' + field.value + '">' + field.label + '</option>')
+			// 		// $("span").append(field.name + "," + field.goods);
+			// 	});
+            // });
+            $('.province').change(function() {
+				let provinceText = $(this).val();
+				$.each(thisValue.provinceList, function(i, item) {
+					if (provinceText == item.value) {
+						thisValue.cityItem = i;
+						// return thisValue.cityItem
 					}
 				});
-				thisVue.cityList = thisVue.provinceList[thisVue.cityItem]
-				$('#add-hos .city').html('<option value="">-请选择-</option>')
-				$('#add-hos .town').html('<option value="">-请选择-</option>')
-				$.each(thisVue.cityList.children, function(i, item) {
+				thisValue.cityList = thisValue.provinceList[thisValue.cityItem]
+				$('.city').html('<option value="">-请选择-</option>')
+				$('.town').html('<option value="">-请选择-</option>')
+				$.each(thisValue.cityList.children, function(i, item) {
 					// addele(city,item.name)
-					$('#add-hos .city').append('<option value="' + item.value + '">' + item.label + '</option>')
+					$('.city').append('<option value="' + item.value + '">' + item.label + '</option>')
 				})
 				// todo 要改的
 				// $.ajax({
@@ -247,166 +264,175 @@ export default {
 				// 	type: 'get',
 				// 	async: false,
 				// 	success: function(res) {
-				// 		thisVue.provinceList = res
+				// 		thisValue.provinceList = res
 				// 		$.each(res, function(i, field) {
-				// 			$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
+				// 			$('.province').append('<option value="' + field.value + '">' + field.label + '</option>')
 				// 		});
 				// 	}
 				// })
 				
 				
             })
-        $('#add-hos .city').change(function() {
-				thisVue.cityText = $(this).val();
-				$.each(thisVue.cityList.children, function(i, item) {
-					if (thisVue.cityText == item.value) {
-						thisVue.townItem = i;
-						// return thisVue.cityItem
+            $('.city').change(function() {
+				let cityText= $(this).val();
+				$.each(thisValue.cityList.children, function(i, item) {
+					if (cityText == item.value) {
+						thisValue.townItem = i;
+						// return thisValue.cityItem
 					}
 				});
-				thisVue.townList = thisVue.cityList.children[thisVue.townItem]
-				$('#add-hos .town').html('<option value="">-请选择-</option>')
-				$.each(thisVue.townList.children, function(i, item) {
+				thisValue.townList = thisValue.cityList.children[thisValue.townItem]
+				$('.town').html('<option value="">-请选择-</option>')
+				$.each(thisValue.townList.children, function(i, item) {
 					// addEle(city,item.name)
-					$('#add-hos .town').append('<option value="' + item.value + '">' + item.label + '</option>')
+					$('.town').append('<option value="' + item.value + '">' + item.label + '</option>')
 				})
             })
-        // 新增医院电话
-			$('#add-hos .addNewTel').click(function(){
-				$('#add-hos .addNewTelBox').css('display','block')
+            thisValue.nickname=localStorage.getItem('nickname');
+            $('#userName').val(thisValue.nickname)
+            // 新增医院电话
+			$('.addNewTel').click(function(){
+				$('.addNewTelBox').css('display','block')
             })
-        $('#add-hos #submit_newTel').click(function(){
-				var telName=$('#add-hos .telName').val()
-				var telValue=$('#add-hos .telValue').val()
+            $('#submit_newTel').click(function(){
+				var telName=$('.telName').val()
+				var telValue=$('.telValue').val()
 				if($(this).attr('typeId')==''){
-					var numberSec=$('#add-hos .linePhoneList').children().length;
+					var numberSec=$('.linePhoneList').children().length;
 					if(numberSec>=9){
 						layer.msg('当前最多新增9个号码！如有更多需求！请联系软件部')
 						return
 					}else{
 						var telNameTitle='tel'+(numberSec+1)+'Remark';
 						var telValueTitle='tel'+(numberSec+1);
-						thisVue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,0)
-						thisVue.removeTel()
+						thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,0)
+						thisValue.removeTel()
 					}
 					
 				}else{
+					// if($(this).attr('typeId')&&$(this).attr('typeId').split('Remark')){
+					// 	var telNameTitle=$(this).attr('typeId');
+					// 	var telValueTitle=$(this).attr('typeId').split('Remark')[0];
+					// }else{
+					// 	var telNameTitle=$(this).attr('typeId')+'Remark';
+					// 	var telValueTitle=$(this).attr('typeId');
+					// }
 					var telNameTitle=$(this).attr('typeId')+'Remark';
 					var telValueTitle=$(this).attr('typeId');
 					var type=telValueTitle.substring(telValueTitle.length-1,telValueTitle.length)
-					console.log(type)
-					$('#add-hos #submit_newTel').attr('typeId','')
-					thisVue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type)
-					thisVue.removeTel()
+					console.log(telNameTitle,telValueTitle,type)
+					$('#submit_newTel').attr('typeId','')
+					thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type)
+					thisValue.removeTel()
 				}
             })
-        $('#add-hos .linePhoneList').on('click','div .modifyThisTel',function(){
-				$('#add-hos .addNewTelBox').css('display','block')
-				$('#add-hos .telName').val($(this).parent().children().eq(0).html().substring(0,$(this).parent().children().eq(0).html().length-1)||'')
-				$('#add-hos .telValue').val($(this).parent().children().eq(1).html()||'')
+            $('.linePhoneList').on('click','div .modifyThisTel',function(){
+				$('.addNewTelBox').css('display','block')
+				$('.telName').val($(this).parent().children().eq(0).html().substring(0,$(this).parent().children().eq(0).html().length-1)||'')
+				$('.telValue').val($(this).parent().children().eq(1).html()||'')
 				var telNameTitle=$(this).parent().attr('typeId')+'Remark';
 				var telValueTitle=$(this).parent().attr('typeId');
-				$('#add-hos #submit_newTel').attr('typeId',telValueTitle)
+				$('#submit_newTel').attr('typeId',telValueTitle)
             })
-        $('#add-hos .closeAddThis').click(function(){
-				$('#add-hos .addNewTelBox').css('display','none')
-				thisVue.removeTel()
+            $('.closeAddThis').click(function(){
+				$('.addNewTelBox').css('display','none')
+				thisValue.removeTel()
             })
-        //打电话
-			$('#add-hos .linePhoneList').on('click','div .phoneThisTel',function(){
+            //打电话
+			$('.linePhoneList').on('click','div .phoneThisTel',function(){
 				$('#inp_send').val($(this).parent().children().eq(1).html()||'')
 				$('#btn_conn').click()
             })
-        if ($('#add-hos .hostel').val() == '' || $('#add-hos .hostel').val() == null || $('#add-hos .hostel').val() == undefined) {
-				$('#add-hos .linkHos').css('display', 'none')
+            if ($('.hostel').val() == '' || $('.hostel').val() == null || $('.hostel').val() == undefined) {
+				$('.linkHos').css('display', 'none')
 			} else {
-				$('#add-hos .linkHos').css('display', 'inline-block')
+				$('.linkHos').css('display', 'inline-block')
             }
-        $('#add-hos .hostel').change(function() {
+            $('.hostel').change(function() {
 				if ($(this).val() != '') {
-					$('#add-hos .linkHos').css('display', 'inline-block')
+					$('.linkHos').css('display', 'inline-block')
 				} else {
-					$('#add-hos .linkHos').css('display', 'none')
+					$('.linkHos').css('display', 'none')
 				}
             })
-        $('#add-hos .linkHos').click(function() {
-				$('#inp_send').val($('#add-hos .hostel').val())
+            $('.linkHos').click(function() {
+				$('#inp_send').val($('.hostel').val())
 				$('#btn_conn').click()
             })
-        $('#add-hos .phoneps').click(function() {
+            $('.phoneps').click(function() {
 
 				$('#inp_send').val($(this).html())
 				$('#btn_conn').click()
 				// lineFriends($(this).html())
             })
-        $('#add-hos .closeThis').click(function() {
+            $('.closeThis').click(function() {
 				$(this).parent().find('input').val('')
             })
-        $('#add-hos .addphoen span').click(function() {
-				$('#add-hos .addphoen').css('display', 'none')
-				$('#add-hos .phonep1').html($('#add-hos .phoneInput1').val())
-				$('#add-hos .phonep2').html($('#add-hos .phoneInput2').val())
-				$('#add-hos .phonep3').html($('#add-hos .phoneInput3').val())
-				$('#add-hos .addphoeShow').css('display', 'block')
-				if ($('#add-hos .phoneInput1').val() != '' && $('#add-hos .phoneInput1').val() != null && $('#add-hos .phoneInput1').val() != undefined) {
-					var phoneInput1 = $('#add-hos .phoneInput1').val()
-					var  phones1=$('#add-hos .phoneInput1').val()
+            $('.addphoen span').click(function() {
+				$('.addphoen').css('display', 'none')
+				$('.phonep1').html($('.phoneInput1').val())
+				$('.phonep2').html($('.phoneInput2').val())
+				$('.phonep3').html($('.phoneInput3').val())
+				$('.addphoeShow').css('display', 'block')
+				if ($('.phoneInput1').val() != '' && $('.phoneInput1').val() != null && $('.phoneInput1').val() != undefined) {
+					var phoneInput1 = $('.phoneInput1').val()
+					var  phones1=$('.phoneInput1').val()
 				} else {
 					var phoneInput1 = ''
 					var  phones1=''
 				}
-				if ($('#add-hos .phoneInput2').val() != '' && $('#add-hos .phoneInput2').val() != null && $('#add-hos .phoneInput2').val() != undefined) {
+				if ($('.phoneInput2').val() != '' && $('.phoneInput2').val() != null && $('.phoneInput2').val() != undefined) {
 					if (phoneInput1 == '') {
-						var phoneInput2 = $('#add-hos .phoneInput2').val()
+						var phoneInput2 = $('.phoneInput2').val()
 					} else {
-						var phoneInput2 = ',' + $('#add-hos .phoneInput2').val()
+						var phoneInput2 = ',' + $('.phoneInput2').val()
 					}
-					var  phones2=$('#add-hos .phoneInput2').val()
+					var  phones2=$('.phoneInput2').val()
 				} else {
 					var phoneInput2 = ''
 						var  phones2=''
 				}
-				if ($('#add-hos .phoneInput3').val() != '' && $('#add-hos .phoneInput3').val() != null && $('#add-hos .phoneInput3').val() != undefined) {
+				if ($('.phoneInput3').val() != '' && $('.phoneInput3').val() != null && $('.phoneInput3').val() != undefined) {
 					if (phoneInput1 == '' && phoneInput2 == '') {
-						var phoneInput3 = $('#add-hos .phoneInput3').val()
+						var phoneInput3 = $('.phoneInput3').val()
 					} else {
-						var phoneInput3 = ',' + $('#add-hos .phoneInput3').val()
+						var phoneInput3 = ',' + $('.phoneInput3').val()
 					}
-				var  phones3=$('#add-hos .phoneInput3').val()
+				var  phones3=$('.phoneInput3').val()
 				} else {
 					var phoneInput3 = ''
 					var  phones3=''
 				}
-				var id = $('#add-hos .addphoeShow').attr('id')
+				var id = $('.addphoeShow').attr('id')
 				var phones = phoneInput1 + phoneInput2 + phoneInput3
 				if (id == '' || id == null || id == undefined) {
 					
-					$('#add-hos .jsModify').html(phoneInput1 + phoneInput2 + phoneInput3)
-					if ($('#add-hos .jsModify').parent().parent().attr('class') == 'paibanren') {
-						if ($('#add-hos .addphoeShow').attr('type') == 1) {
-							$('#add-hos .jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
-							addpaibanPhone(thisVue.customerId, phones1,phones2,phones3)
+					$('.jsModify').html(phoneInput1 + phoneInput2 + phoneInput3)
+					if ($('.jsModify').parent().parent().attr('class') == 'paibanren') {
+						if ($('.addphoeShow').attr('type') == 1) {
+							$('.jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
+							addpaibanPhone(thisValue.customerId, phones1,phones2,phones3)
 						} else {
-							$('#add-hos .jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
-							addpaibanTel(thisVue.customerId, phones1,phones2,phones3)
+							$('.jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
+							addpaibanTel(thisValue.customerId, phones1,phones2,phones3)
 						}
 					}else{
-						if ($('#add-hos .addphoeShow').attr('type') == 1) {
-							$('#add-hos .jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
-							// addRelPhone(thisVue.customerId, phones1,phones2,phones3)
+						if ($('.addphoeShow').attr('type') == 1) {
+							$('.jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
+							// addRelPhone(thisValue.customerId, phones1,phones2,phones3)
 						} else {
-							$('#add-hos .jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
-							// addRelTel(thisVue.customerId, phones1,phones2,phones3)
+							$('.jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
+							// addRelTel(thisValue.customerId, phones1,phones2,phones3)
 						}
 					}
 				} else {
-					if ($('#add-hos .addphoeShow').attr('type') == 1) {
+					if ($('.addphoeShow').attr('type') == 1) {
 						var params = '&phone1=' + phones1+'&phone2=' + phones2+'&phone3=' + phones3
-							$('#add-hos .jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
+							$('.jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
 					} else {
 						
 						var params = '&tel1=' + phones1+'&tel2=' + phones2+'&tel3=' + phones3
-						$('#add-hos .jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
+						$('.jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
 					}
 					$.ajax({
 						url: '/my-customer-worker/update-customer-worker',
@@ -414,91 +440,89 @@ export default {
 						data: 'customerWorkerId=' + id + params,
 						async: true,
 						success: function(res) {
-							$('#add-hos .jsModify').html(phoneInput1 + phoneInput2 + phoneInput3)
-							// $('#add-hos .jsModify').removeClass('jsModify')
+							$('.jsModify').html(phoneInput1 + phoneInput2 + phoneInput3)
+							// $('.jsModify').removeClass('jsModify')
 						},
 					})
 				}
-
-
-
             })
-        $('#add-hos .addphoeShow span').click(function() {
-				$('#add-hos .addphoeShow').css('display', 'none')
-				var s = $('#add-hos .phonep1').html()
-				$('#add-hos .phoneInput1').val($('#add-hos .phonep1').html())
-				$('#add-hos .phoneInput2').val($('#add-hos .phonep2').html())
-				$('#add-hos .phoneInput3').val($('#add-hos .phonep3').html())
-				$('#add-hos .addphoen').css('display', 'block')
+            $('.addphoeShow span').click(function() {
+				$('.addphoeShow').css('display', 'none')
+				var s = $('.phonep1').html()
+				$('.phoneInput1').val($('.phonep1').html())
+				$('.phoneInput2').val($('.phonep2').html())
+				$('.phoneInput3').val($('.phonep3').html())
+				$('.addphoen').css('display', 'block')
             })
-        $('#add-hos .closeAdd').click(function() {
-				$('#add-hos .addphoeShow').css('display', 'none')
-				$('#add-hos .addphoen').css('display', 'none')
-				$('#add-hos .phonep1').html('')
-				$('#add-hos .phonep2').html('')
-				$('#add-hos .phonep3').html('')
+            $('.closeAdd').click(function() {
+				$('.addphoeShow').css('display', 'none')
+				$('.addphoen').css('display', 'none')
+				$('.phonep1').html('')
+				$('.phonep2').html('')
+				$('.phonep3').html('')
             })
-        if (GetQueryString('id')) {
-            debugger
-				$('#add-hos .addNewTel').css('display','inline-block')
-				thisVue.hosDetail(GetQueryString('id'))
-				thisVue.relList(GetQueryString('id'))
-				$('#add-hos .addHos').css('display', 'none')
-				$('#add-hos .modifyHos').css('display', 'inline-block')
-				$('#add-hos .showIs').css('display', 'block')
+            thisValue.customerId = GetQueryString('id')
+            if (GetQueryString('id')) {
+				$('.addNewTel').css('display','inline-block')
+				thisValue.hosDetail(GetQueryString('id'))
+				thisValue.relList(GetQueryString('id'))
+				$('.addHos').css('display', 'none')
+				$('.modifyHos').css('display', 'inline-block')
+				$('.showIs').css('display', 'block')
             }
-        $('#add-hos .showTips').on('mouseleave', function() {
+            $('.showTips').on('mouseleave', function() {
 				setTimeout(function() {
-					$('#add-hos .showTips').css('display', 'none')
-					$('#add-hos .showTips  div').html('')
+					$('.showTips').css('display', 'none')
+					$('.showTips  div').html('')
 				}, 1000)
             })
-        $('#add-hos .showTips').hover(function() {
-				clearTimeout(thisVue.timerMove)
+            $('.showTips').hover(function() {
+				clearTimeout(thisValue.timerMove)
             })
-        $('#add-hos .showTips a').click(function() {
-				$('#add-hos .showTips').css('display', 'none')
-				$('#add-hos .showTips  div').html('')
-				clearTimeout(thisVue.time);
+            // 查看相关人员信息修改历史
+            $('.showTips a').click(function() {
+				$('.showTips').css('display', 'none')
+				$('.showTips  div').html('')
+				clearTimeout(thisValue.time);
 				//执行延时
-				thisVue.time = setTimeout(function() {
+				thisValue.time = setTimeout(function() {
 					$.ajax({
 						url: '/my-customer-worker-snapshot-list',
 						type: 'GET',
-						data: 'customerWorkerId=' + thisVue.customerWorkerIdLs,
+						data: 'customerWorkerId=' + thisValue.customerWorkerIdLs,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
-								$('#add-hos .contentThis').html('')
+								$('.contentThis').html('')
 
 								// var content='<div class="thiscontent">111</div>'
 								for (var i in res.data.itemList) {
-									if (thisVue.levelLs == 0) {
+									if (thisValue.levelLs == 0) {
 
-										$('#add-hos .contentThis').append('<div>' + (res.data.itemList[i].name || "") + '<span>（更新时间：' +
+										$('.contentThis').append('<div>' + (res.data.itemList[i].name || "") + '<span>（更新时间：' +
 											changeDateFormat(res.data.itemList[i].updateTime) + '）</span></div>')
 									}
-									if (thisVue.levelLs == 1) {
-										$('#add-hos .contentThis').append('<div>' + (res.data.itemList[i].post || "") + '<span>（更新时间：' +
+									if (thisValue.levelLs == 1) {
+										$('.contentThis').append('<div>' + (res.data.itemList[i].post || "") + '<span>（更新时间：' +
 											changeDateFormat(res.data.itemList[i].updateTime) + '）</span></div>')
 									}
-									if (thisVue.levelLs == 2) {
-										$('#add-hos .contentThis').append('<div>' + (res.data.itemList[i].phone || "") + '<span>（更新时间：' +
+									if (thisValue.levelLs == 2) {
+										$('.contentThis').append('<div>' + (res.data.itemList[i].phone || "") + '<span>（更新时间：' +
 											changeDateFormat(res.data.itemList[i].updateTime) + '）</span></div>')
 									}
-									if (thisVue.levelLs == 3) {
-										$('#add-hos .contentThis').append('<div>' + (res.data.itemList[i].verifyWay || "") + '<span>（更新时间：' +
+									if (thisValue.levelLs == 3) {
+										$('.contentThis').append('<div>' + (res.data.itemList[i].verifyWay || "") + '<span>（更新时间：' +
 											changeDateFormat(res.data.itemList[i].updateTime) + '）</span></div>')
 									}
-									if (thisVue.levelLs == 4) {
-										$('#add-hos .contentThis').append('<div>' + (res.data.itemList[i].tel || "") + '<span>（更新时间：' +
+									if (thisValue.levelLs == 4) {
+										$('.contentThis').append('<div>' + (res.data.itemList[i].tel || "") + '<span>（更新时间：' +
 											changeDateFormat(res.data.itemList[i].updateTime) + '）</span></div>')
 									}
 
 								}
 								layer.open({
 									type: 1,
-									content: $('#add-hos .thiscontent').html() //这里content是一个普通的String
+									content: $('.thiscontent').html() //这里content是一个普通的String
 								});
 							}
 						}
@@ -507,41 +531,41 @@ export default {
 				}, 300);
 
             })
-        $('#add-hos .tbodyPaiban').on('dblclick', 'tr td', function() {
+            $('.tbodyPaiban').on('dblclick', 'tr td', function() {
 
 				if ($(this).children().attr('type') && $(this).children().attr('type') == 'text') {
-					thisVue.closePopWindow()
-					$('#add-hos .phonep1').html('')
-					$('#add-hos .phonep2').html('')
-					$('#add-hos .phonep3').html('')
-					clearTimeout(thisVue.time)
+					thisValue.closePopWindow()
+					$('.phonep1').html('')
+					$('.phonep2').html('')
+					$('.phonep3').html('')
+					clearTimeout(thisValue.time)
 				} else if ($(this).index() == 2 || $(this).index() == 4) {
 					// 弹出输入框
-					// $('#add-hos .addphoeShow').attr('id','')
+					// $('.addphoeShow').attr('id','')
 
-					// $('#add-hos .addphoeShow').css('display','block').attr('id',$(this).parent().attr('relId'))
-					// $('#add-hos table').find('.jsModify').removeClass('jsModify')
+					// $('.addphoeShow').css('display','block').attr('id',$(this).parent().attr('relId'))
+					// $('table').find('.jsModify').removeClass('jsModify')
 					// $(this).children().addClass('jsModify')
 					// var phones=$(this).children().html().split(',')
 
 					// for(var i in phones){
 					// 	var num=parseInt(i)+1
-					// 	$('#add-hos .phonep'+num).html(phones[i])
+					// 	$('.phonep'+num).html(phones[i])
 					// }
 				} else {
-					thisVue.closePopWindow()
-					$('#add-hos .phonep1').html('')
-					$('#add-hos .phonep2').html('')
-					$('#add-hos .phonep3').html('')
-					clearTimeout(thisVue.time)
+					thisValue.closePopWindow()
+					$('.phonep1').html('')
+					$('.phonep2').html('')
+					$('.phonep3').html('')
+					clearTimeout(time)
 					// $(this).html('<input type="text"  class="modifyThis" onchange="modifyOver('+$(this).parent().attr("relId")+',this)" value="'+$(this).children().html()+'"/>')
 					$(this).html('<input type="text" level="' + $(this).index() + '"  class="modifyThisPaiban"  value="' + $(this).children()
 						.html() + '"/>')
-					$('#add-hos .modifyThisPaiban').focus()
-					showhidden()
+					$('.modifyThisPaiban').focus()
+					thisValue.showhidden()
 				}
             })
-        $('#add-hos table').on('blur', 'tr .modifyThisPaiban', function() {
+            $('table').on('blur', 'tr .modifyThisPaiban', function() {
 				var level = $(this).attr('level')
 				if (level == 0) {
 					var param = '&name=' + $(this).val()
@@ -558,22 +582,22 @@ export default {
 				if (level == 4) {
 					var param = '&tel=' + $(this).val()
 				}
-				if (thisVue.paiBanCustomerWorkerId == '' || thisVue.paiBanCustomerWorkerId == null || thisVue.paiBanCustomerWorkerId == undefined) {
+				if (thisValue.paiBanCustomerWorkerId == '' || thisValue.paiBanCustomerWorkerId == null || thisValue.paiBanCustomerWorkerId == undefined) {
 					var _this = $(this)
 					var show = "show('" + _this.val() + "')"
 					$.ajax({
 						url: '/my-customer-worker/create-customer-worker',
 						type: 'post',
-						data: 'customerId=' + thisVue.customerId + param,
+						data: 'customerId=' + thisValue.customerId + param,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
-								thisVue.paiBanCustomerWorkerId = res.data.customerWorkerId
-								_this.parent().parent().attr('relId', thisVue.paiBanCustomerWorkerId)
+								thisValue.paiBanCustomerWorkerId = res.data.customerWorkerId
+								_this.parent().parent().attr('relId', thisValue.paiBanCustomerWorkerId)
 								$.ajax({
 									url: '/my-customer/update-customer',
 									type: 'post',
-									data: 'customerId=' + thisVue.customerId + '&paiBanCustomerWorkerId=' + thisVue.paiBanCustomerWorkerId,
+									data: 'customerId=' + thisValue.customerId + '&paiBanCustomerWorkerId=' + thisValue.paiBanCustomerWorkerId,
 									async: true,
 									success: function(res) {
 										if (res.code == 0) {
@@ -632,42 +656,42 @@ export default {
 				}
 
             })
-        $('#add-hos .tbody').on('dblclick', 'tr td', function() {
+            $('.tbody').on('dblclick', 'tr td', function() {
 
 				if ($(this).children().attr('type') && $(this).children().attr('type') == 'text') {
-					thisVue.closePopWindow()
-					$('#add-hos .phonep1').html('')
-					$('#add-hos .phonep2').html('')
-					$('#add-hos .phonep3').html('')
-					clearTimeout(thisVue.time)
+					thisValue.closePopWindow()
+					$('.phonep1').html('')
+					$('.phonep2').html('')
+					$('.phonep3').html('')
+					clearTimeout(thisValue.time)
 				} else if ($(this).index() == 2 || $(this).index() == 4) {
 					// 弹出输入框
-					// $('#add-hos .addphoeShow').attr('id','')
+					// $('.addphoeShow').attr('id','')
 
-					// $('#add-hos .addphoeShow').css('display','block').attr('id',$(this).parent().attr('relId'))
-					// $('#add-hos table').find('.jsModify').removeClass('jsModify')
+					// $('.addphoeShow').css('display','block').attr('id',$(this).parent().attr('relId'))
+					// $('table').find('.jsModify').removeClass('jsModify')
 					// $(this).children().addClass('jsModify')
 					// var phones=$(this).children().html().split(',')
 
 					// for(var i in phones){
 					// 	var num=parseInt(i)+1
-					// 	$('#add-hos .phonep'+num).html(phones[i])
+					// 	$('.phonep'+num).html(phones[i])
 					// }
 				} else {
-					thisVue.closePopWindow()
-					$('#add-hos .phonep1').html('')
-					$('#add-hos .phonep2').html('')
-					$('#add-hos .phonep3').html('')
-					clearTimeout(thisVue.time)
+					thisValue.closePopWindow()
+					$('.phonep1').html('')
+					$('.phonep2').html('')
+					$('.phonep3').html('')
+					clearTimeout(thisValue.time)
 					$(this).html('<input type="text" level="' + $(this).index() + '"  class="modifyThis"  value="' + $(this).children()
 						.html() + '"/>')
-					$('#add-hos .modifyThis').focus()
-					thisVue.showhidden()
+					$('.modifyThis').focus()
+					thisValue.showhidden()
 				}
 				// $(this).html('<input type="text"  class="modifyThis" onchange="modifyOver('+$(this).parent().attr("relId")+',this)" value="'+$(this).children().html()+'"/>')
 
             })
-        $('#add-hos table').on('blur', 'tr .modifyThis', function() {
+            $('table').on('blur', 'tr .modifyThis', function() {
 				var level = $(this).attr('level')
 				if (level == 0) {
 					var param = '&name=' + $(this).val()
@@ -704,55 +728,57 @@ export default {
 					},
 				})
             })
-        $('#add-hos .trackDetail').scrollTop($('#add-hos .trackDetail')[0].scrollHeight);
-        // 新增相关人员
-			$('#add-hos .addNewRel').click(function() {
+            $('.trackDetail').scrollTop($('.trackDetail')[0].scrollHeight);
+            // for(var i=0;i<6;i++){
+			// 	$('.tbody').append('<tr><td class="enterHos"><a href="javascript:;">丁洁</a></td><td>科室副主任</td><td>15265742542</td><td>和院长有关系</td><td>025-65485412</td></tr>')
+			// }
+			// 新增相关人员
+			$('.addNewRel').click(function() {
 				var show = "show('')"
-				$('#add-hos .tbody').append('<tr>' +
+				$('.tbody').append('<tr>' +
 					'<td class="enterHos"><input type="text"/></td>' +
 					'<td><input type="text"/></td>' +
 					'<td><div class="line-1 lookHis showInputBox" onmouseover="' + show +
 					'" onmouseleave="showhidden()"></div></td>' +
-					// '<td><input type="tel"/></td>' +
 					'<td><input type="text"/></td>' +
 					'<td><div class="line-1 lookHis showInputBoxTel" onmouseover="' + show +
 					'" onmouseleave="showhidden()"></div></td></tr>')
-				// '<td><input type="tel showInputBoxTel"/></td></tr>')
 				$(this).css('display', 'none')
-				$('#add-hos .supplyNewRel').css('display', 'block')
-            })
-        // TODO 新增相关人员
+				$('.supplyNewRel').css('display', 'block')
+			})
+			// 提交相关人员                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 
-			$('#add-hos .supplyNewRel button').click(function() {
+			// TODO 新增相关人员
+            $('.supplyNewRel button').click(function() {
 				$(this).attr('disabled', 'true')
-				var name = $('#add-hos .tbody').find(':input:eq(0)').val()
-				var post = $('#add-hos .tbody').find(':input:eq(1)').val()
-				// var phone = $('#add-hos .tbody').find(':input:eq(2)').val()
-				var phone = $('#add-hos .tbody').children('tr:last-child').find('.showInputBox').html()
-				var verifyWay = $('#add-hos .tbody').find(':input:eq(2)').val()
-				var tel = $('#add-hos .tbody').children('tr:last-child').find('.showInputBoxTel').html()
-				var phone1=$('#add-hos .tbody').children('tr:last-child').find('.showInputBox').attr('phone1')||""
-				var phone2=$('#add-hos .tbody').children('tr:last-child').find('.showInputBox').attr('phone2')||""
-				var phone3=$('#add-hos .tbody').children('tr:last-child').find('.showInputBox').attr('phone3')||""
-				var tel1 = $('#add-hos .tbody').children('tr:last-child').find('.showInputBoxTel').attr('tel1')||""
-				var tel2 = $('#add-hos .tbody').children('tr:last-child').find('.showInputBoxTel').attr('tel2')||""
-				var tel3 = $('#add-hos .tbody').children('tr:last-child').find('.showInputBoxTel').attr('tel3')||""
-				// var tel = $('#add-hos .tbody').find(':input:eq(3)').val()
+				var name = $('.tbody').find(':input:eq(0)').val()
+				var post = $('.tbody').find(':input:eq(1)').val()
+				// var phone = $('.tbody').find(':input:eq(2)').val()
+				var phone = $('.tbody').children('tr:last-child').find('.showInputBox').html()
+				var verifyWay = $('.tbody').find(':input:eq(2)').val()
+				var tel = $('.tbody').children('tr:last-child').find('.showInputBoxTel').html()
+				var phone1=$('.tbody').children('tr:last-child').find('.showInputBox').attr('phone1')||""
+				var phone2=$('.tbody').children('tr:last-child').find('.showInputBox').attr('phone2')||""
+				var phone3=$('.tbody').children('tr:last-child').find('.showInputBox').attr('phone3')||""
+				var tel1 = $('.tbody').children('tr:last-child').find('.showInputBoxTel').attr('tel1')||""
+				var tel2 = $('.tbody').children('tr:last-child').find('.showInputBoxTel').attr('tel2')||""
+				var tel3 = $('.tbody').children('tr:last-child').find('.showInputBoxTel').attr('tel3')||""
+				// var tel = $('.tbody').find(':input:eq(3)').val()
 				var paiBan = ''
 				var _this = $(this)
 				if (name == '') {
 					layer.msg('请将相关人员姓名')
-					$('#add-hos .supplyNewRel button').attr('disabled', false)
+					$('.supplyNewRel button').attr('disabled', false)
 				} else {
-					if (thisVue.customerId == '' || thisVue.customerId == null || thisVue.customerId == undefined) {
+					if (thisValue.customerId == '' || thisValue.customerId == null || thisValue.customerId == undefined) {
 						layer.msg('请先点击医院提交信息按钮')
-						$('#add-hos .supplyNewRel button').attr('disabled', false)
+						$('.supplyNewRel button').attr('disabled', false)
 					} else {
 						$.ajax({
 							url: '/my-customer-worker/create-customer-worker',
 							type: 'post',
 							data: 'name=' + name + '&tel1=' + tel1+ '&tel2=' + tel2+ '&tel3=' + tel3 + '&post=' + post + '&paiBan=' + paiBan + '&verifyWay=' + verifyWay +
-								'&phone1=' + phone1 +'&phone2=' + phone2 +'&phone3=' + phone3 + '&customerId=' + thisVue.customerId,
+								'&phone1=' + phone1 +'&phone2=' + phone2 +'&phone3=' + phone3 + '&customerId=' + thisValue.customerId,
 							async: true,
 							success: function(res) {
 								if (res.code == 0) {
@@ -761,8 +787,8 @@ export default {
 									var show1 = "show('" + phone + "')"
 									var show2 = "show('" + verifyWay + "')"
 									var show3 = "show('" + tel + "')"
-									$('#add-hos .tbody').children("tr:last-child").remove()
-									$('#add-hos .tbody').append('<tr relId="' + res.data.customerWorkerId +
+									$('.tbody').children("tr:last-child").remove()
+									$('.tbody').append('<tr relId="' + res.data.customerWorkerId +
 										'"><td class="enterHos"><div class="line-1">' + name + '</div></td>' +
 										'<td><div class="line-1 lookHis">' + post + '</div></td>' +
 										'<td><div class="line-1 lookHis showInputBox" phone1="'+phone1+'"  phone2="'+phone2+'"  phone3="'+phone3+'" onmouseover="' + show1 + '" onmouseleave="showhidden()">' +
@@ -774,30 +800,27 @@ export default {
 										'" onmouseleave="showhidden()">' + tel +
 										'</div></td></tr>')
 									_this.parent().css('display', 'none')
-									$('#add-hos .supplyNewRel button').attr('disabled', false)
-									$('#add-hos .addNewRel').css('display', 'block')
+									$('.supplyNewRel button').attr('disabled', false)
+									$('.addNewRel').css('display', 'block')
 								}
 							}
 						})
 					}
 
 				}
-
-
-
-            })
-        // 查看某人对应追踪
-			$('#add-hos tbody').on('click', 'tr .enterHos', function() {
-				$('#add-hos .tableBoxLf').find('.enterHos').parent().css('background', '#fff')
+			})
+            // 查看某人对应追踪
+			$('tbody').on('click', 'tr .enterHos', function() {
+				$('.tableBoxLf').find('.enterHos').parent().css('background', '#fff')
 				// $(this).parent().parent().parent().parent().find('.enterHos').parent().css('background','#fff')
 				$(this).parent().css('background', 'rgba(229,229,229,0.5)')
-				thisVue.customerWorkerIdZz = $(this).parent().attr('relId')
-				$('#add-hos .trackName').html(`<span style="color:red;">${$(this).children().html()}</span>` + '的跟踪记录')
-				thisVue.trackrelList(thisVue.customerId, thisVue.customerWorkerIdZz, 1)
+				thisValue.customerWorkerIdZz = $(this).parent().attr('relId')
+				$('.trackName').html(`<span style="color:red;">${$(this).children().html()}</span>` + '的跟踪记录')
+				thisValue.trackrelList(thisValue.customerId, thisValue.customerWorkerIdZz, 1)
             })
-        // 提交追踪
-			$('#add-hos .sendTrack').click(function() {
-				var interst = $("#add-hos input[name='interst']:checked").val();
+            // 提交追踪
+			$('.sendTrack').click(function() {
+				var interst = $("input[name='interst']:checked").val();
 				if (interst == 1) {
 					var interstName = '暂不感兴趣'
 				} else if (interst == 2) {
@@ -810,15 +833,15 @@ export default {
 					var interstName = '线上可签单'
 				}
 				var nowtime = Date.parse(new Date())
-				var content = $('#add-hos .talkShow').val()
-				var quickIs = $("#add-hos #quickIs").is(":checked")
+				var content = $('.talkShow').val()
+				var quickIs = $("#quickIs").is(":checked")
 				if(quickIs===true){
 					quickIs=1
 				}else{
 					quickIs=0
 				}
-				console.log($("#add-hos #quickIs").is(":checked"))
-				if (thisVue.customerWorkerIdZz == '' || thisVue.customerWorkerIdZz == null || thisVue.customerWorkerIdZz == undefined) {
+				console.log($("#quickIs").is(":checked"))
+				if (thisValue.customerWorkerIdZz == '' || thisValue.customerWorkerIdZz == null || thisValue.customerWorkerIdZz == undefined) {
 					layer.msg('请选择追踪人员')
 				} else if (interst == '' || interst == null || interst == undefined) {
 					layer.msg('请选择感兴趣程度')
@@ -826,11 +849,11 @@ export default {
 					$.ajax({
 						url: '/my-customer/update-customer',
 						type: 'post',
-						data: 'customerId=' + thisVue.customerId + '&urgent=' + quickIs,
+						data: 'customerId=' + thisValue.customerId + '&urgent=' + quickIs,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
-								$("#add-hos #quickIs").attr('checked',false)
+								$("#quickIs").attr('checked',false)
 							} else {
 								layer.msg(res.codeMsg)
 							}
@@ -840,19 +863,19 @@ export default {
 					$.ajax({
 						url: '/my-customer-worker-trace/create-customer-worker-trace',
 						type: 'post',
-						data: 'customerWorkerId=' + thisVue.customerWorkerIdZz + '&content=' + content + '&level=' + interst,
+						data: 'customerWorkerId=' + thisValue.customerWorkerIdZz + '&content=' + content + '&level=' + interst,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
-								$('#add-hos .trackDetail').append('<ul>' +
-									'<li><span>' + ($('#add-hos .trackName span').html()||"") + '</span><span>' + interstName + '</span><span>' +
+								$('.trackDetail').append('<ul>' +
+									'<li><span>' + ($('.trackName span').html()||"") + '</span><span>' + interstName + '</span><span>' +
 									changeDateFormat(nowtime) + '</span></li>' +
 									'<li>' + content + '</li>' +
 									'</ul>')
-								$('#add-hos .trackDetail').scrollTop($('#add-hos .trackDetail')[0].scrollHeight);
-								$('#add-hos .talkShow').val('')
-								$('#add-hos .quickIs').attr("checked", false)
-								$("#add-hos input[name='interst']").removeAttr("checked");
+								$('.trackDetail').scrollTop($('.trackDetail')[0].scrollHeight);
+								$('.talkShow').val('')
+								$('.quickIs').attr("checked", false)
+								$("input[name='interst']").removeAttr("checked");
 
 							} else {
 								layer.msg(res.codeMsg)
@@ -861,217 +884,217 @@ export default {
 					})
 				}
             })
-        // 修改医院
+            // 修改医院
 
-			$('#add-hos .modifyHos').click(function() {
-				$('#add-hos .modifyHos').attr('disabled', "true");
-				thisVue.modifyNewHos()
+			$('.modifyHos').click(function() {
+				$('.modifyHos').attr('disabled', "true");
+				thisValue.modifyNewHos()
             })
-        // TODO 新增医院
+            // TODO 新增医院
 			// /my-customer/create-customer
-			$('#add-hos .addHos').click(function() {
-				$('#add-hos .addHos').attr('disabled', "true");
+			$('.addHos').click(function() {
+				$('.addHos').attr('disabled', "true");
 
-				thisVue.addNewHos()
+				thisValue.addNewHos()
             })
-        thisVue.trackrelList(thisVue.customerId, '', 1)
-			// 跟踪记录
-			$('#add-hos .lookAllTrack').click(function() {
+            thisValue.trackrelList(thisValue.customerId, '', 1)
+            // 跟踪记录
+			$('.lookAllTrack').click(function() {
 				
-				$('#add-hos .trackName').html('所有人的跟踪记录')
-				thisVue.trackrelList(thisVue.customerId, '', 1)
-			})
-			
-			// $('#add-hos body').click(function(e){
+				$('.trackName').html('所有人的跟踪记录')
+				thisValue.trackrelList(thisValue.customerId, '', 1)
+            })
+            // $('body').click(function(e){
 			// 	console.log(e.target.id)
 			// 	if (e.target.id.length) {
-			// 	                thisVue.closePopWindow()
+			// 	                thisValue.closePopWindow()
 			// 	            }
 				
             // })
-        $.getJSON("/assets/js/area.json", function(res) {
-				thisVue.provinceList = res
-				// $('#add-hos .province').html('<option value="">-请选择-</option>')
+            $.getJSON("js/area.json", function(res) {
+				thisValue.provinceList = res
+				// $('.province').html('<option value="">-请选择-</option>')
 				$.each(res, function(i, field) {
 
-					$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
-					// $("#add-hos span").append(field.name + "," + field.goods);
+					$('.province').append('<option value="' + field.value + '">' + field.label + '</option>')
+					// $("span").append(field.name + "," + field.goods);
 				});
-			});
-
-			$('#add-hos .province').change(function() {
-				thisVue.provinceText = $(this).val();
-				$.each(thisVue.provinceList, function(i, item) {
-					if (thisVue.provinceText == item.value) {
-						thisVue.cityItem = i;
-						// return thisVue.cityItem
+            });
+            $('.province').change(function() {
+				let provinceText = $(this).val();
+				$.each(thisValue.provinceList, function(i, item) {
+					if (provinceText == item.value) {
+						thisValue.cityItem = i;
+						// return thisValue.cityItem
 					}
 				});
-				thisVue.cityList = thisVue.provinceList[thisVue.cityItem]
-				$('#add-hos .city').html('<option value="">-市-</option>')
-				$('#add-hos .town').html('<option value="">-区-</option>')
-				$.each(thisVue.cityList.children, function(i, item) {
+				thisValue.cityList = thisValue.provinceList[thisValue.cityItem]
+				$('.city').html('<option value="">-市-</option>')
+				$('.town').html('<option value="">-区-</option>')
+				$.each(thisValue.cityList.children, function(i, item) {
 					// addele(city,item.name)
-					$('#add-hos .city').append('<option value="' + item.value + '">' + item.label + '</option>')
+					$('.city').append('<option value="' + item.value + '">' + item.label + '</option>')
 				})
             })
-        $('#add-hos .city').change(function() {
-				thisVue.cityText = $(this).val();
-				$.each(thisVue.cityList.children, function(i, item) {
-					if (thisVue.cityText == item.value) {
-						thisVue.townItem = i;
-						// return thisVue.cityItem
+            $('.city').change(function() {
+				let cityText = $(this).val();
+				$.each(thisValue.cityList.children, function(i, item) {
+					if (cityText == item.value) {
+						thisValue.townItem = i;
+						// return thisValue.cityItem
 					}
 				});
-				thisVue.townList = thisVue.cityList.children[thisVue.townItem]
-				$('#add-hos .town').html('<option value="">-区-</option>')
-				$.each(thisVue.townList.children, function(i, item) {
+				thisValue.townList = thisValue.cityList.children[thisValue.townItem]
+				$('.town').html('<option value="">-区-</option>')
+				$.each(thisValue.townList.children, function(i, item) {
 					// addEle(city,item.name)
-					$('#add-hos .town').append('<option value="' + item.value + '">' + item.label + '</option>')
+					$('.town').append('<option value="' + item.value + '">' + item.label + '</option>')
 				})
             })
-        $('#add-hos tbody').on('click', 'tr .showInputBox', function(){
-				clearTimeout(thisVue.timeIs)
+            // 点击弹出修改号码
+			$('tbody').on('click', 'tr .showInputBox', function(){
+				clearTimeout(thisValue.timeIs)
 				var thisHtml = $(this).html()
 				var _this_=$(this)
-				thisVue.closePopWindow()
-				thisVue.timeIs = setTimeout(function() {
+				thisValue.closePopWindow()
+				thisValue.timeIs = setTimeout(function() {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						$('#inp_send').val(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||"")
 						// $('#inp_send').val(thisHtml)
 						$('#btn_conn').click()
 					} else {
-						$('#add-hos .addphoeShow').attr('id', '')
-						$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
-						$('#add-hos table').find('.jsModify').removeClass('jsModify')
+						$('.addphoeShow').attr('id', '')
+						$('.addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
+						$('table').find('.jsModify').removeClass('jsModify')
 						_this_.addClass('jsModify')
 						// if()
 						// var phones = thisHtml.split(',')
 						// for (var i in phones) {
 						// 	var num = parseInt(i) + 1
-						// 	$('#add-hos .phonep' + num).html(phones[i])
+						// 	$('.phonep' + num).html(phones[i])
 						// }
-						$('#add-hos .phonep1').html(_this_.attr('phone1')||'')
-						$('#add-hos .phonep2').html(_this_.attr('phone2')||'')
-						$('#add-hos .phonep3').html(_this_.attr('phone3')||'')
+						$('.phonep1').html(_this_.attr('phone1')||'')
+						$('.phonep2').html(_this_.attr('phone2')||'')
+						$('.phonep3').html(_this_.attr('phone3')||'')
 					}
 				}, 300)
             })
-        $('#add-hos tbody').on('dblclick', 'tr .showInputBox', function() {
-				clearTimeout(thisVue.timeIs)
+            $('tbody').on('dblclick', 'tr .showInputBox', function() {
+				clearTimeout(thisValue.timeIs)
 				var thisHtml = $(this).html()
 				var _this_=$(this)
-				thisVue.closePopWindow()
+				thisValue.closePopWindow()
 				if (thisHtml && thisHtml.split(',').length == 1) {
-					$('#add-hos .addphoeShow').attr('id', '')
-					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
-					$('#add-hos table').find('.jsModify').removeClass('jsModify')
+					$('.addphoeShow').attr('id', '')
+					$('.addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
+					$('table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
-					$('#add-hos .phonep1').html(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||'')
+					$('.phonep1').html(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||'')
 				} else {
-					$('#add-hos .addphoeShow').attr('id', '')
-					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
-					$('#add-hos table').find('.jsModify').removeClass('jsModify')
+					$('.addphoeShow').attr('id', '')
+					$('.addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
+					$('table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
 					// var phones = thisHtml.split(',')
 					// for (var i in phones) {
 					// 	var num = parseInt(i) + 1
-					// 	$('#add-hos .phonep' + num).html(phones[i])
+					// 	$('.phonep' + num).html(phones[i])
 					// }
-					$('#add-hos .phonep1').html(_this_.attr('phone1')||'')
-					$('#add-hos .phonep2').html(_this_.attr('phone2')||'')
-					$('#add-hos .phonep3').html(_this_.attr('phone3')||'')
+					$('.phonep1').html(_this_.attr('phone1')||'')
+					$('.phonep2').html(_this_.attr('phone2')||'')
+					$('.phonep3').html(_this_.attr('phone3')||'')
 				}
             })
-        $('#add-hos tbody').on('click', 'tr .showInputBoxTel', function() {
-				thisVue.closePopWindow()
+            $('tbody').on('click', 'tr .showInputBoxTel', function() {
+				thisValue.closePopWindow()
 				var thisHtml = $(this).html()
 				
 				var _this_=$(this)
-				clearTimeout(thisVue.timeIs)
-				thisVue.timeIs = setTimeout(function() {
+				clearTimeout(thisValue.timeIs)
+				thisValue.timeIs = setTimeout(function() {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						// lineFriends($(this).html())		
 						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
 						$('#btn_conn').click()
 					} else {
-						$('#add-hos .addphoeShow').attr('id', '')
-						$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
-						$('#add-hos table').find('.jsModify').removeClass('jsModify')
+						$('.addphoeShow').attr('id', '')
+						$('.addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
+						$('table').find('.jsModify').removeClass('jsModify')
 						_this_.addClass('jsModify')
 						// var phones = thisHtml.split(',')
 						// for (var i in phones) {
 						// 	var num = parseInt(i) + 1
-						// 	$('#add-hos .phonep' + num).html(phones[i])
+						// 	$('.phonep' + num).html(phones[i])
 						// }
 						
-						$('#add-hos .phonep1').html(_this_.attr('tel1')||'')
-						$('#add-hos .phonep2').html(_this_.attr('tel2')||'')
-						$('#add-hos .phonep3').html(_this_.attr('tel3')||'')
+						$('.phonep1').html(_this_.attr('tel1')||'')
+						$('.phonep2').html(_this_.attr('tel2')||'')
+						$('.phonep3').html(_this_.attr('tel3')||'')
 						// alert(_this_.attr('tel1'))
 					}
 				}, 300)
             })
-        $('#add-hos tbody').on('dblclick', 'tr .showInputBoxTel', function() {
-				clearTimeout(thisVue.timeIs)
-				thisVue.closePopWindow()
+            $('tbody').on('dblclick', 'tr .showInputBoxTel', function() {
+				clearTimeout(thisValue.timeIs)
+				thisValue.closePopWindow()
 				var _this_=$(this)
 				var thisHtml = $(this).html()
 				if (thisHtml && thisHtml.split(',').length == 1) {
-					$('#add-hos .addphoeShow').attr('id', '')
-					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
-					$('#add-hos table').find('.jsModify').removeClass('jsModify')
+					$('.addphoeShow').attr('id', '')
+					$('.addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
+					$('table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
-					$('#add-hos .phonep1').html(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
+					$('.phonep1').html(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
 				} else {
-					$('#add-hos .addphoeShow').attr('id', '')
-					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
-					$('#add-hos table').find('.jsModify').removeClass('jsModify')
+					$('.addphoeShow').attr('id', '')
+					$('.addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
+					$('table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
 					// var phones = thisHtml.split(',')
 					// for (var i in phones) {
 					// 	var num = parseInt(i) + 1
-					// 	$('#add-hos .phonep' + num).html(phones[i])
+					// 	$('.phonep' + num).html(phones[i])
 					// }
-					$('#add-hos .phonep1').html(_this_.attr('tel1')||'')
-					$('#add-hos .phonep2').html(_this_.attr('tel2')||'')
-					$('#add-hos .phonep3').html(_this_.attr('tel3')||'')
+					$('.phonep1').html(_this_.attr('tel1')||'')
+					$('.phonep2').html(_this_.attr('tel2')||'')
+					$('.phonep3').html(_this_.attr('tel3')||'')
 				}
 			})
-	},
+        }
+    },
     methods:{
         modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type){
-            let thisVue=this
+            let thisValue = this
 				var param=telNameTitle+'='+telName+'&'+telValueTitle+'='+ telValue
 				console.log(param)
 				$.ajax({
 					url: '/my-customer/update-customer',
 					type: 'post',
-					data: param+ '&customerId=' + thisVue.customerId,
+					data: param+ '&customerId=' + thisValue.customerId,
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
 							layer.msg('操作成功')
 							if(type==0){
-								$('#add-hos .linePhoneList').append('<div typeId='+telNameTitle+'>'+
+								$('.linePhoneList').append('<div typeId='+telValueTitle+'>'+
 								'<span>'+telName+':</span>'+
 								'<span>'+telValue+'</span>'+
-								'<img class="phoneThisTel"  src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel"  src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}else{
-								$('#add-hos .linePhoneList').children().eq(type-1).html('<span>'+telName+':</span>'+
+								$('.linePhoneList').children().eq(type-1).html('<span>'+telName+':</span>'+
 								'<span>'+telValue+'</span>'+
-								'<img class="phoneThisTel"  src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">').attr('typeId',telNameTitle)
+								'<img class="phoneThisTel"  src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">').attr('typeId',telValueTitle)
 								
 								// html('<div typeId='+telNameTitle+'>'+
 								// '<span>'+telName+':</span>'+
 								// '<span>'+telValue+'</span>'+
-								// '<img class="phoneThisTel"  src="./assets/image/connent.png" alt="">'+
-								// '<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// // '<img src="./assets/image/delete.svg" alt="">'+
+								// '<img class="phoneThisTel"  src="./image/connent.png" alt="">'+
+								// '<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// // '<img src="./image/delete.svg" alt="">'+
 								// '</div>')
 							}
 							
@@ -1079,41 +1102,41 @@ export default {
 						}
 					}
 				})
-            },
-            removeTel(){
-                let thisVue=this
-				$('#add-hos .telName').val('')
-				$('#add-hos .telValue').val('')
-				$('#add-hos .submit_newTel').attr('typeId','')
-				$('#add-hos .addNewTelBox').css('display','none')
-            },
+        },
+        removeTel(){
+            let thisValue = this
+			$('.telName').val('')
+			$('.telValue').val('')
+			$('.submit_newTel').attr('typeId','')
+			$('.addNewTelBox').css('display','none')
+        },
         show(val) {
-            let thisVue=this
-				// clearTimeout(thisVue.timerMove)
-				// if(val==null||val==''||val==undefined){
-				// 	val=''
-				// }
-				// $('#add-hos .showTips').html(val).css('display', 'block')	
-            },
+            let thisValue = this
+			// clearTimeout(thisValue.timerMove)
+			// if(val==null||val==''||val==undefined){
+			// 	val=''
+			// }
+			// $('.showTips').html(val).css('display', 'block')	
+        },
         showhidden() {
-            let thisVue=this
-				thisVue.timerMove = setTimeout(function() {
-					$('#add-hos .showTips').css('display', 'none')
-					$('#add-hos .showTips  div').html('')
-				}, 1000)
-            },
+            let thisValue = this
+			thisValue.timerMove = setTimeout(function() {
+				$('.showTips').css('display', 'none')
+				$('.showTips  div').html('')
+			}, 1000)
+        },
         modifyNewHos() {
-            let thisVue=this
-				var name = $('#add-hos .hosname').val()
-				var tel = $('#add-hos .hostel').val()
-				var nature = $('#add-hos .hosnature  option:selected').val()
-				var hosIntro = $('#add-hos .hosIntro').val()
-				var area1Id = $('#add-hos .province option:selected').val()
-				var area1Name = $('#add-hos .province option:selected').text()
-				var area2Id = $('#add-hos .city option:selected').val()
-				var area2Name = $('#add-hos .city option:selected').text()
-				var area3Id = $('#add-hos .town option:selected').val()
-				var area3Name = $('#add-hos .town option:selected').text()
+            let thisValue = this
+				var name = $('.hosname').val()
+				var tel = $('.hostel').val()
+				var nature = $('.hosnature  option:selected').val()
+				var hosIntro = $('.hosIntro').val()
+				var area1Id = $('.province option:selected').val()
+				var area1Name = $('.province option:selected').text()
+				var area2Id = $('.city option:selected').val()
+				var area2Name = $('.city option:selected').text()
+				var area3Id = $('.town option:selected').val()
+				var area3Name = $('.town option:selected').text()
 				// if (area1Id == '' || area2Id == '' || area3Id == '') {
 				// 	layer.msg('请选择医院所在地区')
 				// } else if (nature == '') {
@@ -1121,20 +1144,20 @@ export default {
 				// } else 
 				if (name == '') {
 					layer.msg('请填写医院名')
-					$('#add-hos .modifyHos').attr('disabled', false);
+					$('.modifyHos').attr('disabled', false);
 				} else {
 					$.ajax({
 						url: '/my-customer/update-customer',
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
-							'&brief=' + hosIntro + '&customerId=' + thisVue.customerId,
+							'&brief=' + hosIntro + '&customerId=' + thisValue.customerId,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
 								layer.msg('操作成功')
 
-								$('#add-hos .modifyHos').attr('disabled', false);
+								$('.modifyHos').attr('disabled', false);
 								// window.history.refresh()
 							}
 						}
@@ -1142,21 +1165,21 @@ export default {
 				}
         },
         addNewHos() {
-            let thisVue=this
-				var name = $('#add-hos .hosname').val()
-				var tel = $('#add-hos .hostel').val()
-				var nature = $('#add-hos .hosnature  option:selected').val()
-				var hosIntro = $('#add-hos .hosIntro').val()
-				var area1Id = $('#add-hos .province option:selected').val()
-				var area1Name = $('#add-hos .province option:selected').text()
-				var area2Id = $('#add-hos .city option:selected').val()
-				var area2Name = $('#add-hos .city option:selected').text()
-				var area3Id = $('#add-hos .town option:selected').val()
-				var area3Name = $('#add-hos .town option:selected').text()
+            let thisValue = this
+				var name = $('.hosname').val()
+				var tel = $('.hostel').val()
+				var nature = $('.hosnature  option:selected').val()
+				var hosIntro = $('.hosIntro').val()
+				var area1Id = $('.province option:selected').val()
+				var area1Name = $('.province option:selected').text()
+				var area2Id = $('.city option:selected').val()
+				var area2Name = $('.city option:selected').text()
+				var area3Id = $('.town option:selected').val()
+				var area3Name = $('.town option:selected').text()
 				if (name == '') {
 
 					layer.msg('请填写医院名')
-					$('#add-hos .addHos').attr('disabled', false);
+					$('.addHos').attr('disabled', false);
 					// }
 					// if (area1Id == '' || area2Id == '' || area3Id == '') {
 					// 	layer.msg('请选择医院所在地区')
@@ -1176,9 +1199,9 @@ export default {
 							if (res.code == 0) {
 								layer.msg('操作成功')
 
-                                thisVue.$router.push({path:'/add-hos',query:{id:res.data.customerId}})
-								thisVue.customerId = res.data.customerId
-								$('#add-hos .addHos').attr('disabled', false);
+								location.href = '#/add-hos?id=' + res.data.customerId
+								thisValue.customerId = res.data.customerId
+								$('.addHos').attr('disabled', false);
 								// window.history.refresh()
 							} else {
 								layer.msg(res.codeMsg)
@@ -1187,9 +1210,28 @@ export default {
 					})
 				}
             },
+        // TODO 新增追踪记录
+			// TODO 查询追踪记录
+			// TODO 修改相关人员信息
+
+			// 新增医院方法
+			// addHos(){
+			// 	$.ajax({
+			// 		url:'/my-customer/create-customer',
+			// 		type:'post',
+			// 		data:'name='+name+'&tel='+tel+'&nature='+nature+'&area1Id='+area1Id+'&area2Id='+area2Id+'&area3Id='+area3Id+'&area1Name='+area1Name+'&area2Name='+area2Name+'&area3Name='+area3Name+'&hosIntro='+hosIntro,
+			// 		async:false,
+			// 		success:function(res){
+			// 			if(res.code==0){
+			// 				layer.msg('添加成功')
+			// 				window.history.refresh()
+			// 			}
+			// 		}
+			// 	}) 
+            // },
         // 医院详情列表
-        hosDetail(customerId) {
-            let thisVue=this
+		hosDetail(customerId) {
+            let thisValue = this
 				$.ajax({
 					url: '/my-customer/customer',
 					type: 'GET',
@@ -1198,160 +1240,160 @@ export default {
 					success: function(res) {
 						if (res.code == 0) {
 							document.title = res.data.name + " - " + document.title
-							$('#add-hos .hosname').val(res.data.name)
-							$('#add-hos .hosIntro').val(res.data.brief)
-							$('#add-hos .hostel').val(res.data.tel)
-							$('#add-hos .hosnature').val(res.data.nature)
+							$('.hosname').val(res.data.name)
+							$('.hosIntro').val(res.data.brief)
+							$('.hostel').val(res.data.tel)
+							$('.hosnature').val(res.data.nature)
 							if (res.data.tel != '' && res.data.tel != null && res.data.tel != undefined) {
-								$('#add-hos .linkHos').css('display', 'inline-block')
+								$('.linkHos').css('display', 'inline-block')
 							}
-							thisVue.paiBanCustomerWorkerId = res.data.paiBanCustomerWorkerId
-							$('#add-hos .paibanren').attr('relId', res.data.paiBanCustomerWorkerId || '')
+							thisValue.paiBanCustomerWorkerId = res.data.paiBanCustomerWorkerId
+							$('.paibanren').attr('relId', res.data.paiBanCustomerWorkerId || '')
 							if (res.data.paiBanCustomerWorkerName) {
-								$('#add-hos .paibanren').children().eq(0).children().html(res.data.paiBanCustomerWorkerName)
-								$('#add-hos .tbodyPaiban tr').attr('relId', res.data.paiBanCustomerWorkerId)
+								$('.paibanren').children().eq(0).children().html(res.data.paiBanCustomerWorkerName)
+								$('.tbodyPaiban tr').attr('relId', res.data.paiBanCustomerWorkerId)
 							}
 							if (res.data.paiBanCustomerWorkerPost) {
-								$('#add-hos .paibanren').children().eq(1).children().html(res.data.paiBanCustomerWorkerPost)
+								$('.paibanren').children().eq(1).children().html(res.data.paiBanCustomerWorkerPost)
 							}
 							if (res.data.paiBanCustomerWorkerPhone) {
-								$('#add-hos .paibanren').children().eq(2).children().html(res.data.paiBanCustomerWorkerPhone)
+								$('.paibanren').children().eq(2).children().html(res.data.paiBanCustomerWorkerPhone)
 							}
 							if (res.data.paiBanCustomerWorkerVerifyWay) {
-								$('#add-hos .paibanren').children().eq(3).children().html(res.data.paiBanCustomerWorkerVerifyWay)
+								$('.paibanren').children().eq(3).children().html(res.data.paiBanCustomerWorkerVerifyWay)
 							}
 							if (res.data.paiBanCustomerWorkerTel) {
-								$('#add-hos .paibanren').children().eq(4).children().html(res.data.paiBanCustomerWorkerTel)
+								$('.paibanren').children().eq(4).children().html(res.data.paiBanCustomerWorkerTel)
 							}
 							if(res.data.tel1){
-								$('#add-hos .linePhoneList').append('<div typeId="tel1">'+
+								$('.linePhoneList').append('<div typeId="tel1">'+
 								'<span>'+res.data.tel1Remark+':</span>'+
 								'<span>'+res.data.tel1+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel2){
-								$('#add-hos .linePhoneList').append('<div typeId="tel2">'+
+								$('.linePhoneList').append('<div typeId="tel2">'+
 								'<span>'+res.data.tel2Remark+':</span>'+
 								'<span>'+res.data.tel2+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel3){
-								$('#add-hos .linePhoneList').append('<div typeId="tel3">'+
+								$('.linePhoneList').append('<div typeId="tel3">'+
 								'<span>'+res.data.tel3Remark+':</span>'+
 								'<span>'+res.data.tel3+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel4){
-								$('#add-hos .linePhoneList').append('<div typeId="tel4">'+
+								$('.linePhoneList').append('<div typeId="tel4">'+
 								'<span>'+res.data.tel4Remark+':</span>'+
 								'<span>'+res.data.tel4+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel5){
-								$('#add-hos .linePhoneList').append('<div typeId="tel5">'+
+								$('.linePhoneList').append('<div typeId="tel5">'+
 								'<span>'+res.data.tel5Remark+':</span>'+
 								'<span>'+res.data.tel5+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel6){
-								$('#add-hos .linePhoneList').append('<div typeId="tel6">'+
+								$('.linePhoneList').append('<div typeId="tel6">'+
 								'<span>'+res.data.tel6Remark+':</span>'+
 								'<span>'+res.data.tel6+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel7){
-								$('#add-hos .linePhoneList').append('<div typeId="tel7">'+
+								$('.linePhoneList').append('<div typeId="tel7">'+
 								'<span>'+res.data.tel7Remark+':</span>'+
 								'<span>'+res.data.tel7+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel8){
-								$('#add-hos .linePhoneList').append('<div typeId="tel8">'+
+								$('.linePhoneList').append('<div typeId="tel8">'+
 								'<span>'+res.data.tel8Remark+':</span>'+
 								'<span>'+res.data.tel8+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							if(res.data.tel9){
-								$('#add-hos .linePhoneList').append('<div typeId="tel9">'+
+								$('.linePhoneList').append('<div typeId="tel9">'+
 								'<span>'+res.data.tel9Remark+':</span>'+
 								'<span>'+res.data.tel9+'</span>'+
-								'<img class="phoneThisTel" src="./assets/image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./assets/image/edit.svg" alt="">'+
-								// '<img src="./assets/image/delete.svg" alt="">'+
+								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
+								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
 							// TODO 后期待优化
 							$.ajax({
-								url: '/assets/js/area.json',
+								url: 'js/area.json',
 								type: 'get',
 								async: false,
 								success: function(res) {
-									thisVue.provinceList = res
-									// $('#add-hos .province').html('<option value="">-请选择-</option>')
+									thisValue.provinceList = res
+									// $('.province').html('<option value="">-请选择-</option>')
 									$.each(res, function(i, field) {
 
-										$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
-										// $("#add-hos span").append(field.name + "," + field.goods);
+										$('.province').append('<option value="' + field.value + '">' + field.label + '</option>')
+										// $("span").append(field.name + "," + field.goods);
 									});
 								}
 							})
 							if (res.data.area1Id) {
-								$('#add-hos .province').val(res.data.area1Id)
+								$('.province').val(res.data.area1Id)
 								// setTimeout(function(){
-								// 	$('#add-hos .province').val(res.data.area1Id)
+								// 	$('.province').val(res.data.area1Id)
 								// },200)
-								thisVue.provinceText = res.data.area1Id;
-								$.each(thisVue.provinceList, function(i, item) {
-									if (thisVue.provinceText == item.value) {
-										thisVue.cityItem = i;
-										// return thisVue.cityItem
+								let provinceText = res.data.area1Id;
+								$.each(thisValue.provinceList, function(i, item) {
+									if (provinceText == item.value) {
+										thisValue.cityItem = i;
+										// return thisValue.cityItem
 									}
 								});
-								thisVue.cityList = thisVue.provinceList[thisVue.cityItem]
-								$('#add-hos .city').html('<option value="">-市-</option>')
-								$('#add-hos .town').html('<option value="">-区-</option>')
-								$.each(thisVue.cityList.children, function(i, item) {
+								thisValue.cityList = thisValue.provinceList[thisValue.cityItem]
+								$('.city').html('<option value="">-市-</option>')
+								$('.town').html('<option value="">-区-</option>')
+								$.each(thisValue.cityList.children, function(i, item) {
 									// addele(city,item.name)
-									$('#add-hos .city').append('<option value="' + item.value + '">' + item.label + '</option>')
+									$('.city').append('<option value="' + item.value + '">' + item.label + '</option>')
 									if (res.data.area2Id) {
-										$('#add-hos .city').val(res.data.area2Id)
-										thisVue.cityText = res.data.area2Id;
-										$.each(thisVue.cityList.children, function(i, item) {
-											if (thisVue.cityText == item.value) {
-												thisVue.townItem = i;
-												// return thisVue.cityItem
+										$('.city').val(res.data.area2Id)
+										let cityText = res.data.area2Id;
+										$.each(thisValue.cityList.children, function(i, item) {
+											if (cityText == item.value) {
+												thisValue.townItem = i;
+												// return thisValue.cityItem
 											}
 										});
-										thisVue.townList = thisVue.cityList.children[thisVue.townItem]
-										$('#add-hos .town').html('<option value="">-区-</option>')
-										$.each(thisVue.townList.children, function(i, item) {
+										thisValue.townList = thisValue.cityList.children[thisValue.townItem]
+										$('.town').html('<option value="">-区-</option>')
+										$.each(thisValue.townList.children, function(i, item) {
 											// addEle(city,item.name)
-											$('#add-hos .town').append('<option value="' + item.value + '">' + item.label + '</option>')
-											$('#add-hos .town').val(res.data.area3Id)
+											$('.town').append('<option value="' + item.value + '">' + item.label + '</option>')
+											$('.town').val(res.data.area3Id)
 										})
 									}
 
@@ -1362,10 +1404,10 @@ export default {
 						}
 					}
 				})
-            },
+        },
         // 相关人员列表
-			relList(customerId) {
-                let thisVue=this
+		relList(customerId) {
+            let thisValue = this
 				$.ajax({
 					url: '/my-customer-worker/customer-worker-list',
 					type: 'GET',
@@ -1375,7 +1417,7 @@ export default {
 						if (res.code == 0) {
 
 							if (res.data.itemList && res.data.itemList.length > 0) {
-								$('#add-hos .tbody').html('')
+								$('.tbody').html('')
 								for (var i in res.data.itemList) {
 									var phoneAll='',telAll=''
 									if(res.data.itemList[i].phone1){
@@ -1421,7 +1463,7 @@ export default {
 											telAll= res.data.itemList[i].tel3
 										}
 									}
-									if (res.data.itemList[i].customerWorkerId != thisVue.paiBanCustomerWorkerId) {
+									if (res.data.itemList[i].customerWorkerId != thisValue.paiBanCustomerWorkerId) {
 										var show1 = "show('" + res.data.itemList[i].phone + "')"
 										var show2 = "show('" + res.data.itemList[i].verifyWay + "')"
 										var show3 = "show('" + res.data.itemList[i].tel + "')"
@@ -1432,7 +1474,7 @@ export default {
 										if(telAll){
 											var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
 										}
-										$('#add-hos .tbody').append('<tr relId="' + res.data.itemList[i].customerWorkerId +
+										$('.tbody').append('<tr relId="' + res.data.itemList[i].customerWorkerId +
 											'"><td class="enterHos"><div class="line-1">' + (res.data.itemList[i].name || "") + '</div></td>' +
 											'<td><div class="line-1 lookHis">' + (res.data.itemList[i].post || "") + '</div></td>' +
 											'<td><div class="line-1 lookHis showInputBox" phone1="'+(res.data.itemList[i].phone1||"")+'" phone2="'+(res.data.itemList[i].phone2||"")+'" phone3="'+(res.data.itemList[i].phone3||"")+'" >' +
@@ -1451,8 +1493,8 @@ export default {
 										if(telAll){
 											var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
 										}
-										$('#add-hos .paibanren .showInputBox').html(phoneAll).attr('phone1',(res.data.itemList[i].phone1||"")).attr('phone2',(res.data.itemList[i].phone2||"")).attr('phone3',(res.data.itemList[i].phone3||""))
-										$('#add-hos .paibanren .showInputBoxTel').html(telAll).attr('tel1',(res.data.itemList[i].tel1||"")).attr('tel2',(res.data.itemList[i].tel2||"")).attr('tel3',(res.data.itemList[i].tel3||""))
+										$('.paibanren .showInputBox').html(phoneAll).attr('phone1',(res.data.itemList[i].phone1||"")).attr('phone2',(res.data.itemList[i].phone2||"")).attr('phone3',(res.data.itemList[i].phone3||""))
+										$('.paibanren .showInputBoxTel').html(telAll).attr('tel1',(res.data.itemList[i].tel1||"")).attr('tel2',(res.data.itemList[i].tel2||"")).attr('tel3',(res.data.itemList[i].tel3||""))
 									}
 
 								}
@@ -1462,12 +1504,12 @@ export default {
 				})
             },
         // 跟踪记录列表
-			trackrelList(customerId, customerWorkerId, pn) {
-                let thisVue=this
+		trackrelList(customerId, customerWorkerId, pn) {
+            let thisValue = this
 				if (customerWorkerId){
-					$('#add-hos .lookAllTrack').show()
+					$('.lookAllTrack').show()
 				}else{
-					$('#add-hos .lookAllTrack').hide()
+					$('.lookAllTrack').hide()
 				}
 				$.ajax({
 					url: '/my-customer-worker-trace/customer-worker-trace-list',
@@ -1478,7 +1520,7 @@ export default {
 						if (res.code == 0) {
 							var interst = ''
 							if (pn = 1) {
-								$('#add-hos .trackDetail').html('')
+								$('.trackDetail').html('')
 							}
 							if (res.data.itemList && res.data.itemList.length > 0) {
 								for (var i in res.data.itemList) {
@@ -1493,13 +1535,13 @@ export default {
 									} else if (res.data.itemList[i].level == 5) {
 										interst = '线上可签单'
 									}
-									$('#add-hos .trackDetail').append('<ul>' +
+									$('.trackDetail').append('<ul>' +
 										'<li><span>' + (res.data.itemList[i].customerWorkerName||"") + '</span><span>' + interst + '</span><span>' +
 										changeDateFormat(res.data.itemList[i].createTime) +
 										'</span></li>' +
 										'<li>' + res.data.itemList[i].content + '</li>' +
 										'</ul>')
-									$('#add-hos .trackDetail').scrollTop($('#add-hos .trackDetail')[0].scrollHeight);
+									$('.trackDetail').scrollTop($('.trackDetail')[0].scrollHeight);
 								}
 							}
 						}
@@ -1507,8 +1549,8 @@ export default {
 				})
             },
         // 时间转换
-			getDateDiff(dateTimeStamp) {
-                let thisVue=this
+		getDateDiff(dateTimeStamp) {
+            let thisValue = this
 				var result;
 				var minute = 1000 * 60;
 				var hour = minute * 60;
@@ -1545,20 +1587,15 @@ export default {
 				return result;
             },
         closePopWindow() {
-            let thisVue=this
-				$('#add-hos .phonep1').html('')
-				$('#add-hos .phonep2').html('')
-				$('#add-hos .phonep3').html('')
-				$('#add-hos .addphoeShow').css('display', 'none')
-				$('#add-hos .addphoen').css('display', 'none')
-            },
+            let thisValue = this
+			$('.phonep1').html('')
+			$('.phonep2').html('')
+			$('.phonep3').html('')
+			$('.addphoeShow').css('display', 'none')
+			$('.addphoen').css('display', 'none')
+        },
         
-   //methods end
         
-     }
+    },
 }
 </script>
-
-<style scoped>
-
-</style>

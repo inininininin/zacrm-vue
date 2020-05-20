@@ -211,7 +211,7 @@ export default {
 									success: function(res) {
 										if (res.code == 0) {
 											$('#login .password').val('')
-                                            _this.$router.push({path:'/index',params:{from:'/login'}})
+                                            _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
 										} else {
 											layer.msg(res.codeMsg)
 										}
