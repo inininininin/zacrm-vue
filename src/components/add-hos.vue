@@ -553,11 +553,12 @@ export default {
 					// 	$('#add-hos .phonep'+num).html(phones[i])
 					// }
 				} else {
+					debugger
 					thisValue.closePopWindow()
 					$('#add-hos .phonep1').html('')
 					$('#add-hos .phonep2').html('')
 					$('#add-hos .phonep3').html('')
-					clearTimeout(time)
+					clearTimeout(thisValue.time)
 					// $(this).html('<input type="text"  class="modifyThis" onchange="modifyOver('+$(this).parent().attr("relId")+',this)" value="'+$(this).children().html()+'"/>')
 					$(this).html('<input type="text" level="' + $(this).index() + '"  class="modifyThisPaiban"  value="' + $(this).children()
 						.html() + '"/>')
