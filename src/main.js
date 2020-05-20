@@ -5,6 +5,10 @@ import App from './App'
 import router from './router/index.js'
 // import './assets/all.css'
 import '../static/js/rem.js'
+
+import ElementUI from 'element-ui';
+
+import 'element-ui/lib/theme-chalk/index.css';
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 // import '../node_modules/layui-src/dist/css/layui.css'
@@ -16,6 +20,7 @@ import '../static/js/rem.js'
 //   layer = layui.layer;
 // });
 
+Vue.use(ElementUI);
 Vue.config.productionTip = false
 // console.dir(window.layui)
 // Vue.prototype.$layui = window.layui
