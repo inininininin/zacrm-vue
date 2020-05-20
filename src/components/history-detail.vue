@@ -93,6 +93,16 @@ export default {
 }
 </script>
 <style scoped>
+.containBox{
+	width: 90%;
+	margin: 20px auto 50px;
+	min-width: 1200px;
+}
+.containBox h2{
+	font-size: 28px;
+	color: #333333;
+	margin-left: 50px;
+}
 .trackDetail {
 			width: 100%;
 			height: auto;
