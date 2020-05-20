@@ -1,18 +1,31 @@
 <template>
-  	<div id="index" class="index">
-    	<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+    <div id="index" class="index">
+        
 		
+		
+		
+		<input type='' id='userName' hidden=''>
+		<span class="record1" hidden=""></span>
+		<span class="record2" hidden=""></span>
+		<span class="record3" hidden=""></span>
+		
+		
+		
+		
+		
+		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+		<input type="" name="" id="inp_send"  hidden="">
+		<button id="btn_conn" hidden="">发送</button>
 		<div class="mainbox">
 			<div class="topselect">
 				<div style="width: 100%;height: 80px;">
-					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span> 
-					<router-link :to="{path:'/add-hos'}" class="addHos" >
+					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
+                    <router-link :to="{path:'/add-hos'}" class="addHos" >
 						新增医院
 					</router-link>
+                    <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
 					 <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
-					<router-link :to="{path:'/history-detail'}"  class="lookBefore">
-							查看昨日工作记录
-					</router-link>
+					 <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a>
 					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: 80px;">
@@ -43,6 +56,7 @@
 					<button class="searchThis refresh">重置</button>
 				</div>
 			</div>
+
 			<div class="tableBox">
 				<table>
 					<thead>
@@ -56,57 +70,24 @@
 						</tr>
 					</thead>
 					<tbody class="tbody">
-						<tr v-for="(item,inx) in tableList" :key="inx">
-							<td>{{item.pn}}</td>
-							<td class="enterHos">
-								<router-link :to="{path:'/add-hos',query:{id:item.customerId}}" >
-									{{item.name || ""}}
-								</router-link>
-								<!-- <a :href="'addHos.html?id=' + item.customerId"  >
-									
-								</a> -->
-							</td>
-							<td>{{item.paiBanCustomerWorkerName ||""}}</td>
-							<td :tel="item.tel">{{item.tel}}</td>
-							<td>{{item.paiBanCustomerWorkerVerifyWay ||""}}</td>
-							<td>{{item.updateTime}}</td>
-						</tr>
+						<!--<td></td>
+						<td></td>
+						<td></td>
+						<td tel='15077822798'>15077822798</td
+						<td></td>
+						<td></td>-->
 					</tbody>
 				</table>
 				<div class="box rt" id="box"></div>
 			</div>
 		</div>
-		<!-- <div class="phoneNow">
-			<div></div>
-			<div>
-				
-				<p><span class="phoneNumber"></span>正在通话中. . .</p>
-				<div class="phoneEnd" id="btn_close">
-					<img src="../assets/image/phoneEnd.png" alt="">
-					<span>挂断电话</span>
-				</div>
-			</div>
-		</div> -->
- 	</div>
+    </div>
 </template>
-
 <script>
-// var kw = '',
-// 	level = '',
-// 	nature = '',
-// 	area1Id = '',
-// 	area2Id = '',
-// 	area3Id = '',
-// 	ps = 15,
-// 	urgent = '',
-// 	pn = 1,
-// 	totalNum = '',
-// 	provinceList, cityList, townList, cityItem, townItem
 export default {
 	name: 'index',
 	data () {
 		return {
-			tableList:[],
 			kw : '',
 			level : '',
 			nature : '',
@@ -116,102 +97,104 @@ export default {
 			ps : 15,
 			urgent : '',
 			pn : 1,
-			totalNum : '',
-			provinceList:[],
-			cityList:[],
-			townList:[],
-			cityItem:"",
-			townItem:"",
+            totalNum : '',
+            provinceList : undefined,
+            cityList : undefined,
+            townList : undefined,
+            cityItem : undefined,
+            townItem : undefined,
+            query:'',
 		}
 	},
 	activated(){
-debugger
-
-
-		let _this = this
-		$.ajax({
-				url: '/login-refresh',
-				type: 'POST',
-				async: true,
-				success: function(res) {
-					if (res.code == 0) {
-						$('#index .peoname').html(res.data.nickname)
-						//         window.location.href='index.html'
-					} else {
-						
-						setTimeout(function() {
-							_this.$router.push({path:'/login'})
-						}, 1000)
-					}
-				}
-			})
-		this.start();	
-			
-	},
-	methods:{
-		start(){
-			let _this =this
-			debugger
-			$('#index .lastHis').click(function() {
+        let thisValue = this
+        // 跳转上次最后一条数据
+        if(this.query != JSON.stringify(this.$route.query)){
+			this.query = JSON.stringify(this.$route.query);
+            $('#index .lastHis').click(function() {
 				$.ajax({
 					url: '/cache/get',
 					type: 'get',
-					data: 'name=' + $('#index .peoname').html(),
+					data: 'name=' + $('.peoname').html(),
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
 							console.log(JSON.parse(res.data.value))
 							var data = JSON.parse(res.data.value)
-							_this.kw = data.kw
-							_this.level = data.level
-							_this.nature = data.nature
-							_this.area1Id = data.area1Id
-							_this.area2Id = data.area2Id
-							_this.urgent = data.urgent
-							_this.pn = data.page
-							_this.totalNum = data.totalNum
-							$('#index .keyword').val(_this.kw)
-							$('#index .urgentLevel').val(_this.level || _this.urgent)
-							$('#index .nature').val(_this.nature)
-							$('#index .province').val(_this.area1Id)
-							$('#index .city').val(_this.area2Id)
-							console.log(data.page)
-							// $('.keyword').val(kw)
+							thisValue.kw = data.kw
+							thisValue.level = data.level
+							thisValue.nature = data.nature
+							thisValue.area1Id = data.area1Id
+							thisValue.area2Id = data.area2Id
+							thisValue.urgent = data.urgent
+							thisValue.pn = data.page
+							thisValue.totalNum = data.totalNum
+							$('#index .keyword').val(thisValue.kw)
+							$('#index .urgentLevel').val(thisValue.level || thisValue.urgent)
+							$('#index .nature').val(thisValue.nature)
+							$('#index .province').val(thisValue.area1Id)
+							$('#index .city').val(thisValue.area2Id)
+							// console.log(data.page)
+							// $('.keyword').val(thisValue.kw)
 							$('#index #box').paging({
-								initPageNo: _this.pn, // 初始页码
-								totalPages: _this.totalNum, //总页数
+								initPageNo: thisValue.pn, // 初始页码
+								totalPages: thisValue.totalNum, //总页数
 								//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 								slideSpeed: 600, // 缓动速度。单位毫秒
 								jump: true, //是否支持跳转
 								callback: function(page) { // 回调函数
 									// memberList1(1,page);
-									_this.nature = $('#index .nature').val()
-									_this.pn = page
-									_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+									var nature = $('#index .nature').val()
+									thisValue.pn = page
+									console.log(thisValue.pn)
+									thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 								}
 							})
 
 						}
 					}
 				})
-			})
-			$('#index table').on('click', 'tr .enterHos', function() {
+            })
+        $.ajax({
+				url: '/login-refresh',
+				
+				type: 'POST',
+				async: true,
+				success: function(res) {
+					if (res.code == 0) {
+						localStorage.setItem('nickname',res.data.nickname)
+						$('#index .peoname').html(res.data.nickname)
+						$('#index #userName').val(res.data.nickname)
+						//         window.location.href='index.html'
+					} else {
+						
+						setTimeout(function() {
+                            thisValue.$router.push({path:'/login'})
+                            // location.href='/#/login'
+                            // location.href=location.pathname
+							// location.href = 'login.html'
+						}, 1000)
+					}
+				}
+            })
+        thisValue.lastPageNo()
+        $('#index table').on('click', 'tr .enterHos', function() {
 				$(this).parent().parent().find('.a29905').addClass('a29902').removeClass('a29905')
 				$(this).parent().addClass('a29905').removeClass('a29902')
 				var param = {
-					'page': _this.pn,
-					'level': _this.level,
-					'nature': _this.nature,
-					'kw': _this.kw,
-					'area1Id': _this.area1Id,
-					'area2Id': _this.area2Id,
-					'urgent': _this.urgent,
-					'totalNum': _this.totalNum
+					'page': thisValue.pn,
+					'level': thisValue.level,
+					'nature': thisValue.nature,
+					'kw': thisValue.kw,
+					'area1Id': thisValue.area1Id,
+					'area2Id': thisValue.area2Id,
+					'urgent': thisValue.urgent,
+					'totalNum': thisValue.totalNum
 				}
 				$.ajax({
 					url: '/cache/set',
 					type: 'post',
-					data: 'name=' + $('#index .peoname').html() + '&value=' + JSON.stringify(param),
+					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
@@ -220,154 +203,148 @@ debugger
 					}
 				})
 
-			})
-			// 搜索
-			debugger
+            })
+        //点击进入详情页
+			// $('body').on('click','tbody .enterHos',function(){
+			//  // self.location.href='login.html'
+			//   window.location.href='login.html'
+			// // window.open ("login.html", "", "height=100, width=100,top=0, left=0,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=n o,status=no")
+            // })
+        // 搜索
 			$('#index .searchThis').click(function() {
-				kw = $('#index .keyword').val()
-				debugger
-				_this.lastPageNo()
+				thisValue.kw = $('#index .keyword').val()
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
 					initPageNo: 1, // 初始页码
-					totalPages: _this.totalNum, //总页数
+					totalPages: thisValue.totalNum, //总页数
 					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 					slideSpeed: 600, // 缓动速度。单位毫秒
 					jump: true, //是否支持跳转
 					callback: function(page) { // 回调函数
-						_this.pn = page
-						_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
-			})
-			debugger
-			$('#index .urgentLevel').change(function() {
+            })
+        $('#index .urgentLevel').change(function() {
 				if ($(this).val() == '') {
-					_this.urgent = ''
-					_this.level = ''
+					thisValue.urgent = ''
+					thisValue.level = ''
 				} else if ($(this).val() == 0) {
-					_this.urgent = 1
-					_this.level = ''
+					thisValue.urgent = 1
+					thisValue.level = ''
 				} else {
-					_this.urgent = ''
-					_this.level = $(this).val()
+					thisValue.urgent = ''
+					thisValue.level = $(this).val()
 				}
-debugger
-				_this.lastPageNo()
+
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
 					initPageNo: 1, // 初始页码
-					totalPages: _this.totalNum, //总页数
+					totalPages: thisValue.totalNum, //总页数
 					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 					slideSpeed: 600, // 缓动速度。单位毫秒
 					jump: true, //是否支持跳转
 					callback: function(page) { // 回调函数
-						_this.pn = page
-						_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
-			})
-			debugger
-			$('#index .nature').change(function() {
-				_this.nature = $(this).val()
-				debugger
-				_this.lastPageNo()
+            })
+        $('#index .nature').change(function() {
+				thisValue.nature = $(this).val()
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
 					initPageNo: 1, // 初始页码
-					totalPages: _this.totalNum, //总页数
+					totalPages: thisValue.totalNum, //总页数
 					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 					slideSpeed: 600, // 缓动速度。单位毫秒
 					jump: true, //是否支持跳转
 					callback: function(page) { // 回调函数
 						// memberList1(1,page);
-						_this.nature = $('#index .nature').val()
-						_this.pn = page
-						_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+						var nature = $('.nature').val()
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
-			})
-			debugger
-			$.getJSON("/assets/js/area.json", function(res) {
-				_this.provinceList = res
-				// $('.province').html('<option value="">-请选择-</option>')
-				$.each(res, function(i, field) {
-
-					$('#index .province').append('<option value="' + field.value + '">' + field.label + '</option>')
-					// $("span").append(field.name + "," + field.goods);
-				});
+            })
+        // 省市区三级联动
+		// TODO 后期待优化
+		$.getJSON("js/area.json", function(res) {
+			thisValue.provinceList = res
+			// $('#index .province').html('<option value="">-请选择-</option>')
+			$.each(res, function(i, field) {
+				$('#index .province').append('<option value="' + field.value + '">' + field.label + '</option>')
+				// $("span").append(field.name + "," + field.goods);
 			});
-			debugger
-
-			$('#index .province').change(function() {
+        });
+        $('#index .province').change(function() {
 				let provinceText = $(this).val();
-				$.each(_this.provinceList, function(i, item) {
+				$.each(thisValue.provinceList, function(i, item) {
 					if (provinceText == item.value) {
-						_this.cityItem = i;
+						thisValue.cityItem = i;
 					}
 				});
-				_this.cityList = _this.provinceList[_this.cityItem]
+				thisValue.cityList = thisValue.provinceList[thisValue.cityItem]
 				$('#index .city').html('<option value="">-市-</option>')
 				$('#index .town').html('<option value="">-区-</option>')
-				$.each(_this.cityList.children, function(i, item) {
+				$.each(thisValue.cityList.children, function(i, item) {
 					$('#index .city').append('<option value="' + item.value + '">' + item.label + '</option>')
 				})
-				_this.area1Id = $(this).val()
-				_this.area2Id = ''
-				debugger
-				_this.lastPageNo()
+				thisValue.area1Id = $(this).val()
+				thisValue.area2Id = ''
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
 					initPageNo: 1, // 初始页码
-					totalPages: _this.totalNum, //总页数
+					totalPages: thisValue.totalNum, //总页数
 					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 					slideSpeed: 600, // 缓动速度。单位毫秒
 					jump: true, //是否支持跳转
 					callback: function(page) { // 回调函数
 						// memberList1(1,page);
-						_this.nature = $('#index .nature').val()
-						_this.pn = page
-						_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+						var nature = $('#index .nature').val()
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
-			})
-			debugger
-			$('#index .city').change(function() {
+        })
+        $('#index .city').change(function() {
 				let cityText = $(this).val();
-				$.each(_this.cityList.children, function(i, item) {
+				$.each(thisValue.cityList.children, function(i, item) {
 					if (cityText == item.value) {
-						_this.townItem = i;
+						thisValue.townItem = i;
 					}
 				});
-				_this.townList = _this.cityList.children[_this.townItem]
+				thisValue.townList = thisValue.cityList.children[thisValue.townItem]
 				$('#index .town').html('<option value="">-区-</option>')
-				$.each(_this.townList.children, function(i, item) {
+				$.each(thisValue.townList.children, function(i, item) {
 					$('#index .town').append('<option value="' + item.value + '">' + item.label + '</option>')
 				})
-				_this.area2Id = $(this).val()
-				debugger
-				_this.lastPageNo()
+				thisValue.area2Id = $(this).val()
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
 					initPageNo: 1, // 初始页码
-					totalPages: _this.totalNum, //总页数
+					totalPages: thisValue.totalNum, //总页数
 					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 					slideSpeed: 600, // 缓动速度。单位毫秒
 					jump: true, //是否支持跳转
 					callback: function(page) { // 回调函数
 						// memberList1(1,page);
-						_this.nature = $('#index .nature').val()
-						_this.pn = page
-						_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+						var nature = $('#index .nature').val()
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
-			})
-			$('#index .town').change(function(){
-				_this.area3Id = $(this).val()
-			})
-			debugger
-			_this.lastPageNo();
-			// 清空全部搜索条件
+            })
+        $('#index .town').change(function(){
+		    thisValue.area3Id = $(this).val()
+        })
+        // 清空全部搜索条件
 			$('#index .refresh').click(function() {
 				$('#index .keyword').val('')
 				$('#index .province').val('')
@@ -375,49 +352,65 @@ debugger
 				$('#index .town').val('')
 				$('#index .nature').val('')
 				$('#index .urgentLevel').val('')
-				_this.kw = ''
-				_this.nature = ''
-				_this.area1Id = ''
-				_this.area2Id = ''
-				_this.area3Id=''
-				_this.urgent = ''
-				_this.level = ''
-				debugger
-				_this.lastPageNo()
-
-
+				thisValue.kw = ''
+				thisValue.nature = ''
+				thisValue.area1Id = ''
+				thisValue.area2Id = ''
+				thisValue.area3Id=''
+				thisValue.urgent = ''
+				thisValue.level = ''
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
 					initPageNo: 1, // 初始页码
-					totalPages: _this.totalNum, //总页数
+					totalPages: thisValue.totalNum, //总页数
 					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
 					slideSpeed: 600, // 缓动速度。单位毫秒
 					jump: true, //是否支持跳转
 					callback: function(page) { // 回调函数
 						// memberList1(1,page);
 						var nature = $('#index .nature').val()
-						_this.pn = page
-						_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
+            })
+        // window.onbeforeunload = function()
+		// {
+		// //  这是用来设定一个时间, 时间到了, 就会执行一个指定的 method。
+		//     // setTimeout(onunloadcancel, 10);
+		// 	$.ajax({
+		// 		type:"post",
+		// 		url:"/logout",
+		// 		data:"",
+		// 		success:function (data){
+		
+		// 		}
+		// 	})
+		//     return "真的离开?";
+		// }
+		// window.onunloadcancel = function()
+		// {
+		//     alert("取消离开");
+        // }
+        $('#index .loginout').click(function(){
+			$.ajax({
+				type:"post",
+				url:"/logout",
+				data:"",
+				success:function (data){
+                    // location.href='/#/login'
+                    location.href=location.pathname
+							// location.href='login.html'
+				}
 			})
-			$('#index .loginout').click(function(){
-				$.ajax({
-					type:"post",
-					url:"/logout",
-					data:"",
-					success:function (data){
-						_this.$router.push({path:'/login'})
-								// location.href='login.html'
-					}
-				})
-			})
-			debugger
-			$('#index table').on('click','tr td:nth-child(4)',function(){
+        })
+        $('#index table').on('click','tr td:nth-child(4)',function(){
 				debugger
 				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
 					
 				}else{
+                    debugger
 					//anjie($(this).attr('tel'))
 					 //tTimeout(function(){
 					 	$('#inp_send').val($(this).attr('tel'))
@@ -428,8 +421,76 @@ debugger
 				}
 				
 			})
-		},
-		getDateDiff(dateTimeStamp) {
+            
+
+
+		}
+
+
+			
+    },
+    methods:{
+        lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
+            let thisValue = this
+				$.ajax({
+					url: '/my-customer/customer-list',
+					type: 'GET',
+					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
+						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent,
+					async: true,
+					success: function(res) {
+						if (res.code == 0) {
+							$('#index .tbody').html('')
+							if (res.data.itemList && res.data.itemList.length > 0) {
+								for (var i in res.data.itemList) {
+									var tel=''
+									if(res.data.itemList[i].tel){
+										tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+									}
+                                    $('.tbody').append('<tr><td>'+(parseInt(i)+1+((pn-1)*15))+
+                                    '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
+                                    + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
+											"") + '</td><td tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
+											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td></tr>')
+                                }
+							}
+						}
+					}
+				})
+        },
+        lastPageNo() {
+            let thisValue = this
+				$.ajax({
+					url: '/my-customer/customer-list-sum',
+					type: 'GET',
+					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
+						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent,
+					async: true,
+					success: function(res) {
+						if (res.code == 0) {
+							thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
+							$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
+							$('#index #box').paging({
+								initPageNo: 1, // 初始页码
+								totalPages: thisValue.totalNum, //总页数
+								//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+								slideSpeed: 600, // 缓动速度。单位毫秒
+								jump: true, //是否支持跳转
+								callback: function(page) { // 回调函数
+									// memberList1(1,page);
+									var nature = $('#index .nature').val()
+									thisValue.pn = page
+									thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+								}
+							})
+							
+						}
+					}
+				})
+        },
+        // 时间转换
+        getDateDiff(dateTimeStamp) {
+            let thisValue = this
 				var result;
 				var minute = 1000 * 60;
 				var hour = minute * 60;
@@ -464,204 +525,8 @@ debugger
 					result = "刚刚";
 				}
 				return result;
-			},
-		lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
-			let _this = this
-				$.ajax({
-					url: '/my-customer/customer-list',
-					type: 'GET',
-					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
-						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent,
-					async: true,
-					success: function(res) {
-						if (res.code == 0) {
-							$('#index .tbody').html('')
-							if (res.data.itemList && res.data.itemList.length > 0) {
-								for (var i in res.data.itemList) {
-									var tel=''
-									if(res.data.itemList[i].tel){
-										tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-									}
-									_this.tableList.push({
-										pn:i+1,
-										name:res.data.itemList[i].name,
-										paiBanCustomerWorkerName:res.data.itemList[i].paiBanCustomerWorkerName,
-										tel:tel,
-										paiBanCustomerWorkerVerifyWay:res.data.itemList[i].paiBanCustomerWorkerVerifyWay,
-										updateTime:_this.getDateDiff(res.data.itemList[i].updateTime),
-										customerId:res.data.itemList[i].customerId,
-									})
-								}
-							}
-						}
-					}
-				})
-			},
-		lastPageNo() {
-			debugger;
-			let _this = this
-			$.ajax({
-				url: '/my-customer/customer-list-sum',
-				type: 'GET',
-				data: 'kw=' + _this.kw + '&level=' + _this.level + '&nature=' + _this.nature + '&area1Id=' + _this.area1Id + '&area2Id=' + _this.area2Id +
-					'&area3Id=' + _this.area3Id + '&urgent=' + _this.urgent,
-				async: true,
-				success: function(res) {
-					if (res.code == 0) {
-						_this.totalNum = Math.ceil(res.data.itemCount / _this.ps)
-						$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
-						debugger;
-						console.log($('#index #box'))
-						$('#index #box').paging({
-							initPageNo: 1, // 初始页码
-							totalPages: _this.totalNum, //总页数
-							//totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-							slideSpeed: 600, // 缓动速度。单位毫秒
-							jump: true, //是否支持跳转
-							callback: function(page) { // 回调函数
-								// memberList1(1,page);
-								var nature = $('#index .nature').val()
-								_this.pn = page
-								_this.lastPage(page, _this.ps, _this.kw, _this.nature, _this.area1Id, _this.area2Id, _this.area3Id, _this.urgent, _this.level)
-							}
-						})
-					}
-				}
-			})
-		}
-	}		
+            }
+        
+    }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.index{
-  width: 100%;
-  height: 100%;
-}
-.mainbox{
-	width: 80%;
-	min-width: 1200px;
-	margin: 0 auto;
-}
-.topselect{
-	width: 100%;
-	
-}
-.selectOption{
-	width: 100%;
-	height: 80px;
-	line-height:80px;
-	font-size: 16px;
-	color: #333333;
-}
-.topselect h2{
-	display: inline-block;
-	margin: 0;
-	line-height: 80px;
-	font-size: 30px;
-}
-
-.addHos{
-	width: 100px;
-	height: 40px;
-	border-radius: 5px;
-	border: 1px solid #e5e5e5;
-	display: inline-block;
-	/* float: right; */
-	font-size: 16px;
-	line-height: 40px;
-	margin-top: 20px;
-	margin-left: 30px;
-	text-align: center;
-	background: #409eff;
-		color: #FFFFFF;
-	text-decoration: none;
-}
-.lookBefore{
-	float: right;
-	line-height: 80px;
-}
-
-.lastHis{
-	float: right;
-	font-size: 16px;
-	cursor: pointer;
-	color: #337ab7;
-}
-
-.selectOption input{
-	width: 150px;
-	height: 38px;
-	border-radius: 4px;
-	outline: none;
-	border:1px solid #e5e5e5;
-	margin-right:15px;
-	padding: 0 10px;
-
-}
-.selectOption button{
-	width: 80px;
-	height: 38px;
-	border-radius: 4px;
-	line-height: 38px;
-	outline: none;
-	border:1px solid #e5e5e5;
-	margin-right:15px;
-	background:#409eff;
-	color: #FFFFFF;
-	vertical-align: middle;
-	margin-top: -3px;
-}
-.selectOption select{
-	width: 140px;
-	height: 38px;
-	border-radius: 4rpx;
-	outline: none;
-	margin-right:15px;
-	border:1px solid #e5e5e5;
-}
-.tableBox{
-	width: 100%;
-	height: auto;
-}
-.tableBox table{
-	width: 100%;
-	height: auto;
-	
-}
-.tableBox table thead tr th,.tableBox table tbody tr td{
-	height: 40px;
-	line-height: 40px;
-	width: auto;
-	text-align: center;
-}
-.tableBox table tbody tr td{
-	padding: 0 10px;
-	border: 1px solid #e5e5e5;
-	
-}
-.tableBox table tbody tr td:nth-child(2){
-	cursor: pointer;
-	text-align: left;
-}
-.tableBox table tbody tr td:nth-child(4){
-	cursor: pointer;
-}
-
-/* .selectOption .province,.selectOption  .city,.selectOption  .town{
-	width: 100px;
-	margin-right: 5px;
-}
- */
-
-.a29905{
-	background: rgba(229,229,229,0.5);
-}
-.a29902{
-	background: rgba(229,229,229,0.2);
-}
-
-
-
-</style>
