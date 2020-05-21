@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index.js'
-Vue.prototype.$version = '20.0515.1119' 
+Vue.prototype.$version = '20.0521.1017' 
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.'
 
 Vue.config.productionTip = false
