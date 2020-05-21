@@ -71,13 +71,13 @@
 									<div class="line-1 lookHis"></div>
 								</td>
 								<td>
-									<div class="line-1 lookHis showInputBox" onmouseover="show('')" onmouseleave="showhidden()"></div>
+									<div class="line-1 lookHis showInputBox" ></div>
 								</td>
 								<td>
-									<div class="line-1 lookHis" onmouseover="show('')" onmouseleave="showhidden()"></div>
+									<div class="line-1 lookHis" ></div>
 								</td>
 								<td>
-									<div class="line-1 lookHis showInputBoxTel" onmouseover="show('')" onmouseleave="showhidden()"></div>
+									<div class="line-1 lookHis showInputBoxTel" ></div>
 								</td>
 							</tr>
 						</tbody>
@@ -585,7 +585,7 @@ export default {
 				}
 				if (thisValue.paiBanCustomerWorkerId == '' || thisValue.paiBanCustomerWorkerId == null || thisValue.paiBanCustomerWorkerId == undefined) {
 					var _this = $(this)
-					var show = "show('" + _this.val() + "')"
+					// var show = "show('" + _this.val() + "')"
 					$.ajax({
 						url: '/my-customer-worker/create-customer-worker',
 						type: 'post',
@@ -603,17 +603,14 @@ export default {
 									success: function(res) {
 										if (res.code == 0) {
 											if (level == 0) {
-												_this.parent().html('<div class="line-1" onmouseover="' + show + '" onmouseleave="showhidden()">' +
+												_this.parent().html('<div class="line-1">' +
 													_this.val() + '</div>')
 											} else if (level == 2) {
-												_this.parent().html('<div class="line-1 lookHis showInputBox" onmouseover="' + show +
-													'" onmouseleave="showhidden()">' + _this.val() + '</div>')
+												_this.parent().html('<div class="line-1 lookHis showInputBox">' + _this.val() + '</div>')
 											} else if (level == 4) {
-												_this.parent().html('<div class="line-1 lookHis showInputBoxTel" onmouseover="' + show +
-													'" onmouseleave="showhidden()">' + _this.val() + '</div>')
+												_this.parent().html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
 											} else {
-												_this.parent().html('<div class="line-1 lookHis" onmouseover="' + show +
-													'" onmouseleave="showhidden()">' + _this.val() + '</div>')
+												_this.parent().html('<div class="line-1 lookHis" >' + _this.val() + '</div>')
 											}
 										} else {
 											layer.msg(res.codeMsg)
@@ -627,7 +624,7 @@ export default {
 					})
 				} else {
 					var customerWorkerId = $(this).parent().parent().attr('relid')
-					var show = "show('" + $(this).val() + "')"
+					// var show = "show('" + $(this).val() + "')"
 					var _this = $(this)
 					$.ajax({
 						url: '/my-customer-worker/update-customer-worker',
@@ -637,16 +634,14 @@ export default {
 						success: function(res) {
 							if (res.code == 0) {
 								if (level == 0) {
-									_this.parent().html('<div class="line-1" onmouseover="' + show + '" onmouseleave="showhidden()">' + _this
+									_this.parent().html('<div class="line-1">' + _this
 										.val() + '</div>')
 								} else if (level == 2) {
-									_this.parent().html('<div class="line-1 lookHis showInputBox" onmouseover="' + show +
-										'" onmouseleave="showhidden()">' + _this.val() + '</div>')
+									_this.parent().html('<div class="line-1 lookHis showInputBox" >' + _this.val() + '</div>')
 								} else if (level == 4) {
-									_this.parent().html('<div class="line-1 lookHis showInputBoxTel" onmouseover="' + show +
-										'" onmouseleave="showhidden()">' + _this.val() + '</div>')
+									_this.parent().html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
 								} else {
-									_this.parent().html('<div class="line-1 lookHis" onmouseover="' + show + '" onmouseleave="showhidden()">' +
+									_this.parent().html('<div class="line-1 lookHis">' +
 										_this.val() + '</div>')
 								}
 							} else {
@@ -687,7 +682,7 @@ export default {
 					$(this).html('<input type="text" level="' + $(this).index() + '"  class="modifyThis"  value="' + $(this).children()
 						.html() + '"/>')
 					$('#add-hos .modifyThis').focus()
-					thisValue.showhidden()
+					// thisValue.showhidden()
 				}
 				// $(this).html('<input type="text"  class="modifyThis" onchange="modifyOver('+$(this).parent().attr("relId")+',this)" value="'+$(this).children().html()+'"/>')
 
@@ -710,7 +705,7 @@ export default {
 					var param = '&tel=' + $(this).val()
 				}
 				var customerWorkerId = $(this).parent().parent().attr('relid')
-				var show = "show('" + $(this).val() + "')"
+				// var show = "show('" + $(this).val() + "')"
 				var _this = $(this)
 				$.ajax({
 					url: '/my-customer-worker/update-customer-worker',
@@ -719,10 +714,10 @@ export default {
 					async: true,
 					success: function(res) {
 						if (level == 0) {
-							_this.parent().html('<div class="line-1" onmouseover="' + show + '" onmouseleave="showhidden()">' + _this.val() +
+							_this.parent().html('<div class="line-1" >' + _this.val() +
 								'</div>')
 						} else {
-							_this.parent().html('<div class="line-1 lookHis" onmouseover="' + show + '" onmouseleave="showhidden()">' +
+							_this.parent().html('<div class="line-1 lookHis">' +
 								_this.val() + '</div>')
 						}
 
@@ -735,15 +730,13 @@ export default {
 			// }
 			// 新增相关人员
 			$('#add-hos .addNewRel').unbind("click").click(function() {
-				var show = "show('')"
+				// var show = "show('')"
 				$('.tbody').append('<tr>' +
 					'<td class="enterHos"><input type="text"/></td>' +
 					'<td><input type="text"/></td>' +
-					'<td><div class="line-1 lookHis showInputBox" onmouseover="' + show +
-					'" onmouseleave="showhidden()"></div></td>' +
+					'<td><div class="line-1 lookHis showInputBox" ></div></td>' +
 					'<td><input type="text"/></td>' +
-					'<td><div class="line-1 lookHis showInputBoxTel" onmouseover="' + show +
-					'" onmouseleave="showhidden()"></div></td></tr>')
+					'<td><div class="line-1 lookHis showInputBoxTel" ></div></td></tr>')
 				$(this).css('display', 'none')
 				$('#add-hos .supplyNewRel').css('display', 'block')
 			})
@@ -785,20 +778,19 @@ export default {
 								if (res.code == 0) {
 									// layer.msg('添加成功')
 									// window.history.refresh()
-									var show1 = "show('" + phone + "')"
-									var show2 = "show('" + verifyWay + "')"
-									var show3 = "show('" + tel + "')"
+									// var show1 = "show('" + phone + "')"
+									// var show2 = "show('" + verifyWay + "')"
+									// var show3 = "show('" + tel + "')"
 									$('#add-hos .tbody').children("tr:last-child").remove()
 									$('#add-hos .tbody').append('<tr relId="' + res.data.customerWorkerId +
 										'"><td class="enterHos"><div class="line-1">' + name + '</div></td>' +
 										'<td><div class="line-1 lookHis">' + post + '</div></td>' +
-										'<td><div class="line-1 lookHis showInputBox" phone1="'+phone1+'"  phone2="'+phone2+'"  phone3="'+phone3+'" onmouseover="' + show1 + '" onmouseleave="showhidden()">' +
+										'<td><div class="line-1 lookHis showInputBox" phone1="'+phone1+'"  phone2="'+phone2+'"  phone3="'+phone3+'">' +
 										phone +
 										'</div></td>' +
-										'<td><div class="line-1 lookHis" onmouseover="' + show2 + '" onmouseleave="showhidden()">' + verifyWay +
+										'<td><div class="line-1 lookHis">' + verifyWay +
 										'</div></td>' +
-										'<td><div class="line-1 lookHis showInputBoxTel"  tel1="'+tel1+'"  tel2="'+tel2+'"  tel3="'+tel3+'" onmouseover="' + show3 +
-										'" onmouseleave="showhidden()">' + tel +
+										'<td><div class="line-1 lookHis showInputBoxTel"  tel1="'+tel1+'"  tel2="'+tel2+'"  tel3="'+tel3+'">' + tel +
 										'</div></td></tr>')
 									_this.parent().css('display', 'none')
 									$('#add-hos .supplyNewRel button').attr('disabled', false)
@@ -1111,21 +1103,21 @@ export default {
 			$('#add-hos .submit_newTel').attr('typeId','')
 			$('#add-hos .addNewTelBox').css('display','none')
         },
-        show(val) {
-            let thisValue = this
-			// clearTimeout(thisValue.timerMove)
-			// if(val==null||val==''||val==undefined){
-			// 	val=''
-			// }
-			// $('#add-hos .showTips').html(val).css('display', 'block')	
-        },
-        showhidden() {
-            let thisValue = this
-			thisValue.timerMove = setTimeout(function() {
-				$('#add-hos .showTips').css('display', 'none')
-				$('#add-hos .showTips  div').html('')
-			}, 1000)
-        },
+   //      show(val) {
+   //          let thisValue = this
+			// // clearTimeout(thisValue.timerMove)
+			// // if(val==null||val==''||val==undefined){
+			// // 	val=''
+			// // }
+			// // $('#add-hos .showTips').html(val).css('display', 'block')	
+   //      },
+   //      showhidden() {
+   //          let thisValue = this
+			// thisValue.timerMove = setTimeout(function() {
+			// 	$('#add-hos .showTips').css('display', 'none')
+			// 	$('#add-hos .showTips  div').html('')
+			// }, 1000)
+   //      },
         modifyNewHos() {
             let thisValue = this
 				var name = $('#add-hos .hosname').val()
@@ -1465,9 +1457,9 @@ export default {
 										}
 									}
 									if (res.data.itemList[i].customerWorkerId != thisValue.paiBanCustomerWorkerId) {
-										var show1 = "show('" + res.data.itemList[i].phone + "')"
-										var show2 = "show('" + res.data.itemList[i].verifyWay + "')"
-										var show3 = "show('" + res.data.itemList[i].tel + "')"
+										// var show1 = "show('" + res.data.itemList[i].phone + "')"
+										// var show2 = "show('" + res.data.itemList[i].verifyWay + "')"
+										// var show3 = "show('" + res.data.itemList[i].tel + "')"
 										
 										if(phoneAll){
 											var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
@@ -1482,7 +1474,7 @@ export default {
 											// (res.data.itemList[i].phone || "") +
 											phoneAll+
 											'</div></td>' +
-											'<td><div class="line-1 lookHis" onmouseover="' + show2 +'" onmouseleave="showhidden()">' + (res.data.itemList[
+											'<td><div class="line-1 lookHis" >' + (res.data.itemList[
 												i].verifyWay || "") +
 											'</div></td>' +
 											'<td><div class="line-1 lookHis showInputBoxTel" tel1="'+(res.data.itemList[i].tel1||"")+'" tel2="'+(res.data.itemList[i].tel2||"")+'" tel3="'+(res.data.itemList[i].tel3||"")+'">'+telAll+// + (res.data.itemList[i].tel || "") +

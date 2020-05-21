@@ -59,7 +59,7 @@
 
         <template>
           <el-table id='index_table' :data="tableData" border style="width: 100%">
-            <el-table-column type="index"  :index="indexMethod" prop="index" label="序号" width="180">
+            <el-table-column type="index" :index="indexMethod" prop="index" label="序号" width="180">
             </el-table-column>
             <el-table-column prop="hosname" label="医院名称" width="180">
             </el-table-column>
@@ -115,21 +115,60 @@
           label: '公立医院'
         }],
         tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          hosname:'某某医院',
+          paibanren:'xuxk',
+          updateTime: '2016-05-02',
+          tel:'025-84545254',
+          paibanrenYz: '王小虎',
+          // address: '上海市普陀区金沙江路 1518 弄'
         }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+         hosname:'某某医院',
+         paibanren:'xuxk',
+         updateTime: '2016-05-02',
+         tel:'025-84545254',
+         paibanrenYz: '王小虎',
         }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+         hosname:'某某医院',
+         paibanren:'xuxk',
+         updateTime: '2016-05-02',
+         tel:'025-84545254',
+         paibanrenYz: '王小虎',
         }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+        hosname:'某某医院',
+        paibanren:'xuxk',
+        updateTime: '2016-05-02',
+        tel:'025-84545254',
+        paibanrenYz: '王小虎',
+        }, {
+        hosname:'某某医院',
+        paibanren:'xuxk',
+        updateTime: '2016-05-02',
+        tel:'025-84545254',
+        paibanrenYz: '王小虎',
+        }, {
+        hosname:'某某医院',
+        paibanren:'xuxk',
+        updateTime: '2016-05-02',
+        tel:'025-84545254',
+        paibanrenYz: '王小虎',
+        }, {
+        hosname:'某某医院',
+        paibanren:'xuxk',
+        updateTime: '2016-05-02',
+        tel:'025-84545254',
+        paibanrenYz: '王小虎',
+        }, {
+        hosname:'某某医院',
+        paibanren:'xuxk',
+        updateTime: '2016-05-02',
+        tel:'025-84545254',
+        paibanrenYz: '王小虎',
+        }, {
+        hosname:'某某医院',
+        paibanren:'xuxk',
+        updateTime: '2016-05-02',
+        tel:'025-84545254',
+        paibanrenYz: '王小虎',
         }],
         value: '',
         value1: '',
@@ -142,9 +181,9 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-       indexMethod(index) {
-              return index ;
-       }
+      indexMethod(index) {
+        return index + 1;
+      }
     }
   }
 </script>
@@ -198,7 +237,8 @@
   .index_urgent {
     width: 130px;
   }
-  #index_table{
+
+  #index_table {
     margin-top: 20px;
     /* margin-left: 5px; */
   }
