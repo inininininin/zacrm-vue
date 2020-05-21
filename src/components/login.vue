@@ -1,7 +1,7 @@
 <template>
     <div  id="login" class="login">
         <div class="logo smargin">
-			<img src="../assets/image/logo.png" alt="" />
+			<img src="../assets/img/logo.png" alt="" />
 			<h2>忠安客户漏斗管理系统</h2>
 		</div>
 
@@ -9,14 +9,14 @@
 		<div class="number phone">
 			<input class="name" type="text"/>
 			<div>
-				<img src="../assets/image/zhanghu.png" alt="" />
+				<img src="../assets/img/zhanghu.png" alt="" />
 				<span>用户名</span>
 			</div>
 		</div>
 		<div class="number pwd" style="margin-top: 24px">
 			<input class="password" autocomplete="off"  type="text" onfocus="this.type='password'"  />
 			<div>
-				<img src="../assets/image/mima.png" alt="" />
+				<img src="../assets/img/mima.png" alt="" />
 				<span>密码</span>
 			</div>
 		</div>
@@ -70,7 +70,7 @@
     <span>用户名</span> 
 </div>
 </div><div class="number oldpwd" style="margin-top: 24px">
-    <input class="passwords" autocomplete="off"  type="password"/><div><img src="../assets/image/mima.png" alt=""/> <span>旧密码</span></div></div><div class="number newpwd" style="margin-top: 24px"><input autocomplete="off"  class="passwords1" type="password"/><div><img src="image/mima.png" alt=""/><span>新密码</span></div></div><div class="pwdbtn" style="margin-top: 50px;"><button @click="changepwd()">确认</button></div>
+    <input class="passwords" autocomplete="off"  type="password"/><div><img src="../assets/img/mima.png" alt=""/> <span>旧密码</span></div></div><div class="number newpwd" style="margin-top: 24px"><input autocomplete="off"  class="passwords1" type="password"/><div><img src="image/mima.png" alt=""/><span>新密码</span></div></div><div class="pwdbtn" style="margin-top: 50px;"><button @click="changepwd()">确认</button></div>
 
 <!-- </div> -->
 </div>
@@ -233,7 +233,7 @@ export default {
 .login{
    width: 100%;
     height: 100%;
-    background: url("../assets/image/background.png");
+    background: url("../assets/img/background.png");
     background-size:cover ;
 	box-sizing: border-box;
 }

@@ -82,7 +82,7 @@
 				
 				<p><span class="phoneNumber"></span>正在通话中. . .</p>
 				<div class="phoneEnd" id="btn_close">
-					<img src="../assets/image/phoneEnd.png" alt="">
+					<img src="../assets/img/phoneEnd.png" alt="">
 					<span>挂断电话</span>
 				</div>
 			</div>
