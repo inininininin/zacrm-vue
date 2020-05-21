@@ -3,26 +3,19 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index.js'
-// import './assets/all.css'
 import '../static/js/rem.js'
-// import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
-// import '../node_modules/layui-src/dist/css/layui.css'
-// import '../node_modules/layui-src/src/layui'
-// import '../static/layui/css/layui.css'
-// import '../static/layui/layui'
-// Vue.use(ElementUI);
-// layui.use('layer', function() {
-//   layer = layui.layer;
-// });
-
+import store from './store'
+import moment from 'moment'
+Vue.prototype.$version = '20.0515.1159'
+Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.'
 Vue.config.productionTip = false
-// console.dir(window.layui)
-// Vue.prototype.$layui = window.layui
-/* eslint-disable no-new */
+Vue.prototype.moment = moment;
+Vue.prototype.$store = store
+
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -20,7 +20,6 @@
 	line-height: 80px;
 	font-size: 30px;
 }
-
 #index .addHos{
 	width: 100px;
 	height: 40px;
@@ -98,6 +97,10 @@
 #index .tableBox table tbody tr td{
 	padding: 0 10px;
 	border: 1px solid #e5e5e5;
+	
+}
+#index .tableBox table tbody tr td:last-child{
+	cursor: pointer;
 	
 }
 #index .tableBox table tbody tr td:nth-child(2){

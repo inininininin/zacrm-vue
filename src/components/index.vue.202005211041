@@ -11,7 +11,7 @@
 			<div class="topselect">
 				<div style="width: 100%;height: 80px;">
 					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
-                    <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
+                    <router-link :to="{path:'/add-hos'}" class="addHos" >
 						新增医院
 					</router-link>
                     <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
@@ -61,7 +61,6 @@
 							<th>固定电话</th>
 							<th>拍板人验证</th>
 							<th>近期跟踪时间</th>
-							<th>回访时间</th>
 						</tr>
 					</thead>
 					<tbody class="tbody">
@@ -76,7 +75,6 @@
 				<div class="box rt" id="box"></div>
 			</div>
 		</div>
-		<div class="seccion">ver : {{$version}}  ser : {{$store.state.serVersion}}</div>
     </div>
 </template>
 <script>
@@ -103,9 +101,7 @@ export default {
 		}
 	},
 	activated(){
-		let thisValue = this
-		
-		
+        let thisValue = this
         // 跳转上次最后一条数据
         if(this.query != JSON.stringify(this.$route.query)){
 			this.query = JSON.stringify(this.$route.query);
@@ -224,7 +220,7 @@ export default {
 						thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 					}
 				})
-			})
+            })
         $('#index .urgentLevel').change(function() {
 				if ($(this).val() == '') {
 					thisValue.urgent = ''
@@ -341,13 +337,7 @@ export default {
             })
         $('#index .town').change(function(){
 		    thisValue.area3Id = $(this).val()
-		})
-		$('#index').on('click','.tbody .xiugaiTimeFn',function(e){
-			
-			$(this).parent().attr('id')
-
-
-		})
+        })
         // 清空全部搜索条件
 			$('#index .refresh').unbind("click").click(function() {
 				$('#index .keyword').val('')
@@ -443,7 +433,6 @@ export default {
 						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent,
 					async: true,
 					success: function(res) {
-						console.dir(res)
 						if (res.code == 0) {
 							$('#index .tbody').html('')
 							if (res.data.itemList && res.data.itemList.length > 0) {
@@ -452,25 +441,17 @@ export default {
 									if(res.data.itemList[i].tel){
 										tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
 									}
-									let toRevisitTime = '';
-									if(res.data.itemList[i].toRevisitTime){
-										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD HH:mm:ss')	;
-									}else{
-										toRevisitTime = ''
-									}
-                                    $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
+                                    $('.tbody').append('<tr><td>'+(parseInt(i)+1+((pn-1)*15))+
                                     '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
                                     + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
 											"") + '</td><td tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
-											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
-											 toRevisitTime + '</td></tr>')
-									
+											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td></tr>')
                                 }
 							}
 						}
 					}
 				})
-		},
+        },
         lastPageNo() {
             let thisValue = this
 				$.ajax({
@@ -500,7 +481,7 @@ export default {
 						}
 					}
 				})
-		},
+        },
         // 时间转换
         getDateDiff(dateTimeStamp) {
             let thisValue = this
@@ -543,14 +524,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.seccion{
-	width: 100%;
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	margin-top: 90px;
-	color: #a9a0a0;
-
-}
-</style>

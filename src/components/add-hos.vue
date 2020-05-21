@@ -41,6 +41,10 @@
 					<button class="addNewTel">新增电话</button>
 					<div class="linePhoneList">
 					</div>
+					<div class="huifangClass">
+						回访时间：
+						<input type="date" :value="toRevisitTime">
+					</div>
 					<div class="hosIntroBox">
 						<span>简介 : </span>
 						<textarea class="hosIntro" rows="3" cols="20"></textarea>
@@ -214,13 +218,44 @@ export default {
             time : '',
             customerWorkerIdZz : '',
             timeIs : '',
-            
+			toRevisitTime:'',
 		}
 	},
 	activated(){
-        let thisValue = this
-        if(this.query != JSON.stringify(this.$route.query)){
-            this.query = JSON.stringify(this.$route.query);
+		debugger
+		let thisValue = this
+		let a = JSON.stringify(this.$route.query)
+        if(this.query != a){
+			Object.assign(this.$data, this.$options.data());
+			this.query = JSON.stringify(this.$route.query);
+			console.log(this.query)
+			
+			$('.hosname').val('')
+			$('.hostel').val('')
+			$('.province').val('')
+			$('.city').val('')
+			$('.town').val('')
+			$('.hosnature').val('')
+			$('.hosIntro').val('')
+			$('.telName').val('')
+			$('.telValue').val('')
+			$('#add-hos .showIs').css('display', 'none')
+			$('#add-hos .addHos').attr('disabled',false);
+			$('#add-hos .addHos').css('display', 'inline-block')
+			$('#add-hos .modifyHos').css('display', 'none')
+			$('#add-hos .tbody').html('')
+			$('#add-hos .linePhoneList').html('')
+			$('#add-hos .addNewTel').css('display','none')
+			$('#add-hos .nameLink').html('')
+			$('#add-hos .lookHis').html('')
+			// $('#add-hos .showInputBox').html('')
+			$('#add-hos .showInputBoxTel').removeAttr('tel1','tel2','tel3')
+			$('#add-hos .jsModify').removeAttr('phone1','phone2','phone3')
+			$('#add-hos .phonep1').html('')
+			$('#add-hos .phonep2').html('')
+			$('#add-hos .phonep3').html('')
+			$('#add-hos .enterHos div').html('')
+			$('#add-hos .trackName').html('')
             // 省市区三级联动
 			// TODO 后期待优化
 			$.ajax({
@@ -621,6 +656,7 @@ export default {
 									}
 								})
 							} else {
+								$('#add-hos .addHos').attr('disabled',false);
 								layer.msg(res.codeMsg)
 							}
 						}
@@ -1138,6 +1174,7 @@ export default {
 				var area2Name = $('#add-hos .city option:selected').text()
 				var area3Id = $('#add-hos .town option:selected').val()
 				var area3Name = $('#add-hos .town option:selected').text()
+				let toRevisitTime = $('#add-hos .huifangClass input').val()
 				// if (area1Id == '' || area2Id == '' || area3Id == '') {
 				// 	layer.msg('请选择医院所在地区')
 				// } else if (nature == '') {
@@ -1152,7 +1189,7 @@ export default {
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
-							'&brief=' + hosIntro + '&customerId=' + thisValue.customerId,
+							'&brief=' + hosIntro + '&customerId=' + thisValue.customerId+ '&toRevisitTime=' + toRevisitTime,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
@@ -1177,6 +1214,10 @@ export default {
 				var area2Name = $('#add-hos .city option:selected').text()
 				var area3Id = $('#add-hos .town option:selected').val()
 				var area3Name = $('#add-hos .town option:selected').text()
+				// var toRevisitTime = $('#add-hos .huifangClass').val()
+				debugger
+				let toRevisitTime = new Date($('#add-hos .huifangClass input').val()).getTime()
+				console.log(toRevisitTime)
 				if (name == '') {
 
 					layer.msg('请填写医院名')
@@ -1194,7 +1235,7 @@ export default {
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
-							'&brief=' + hosIntro,
+							'&brief=' + hosIntro+'&toRevisitTime=' + toRevisitTime,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
@@ -1205,6 +1246,8 @@ export default {
 								$('#add-hos .addHos').attr('disabled', false);
 								// window.history.refresh()
 							} else {
+							$('#add-hos .addHos').attr('disabled',false);
+
 								layer.msg(res.codeMsg)
 							}
 						}
@@ -1240,6 +1283,10 @@ export default {
 					async: false,
 					success: function(res) {
 						if (res.code == 0) {
+							debugger
+							// moment(Time.confirmStart).format('YYYY-MM-DD')
+							thisValue.toRevisitTime = thisValue.moment(res.data.toRevisitTime).format('YYYY-MM-DD')
+							console.log(thisValue.toRevisitTime)
 							document.title = res.data.name + " - " + document.title
 							$('#add-hos .hosname').val(res.data.name)
 							$('#add-hos .hosIntro').val(res.data.brief)
@@ -1595,8 +1642,16 @@ export default {
 			$('#add-hos .addphoeShow').css('display', 'none')
 			$('#add-hos .addphoen').css('display', 'none')
         },
-        
-        
     },
 }
 </script>
+<style scoped>
+.huifangClass{
+	width:auto
+}
+.huifangClass input{
+	width:180px!important;
+	padding:10px 10px!important;
+	height: auto!important;
+}
+</style>

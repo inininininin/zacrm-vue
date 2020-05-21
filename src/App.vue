@@ -13,6 +13,10 @@ export default {
   name: 'App',
   created(){
     debugger
+    let thisVue=this
+    $.get('/config',function(res){
+			thisVue.$store.state.serVersion = res.data.version
+		})
   },
  
 }

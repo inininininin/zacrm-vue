@@ -105,18 +105,18 @@
     border-radius: 2px;
 }
 #prePage{
-    background: url("../../image/left-1.png") no-repeat 100% 100%;
+    /* background: url("../../image/left-1.png") no-repeat 100% 100%; */
     background-size: 100% 100%;
 }
 #prePage:hover{
-    background: url("../../image/left-2.png") no-repeat 100% 100%;
+    /* background: url("../../image/left-2.png") no-repeat 100% 100%; */
     background-size: 100% 100%;
 }
 #nextPage{
-    background: url("../../image/right-1.png") no-repeat 100% 100%;
+    /* background: url("../../image/right-1.png") no-repeat 100% 100%; */
     background-size: 100% 100%;
 }
 #nextPage:hover{
-    background: url("../../image/right-2.png") no-repeat 100% 100%;
+    /* background: url("../../image/right-2.png") no-repeat 100% 100%; */
     background-size: 100% 100%;
 }
