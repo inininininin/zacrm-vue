@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index.js'
+<<<<<<< HEAD
 // import './assets/all.css'
 import '../static/js/rem.js'
 
@@ -19,12 +20,13 @@ import 'element-ui/lib/theme-chalk/index.css';
 // layui.use('layer', function() {
 //   layer = layui.layer;
 // });
+=======
+Vue.prototype.$version = '20.0521.1017' 
+Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.'
+>>>>>>> c7d90f6264b3547ea8c2879b96dfa4340fe44041
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false
-// console.dir(window.layui)
-// Vue.prototype.$layui = window.layui
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,

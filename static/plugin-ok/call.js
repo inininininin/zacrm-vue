@@ -15,7 +15,7 @@
 	        var $p = $('<div>').appendTo($win.find('#div_msg'));
 	        var $type = $('<span>').text('[' + tiemstr + ']' + type + '：').appendTo($p);
 	        var $msg = $('<span>').addClass('thumbnail').css({ 'margin-bottom': '5px' }).text(msg).appendTo($p);
-	    $('.phoneNow').css('display','none')
+	    $('#phoneNow').css('display','none')
 		} else {
 	        var $center = $('<center>').text(msg + '(' + tiemstr + ')').css({ 'font-size': '12px' }).appendTo($win.find('#div_msg'));
 	    }
@@ -43,7 +43,7 @@
 			console.log(data)
 			if(data.type==707){
 				
-				$('.phoneNow').css('display','block') 
+				$('#phoneNow').css('display','block') 
 			}
 		};
 		// 监听Socket的关闭
@@ -78,7 +78,7 @@
 //var  initMsg='{"req":"HP_HangUpCtrl","rid":4,"para":{}}'
 //if(socket) {
 		//debugger
-				$('.phoneNow').css('display','none')
+				$('#phoneNow').css('display','none')
 		socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 		        socket.close();
 		//return false;
@@ -102,7 +102,7 @@
 			 // alert('电话正在拨通中')
 			 //layer.msg('电话正在拨通中')
 			 //setTimeout(function(){
-				//$('.phoneNow').css('display','block') 
+				//$('#phoneNow').css('display','block') 
 			 //},3000)
 			 var  msg = $win.find('#inp_send').val();
              msg = '{"req":"HP_StartDial","rid":5,"para":{"Para":"'+msg+'"}}'
@@ -130,7 +130,7 @@
         });
 		
 		$win.find('#btn_close').click(function () {
-			$('.phoneNow').css('display','none')
+			$('#phoneNow').css('display','none')
 			var  initMsg='{"req":"HP_HangUpCtrl","rid":4,"para":{}}'
 		    if (socket) {
 				socket.send( initMsg);

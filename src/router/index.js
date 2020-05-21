@@ -11,12 +11,12 @@ const globalRoutes = [
   {
     path: '/login',
     name: '/login',
-    component: ()=>import( '@/components/login')
+    component: _import( 'login')
   },
   {
     path: '/tihuan',
     name: '/tihuan',
-    component:  ()=>import( '@/components/tihuan'),
+    component: _import( 'tihuan'),
   },
 ]
 console.dir(_import)
@@ -31,18 +31,19 @@ const mainRoutes = [
   {
     path: '/index',
     name: '/index',
-    component: ()=>import( '@/components/index')
+    component: _import("index")
+    // _import( 'index')
   },
   {
     path: '/history-detail',
     name: '/history-detail',
-    component: ()=>import( '@/components/history-detail')
+    component: _import( 'history-detail')
     
   },
   {
     path: '/add-hos',
     name: '/add-hos',
-    component: ()=>import( '@/components/add-hos')
+    component: _import( 'add-hos')
     
   },
   {

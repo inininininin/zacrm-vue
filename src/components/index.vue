@@ -25,7 +25,10 @@
 					</router-link>
                     <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
 					 <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
-					 <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a>
+					 <router-link :to="{path:'/history-detail'}"  class="lookBefore">
+						查看昨日工作记录
+					 </router-link>
+					 <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
 					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: 80px;">
@@ -111,7 +114,7 @@ export default {
         // 跳转上次最后一条数据
         if(this.query != JSON.stringify(this.$route.query)){
 			this.query = JSON.stringify(this.$route.query);
-            $('#index .lastHis').click(function() {
+            $('#index .lastHis').unbind("click").click(function() {
 				$.ajax({
 					url: '/cache/get',
 					type: 'get',
@@ -211,7 +214,7 @@ export default {
 			// // window.open ("login.html", "", "height=100, width=100,top=0, left=0,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=n o,status=no")
             // })
         // 搜索
-			$('#index .searchThis').click(function() {
+			$('#index .searchThis').unbind("click").click(function() {
 				thisValue.kw = $('#index .keyword').val()
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
@@ -345,7 +348,7 @@ export default {
 		    thisValue.area3Id = $(this).val()
         })
         // 清空全部搜索条件
-			$('#index .refresh').click(function() {
+			$('#index .refresh').unbind("click").click(function() {
 				$('#index .keyword').val('')
 				$('#index .province').val('')
 				$('#index .city').val('')
@@ -393,7 +396,7 @@ export default {
 		// {
 		//     alert("取消离开");
         // }
-        $('#index .loginout').click(function(){
+        $('#index .loginout').unbind("click").click(function(){
 			$.ajax({
 				type:"post",
 				url:"/logout",
