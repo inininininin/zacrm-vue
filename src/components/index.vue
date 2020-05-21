@@ -454,7 +454,7 @@ export default {
 									}
 									let toRevisitTime = '';
 									if(res.data.itemList[i].toRevisitTime){
-										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD HH:mm:ss')	;
+										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
 									}else{
 										toRevisitTime = ''
 									}
@@ -503,6 +503,8 @@ export default {
 		},
         // 时间转换
         getDateDiff(dateTimeStamp) {
+			if(!dateTimeStamp)
+				return ''
             let thisValue = this
 				var result;
 				var minute = 1000 * 60;

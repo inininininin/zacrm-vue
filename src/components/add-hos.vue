@@ -239,6 +239,24 @@ export default {
 			$('.hosIntro').val('')
 			$('.telName').val('')
 			$('.telValue').val('')
+			$('#add-hos .showInputBoxTel').removeAttr('tel1')
+			$('#add-hos .showInputBoxTel').removeAttr('tel2')
+			$('#add-hos .showInputBoxTel').removeAttr('tel3')
+			$('#add-hos .jsModify').removeAttr('phone1')
+			$('#add-hos .jsModify').removeAttr('phone2')
+			$('#add-hos .jsModify').removeAttr('phone3')
+
+			$('#add-hos .showInputBoxTel').removeAttr('tel1')
+			$('#add-hos .showInputBoxTel').removeAttr('tel2')
+			$('#add-hos .showInputBoxTel').removeAttr('tel3')
+			$('#add-hos .jsModify').removeAttr('phone1')
+			$('#add-hos .jsModify').removeAttr('phone2')
+			$('#add-hos .jsModify').removeAttr('phone3')
+			$('.phoneInput1').val('')
+			$('.phoneInput2').val('')
+			$('.phoneInput3').val('')
+
+			
 			$('#add-hos .showIs').css('display', 'none')
 			$('#add-hos .addHos').attr('disabled',false);
 			$('#add-hos .addHos').css('display', 'inline-block')
@@ -249,11 +267,11 @@ export default {
 			$('#add-hos .nameLink').html('')
 			$('#add-hos .lookHis').html('')
 			// $('#add-hos .showInputBox').html('')
-			$('#add-hos .showInputBoxTel').removeAttr('tel1','tel2','tel3')
-			$('#add-hos .jsModify').removeAttr('phone1','phone2','phone3')
+			
 			$('#add-hos .phonep1').html('')
 			$('#add-hos .phonep2').html('')
 			$('#add-hos .phonep3').html('')
+			
 			$('#add-hos .enterHos div').html('')
 			$('#add-hos .trackName').html('')
             // 省市区三级联动
@@ -598,7 +616,6 @@ export default {
 					$(this).html('<input type="text" level="' + $(this).index() + '"  class="modifyThisPaiban"  value="' + $(this).children()
 						.html() + '"/>')
 					$('#add-hos .modifyThisPaiban').focus()
-					thisValue.showhidden()
 				}
             })
             $('#add-hos table').on('blur', 'tr .modifyThisPaiban', function() {
@@ -718,7 +735,6 @@ export default {
 					$(this).html('<input type="text" level="' + $(this).index() + '"  class="modifyThis"  value="' + $(this).children()
 						.html() + '"/>')
 					$('#add-hos .modifyThis').focus()
-					// thisValue.showhidden()
 				}
 				// $(this).html('<input type="text"  class="modifyThis" onchange="modifyOver('+$(this).parent().attr("relId")+',this)" value="'+$(this).children().html()+'"/>')
 
