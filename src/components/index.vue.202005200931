@@ -288,7 +288,7 @@ debugger
 				})
 			})
 			debugger
-			$.getJSON("/assets/js/area.json", function(res) {
+			$.getJSON("./assets/js/area.json", function(res) {
 				_this.provinceList = res
 				// $('.province').html('<option value="">-请选择-</option>')
 				$.each(res, function(i, field) {

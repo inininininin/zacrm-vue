@@ -265,7 +265,7 @@ export default {
         // 省市区三级联动
 			// TODO 后期待优化
 			$.ajax({
-				url: '/assets/js/area.json',
+				url: './assets/js/area.json',
 				type: 'get',
 				async: false,
 				success: function(res) {
@@ -938,7 +938,7 @@ export default {
 			// 	            }
 				
             // })
-        $.getJSON("/assets/js/area.json", function(res) {
+        $.getJSON("./assets/js/area.json", function(res) {
 				thisVue.provinceList = res
 				// $('#add-hos .province').html('<option value="">-请选择-</option>')
 				$.each(res, function(i, field) {
@@ -1355,7 +1355,7 @@ export default {
 							}
 							// TODO 后期待优化
 							$.ajax({
-								url: '/assets/js/area.json',
+								url: './assets/js/area.json',
 								type: 'get',
 								async: false,
 								success: function(res) {
