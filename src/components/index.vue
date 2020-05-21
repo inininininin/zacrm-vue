@@ -271,7 +271,7 @@ export default {
             })
         // 省市区三级联动
 		// TODO 后期待优化
-		$.getJSON("js/area.json", function(res) {
+		$.getJSON("/assets/js/area.json", function(res) {
 			thisValue.provinceList = res
 			// $('#index .province').html('<option value="">-请选择-</option>')
 			$.each(res, function(i, field) {
