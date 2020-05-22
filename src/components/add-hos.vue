@@ -229,7 +229,7 @@ export default {
 			Object.assign(this.$data, this.$options.data());
 			this.query = JSON.stringify(this.$route.query);
 			console.log(this.query)
-			
+			$('.closeAdd div input').val('')
 			$('.hosname').val('')
 			$('.hostel').val('')
 			$('.province').val('')
@@ -239,22 +239,10 @@ export default {
 			$('.hosIntro').val('')
 			$('.telName').val('')
 			$('.telValue').val('')
-			$('#add-hos .showInputBoxTel').removeAttr('tel1')
-			$('#add-hos .showInputBoxTel').removeAttr('tel2')
-			$('#add-hos .showInputBoxTel').removeAttr('tel3')
-			$('#add-hos .jsModify').removeAttr('phone1')
-			$('#add-hos .jsModify').removeAttr('phone2')
-			$('#add-hos .jsModify').removeAttr('phone3')
-
-			$('#add-hos .showInputBoxTel').removeAttr('tel1')
-			$('#add-hos .showInputBoxTel').removeAttr('tel2')
-			$('#add-hos .showInputBoxTel').removeAttr('tel3')
-			$('#add-hos .jsModify').removeAttr('phone1')
-			$('#add-hos .jsModify').removeAttr('phone2')
-			$('#add-hos .jsModify').removeAttr('phone3')
-			$('.phoneInput1').val('')
-			$('.phoneInput2').val('')
-			$('.phoneInput3').val('')
+			// $('#add-hos .showInputBoxTel').removeAttr('tel1')
+			// $('#add-hos .showInputBoxTel').removeAttr('tel2')
+			// $('#add-hos .showInputBoxTel').removeAttr('tel3')
+			
 
 			
 			$('#add-hos .showIs').css('display', 'none')
@@ -271,7 +259,24 @@ export default {
 			$('#add-hos .phonep1').html('')
 			$('#add-hos .phonep2').html('')
 			$('#add-hos .phonep3').html('')
-			
+
+			$('.phoneInput1').val('')
+			$('.phoneInput2').val('')
+			$('.phoneInput3').val('')
+
+			$('#add-hos .addphoen').css('display', 'none')
+			$('#add-hos .addphoeShow').css('display', 'none')
+			$('#add-hos .addphoeShow .phonep1').html('')
+			$('#add-hos .addphoeShow .phonep2').html('')
+			$('#add-hos .addphoeShow .phonep3').html('')
+			$('#add-hos .showInputBox').attr('phone1',"").attr('phone2',"").attr('phone3',"")
+			$('#add-hos .showInputBoxTel').attr('tel1',"").attr('tel2',"").attr('tel3',"")
+			$('.addphoeShow .phoneInput1').val('')
+			$('.addphoeShow .phoneInput2').val('')
+			$('.addphoeShow .phoneInput3').val('')
+
+
+
 			$('#add-hos .enterHos div').html('')
 			$('#add-hos .trackName').html('')
             // 省市区三级联动
