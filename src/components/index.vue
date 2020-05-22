@@ -294,6 +294,7 @@ export default {
 				})
 				thisValue.area1Id = $(this).val()
 				thisValue.area2Id = ''
+				thisValue.area3Id = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
