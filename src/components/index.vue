@@ -307,6 +307,7 @@ export default {
 				})
 				thisValue.area1Id = $(this).val()
 				thisValue.area2Id = ''
+				thisValue.area3Id = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
@@ -353,7 +354,22 @@ export default {
 				})
             })
         $('#index .town').change(function(){
-		    thisValue.area3Id = $(this).val()
+			
+			thisValue.area3Id = $(this).val()
+			thisValue.lastPageNo()
+			$('#index #box').paging({
+					initPageNo: 1, // 初始页码
+					totalPages: thisValue.totalNum, //总页数
+					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+					slideSpeed: 600, // 缓动速度。单位毫秒
+					jump: true, //是否支持跳转
+					callback: function(page) { // 回调函数
+						// memberList1(1,page);
+						var nature = $('#index .nature').val()
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+					}
+				})
 		})
 		$('#index').on('click','.tbody .xiugaiTimeFn',function(e){
 			
