@@ -166,19 +166,23 @@ var socket;
         }); 
 
         function dialog(){
-            socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}')
-        $('#phoneNow').css('display','block')
-      var phoneNum=$('#inp_send').val()
-      console.log(phoneNum,phoneNum.substring(0,1))
-      if(phoneNum&&phoneNum.substring(0,1)==1){
-          phoneNum='0'+phoneNum
-      }
-      var msg = '{"req":"HP_StartDial","rid":5,"para":{"Para":"'+phoneNum+'"}}';
-      console.log(3+msg)
-  if (socket && msg) {
-      socket.send(msg);
+            if(socket)
+                socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}')
 
-  }
+        setTimeout(function(){
+            $('#phoneNow').css('display','block')
+            var phoneNum=$('#inp_send').val()
+            console.log(phoneNum,phoneNum.substring(0,1))
+            if(phoneNum&&phoneNum.substring(0,1)==1){
+                phoneNum='0'+phoneNum
+            }
+            var msg = '{"req":"HP_StartDial","rid":5,"para":{"Para":"'+phoneNum+'"}}';
+            console.log(msg)
+            if (socket && msg) 
+            socket.send(msg);
+
+        },1000)
+
         }
     });
 
