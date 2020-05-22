@@ -229,7 +229,7 @@ export default {
 			Object.assign(this.$data, this.$options.data());
 			this.query = JSON.stringify(this.$route.query);
 			console.log(this.query)
-			
+			$('.closeAdd div input').val('')
 			$('.hosname').val('')
 			$('.hostel').val('')
 			$('.province').val('')
@@ -239,22 +239,10 @@ export default {
 			$('.hosIntro').val('')
 			$('.telName').val('')
 			$('.telValue').val('')
-			$('#add-hos .showInputBoxTel').removeAttr('tel1')
-			$('#add-hos .showInputBoxTel').removeAttr('tel2')
-			$('#add-hos .showInputBoxTel').removeAttr('tel3')
-			$('#add-hos .jsModify').removeAttr('phone1')
-			$('#add-hos .jsModify').removeAttr('phone2')
-			$('#add-hos .jsModify').removeAttr('phone3')
-
-			$('#add-hos .showInputBoxTel').removeAttr('tel1')
-			$('#add-hos .showInputBoxTel').removeAttr('tel2')
-			$('#add-hos .showInputBoxTel').removeAttr('tel3')
-			$('#add-hos .jsModify').removeAttr('phone1')
-			$('#add-hos .jsModify').removeAttr('phone2')
-			$('#add-hos .jsModify').removeAttr('phone3')
-			$('.phoneInput1').val('')
-			$('.phoneInput2').val('')
-			$('.phoneInput3').val('')
+			// $('#add-hos .showInputBoxTel').removeAttr('tel1')
+			// $('#add-hos .showInputBoxTel').removeAttr('tel2')
+			// $('#add-hos .showInputBoxTel').removeAttr('tel3')
+			
 
 			
 			$('#add-hos .showIs').css('display', 'none')
@@ -271,7 +259,24 @@ export default {
 			$('#add-hos .phonep1').html('')
 			$('#add-hos .phonep2').html('')
 			$('#add-hos .phonep3').html('')
-			
+
+			$('.phoneInput1').val('')
+			$('.phoneInput2').val('')
+			$('.phoneInput3').val('')
+
+			$('#add-hos .addphoen').css('display', 'none')
+			$('#add-hos .addphoeShow').css('display', 'none')
+			$('#add-hos .addphoeShow .phonep1').html('')
+			$('#add-hos .addphoeShow .phonep2').html('')
+			$('#add-hos .addphoeShow .phonep3').html('')
+			$('#add-hos .showInputBox').attr('phone1',"").attr('phone2',"").attr('phone3',"")
+			$('#add-hos .showInputBoxTel').attr('tel1',"").attr('tel2',"").attr('tel3',"")
+			$('.addphoeShow .phoneInput1').val('')
+			$('.addphoeShow .phoneInput2').val('')
+			$('.addphoeShow .phoneInput3').val('')
+
+
+
 			$('#add-hos .enterHos div').html('')
 			$('#add-hos .trackName').html('')
             // 省市区三级联动
@@ -1124,15 +1129,15 @@ export default {
 								$('.linePhoneList').append('<div typeId='+telValueTitle+'>'+
 								'<span>'+telName+':</span>'+
 								'<span>'+telValue+'</span>'+
-								'<img class="phoneThisTel"  src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel"  src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}else{
 								$('.linePhoneList').children().eq(type-1).html('<span>'+telName+':</span>'+
 								'<span>'+telValue+'</span>'+
-								'<img class="phoneThisTel"  src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">').attr('typeId',telValueTitle)
+								'<img class="phoneThisTel"  src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">').attr('typeId',telValueTitle)
 								
 								// html('<div typeId='+telNameTitle+'>'+
 								// '<span>'+telName+':</span>'+
@@ -1321,12 +1326,13 @@ export default {
 							if (res.data.paiBanCustomerWorkerTel) {
 								$('#add-hos .paibanren').children().eq(4).children().html(res.data.paiBanCustomerWorkerTel)
 							}
+							// let connent = require('../assets/img/connent.png')
 							if(res.data.tel1){
 								$('#add-hos .linePhoneList').append('<div typeId="tel1">'+
 								'<span>'+res.data.tel1Remark+':</span>'+
 								'<span>'+res.data.tel1+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1334,8 +1340,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel2">'+
 								'<span>'+res.data.tel2Remark+':</span>'+
 								'<span>'+res.data.tel2+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1343,8 +1349,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel3">'+
 								'<span>'+res.data.tel3Remark+':</span>'+
 								'<span>'+res.data.tel3+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1352,8 +1358,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel4">'+
 								'<span>'+res.data.tel4Remark+':</span>'+
 								'<span>'+res.data.tel4+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'"  alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1361,8 +1367,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel5">'+
 								'<span>'+res.data.tel5Remark+':</span>'+
 								'<span>'+res.data.tel5+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1370,8 +1376,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel6">'+
 								'<span>'+res.data.tel6Remark+':</span>'+
 								'<span>'+res.data.tel6+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1379,8 +1385,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel7">'+
 								'<span>'+res.data.tel7Remark+':</span>'+
 								'<span>'+res.data.tel7+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1388,8 +1394,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel8">'+
 								'<span>'+res.data.tel8Remark+':</span>'+
 								'<span>'+res.data.tel8+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+'require(../assets/img/edit.svg)'+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1397,8 +1403,8 @@ export default {
 								$('#add-hos .linePhoneList').append('<div typeId="tel9">'+
 								'<span>'+res.data.tel9Remark+':</span>'+
 								'<span>'+res.data.tel9+'</span>'+
-								'<img class="phoneThisTel" src="./image/connent.png" alt="">'+
-								'<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
+								'<img class="phoneThisTel" src="'+require('../assets/img/connent.png')+'" alt="">'+
+								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
@@ -1579,7 +1585,8 @@ export default {
 								$('#add-hos .trackDetail').html('')
 							}
 							if (res.data.itemList && res.data.itemList.length > 0) {
-								for (var i in res.data.itemList) {
+								// res.data.itemList = res.data.itemList
+								for (var i in res.data.itemList.reverse()) {
 									if (res.data.itemList[i].level == 1) {
 										interst = '暂不感兴趣'
 									} else if (res.data.itemList[i].level == 2) {

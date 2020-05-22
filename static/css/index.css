@@ -20,6 +20,15 @@
 	line-height: 80px;
 	font-size: 30px;
 }
+/* #index #pageSelect{
+	width: auto!important;
+}
+#index .pageWrap{
+	width: auto!important;
+} */
+#index .sel-page{
+	margin-right: 0px!important;
+}
 #index .addHos{
 	width: 100px;
 	height: 40px;
