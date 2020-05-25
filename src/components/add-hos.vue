@@ -225,6 +225,7 @@ export default {
 		debugger
 		let thisValue = this
 		let a = JSON.stringify(this.$route.query)
+		debugger
         if(this.query != a){
 			Object.assign(this.$data, this.$options.data());
 			this.query = JSON.stringify(this.$route.query);
@@ -233,6 +234,11 @@ export default {
 			$('.hosname').val('')
 			$('.hostel').val('')
 			$('.province').val('')
+			debugger
+			
+
+			
+
 			$('.city').val('')
 			$('.town').val('')
 			$('.hosnature').val('')
@@ -243,8 +249,20 @@ export default {
 			// $('#add-hos .showInputBoxTel').removeAttr('tel2')
 			// $('#add-hos .showInputBoxTel').removeAttr('tel3')
 			
+			$('.province').html('')
+			$('.city').html('')
+			$('.town').html('')
+			// $('#add-hos .province').html('<option value="">-请选择-</option>')
+			// $('#add-hos .city').html('<option value="">-请选择-</option>')
+			// $('#add-hos .town').html('<option value="">-请选择-</option>')
+			// $(".province").find("option").remove();
+			// $(".city").find("option").remove();
+			// $(".town").find("option").remove();
 
-			
+
+
+
+
 			$('#add-hos .showIs').css('display', 'none')
 			$('#add-hos .addHos').attr('disabled',false);
 			$('#add-hos .addHos').css('display', 'inline-block')
