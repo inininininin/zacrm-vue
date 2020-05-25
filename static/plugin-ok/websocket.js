@@ -62,7 +62,7 @@ var socket;
 				var msg = '{"req":"HP_Init","rid":1,"para":{"Para":"0"}}';
 				socket.send(msg);
 				 dialog()
-            };
+			};
            // 监听消息
 			socket.onmessage = function(eve) {
 				console.log(eve.data)
@@ -243,6 +243,12 @@ var socket;
 					if(phoneNum&&phoneNum.substring(0,1)==1){
 						phoneNum='0'+phoneNum
 					}
+					if(phoneNum&&phoneNum.split('-')){
+						debugger
+						phoneNum=phoneNum.split('-').join('')
+						// phoneNum=phoneNum.split('-')[0]+phoneNum.split('-')[1]
+					}
+					console.log(phoneNum)
 					var msg = '{"req":"HP_StartDial","rid":5,"para":{"Para":"'+phoneNum+'"}}';
 					// console.log(msg)
 					// if (socket && msg) 
