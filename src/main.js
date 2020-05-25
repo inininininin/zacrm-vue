@@ -8,7 +8,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store'
 import moment from 'moment'
-Vue.prototype.$version = '20.0522.2141'
+Vue.prototype.$version = '20.0525.1808'
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.'
 Vue.config.productionTip = false
 Vue.prototype.moment = moment;
