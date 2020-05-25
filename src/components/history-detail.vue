@@ -5,7 +5,7 @@
         <div class="trackDetail">
             <ul v-for="(item,inx) in containBoxList" :key="inx">
 				<li><span>{{item.customerName}}</span><span>{{item.customerWorkerName}}</span></li>
-			   	<li><span>{{interst}}</span><span>{{item.createTime}}</span></li>
+			   	<li><span>{{interst}}</span><span>{{moment(item.createTime).format('YYYY-MM-DD hh-mm-ss')}}</span></li>
 			   	<li>{{item.content}}</li>
 			</ul>
         </div>
@@ -80,7 +80,7 @@ export default {
 			   							_this.interst='线上可签单'
                                     }
                                     _this.containBoxList.push(res.data.itemList[i])
-                                    _this.containBoxList[i].createTime = changeDateFormat(res.data.itemList[i].createTime)
+                                    // _this.containBoxList[i].createTime = changeDateFormat(res.data.itemList[i].createTime)
 			   						$('#containBox .trackDetail').append()
 			   						$('#containBox .trackDetail').scrollTop($('#containBox .trackDetail')[0].scrollHeight);						
 			   					}
