@@ -47,6 +47,17 @@
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
 					</select>
+					回访时间 : <input style="width:170px" @change="
+							debugger;
+							if($event.target.value){
+								toRevisitTimeFrom = new Date($event.target.value+` 00:00:00`).getTime();
+								toRevisitTimeTo = toRevisitTimeFrom+(1*24*60*60-1)*1000;
+							}else{
+								toRevisitTimeFrom = '';
+								toRevisitTimeTo = '';
+							}
+							lastPageNo()
+					" type="date" />
 					<button class="searchThis refresh">重置</button>
 				</div>
 			</div>
@@ -99,7 +110,9 @@ export default {
             townList : undefined,
             cityItem : undefined,
             townItem : undefined,
-            query:'',
+			query:'',
+			toRevisitTimeFrom:'',
+			toRevisitTimeTo:'',
 		}
 	},
 	activated(){
@@ -379,6 +392,8 @@ export default {
 				thisValue.area3Id=''
 				thisValue.urgent = ''
 				thisValue.level = ''
+				thisValue.toRevisitTimeFrom = ''
+				thisValue.toRevisitTimeTo = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
@@ -456,7 +471,7 @@ export default {
 					url: '/my-customer/customer-list',
 					type: 'GET',
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
-						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent,
+						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
 					async: true,
 					success: function(res) {
 						console.dir(res)
