@@ -9,7 +9,7 @@
 		<button id="btn_conn" hidden="">发送</button>
 		<div class="mainbox">
 			<div class="topselect">
-				<div style="width: 100%;height: 80px;">
+				<div style="width: 100%;height: auto;">
 					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
                     <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
@@ -22,7 +22,7 @@
 					 <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
 					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
-				<div class="selectOption" style="width: 100%;height: 80px;">
+				<div class="selectOption" style="width: 100%;height: auto;">
 					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" /> 
 					<select class="urgentLevel">
 						<option value="">-级别-</option>
