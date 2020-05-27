@@ -261,7 +261,7 @@ export default {
 			// $(".city").find("option").remove();
 			// $(".town").find("option").remove();
 
-
+			$('#add-hos .trackDetail').html('')
 
 
 
@@ -544,7 +544,36 @@ export default {
 				$('#add-hos .phonep2').html('')
 				$('#add-hos .phonep3').html('')
             })
-           
+		   
+		   
+			debugger;
+			thisValue.customerId = GetQueryString('id')
+			thisValue.$nextTick(()=>{
+				
+				if (GetQueryString('id')) {
+					$('#add-hos .addNewTel').css('display','inline-block')
+					debugger
+					thisValue.hosDetail(GetQueryString('id'))
+					thisValue.relList(GetQueryString('id'))
+					$('#add-hos .addHos').css('display', 'none')
+					$('#add-hos .modifyHos').css('display', 'inline-block')
+					$('#add-hos .showIs').css('display', 'block')
+				}else{
+					$.getJSON("./assets/js/area.json", function(res) {
+					thisValue.provinceList = res
+					// $('.province').html('<option value="">-请选择-</option>')
+					debugger
+					$('#add-hos .province').html('<option value="">-请选择-</option>')
+					$('#add-hos .city').html('<option value="">-请选择-</option>')
+					$('#add-hos .town').html('<option value="">-请选择-</option>')
+					$.each(res, function(i, field) {
+						$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
+						// $("span").append(field.name + "," + field.goods);
+					});
+				});
+				}
+			})
+
             $('#add-hos .showTips').off('mouseleave').on('mouseleave', function() {
 				setTimeout(function() {
 					$('#add-hos .showTips').css('display', 'none')
@@ -1121,32 +1150,11 @@ export default {
 				}
 			})
 		}
-		debugger;
-		thisValue.$nextTick(()=>{
-			 thisValue.customerId = GetQueryString('id')
-            if (GetQueryString('id')) {
-				$('#add-hos .addNewTel').css('display','inline-block')
+		$('.trackName').unbind("click").click(function() {
 				debugger
-				thisValue.hosDetail(GetQueryString('id'))
-				thisValue.relList(GetQueryString('id'))
-				$('#add-hos .addHos').css('display', 'none')
-				$('#add-hos .modifyHos').css('display', 'inline-block')
-				$('#add-hos .showIs').css('display', 'block')
-            }else{
-				 $.getJSON("./assets/js/area.json", function(res) {
-				thisValue.provinceList = res
-				// $('.province').html('<option value="">-请选择-</option>')
-				debugger
-				$('#add-hos .province').html('<option value="">-请选择-</option>')
-				$('#add-hos .city').html('<option value="">-请选择-</option>')
-				$('#add-hos .town').html('<option value="">-请选择-</option>')
-				$.each(res, function(i, field) {
-					$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
-					// $("span").append(field.name + "," + field.goods);
-				});
-            });
-			}
-		})
+				$('.trackName').html('所有人的跟踪记录')
+				thisValue.trackrelList(thisValue.customerId, '', 1)
+			})
 		
     },
     methods:{

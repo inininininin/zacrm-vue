@@ -1,4 +1,5 @@
 var socket;
+var callState
 (function (window, undefined) {
     $(function () {
         var $win = $('body');
@@ -58,10 +59,13 @@ var socket;
             socket.onopen = function (event) {
 				debugger
                 // 发送一个初始化消息
-//              showmessage('连接成功');
-				var msg = '{"req":"HP_Init","rid":1,"para":{"Para":"0"}}';
-				socket.send(msg);
-				 dialog()
+//              showmessage('连接成 功');
+				if(!callState){
+					var msg = '{"req":"HP_Init","rid":1,"para":{"Para":"0"}}';
+					socket.send(msg);
+				
+					dialog()
+				}
 			};
            // 监听消息
 			socket.onmessage = function(eve) {
@@ -81,20 +85,26 @@ var socket;
 						console.log('aaa3')
 						$(".record3").attr('sendType',data.rid)
 					}
+					if (data.type == 704) {
+						$('.phoneNow').css('display', 'none').attr('sendType',data.type)
+						socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
+						// socket.close();
+						callState = false
+					}
+					if (data.type == 707) {
+						callState = true
+					}
 				}
-				
+				// callState = data.type
 				// if(eve.data=='{"ret":0,"rid":9,"data":{"Ret":"0"}}'){
 				// 	console.log('aaa4')
 				// 	$(".record4").attr('sendType',eve.data)
 				// }
-				if (data.type == 704) {
-					$('.phoneNow').css('display', 'none').attr('sendType',data.type)
-					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
-					// socket.close();
-				}
+			
 			};
             // 监听Socket的关闭
             socket.onclose = function (event) {
+				callState = false
 				debugger
             	socket = null;
 //              showmessage('断开连接');
@@ -115,7 +125,11 @@ var socket;
             	console.log('error')
             }
         }else{
-			dialog()
+			debugger
+			if(!callState){
+				dialog()
+
+			}
 		}
             
         
@@ -137,7 +151,8 @@ var socket;
 				}
 	});
         $win.find('#btn_close').click(function () {
-        	debugger
+			debugger
+			callState = false
 			$('#phoneNow').css('display','none')
 			var  initMsg='{"req":"HP_HangUpCtrl","rid":4,"para":{}}'
 			if(socket&&initMsg){

@@ -184,6 +184,7 @@
 	text-align: center;
 	line-height: 40px;
 	border-bottom: 1px solid #e5e5e5;
+	cursor: pointer;
 }
 #add-hos .lookAllTrack{
 	font-size: 16px;
