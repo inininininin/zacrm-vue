@@ -1,5 +1,6 @@
 var socket;
-var callState
+var callState;
+var phone = [];
 (function (window, undefined) {
     $(function () {
         var $win = $('body');
@@ -14,6 +15,8 @@ var callState
                 var $center = $('<center>').text(msg + '(' + tiemstr + ')').css({ 'font-size': '12px' }).appendTo($win.find('#div_msg'));
             }
         };
+
+		newSocket()
 
         $win.find('#refresh_clearcache').click(function () {
             $.yszrefresh();
@@ -42,88 +45,108 @@ var callState
 			console.log(now)
 			return now
 		}
-        $win.find('#btn_conn').click(function () {
-			debugger
-            if(!socket){
-				var url='ws://localhost?sid=789&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1'
-				// var url = 'ws://localhost?sid='+parseInt((1.1+Math.random())*1000)+'&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1';//$win.find('#inp_url').val();
-				socket = new WebSocket(url);
+		function newSocket(openCallback){
+			var url='ws://localhost?sid=789&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1'
+			// var url = 'ws://localhost?sid='+parseInt((1.1+Math.random())*1000)+'&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1';//$win.find('#inp_url').val();
+			socket = new WebSocket(url);
 //          $win.find('#btn_conn').attr('disabled', true);
 //          $win.find('#btn_close').attr('disabled', false);
-            // 创建一个Socket实例
-            
-            console.log(1)
-            
+		// 创建一个Socket实例
+		
+	   
+		
 //          showmessage('开始连接');
-            // 打开Socket 
-            socket.onopen = function (event) {
-				debugger
-                // 发送一个初始化消息
+		// 打开Socket 
+		socket.onopen = function (event) {
+			debugger
+			// 发送一个初始化消息
 //              showmessage('连接成 功');
-				if(!callState){
-					var msg = '{"req":"HP_Init","rid":1,"para":{"Para":"0"}}';
-					socket.send(msg);
-				
-					dialog()
-				}
-			};
-           // 监听消息
-			socket.onmessage = function(eve) {
-				console.log(eve.data)
-				if(eve.data){
-					var data = JSON.parse(eve.data)
-					console.log(data)
-					if(data.rid==9){
-						console.log('aaa1')
-						$(".record1").attr('sendType',data.rid)
-					}
-					if(data.rid==16){
-						console.log('aaa2')
-						$(".record2").attr('sendType',data.rid)
-					}
-					if(data.rid==17){
-						console.log('aaa3')
-						$(".record3").attr('sendType',data.rid)
-					}
-					if (data.type == 704) {
-						$('.phoneNow').css('display', 'none').attr('sendType',data.type)
-						socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
-						// socket.close();
-						callState = false
-					}
-					if (data.type == 707) {
-						callState = true
-					}
-				}
-				// callState = data.type
-				// if(eve.data=='{"ret":0,"rid":9,"data":{"Ret":"0"}}'){
-				// 	console.log('aaa4')
-				// 	$(".record4").attr('sendType',eve.data)
-				// }
+			if(!callState){
+				var msg = '{"req":"HP_Init","rid":1,"para":{"Para":"0"}}';
+				socket.send(msg);
 			
-			};
-            // 监听Socket的关闭
-            socket.onclose = function (event) {
-				callState = false
-				debugger
-            	socket = null;
+				if(openCallback)
+					openCallback()
+			}
+		};
+	   // 监听消息
+		socket.onmessage = function(eve) {
+			console.log(eve.data)
+			if(eve.data){
+				var data = JSON.parse(eve.data)
+				console.log(data.type)
+				if(data.type==703){
+					$(".phoneNow").css('display','block')
+				}
+				if(data.rid==9){
+					console.log('aaa1')
+					$(".record1").attr('sendType',data.rid)
+				}
+				if(data.rid==16){
+					console.log('aaa2')
+					$(".record2").attr('sendType',data.rid)
+				}
+				if(data.rid==17){
+					console.log('aaa3')
+					$(".record3").attr('sendType',data.rid)
+				}
+				if (data.type == 704) {
+					$('.phoneNow').css('display', 'none').attr('sendType',data.type)
+					
+					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
+					phone = []
+					phonelinkName=''
+					$('#phoneNow div p').html('  正在通话中...')
+					// socket.close();
+					callState = false
+				}
+				if (data.type == 707) {
+					callState = true;
+					phone.push(data.data.lParam)
+					console.log(phone.join(''))
+					$('#phoneNow div p').html('姓名:'+phonelinkName+'<br>号码:'+phone.join('')+'  正在通话中...')
+				}
+			}
+			
+			// callState = data.type
+			// if(eve.data=='{"ret":0,"rid":9,"data":{"Ret":"0"}}'){
+			// 	console.log('aaa4')
+			// 	$(".record4").attr('sendType',eve.data)
+			// }
+		
+		};
+		// 监听Socket的关闭
+		socket.onclose = function (event) {
+			callState = false
+			debugger
+			socket = null;
 //              showmessage('断开连接');
-                console.log('断开连接')
-				
-                //socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
-            	$('#phoneNow').css('display','none')
+			console.log('断开连接')
+			
+			//socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
+			phone= []
+			$('#phoneNow div p').html('正在通话中...')
+			$('#phoneNow').css('display','none')
 
-                $win.find('#btn_conn').attr('disabled', false);
-                $win.find('#btn_close').attr('disabled', true);
-                
+			$win.find('#btn_conn').attr('disabled', false);
+			$win.find('#btn_close').attr('disabled', true);
+			
 //              $('body').on('click','.mainbox .aClose',function(){
 //              	alert('12121')
 //              })
-            };
-            
-            socket.onerror = function(event){
-            	console.log('error')
-            }
+		};
+		
+		socket.onerror = function(event){
+			console.log('error')
+		}
+		}
+		var phonelinkName=''
+        $win.find('#btn_conn').click(function () {
+			debugger
+            if(!socket){
+			// console.log(111111111111111111111111)
+
+			newSocket(dialog)
         }else{
 			debugger
 			if(!callState){
@@ -143,8 +166,12 @@ var callState
                 $('.aClose')[0].click()
 //				return '2131312';
 				$('#phoneNow').css('display','none')
+				phone = []
+				$('#phoneNow div p').html('正在通话中...')
 				if(socket){
 					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
+					phone= []
+					$('#phoneNow div p').html('正在通话中...')
 		        setTimeout(function(){
 		        	socket.close();	
 		        },500)
@@ -157,8 +184,12 @@ var callState
 			var  initMsg='{"req":"HP_HangUpCtrl","rid":4,"para":{}}'
 			if(socket&&initMsg){
 				debugger
+				
+			
 				socket.send(initMsg);
 				socket.send('{"req":"HP_StopRecordFile","rid":17,"para":{}}')
+				phone = []
+				$('#phoneNow div p').html('正在通话中...')
 				console.log($win.find('.record3').attr('sendType'))
 				$(".record1").attr('sendType','')
 				
@@ -166,8 +197,8 @@ var callState
 				function setTimeOut(){
 					console.log($win.find('.record3').attr('sendType'))
 					if(socket&&$win.find('.record3').attr('sendType')==17){
-	
-						console.log(11111)
+						
+						// console.log(11111)
 						socket.send(' {"req":"HP_SetLocalRecord","rid":9,"para":{"Para":"0"}}')
 						$(".phoneNow").attr('sendType','')
 						$(".record1").attr('sendType','')
@@ -249,11 +280,15 @@ var callState
         function dialog(){
 			debugger
             if(socket)
-                // socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}')
+                socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}')
 
 				setTimeout(function(){
+					phone = []
 					$('#phoneNow').css('display','block')
+					$('#phoneNow div p').html('正在通话中...')
+					console.log(phone)
 					var phoneNum=$('#inp_send').val()
+					 phonelinkName=$('#inp_send').attr('linkName')
 					console.log(phoneNum,phoneNum.substring(0,1))
 					if(phoneNum&&phoneNum.substring(0,1)==1){
 						phoneNum='0'+phoneNum

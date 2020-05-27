@@ -448,7 +448,7 @@ export default {
                     debugger
 					//anjie($(this).attr('tel'))
 					 //tTimeout(function(){
-					 	$('#inp_send').val($(this).attr('tel'))
+					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
 					 	$('.phoneNumber').html($(this).html())
 					 	$('#btn_conn').click()
 					 //2000)
@@ -480,9 +480,10 @@ export default {
 							if (res.data.itemList && res.data.itemList.length > 0) {
 								for (var i in res.data.itemList) {
 									var tel=''
-									if(res.data.itemList[i].tel){
-										tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-									}
+									// if(res.data.itemList[i].tel){
+									// 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+									// }
+									tel=res.data.itemList[i].tel = res.data.itemList[i].tel
 									let toRevisitTime = '';
 									if(res.data.itemList[i].toRevisitTime){
 										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
@@ -492,7 +493,7 @@ export default {
                                     $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
                                     '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
                                     + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-											"") + '</td><td tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
+											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
 											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
 											 toRevisitTime + '</td></tr>')
 									
