@@ -423,7 +423,8 @@ export default {
             })
             //打电话
 			$('#add-hos .linePhoneList').off("click",'div .phoneThisTel').on('click','div .phoneThisTel',function(){
-				$('#inp_send').val($(this).parent().children().eq(1).html()||'')
+				var linkName=$(this).parent().children().eq(0).html().substring(0,$(this).parent().children().eq(0).html().length-1)
+				$('#inp_send').val($(this).parent().children().eq(1).html()||'').attr('linkName',linkName||'')
 				$('#btn_conn').click()
             })
             if ($('#add-hos .hostel').val() == '' || $('.hostel').val() == null || $('.hostel').val() == undefined) {
@@ -439,12 +440,12 @@ export default {
 				}
             })
             $('#add-hos .linkHos').unbind("click").click(function() {
-				$('#inp_send').val($('.hostel').val())
+				// console.log($(this).parent().parent())
+				$('#inp_send').val($('.hostel').val()).attr('linkName',$(this).parent().find('.hosname').val())
 				$('#btn_conn').click()
             })
             $('#add-hos .phoneps').unbind("click").click(function() {
-
-				$('#inp_send').val($(this).html())
+				$('#inp_send').val($(this).html()).attr('linkName',$(this).parent().parent().children().eq(0).children().html())
 				$('#btn_conn').click()
 				// lineFriends($(this).html())
             })
@@ -960,7 +961,7 @@ export default {
 					$.ajax({
 						url: '/my-customer-worker-trace/create-customer-worker-trace',
 						type: 'post',
-						data: 'customerWorkerId=' + thisValue.customerWorkerIdZz + '&content=' + content + '&level=' + interst,
+						data: 'customerWorkerId=' + thisValue.customerWorkerIdZz + '&content=' + encodeURIComponent(content) + '&level=' + interst,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
@@ -1044,14 +1045,16 @@ export default {
 			$('#add-hos tbody').off("click", 'tr .showInputBox').on('click', 'tr .showInputBox', function(){
 				clearTimeout(thisValue.timeIs)
 				var thisHtml = $(this).html()
+				var thisLinkName=$(this).parent().parent().find('.enterHos').children().html()
 				var _this_=$(this)
 				thisValue.closePopWindow()
 				thisValue.timeIs = setTimeout(function() {
 					if (thisHtml && thisHtml.split(',').length == 1) {
-						$('#inp_send').val(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||"")
+						$('#inp_send').val(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||"").attr('linkName',thisLinkName)
 						// $('#inp_send').val(thisHtml)
 						$('#btn_conn').click()
 					} else {
+						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
 						$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
 						$('#add-hos table').find('.jsModify').removeClass('jsModify')
@@ -1097,15 +1100,16 @@ export default {
             $('#add-hos tbody').off("click",'tr .showInputBoxTel').on('click', 'tr .showInputBoxTel', function() {
 				thisValue.closePopWindow()
 				var thisHtml = $(this).html()
-				
+				var thisLinkName=$(this).parent().parent().find('.enterHos').children().html()
 				var _this_=$(this)
 				clearTimeout(thisValue.timeIs)
 				thisValue.timeIs = setTimeout(function() {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						// lineFriends($(this).html())		
-						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
+						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"").attr('linkName',thisLinkName)
 						$('#btn_conn').click()
 					} else {
+						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
 						$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
 						$('#add-hos table').find('.jsModify').removeClass('jsModify')
@@ -1579,12 +1583,14 @@ export default {
 										// var show2 = "show('" + res.data.itemList[i].verifyWay + "')"
 										// var show3 = "show('" + res.data.itemList[i].tel + "')"
 										
-										if(phoneAll){
-											var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
-										}
-										if(telAll){
-											var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
-										}
+										// if(phoneAll){
+										// 	var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
+										// }
+										// if(telAll){
+											// 	var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
+										// }
+										var phoneAll = phoneAll
+										var telAll=telAll
 										$('#add-hos .tbody').append('<tr relId="' + res.data.itemList[i].customerWorkerId +
 											'"><td class="enterHos"><div class="line-1">' + (res.data.itemList[i].name || "") + '</div></td>' +
 											'<td><div class="line-1 lookHis">' + (res.data.itemList[i].post || "") + '</div></td>' +
@@ -1598,12 +1604,14 @@ export default {
 											'<td><div class="line-1 lookHis showInputBoxTel" tel1="'+(res.data.itemList[i].tel1||"")+'" tel2="'+(res.data.itemList[i].tel2||"")+'" tel3="'+(res.data.itemList[i].tel3||"")+'">'+telAll+// + (res.data.itemList[i].tel || "") +
 											'</div></td></tr>')
 									}else{
-										if(phoneAll){
-											var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
-										}
-										if(telAll){
-											var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
-										}
+										// if(phoneAll){
+										// 	var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
+										// }
+										// if(telAll){
+										// 	var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
+										// }
+										var phoneAll=phoneAll
+										var telAll=telAll
 										$('#add-hos .paibanren .showInputBox').html(phoneAll).attr('phone1',(res.data.itemList[i].phone1||"")).attr('phone2',(res.data.itemList[i].phone2||"")).attr('phone3',(res.data.itemList[i].phone3||""))
 										$('#add-hos .paibanren .showInputBoxTel').html(telAll).attr('tel1',(res.data.itemList[i].tel1||"")).attr('tel2',(res.data.itemList[i].tel2||"")).attr('tel3',(res.data.itemList[i].tel3||""))
 									}
