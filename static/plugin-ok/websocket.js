@@ -23,7 +23,7 @@ var phone = [];
         });
 
         $win.find('#btn_conn').attr('disabled', false);
-        $win.find('#btn_close').attr('disabled', true);
+        $win.find('.btn_close').attr('disabled', true);
 			function getNow(s) {
 			return s < 10 ? '0' + s: s;
 			}
@@ -50,7 +50,7 @@ var phone = [];
 			// var url = 'ws://localhost?sid='+parseInt((1.1+Math.random())*1000)+'&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1';//$win.find('#inp_url').val();
 			socket = new WebSocket(url);
 //          $win.find('#btn_conn').attr('disabled', true);
-//          $win.find('#btn_close').attr('disabled', false);
+//          $win.find('.btn_close').attr('disabled', false);
 		// 创建一个Socket实例
 		
 	   
@@ -96,7 +96,7 @@ var phone = [];
 					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 					phone = []
 					phonelinkName=''
-					$('#phoneNow div p').html('  正在通话中...')
+					$('#phoneNow p').html('  正在通话中...')
 					// socket.close();
 					callState = false
 				}
@@ -104,7 +104,7 @@ var phone = [];
 					callState = true;
 					phone.push(data.data.lParam)
 					console.log(phone.join(''))
-					$('#phoneNow div p').html('姓名:'+phonelinkName+'<br>号码:'+phone.join('')+'  正在通话中...')
+					$('#phoneNow p').html('姓名:'+phonelinkName+'<br>号码:'+phone.join('')+'  正在通话中...')
 				}
 			}
 			
@@ -125,11 +125,11 @@ var phone = [];
 			
 			//socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 			phone= []
-			$('#phoneNow div p').html('正在通话中...')
+			$('#phoneNow p').html('正在通话中...')
 			$('#phoneNow').css('display','none')
 
 			$win.find('#btn_conn').attr('disabled', false);
-			$win.find('#btn_close').attr('disabled', true);
+			$win.find('.btn_close').attr('disabled', true);
 			
 //              $('body').on('click','.mainbox .aClose',function(){
 //              	alert('12121')
@@ -167,17 +167,17 @@ var phone = [];
 //				return '2131312';
 				$('#phoneNow').css('display','none')
 				phone = []
-				$('#phoneNow div p').html('正在通话中...')
+				$('#phoneNow p').html('正在通话中...')
 				if(socket){
 					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 					phone= []
-					$('#phoneNow div p').html('正在通话中...')
+					$('#phoneNow p').html('正在通话中...')
 		        setTimeout(function(){
 		        	socket.close();	
 		        },500)
 				}
 	});
-        $win.find('#btn_close').click(function () {
+        $win.find('.btn_close').click(function () {
 			debugger
 			callState = false
 			$('#phoneNow').css('display','none')
@@ -189,7 +189,7 @@ var phone = [];
 				socket.send(initMsg);
 				socket.send('{"req":"HP_StopRecordFile","rid":17,"para":{}}')
 				phone = []
-				$('#phoneNow div p').html('正在通话中...')
+				$('#phoneNow p').html('正在通话中...')
 				console.log($win.find('.record3').attr('sendType'))
 				$(".record1").attr('sendType','')
 				
@@ -244,7 +244,7 @@ var phone = [];
 			   // })
 		    //}
 		});
-//      $win.find('#btn_close').click(function () {
+//      $win.find('.btn_close').click(function () {
 //      	console.log('123456')
 //          if (socket) {
 //          	console.log('123456789')
