@@ -27,29 +27,16 @@
 		
 		<link rel="stylesheet" href="./assets/css/all.css"/>
 		<script src="./assets/js/image-file-visible.js"></script>
+		<script></script>
   </head>
   <script>
 			var layer;
 			layui.use('layer', function() {
 				layer = layui.layer;
 			});
-			
 			window.$=$
-// function sendThis(){
-// 	console.log(78978978911121)
-// 	$('#btn_conn').attr('disabled',true).html('已发送')
-// 	console.log(78978978911121)
-// 	console.log(78978978911121)
-// 				// setTimeout(function(){
-// 				// 	$('#btn_conn').attr('disabled',false).html('发送')
-// 				// },5000)
-// }
-	// 		$('#btn_conn').click(function(){
-	// 			console.log(78978978911121)
-	// $('#btn_conn').attr('disabled',true).html('已发送')
-	// console.log(78978978911121)
-	// console.log(78978978911121)
-	// 		})
+			console.log('开始移动')
+			
   </script>
   <body>
 	  <!-- <div class="">
@@ -59,16 +46,110 @@
 		<button id="btn_conn"  hidden="">发送</button>
 		<div id="phoneNow" class="phoneNow">
 			<div></div>
-			<div>
+			<div class="functionImg">
+				<img class="dialogMin" src="./assets/img/small.png" alt="">
+				<img class="dialogMagnify" src="./assets/img/fangda.png" alt="" style="display: none;">
+				<img class="suoxiao" src="./assets/img/huanyuan.png" alt="" style="display: none;">
+				<img class='quanping' src="./assets/img/big.png" alt="">
+				<img class="btn_close" src="./assets/img/close.png" alt="">
+			</div>
 			<p>正在通话中. . .</p>
-			<div class="phoneEnd" id="btn_close">
+			<div class="phoneEnd btn_close" id="btn_close">
 				<img src="./assets/img/phoneEnd.png" alt="">
 				<span>挂断电话</span>
 			</div>
-			</div>
 		</div>
 		
-		
+		<script>
+			var _left =''
+			var _top = ''
+			$('.suoxiao').click(function(){
+				$('#phoneNow').css({'height':'30%','width':'30%'})
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+				$('.phoneEnd').css({'height':'30px','width':'125px','font-size':'20px','line-height':'30px','top':'55%'})
+				$('#phoneNow p').css({'top':'20%'})
+				$('.quanping').css('display','inline')
+				$('.suoxiao').css('display','none')
+			})
+			$('.quanping').click(function(){
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+				$('#phoneNow').css({'height':'100%','width':'100%'})
+				$('.phoneEnd').css({'height':'60px','width':'250px','font-size':'20px','line-height':'60px','top':'42%'})
+				$('#phoneNow p').css({'top':'33%'})
+				$('.dialogMagnify').css('display','none')
+				$('.dialogMin').css('display','inline')
+				$('#phoneNow p').css('display','inline')
+				$('.phoneEnd').css('display','inline')
+				$('.quanping').css('display','none')
+				$('.suoxiao').css('display','inline')
+			})
+			$('.dialogMagnify').click(function(){
+				$('#phoneNow').css({'height':'30%','width':'30%'})
+				$('#phoneNow p').css('display','inline')
+				$('.phoneEnd').css('display','inline')
+				$('.dialogMagnify').css('display','none')
+				$('.dialogMin').css('display','inline')
+			})
+			$('.dialogMin').click(function(){
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+				$('.phoneEnd').css({'height':'30px','width':'125px','font-size':'20px','line-height':'30px','top':'55%'})
+				$('.suoxiao').css('display','none')
+				$('.quanping').css('display','inline')
+				$('#phoneNow').css({'height':'40px','width':'30%'})
+				$('#phoneNow p').css('display','none')
+				$('.phoneEnd').css('display','none')
+				$('.dialogMin').css('display','none')
+				$('.dialogMagnify').css('display','inline')
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+			})
+			var moveStata = true;
+			$('#phoneNow').mousedown(function(ev){
+				let _this = this
+				_this.moveStata = true;
+				// console.log('开始移动')
+				var dx = ev.clientX||ev.pageX;
+				var dy = ev.clientY||ev.pageY;
+				var dialogleft = $('#phoneNow').offset().left;
+				var dialogtop = $('#phoneNow').offset().top;
+				console.log(dialogtop)
+				$('#phoneNow').css('cursor', 'move')
+				$(document).mousemove(function(e){	
+					if(_this.moveStata){
+						var bodyWidth = $("body").width() - _this.offsetWidth;
+						var bodyHeight = $("body").height() - _this.offsetHeight;
+						var mx = e.clientX||e.pageX;
+						var my = e.clientY||e.pageY;
+						_this._left = mx-dx+dialogleft;
+						_this._top = my-dy+dialogtop;
+						// if(_this._top>)
+						if(_this._top>bodyHeight){
+							_this._top = bodyHeight
+						}
+						if(_this._top<0){
+							_this._top = 0
+						}
+						if(_this._left<0){
+							_this._left = 0
+						}
+						if(_this._left>bodyWidth){
+							_this._left = bodyWidth
+						}
+						// console.log(_this._left)
+						// console.log(bodyWidth)
+						$('#phoneNow').css({"left":_this._left+"px","top":_this._top+"px"});
+						
+
+					}
+					
+				}).mouseup(function(){
+
+					console.log('结束移动')
+					_this.moveStata = false;
+					$('#phoneNow').css('cursor', 'auto')
+				})
+			})
+			
+		</script>
 <style>
 
 		#phoneNow{
@@ -80,7 +161,7 @@
 			bottom: 0;
 			z-index: 9;
 			display: none;
-			cursor: move;
+			
 			/* background: rgba(0,0,0,0.2); */
 			/* background: #000000; */
 			/* opacity: 0.2; */
@@ -101,6 +182,39 @@
 			color: #fff;
 			
 		}
+		.functionImg{
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: 30px;
+			width: 80px;
+			text-align: center;
+			line-height: 30px;
+			z-index: 99;
+		}
+		.functionImg>img{
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		}
+		.dialogMagnify{
+			width: 13px!important;
+		}
+		/* .dialogMin{
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		}
+		.functionImg>img:nth-child(3){
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		}
+		.functionImg>img:last-child{
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		} */
 		#phoneNow .phoneEnd{
 			position: absolute;
 			width: 125px;

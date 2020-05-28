@@ -23,7 +23,7 @@ var phone = [];
         });
 
         $win.find('#btn_conn').attr('disabled', false);
-        $win.find('#btn_close').attr('disabled', true);
+        $win.find('.btn_close').attr('disabled', true);
 			function getNow(s) {
 			return s < 10 ? '0' + s: s;
 			}
@@ -50,7 +50,7 @@ var phone = [];
 			// var url = 'ws://localhost?sid='+parseInt((1.1+Math.random())*1000)+'&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1';//$win.find('#inp_url').val();
 			socket = new WebSocket(url);
 //          $win.find('#btn_conn').attr('disabled', true);
-//          $win.find('#btn_close').attr('disabled', false);
+//          $win.find('.btn_close').attr('disabled', false);
 		// 创建一个Socket实例
 		
 	   
@@ -129,7 +129,7 @@ var phone = [];
 			$('#phoneNow').css('display','none')
 
 			$win.find('#btn_conn').attr('disabled', false);
-			$win.find('#btn_close').attr('disabled', true);
+			$win.find('.btn_close').attr('disabled', true);
 			
 //              $('body').on('click','.mainbox .aClose',function(){
 //              	alert('12121')
@@ -177,7 +177,7 @@ var phone = [];
 		        },500)
 				}
 	});
-        $win.find('#btn_close').click(function () {
+        $win.find('.btn_close').click(function () {
 			debugger
 			callState = false
 			$('#phoneNow').css('display','none')
@@ -244,7 +244,7 @@ var phone = [];
 			   // })
 		    //}
 		});
-//      $win.find('#btn_close').click(function () {
+//      $win.find('.btn_close').click(function () {
 //      	console.log('123456')
 //          if (socket) {
 //          	console.log('123456789')
