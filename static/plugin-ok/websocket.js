@@ -96,7 +96,7 @@ var phone = [];
 					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 					phone = []
 					phonelinkName=''
-					$('#phoneNow div p').html('  正在通话中...')
+					$('#phoneNow p').html('  正在通话中...')
 					// socket.close();
 					callState = false
 				}
@@ -104,7 +104,7 @@ var phone = [];
 					callState = true;
 					phone.push(data.data.lParam)
 					console.log(phone.join(''))
-					$('#phoneNow div p').html('姓名:'+phonelinkName+'<br>号码:'+phone.join('')+'  正在通话中...')
+					$('#phoneNow p').html('姓名:'+phonelinkName+'<br>号码:'+phone.join('')+'  正在通话中...')
 				}
 			}
 			
@@ -125,7 +125,7 @@ var phone = [];
 			
 			//socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 			phone= []
-			$('#phoneNow div p').html('正在通话中...')
+			$('#phoneNow p').html('正在通话中...')
 			$('#phoneNow').css('display','none')
 
 			$win.find('#btn_conn').attr('disabled', false);
@@ -167,11 +167,11 @@ var phone = [];
 //				return '2131312';
 				$('#phoneNow').css('display','none')
 				phone = []
-				$('#phoneNow div p').html('正在通话中...')
+				$('#phoneNow p').html('正在通话中...')
 				if(socket){
 					socket.send('{"req":"HP_HangUpCtrl","rid":4,"para":{}}');
 					phone= []
-					$('#phoneNow div p').html('正在通话中...')
+					$('#phoneNow p').html('正在通话中...')
 		        setTimeout(function(){
 		        	socket.close();	
 		        },500)
@@ -189,7 +189,7 @@ var phone = [];
 				socket.send(initMsg);
 				socket.send('{"req":"HP_StopRecordFile","rid":17,"para":{}}')
 				phone = []
-				$('#phoneNow div p').html('正在通话中...')
+				$('#phoneNow p').html('正在通话中...')
 				console.log($win.find('.record3').attr('sendType'))
 				$(".record1").attr('sendType','')
 				
