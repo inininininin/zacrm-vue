@@ -34,6 +34,10 @@
 	background: #409eff;
 	    color: #FFFFFF;
 }
+
+button[disabled]{
+	background: #e5e5e5 !important;
+	}
 #add-hos .selectOption input{
 	width: 150px;
 	height: 38px;
@@ -156,7 +160,10 @@
 	border-right: 1px solid #e5e5e5;
 	border-bottom: 1px solid #e5e5e5;
 }
-
+.supplyNewRel{
+  background: #409eff  !important;
+  color: #fff !important;
+}
 #add-hos .tableBoxRt{
 	display: inline-block;
 	width: 52%;
@@ -202,7 +209,7 @@
 	height: 300px;
 	overflow-y: scroll;
 	border-bottom: 1px solid #E5E5E5;
-	
+
 }
 #add-hos .muti::-webkit-scrollbar{
 	width:0px;
@@ -275,7 +282,7 @@
 }
 #add-hos .selectQuick>div input{
 	margin-right: 5px;
-	
+
 }
 #add-hos .selectQuick>div label{
 	margin-left: 8px;
@@ -345,7 +352,7 @@
 }
 #add-hos .addphoen>div,#add-hos .addphoeShow>div{
 	line-height: 40px;
-	
+
 }
 #add-hos .addphoen>i,#add-hos .addphoeShow>i{
 	margin: 10px;
@@ -414,7 +421,7 @@
 	text-align: center;
 	top: 35%;
 	color: #fff;
-	
+
 }
 #add-hos #phoneNow .phoneEnd{
 	position: fixed;

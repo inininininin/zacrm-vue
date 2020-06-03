@@ -101,7 +101,7 @@
 						</tbody>
 					</table>
 					<div class="addNewRel">新增<i style="margin-left: 5px;" class="layui-icon">&#xe608;</i></div>
-					<div class="supplyNewRel" style="display: none;"><button style="background: #FFFFFF;width: 100%;height: 100%;border: 0;">完成<i
+					<div class="supplyNewRel" style="display: none;"><button style="background: #409eff;width: 100%;height: 100%;border: 0;color: #fff;font-size: 18px;">完成<i
 							 style="margin-left: 5px;" class="layui-icon">&#x1005;</i></button></div>
 				</div>
 				<div class="tableBoxRt">
@@ -204,8 +204,8 @@ export default {
             query:'',
             provinceList : undefined,
             cityList : undefined,
-            townList : undefined, 
-            cityItem : undefined, 
+            townList : undefined,
+            cityItem : undefined,
             townItem : undefined,
             nickname : '',
             paiBanCustomerWorkerId : '',
@@ -235,9 +235,9 @@ export default {
 			$('.hostel').val('')
 			$('.province').val('')
 			debugger
-			
 
-			
+
+
 
 			$('.city').val('')
 			$('.town').val('')
@@ -275,7 +275,7 @@ export default {
 			$('#add-hos .nameLink').html('')
 			$('#add-hos .lookHis').html('')
 			// $('#add-hos .showInputBox').html('')
-			
+
 			$('#add-hos .phonep1').html('')
 			$('#add-hos .phonep2').html('')
 			$('#add-hos .phonep3').html('')
@@ -301,7 +301,7 @@ export default {
 			$('#add-hos .trackName').html('')
             // 省市区三级联动
 			// TODO 后期待优化
-			
+
 			$.ajax({
 				url: './assets/js/area.json',
 				type: 'get',
@@ -321,7 +321,7 @@ export default {
 			// 	thisValue.provinceList = res
 			// 	// $('#add-hos .province').html('<option value="">-请选择-</option>')
 			// 	$.each(res, function(i, field) {
-			
+
 			// 		$('#add-hos .province').append('<option value="' + field.value + '">' + field.label + '</option>')
 			// 		// $("#add-hos span").append(field.name + "," + field.goods);
 			// 	});
@@ -353,8 +353,8 @@ export default {
 				// 		});
 				// 	}
 				// })
-				
-				
+
+
             })
             $('#add-hos .city').change(function() {
 				let cityText= $(this).val();
@@ -391,7 +391,7 @@ export default {
 						thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,0)
 						thisValue.removeTel()
 					}
-					
+
 				}else{
 					// if($(this).attr('typeId')&&$(this).attr('typeId').split('Remark')){
 					// 	var telNameTitle=$(this).attr('typeId');
@@ -490,7 +490,7 @@ export default {
 				var id = $('#add-hos .addphoeShow').attr('id')
 				var phones = phoneInput1 + phoneInput2 + phoneInput3
 				if (id == '' || id == null || id == undefined) {
-					
+
 					$('#add-hos .jsModify').html(phoneInput1 + phoneInput2 + phoneInput3)
 					if ($('#add-hos .jsModify').parent().parent().attr('class') == 'paibanren') {
 						if ($('#add-hos .addphoeShow').attr('type') == 1) {
@@ -514,7 +514,7 @@ export default {
 						var params = '&phone1=' + phones1+'&phone2=' + phones2+'&phone3=' + phones3
 							$('#add-hos .jsModify').attr('phone1',(phones1||"")).attr('phone2',(phones2||"")).attr('phone3',(phones3||""))
 					} else {
-						
+
 						var params = '&tel1=' + phones1+'&tel2=' + phones2+'&tel3=' + phones3
 						$('#add-hos .jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
 					}
@@ -545,12 +545,12 @@ export default {
 				$('#add-hos .phonep2').html('')
 				$('#add-hos .phonep3').html('')
             })
-		   
-		   
+
+
 			debugger;
 			thisValue.customerId = GetQueryString('id')
 			thisValue.$nextTick(()=>{
-				
+
 				if (GetQueryString('id')) {
 					$('#add-hos .addNewTel').css('display','inline-block')
 					debugger
@@ -844,16 +844,18 @@ export default {
 				$(this).css('display', 'none')
 				$('#add-hos .supplyNewRel').css('display', 'block')
 			})
-			// 提交相关人员                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+			// 提交相关人员
 
 			// TODO 新增相关人员
             $('#add-hos .supplyNewRel button').unbind("click").click(function() {
-				$(this).attr('disabled', 'true')
-				var name = $('#add-hos .tbody').find(':input:eq(0)').val()
-				var post = $('#add-hos .tbody').find(':input:eq(1)').val()
+				$(this).attr('disabled', true)
+				var name = $('#add-hos .tbody').children('tr:last-child').find(':input:eq(0)').val()
+        console.log(name)
+        // return
+				var post = $('#add-hos .tbody').children('tr:last-child').find(':input:eq(1)').val()
 				// var phone = $('#add-hos .tbody').find(':input:eq(2)').val()
 				var phone = $('#add-hos .tbody').children('tr:last-child').find('.showInputBox').html()
-				var verifyWay = $('#add-hos .tbody').find(':input:eq(2)').val()
+				var verifyWay = $('#add-hos .tbody').children('tr:last-child').find(':input:eq(2)').val()
 				var tel = $('#add-hos .tbody').children('tr:last-child').find('.showInputBoxTel').html()
 				var phone1=$('#add-hos .tbody').children('tr:last-child').find('.showInputBox').attr('phone1')||""
 				var phone2=$('#add-hos .tbody').children('tr:last-child').find('.showInputBox').attr('phone2')||""
@@ -865,7 +867,7 @@ export default {
 				var paiBan = ''
 				var _this = $(this)
 				if (name == '') {
-					layer.msg('请将相关人员姓名')
+					layer.msg('请填写相关人员姓名')
 					$('#add-hos .supplyNewRel button').attr('disabled', false)
 				} else {
 					if (thisValue.customerId == '' || thisValue.customerId == null || thisValue.customerId == undefined) {
@@ -880,12 +882,13 @@ export default {
 							async: true,
 							success: function(res) {
 								if (res.code == 0) {
-									// layer.msg('添加成功')
+									layer.msg('新增成功')
+                  $('#add-hos .tbody').children("tr:last-child").remove()
 									// window.history.refresh()
 									// var show1 = "show('" + phone + "')"
 									// var show2 = "show('" + verifyWay + "')"
 									// var show3 = "show('" + tel + "')"
-									$('#add-hos .tbody').children("tr:last-child").remove()
+
 									$('#add-hos .tbody').append('<tr relId="' + res.data.customerWorkerId +
 										'"><td class="enterHos"><div class="line-1">' + name + '</div></td>' +
 										'<td><div class="line-1 lookHis">' + post + '</div></td>' +
@@ -896,7 +899,8 @@ export default {
 										'</div></td>' +
 										'<td><div class="line-1 lookHis showInputBoxTel"  tel1="'+tel1+'"  tel2="'+tel2+'"  tel3="'+tel3+'">' + tel +
 										'</div></td></tr>')
-									_this.parent().css('display', 'none')
+									// _this.parent().css('display', 'none')
+                  $('#add-hos .supplyNewRel').css('display', 'none')
 									$('#add-hos .supplyNewRel button').attr('disabled', false)
 									$('#add-hos .addNewRel').css('display', 'block')
 								}
@@ -985,20 +989,20 @@ export default {
             // 修改医院
 
 			$('#add-hos .modifyHos').unbind("click").click(function() {
-				$('#add-hos .modifyHos').attr('disabled', "true");
+				$('#add-hos .modifyHos').attr('disabled',true);
 				thisValue.modifyNewHos()
             })
             // TODO 新增医院
 			// /my-customer/create-customer
 			$('#add-hos .addHos').unbind("click").click(function() {
-				$('#add-hos .addHos').attr('disabled', "true");
+				$('#add-hos .addHos').attr('disabled', true);
 
 				thisValue.addNewHos()
             })
             thisValue.trackrelList(thisValue.customerId, '', 1)
             // 跟踪记录
 			$('#add-hos .lookAllTrack').unbind("click").click(function() {
-				
+
 				$('#add-hos .trackName').html('所有人的跟踪记录')
 				thisValue.trackrelList(thisValue.customerId, '', 1)
             })
@@ -1007,9 +1011,9 @@ export default {
 			// 	if (e.target.id.length) {
 			// 	                thisValue.closePopWindow()
 			// 	            }
-				
+
             // })
-           
+
             $('#add-hos .province').change(function() {
 				let provinceText = $(this).val();
 				$.each(thisValue.provinceList, function(i, item) {
@@ -1105,7 +1109,7 @@ export default {
 				clearTimeout(thisValue.timeIs)
 				thisValue.timeIs = setTimeout(function() {
 					if (thisHtml && thisHtml.split(',').length == 1) {
-						// lineFriends($(this).html())		
+						// lineFriends($(this).html())
 						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"").attr('linkName',thisLinkName)
 						$('#btn_conn').click()
 					} else {
@@ -1119,7 +1123,7 @@ export default {
 						// 	var num = parseInt(i) + 1
 						// 	$('.phonep' + num).html(phones[i])
 						// }
-						
+
 						$('#add-hos .phonep1').html(_this_.attr('tel1')||'')
 						$('#add-hos .phonep2').html(_this_.attr('tel2')||'')
 						$('#add-hos .phonep3').html(_this_.attr('tel3')||'')
@@ -1159,7 +1163,7 @@ export default {
 				$('.trackName').html('所有人的跟踪记录')
 				thisValue.trackrelList(thisValue.customerId, '', 1)
 			})
-		
+
     },
     methods:{
         modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type){
@@ -1187,7 +1191,7 @@ export default {
 								'<span>'+telValue+'</span>'+
 								'<img class="phoneThisTel"  src="'+require('../assets/img/connent.png')+'" alt="">'+
 								'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">').attr('typeId',telValueTitle)
-								
+
 								// html('<div typeId='+telNameTitle+'>'+
 								// '<span>'+telName+':</span>'+
 								// '<span>'+telValue+'</span>'+
@@ -1196,7 +1200,7 @@ export default {
 								// // '<img src="./image/delete.svg" alt="">'+
 								// '</div>')
 							}
-							
+
 							// window.history.refresh()
 						}
 					}
@@ -1215,7 +1219,7 @@ export default {
 			// // if(val==null||val==''||val==undefined){
 			// // 	val=''
 			// // }
-			// // $('#add-hos .showTips').html(val).css('display', 'block')	
+			// // $('#add-hos .showTips').html(val).css('display', 'block')
    //      },
    //      showhidden() {
    //          let thisValue = this
@@ -1241,7 +1245,7 @@ export default {
 				// 	layer.msg('请选择医院所在地区')
 				// } else if (nature == '') {
 				// 	layer.msg('请选择医院性质')
-				// } else 
+				// } else
 				if (name == '') {
 					layer.msg('请填写医院名')
 					$('#add-hos .modifyHos').attr('disabled', false);
@@ -1333,7 +1337,7 @@ export default {
 			// 				window.history.refresh()
 			// 			}
 			// 		}
-			// 	}) 
+			// 	})
             // },
         // 医院详情列表
 		hosDetail(customerId) {
@@ -1481,7 +1485,7 @@ export default {
 								// 	$('.province').val(res.data.area1Id)
 								// },200)
 								let provinceText = res.data.area1Id;
-								
+
 								$.each(thisValue.provinceList, function(i, item) {
 									if (provinceText == item.value) {
 										thisValue.cityItem = i;
@@ -1530,7 +1534,8 @@ export default {
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
-
+                $('.addNewRel').css('display','block')
+                 $('.supplyNewRel').css('display','none')
 							if (res.data.itemList && res.data.itemList.length > 0) {
 								$('#add-hos .tbody').html('')
 								for (var i in res.data.itemList) {
@@ -1540,23 +1545,23 @@ export default {
 											phoneAll= phoneAll+','+res.data.itemList[i].phone1
 										}else{
 											phoneAll=res.data.itemList[i].phone1
-										}	
+										}
 									}
 									if(res.data.itemList[i].phone2){
 										if(phoneAll!=''){
 										phoneAll= phoneAll+','+res.data.itemList[i].phone2
 										}else{
 											phoneAll=res.data.itemList[i].phone2
-										}	
+										}
 									}
 									if(res.data.itemList[i].phone3){
 										if(phoneAll!=''){
 										phoneAll= phoneAll+','+res.data.itemList[i].phone3
 										}else{
 											phoneAll=res.data.itemList[i].phone3
-										}	
+										}
 									}
-									
+
 									if(res.data.itemList[i].tel1){
 										if(telAll!=''){
 											telAll= telAll+','+res.data.itemList[i].tel1
@@ -1582,7 +1587,7 @@ export default {
 										// var show1 = "show('" + res.data.itemList[i].phone + "')"
 										// var show2 = "show('" + res.data.itemList[i].verifyWay + "')"
 										// var show3 = "show('" + res.data.itemList[i].tel + "')"
-										
+
 										// if(phoneAll){
 										// 	var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
 										// }
