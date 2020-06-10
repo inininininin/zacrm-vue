@@ -1255,7 +1255,7 @@ export default {
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
-							'&brief=' + hosIntro + '&customerId=' + thisValue.customerId+ '&toRevisitTime=' + toRevisitTime,
+							'&brief=' + encodeURIComponent(hosIntro) + '&customerId=' + thisValue.customerId+ '&toRevisitTime=' + toRevisitTime,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
@@ -1301,7 +1301,7 @@ export default {
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
-							'&brief=' + hosIntro+'&toRevisitTime=' + toRevisitTime,
+							'&brief=' + encodeURIComponent(hosIntro)+'&toRevisitTime=' + toRevisitTime,
 						async: true,
 						success: function(res) {
 							if (res.code == 0) {
