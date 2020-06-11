@@ -51,7 +51,14 @@ const mainRoutes = [
     name: '/lead-index',
     component: ()=>import( '@/components/lead-index')
     
+  },
+  {
+    path: '/leader-index',
+    name: '/leader-index',
+    component: ()=>import( '@/components/leader-index')
+    
   }
+  
 ]
 
 const router = new Router({
