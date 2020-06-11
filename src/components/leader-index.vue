@@ -21,6 +21,13 @@
             <li>2031</li>
           </ul>
         </div>
+       
+      </div>
+      <div class="leader_eveAdd">
+        <div class="leader_eveAdd_span">
+          + 添加新组员
+        </div>
+       
       </div>
     </div>
     <div class="leader_chart">
@@ -52,30 +59,41 @@
           value: '5',
           label: '线上可签单'
         }],
-
+      customerPage:1,
 
       }
     },
+    activated(){
+      this.getData()
+    },
     methods: {
       loginout() {
-              this.$confirm('请确认是否退出登录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-                center: true
-              }).then(() => {
-                this.$message({
-                  type: 'success',
-                  message: '退出成功!'
-                });
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消退出'
-                });
-              });
-            }
-
+        this.$confirm('请确认是否退出登录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '退出成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          });
+        });
+      },
+      getData(){
+        this.$axios.get('/ling-dao/customer/customer-list'+qs.stringify({
+          pn:this.customerPage,
+          ps:10,
+        }))
+        .then(res=>{
+          
+        })
+      }
     }
   }
 </script>
@@ -151,6 +169,7 @@
     margin-left: 24px;
     margin-top: 24px;
     box-sizing: border-box;
+    cursor: pointer;
   }
   .leader_eve img{
     font-size: 24px;
@@ -158,14 +177,14 @@
     width: 24px;
     height: 24px;
     margin: 24px 16px auto 24px;
-    display: inline-block;
+    /* display: inline-block; */
     float: left;
   }
   .leader_eve .leader_detail{
     float: left;
     width: 193px;
     border: 0;
-    display: inline-block;
+    /* display: inline-block; */
   }
   .leader_detail p{
     margin-top: 24px;
@@ -203,5 +222,33 @@
     font-weight:500;
     color:rgba(0,0,0,0.65);
     line-height:32px;
+  }
+  .leader_eveAdd{
+    width:259px;
+    height:133px;
+    background:transparent;
+    border-radius:2px;
+    border:1px solid rgba(24,144,255,1);
+    display: inline-block;
+    margin-left: 24px;
+    margin-top: 24px;
+    box-sizing: border-box;
+    font-size:16px;
+    font-family:PingFangSC-Regular,PingFang SC;
+    font-weight:400;
+    color:rgba(24,144,255,1);
+    position: relative;
+    cursor: pointer;
+  }
+  .leader_eveAdd_span{
+    color: rgba(24,144,255,1);
+    height: 25px;
+    width: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
   }
 </style>
