@@ -38,19 +38,22 @@ const mainRoutes = [
     path: '/history-detail',
     name: '/history-detail',
     component: _import( 'history-detail')
-    
   },
   {
     path: '/add-hos',
     name: '/add-hos',
     component: _import( 'add-hos')
-    
   },
   {
     path: '/lead-index',
     name: '/lead-index',
     component: ()=>import( '@/components/lead-index')
     
+  },
+  {
+    path: '/groupLeaderIndex',
+    name: '/groupLeaderIndex',
+    component: ()=>import( '@/components/groupLeaderIndex')
   }
 ]
 
