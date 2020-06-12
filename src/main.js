@@ -16,7 +16,11 @@ import 'echarts/lib/component/toolbox';
 
 import store from './store'
 import moment from 'moment'
+import axios from 'axios'
+import qs from 'qs'
 
+
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 Vue.prototype.moment = moment;
 Vue.prototype.$store = store
