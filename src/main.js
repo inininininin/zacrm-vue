@@ -24,6 +24,7 @@ Vue.config.productionTip = false
 Vue.prototype.moment = moment;
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios
+// Vue.prototype.$laydate = laydate
 
 Vue.use(ElementUI);
 Vue.prototype.$echarts = require('echarts')
