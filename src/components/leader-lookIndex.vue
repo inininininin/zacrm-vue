@@ -213,7 +213,6 @@ export default {
 				$.ajax({
 					url: '/cache/set',
 					type: 'post',
-
 					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
 					async: true,
 					success: function(res) {
@@ -479,10 +478,10 @@ export default {
         lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list',
+					url: '/ling-dao/customer/customer-list',
 					type: 'GET',
 
-					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
+					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +'&userId='+localStorage.getItem('id')+
 						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
 					async: true,
 					success: function(res) {
@@ -518,11 +517,11 @@ export default {
         lastPageNo() {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list-sum',
+					url: '/ling-dao/customer/customer-list-sum',
 					type: 'GET',
 
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
-						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent,
+						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+'&userId='+localStorage.getItem('id'),
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {

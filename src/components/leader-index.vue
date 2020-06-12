@@ -5,13 +5,13 @@
       <span class="loginout" @click="loginout()">退出登录</span>
     </div>
     <div class="leader_name">
-      <span>任欣伟(业务员)</span><span>共18条数据</span>
+      <span>任欣伟(业务员)</span><span>共{{totalCount}}条数据</span>
     </div>
     <div class="leader_peop">
-      <div v-for="item in urgentLevel" :key="item.value" class="leader_eve">
+      <div v-for="item in urgentLevel" @click="memberDetail(item.userId)" :key="item.value" class="leader_eve">
         <img src="../assets/img/PP.svg" alt="">
         <div class="leader_detail">
-          <p>某某</p>
+          <p>{{item.nickname}}</p>
           <ul>
             <li>医院数</li>
             <li>101万</li>
@@ -23,12 +23,11 @@
         </div>
 
       </div>
-      <div class="leader_eveAdd">
+     <!-- <div class="leader_eveAdd">
         <div class="leader_eveAdd_span">
           + 添加新组员
         </div>
-
-      </div>
+      </div> -->
     </div>
     <div class="leader_chart">
 
@@ -41,39 +40,27 @@
   export default {
     data() {
       return {
-        urgentLevel: [{
-          value: '0',
-          label: '加急客户'
-        }, {
-          value: '1',
-          label: '暂不感兴趣'
-        }, {
-          value: '2',
-          label: '初步感兴趣'
-        }, {
-          value: '3',
-          label: '非常感兴趣'
-        }, {
-          value: '4',
-          label: '近期可考察'
-        }, {
-          value: '5',
-          label: '线上可签单'
-        }],
+        urgentLevel: [],
         customerPage: 1,
-
+        totalCount:'',
       }
     },
     activated() {
+      Object.assign(this.$data, this.$options.data());
       this.getData()
+      this.getDataNumber()
     },
+
     methods: {
       create() {
-        this.$axios.get('/zong-jing-li/create-user', qs.stringify({
-            name: xuxiukun,
+        this.$axios.post('/zong-jing-li/create-user', qs.stringify({
+            name: 'xuxiukun',
             phone: 15077822798,
-            nickname: xuxk,
-            upperUserId: 20200611182803879562472539181121,
+            nickname: 'xuxk',
+            upperUserId: '10000000000000000000000000000000',//20200611182803879562472539181121
+            upperUser1Id: '10000000000000000000000000000000',
+            upperUser2Id: '10000000000000000000000000000000',
+            upperUser3Id: '10000000000000000000000000000000',
             password: 123456,
             type: 0,
           }))
@@ -118,13 +105,52 @@
           });
         });
       },
+      memberDetail(id){
+        localStorage.setItem('id',id)
+        this.$router.push({ path : '/leader-lookIndex',query : {time: new Date().getTime()}});
+      },
+
       getData() {
-        this.$axios.get('/ling-dao/customer/customer-list?' + qs.stringify({
+        this.$axios.get('/zong-jing-li/user-list?' + qs.stringify({
             pn: this.customerPage,
-            ps: 10,
+            // ps: 10,
+            order:'asc',
+            sort:'updateTime'
           }))
           .then(res => {
+            console.log(res)
+            if(res.data.codeMsg){
+              console.log(res.data.codeMsg)
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code ==0){
+              if(res.data.data.itemList.length >0){
+                for(let i in res.data.data.itemList){
+                  this.urgentLevel.push(res.data.data.itemList[i])
+                }
 
+
+              }
+
+            }
+
+          })
+      },
+      getDataNumber() {
+        this.$axios.get('/zong-jing-li/user-list-sum')
+          .then(res => {
+            if(res.data.codeMsg){
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code ==0){
+              this.totalCount=res.data.data.itemCount
+            }
           })
       }
     }

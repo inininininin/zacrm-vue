@@ -60,7 +60,13 @@ const mainRoutes = [
     name: '/leader-index',
     component: ()=>import( '@/components/leader-index')
     
-  }
+  },
+  {
+    path: '/leader-lookIndex',
+    name: '/leader-lookIndex',
+    component: ()=>import( '@/components/leader-lookIndex')
+    
+    }
   
 ]
 
