@@ -45,7 +45,7 @@ import qs from 'qs';
           value: '0',
           label: '加急客户'
         }, {
-          value: '1',
+          value: '1', 
           label: '暂不感兴趣'
         }, {
           value: '2',
