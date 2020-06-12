@@ -14,11 +14,11 @@
           <p>{{item.nickname}}</p>
           <ul>
             <li>医院数</li>
-            <li>101万</li>
+            <li>{{item.customerCount>9999?item.customerCount/10000+"万":item.customerCount}}</li>
           </ul>
           <ul>
-            <li>昨日跟踪</li>
-            <li>2031</li>
+            <li>追踪数</li>
+            <li>{{item.customerTraceCount}}</li>
           </ul>
         </div>
 

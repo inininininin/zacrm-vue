@@ -33,15 +33,21 @@
 						<option value="4">近期可考察</option>
 						<option value="5">线上可签单</option>
 					</select>
-					<select class="address province">
-						<option value="">-省-</option>
+					<select class="nature">
+						<option value="" selected>-追踪医院-</option>
+						<option value="1">追踪</option>
+						<option value="2">未追踪</option>
 					</select>
-					<select class="address city">
-						<option value="">-市-</option>
-					</select>
-					<select class="address town">
-						<option value="">-区-</option>
-					</select>
+          <select class="nature">
+          	<option value="" selected>-院长号码-</option>
+          	<option value="1">有号码</option>
+          	<option value="2">无号码</option>
+          </select>
+          <select class="nature">
+          	<option value="" selected>-拍板人号码-</option>
+          	<option value="1">有号码</option>
+          	<option value="2">无号码</option>
+          </select>
 					<select class="nature">
 						<option value="" selected>-性质-</option>
 						<option value="1">民营医院</option>
