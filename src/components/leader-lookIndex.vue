@@ -10,7 +10,7 @@
 		<div class="mainbox">
 			<div class="topselect">
 				<div style="width: 100%;height: auto;">
-					<h2 class="peoname">{{nickname}}</h2><span class="shuju" style="margin: 0 10px;"></span>
+					<!-- <h2 class="peoname">{{nickname}}</h2><span class="shuju" style="margin: 0 10px;"></span> -->
                   <!--  <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
 					</router-link> -->
@@ -23,6 +23,7 @@
 					 <!-- <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span> -->
 				</div>
 				<div class="leader_name">
+          <span>昵称：{{nicknameThis}}</span>
 				  <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
 				  <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button>
 				  <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
@@ -138,7 +139,7 @@ export default {
 			zhuRenCustomerWorkerLevel: '',
 			paiBanCustomerWorkerLevelname:'',
 			zhuRenCustomerWorkerLevelname:'',
-      nickname: '',
+      nicknameThis:'',
       totalCount: '',
       totalCountHos: '',
       totalCountHos1: '',
@@ -169,9 +170,7 @@ export default {
       this.cookie='loginId='+localStorage.getItem('id')
       console.log( this.cookie,localStorage.getItem('id'))
     }
-    if(localStorage.getItem('nickname')){
-      this.nickname=localStorage.getItem('nickname')
-    }
+    
     Object.assign(this.$data, this.$options.data());
     // this.getData()
     this.getDataNumber()
@@ -179,6 +178,11 @@ export default {
     this.getDataNumberHos(1)
     this.getDataNumberHos(2)
     this.traceNumber()
+    if(localStorage.getItem('nickname')){
+      console.log(localStorage.getItem('nickname'))
+      this.nicknameThis = localStorage.getItem('nickname')
+      console.log(this.nicknameThis)
+    }
         // 跳转上次最后一条数据
         if(this.query != JSON.stringify(this.$route.query)){
 			this.query = JSON.stringify(this.$route.query);
