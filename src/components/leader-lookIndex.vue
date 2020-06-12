@@ -11,16 +11,16 @@
 			<div class="topselect">
 				<div style="width: 100%;height: auto;">
 					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
-                    <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
+                  <!--  <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
-					</router-link>
+					</router-link> -->
                     <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
 					 <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
 					 <router-link :to="{path:'/history-detail'}"  class="lookBefore">
 						查看昨日工作记录
 					 </router-link>
 					 <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
-					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
+					 <!-- <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span> -->
 				</div>
 				<div class="selectOption" style="width: 100%;height: auto;">
 					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" />
@@ -53,7 +53,7 @@
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
 					</select>
-					回访时间 : <input style="width:170px" @change="
+					<!-- 回访时间 : <input style="width:170px" @change="
 							debugger;
 							if($event.target.value){
 								toRevisitTimeFrom = new Date($event.target.value+` 00:00:00`).getTime();
@@ -63,11 +63,16 @@
 								toRevisitTimeTo = '';
 							}
 							lastPageNo()
-					" type="date" />
+					" type="date" /> -->
 					<button class="searchThis refresh">重置</button>
 				</div>
 			</div>
-
+      <div class="introDetail">
+        <p>医院数量：<span>195</span></p>
+        <p>追踪数量：<span>195</span></p>
+        <p>有电话的医院数量：<span>195</span></p>
+        <p>有意向的医院数量：<span>195</span></p>
+      </div>
 			<div class="tableBox">
 				<table>
 					<thead>
@@ -604,5 +609,19 @@ export default {
 	margin-top: 90px;
 	color: #a9a0a0;
 
+}
+.introDetail{
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+}
+.introDetail p{
+  display: inline-block;
+}
+.introDetail span{
+  font-size: 20px;
+  color: #666666;
+  line-height: 60px;
+  margin-right: 30px;
 }
 </style>
