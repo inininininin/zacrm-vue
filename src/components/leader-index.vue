@@ -5,10 +5,108 @@
       <span class="loginout" @click="loginout()">退出登录</span>
     </div>
     <div class="leader_name">
-      <span>任欣伟(业务员)</span><span>共{{totalCount}}条数据</span>
+      <span>{{nickname}}</span><span>共{{totalCount}}个组员</span><span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
+      <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button>
+      <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
+      <el-button nature='2' @click='selectHos($event,2)'>公立医院：{{totalCountHos2}}个</el-button>
+
+    </div>
+    <!-- <div class="selectOption" style="width: 100%;height: auto;margin-left: 34px;">
+      <button class="searchThis">搜索</button>
+      <select class="nature" v-model="peopleType" @change="selectNature($event)">
+        <option v-for="(item,index) in peopleTypeList" :key="index" :value='item.id'>{{item.title}}</option>
+      </select>
+      <select class="nature" v-if='show1' @change="selectPhone($event)">
+        <option v-for="(item,index) in phoneIfList" :key="index" :value='item.id'>{{item.title}}</option>
+      </select>
+      <select class="urgentLevel" @change="selecturgentLevel($event)" v-if='show2'>
+        <option value="">-级别-</option>
+        <option value="0">加急客户</option>
+        <option value="1">暂不感兴趣</option>
+        <option value="2">初步感兴趣</option>
+        <option value="3">非常感兴趣</option>
+        <option value="4">近期可考察</option>
+        <option value="5">线上可签单</option>
+      </select>
+      <select class="nature" v-if='show2'>
+        <option value="" selected>-是否加急-</option>
+        <option value="1">加急</option>
+        <option value="2">未加急</option>
+      </select>
+      <button class="searchThis refresh">重置</button>
+    </div> -->
+    <div class="selectRoleAll"><p>筛选条件：<span v-if='nature==0'>所有医院</span><span v-if='nature==1'>民营医院</span><span v-if='nature==2'>公立医院</span>
+    <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
+    <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
+    <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
+    <span v-if='paiBanCustomerWorkerUrgent==1'>- 加急 / </span>
+    <!-- <span v-if='paiBanCustomerWorkerHas==1'>- 院长</span> -->
+    <span v-if='zhuRenCustomerWorkerHas==1' style="color: #333;">- 主任</span>
+    <span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
+    <span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
+    <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
+    </p></div>
+    <div class="selectAllThis">
+      <div class="lineOneThis">
+        <span>人员类型：</span>
+        <el-checkbox v-model="checked1" @change='yuanzhang'>院长</el-checkbox>
+      </div>
+      <div class="lineOneThis"  v-if='show1'>
+        <span>院长是否有号码：</span>
+         <el-radio-group v-model="PhoneHasyuanzhang" @change="selectPhoneyuanzhang">
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">有号码</el-radio>
+            <!-- <el-radio :label="2">无号码</el-radio> -->
+          </el-radio-group>
+      </div>
+      <div class="lineOneThis"  v-if='show2' >
+        <span>院长级别：</span>
+         <el-radio-group v-model="urgentyuanzhang" @change='yuanzhanglevel'>
+             <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">暂不感兴趣</el-radio>
+            <el-radio :label="2">初步感兴趣</el-radio>
+            <el-radio :label="3">非常感兴趣</el-radio>
+            <el-radio :label="4">近期可考察</el-radio>
+            <el-radio :label="5">线上可签单</el-radio>
+          </el-radio-group>
+      </div>
+      <div class="lineOneThis"  v-if='show2'>
+        <span>院长是否加急：</span>
+         <el-checkbox v-model="checked3" @change='yuanzhangjj'>加急</el-checkbox>
+      </div>
+      <div class="lineOneThis">
+        <span>人员类型：</span>
+        <el-checkbox v-model="checked2" @change='zhuren'>主任</el-checkbox>
+      </div>
+      <div class="lineOneThis"  v-if='show3'>
+        <span>主任是否有号码：</span>
+         <el-radio-group v-model="PhoneHaszhuren" @change="selectPhonezhuren">
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">有号码</el-radio>
+            <!-- <el-radio :label="2">无号码</el-radio> -->
+          </el-radio-group>
+      </div>
+      <div class="lineOneThis"  v-if='show4'>
+        <span>主任级别：</span>
+         <el-radio-group v-model="urgentzhuren"  @change='zhurenlevel'>
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">暂不感兴趣</el-radio>
+            <el-radio :label="2">初步感兴趣</el-radio>
+            <el-radio :label="3">非常感兴趣</el-radio>
+            <el-radio :label="4">近期可考察</el-radio>
+            <el-radio :label="5">线上可签单</el-radio>
+          </el-radio-group>
+      </div>
+      <div class="lineOneThis"  v-if='show4'>
+        <span>主任是否加急：</span>
+         <el-checkbox v-model="checked4" @change='zhurenjj'>加急</el-checkbox>
+      </div>
+    </div>
+    <div>
+      <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0 0 0 34px;">共{{totalCountHosSelect}}家医院</p>
     </div>
     <div class="leader_peop">
-      <div v-for="item in urgentLevel" @click="memberDetail(item.userId)" :key="item.value" class="leader_eve">
+      <div v-for="item in urgentLevel" @click="memberDetail(item.userId,item.nickname)" :key="item.value" class="leader_eve">
         <img src="../assets/img/PP.svg" alt="">
         <div class="leader_detail">
           <p>{{item.nickname}}</p>
@@ -23,7 +121,8 @@
         </div>
 
       </div>
-     <!-- <div class="leader_eveAdd">
+
+      <!-- <div class="leader_eveAdd">
         <div class="leader_eveAdd_span">
           + 添加新组员
         </div>
@@ -41,21 +140,29 @@
       <div id="main" style="width: 600px;height:400px;float:left;margin-left:30px"></div>
       <div id="main2" style="width: 600px;height:400px;float:left"></div>
     </div>
-    <div @click="sssFN">少时诵诗书所</div>
   </div>
 </template>
 
 <script>
   import qs from 'qs'
+  const cityOptions = ['院长', '主任'];
   export default {
     data() {
       return {
+        nature:"",
+        paiBanCustomerWorkerHas: '',
+        paiBanCustomerWorkerPhoneHas: '',
+        paiBanCustomerWorkerUrgent: '',
+        paiBanCustomerWorkerLevel: '',
+        zhuRenCustomerWorkerHas: '',
+        zhuRenCustomerWorkerPhoneHas:'',
+        zhuRenCustomerWorkerUrgent: '',
+        zhuRenCustomerWorkerLevel: '',
+        paiBanCustomerWorkerLevelname:'',
+        zhuRenCustomerWorkerLevelname:'',
         urgentLevel: [],
         customerPage: 1,
-        totalCount:'',
-        choseTime:{
-
-        },
+        choseTime:{},
         lineData:{
                 title: {
                     text: ''
@@ -74,6 +181,15 @@
                     show: true,
                     // 标签的文字。
                     // formatter: ["1","2","3","4","5","6"]
+                },
+                toolbox:{
+                  show   : true,
+                  feature: {
+                     dataView : {show: true, readOnly: false},
+                      magicType  : {show: true, type: ['bar', 'line','pie']},
+                      restore    : {show: false},
+                      saveAsImage: {show: true}
+                  }
                 },
                 series: [
                     {
@@ -108,6 +224,15 @@
                     // 标签的文字。
                     // formatter: ["1","2","3","4","5","6"]
                 },
+                toolbox:{
+                  show   : true,
+                  feature: {
+                     dataView : {show: true, readOnly: false},
+                      magicType  : {show: true, type: ['line', 'bar']},
+                      restore    : {show: false},
+                      saveAsImage: {show: true}
+                  }
+                },
                 series: [
                     {
                         name: '客户量',
@@ -123,13 +248,74 @@
                     }
                 ]
             },
+        totalCount: '',
+        nickname: '',
+        totalCountHos: '',
+        totalCountHos1: '',
+        totalCountHos2: '',
+        show1: false,
+        show2: false,
+        show3:false,
+        show4:false,
+        peopleType: '', //是院长还是主任
+        phoneIfyuanzhang: '', //院长是否有号码
+        phoneIfzhuren: '', //主任是否有号码
+        peopleTypeList: [{
+          id: '',
+          title: "-人员类型-"
+        }, {
+          id: 1,
+          title: "院长"
+        }, {
+          id: 2,
+          title: "主任"
+        }],
+        phoneIfList: [{
+          id: '',
+          title: "-是否有号码-"
+        }, {
+          id: 1,
+          title: "有号码"
+        }, {
+          id: 2,
+          title: "没有号码"
+        }],
+        checkedCities: [],
+        cities: cityOptions,
+        PhoneHasyuanzhang: '',
+        PhoneHaszhuren:'',
+        urgentyuanzhang:'',
+        urgentzhuren:'',
+        checked1:false,
+        checked2:false,
+        checked3:false,
+        checked4:false,
+        traceTotalNumber:'',//跟踪总量
+        totalCountHosSelect:'',
       }
     },
     activated() {
       Object.assign(this.$data, this.$options.data());
+      this.$axios.post('/login-refresh')
+        .then(res => {
+          if (res.data.codeMsg) {
+            this.$message({
+              type: 'info',
+              message: res.data.codeMsg
+            })
+          }
+          if (res.data.code == 0) {
+            this.nickname = res.data.data.nickname
+          }
+        })
+
       this.getData()
       this.getDataNumber()
       this.statisticalAllFn()
+      this.getDataNumberHos()
+      this.getDataNumberHos(1)
+      this.getDataNumberHos(2)
+      this.traceNumber()
       this.$nextTick(()=>{
         debugger
         // layui.use('laydate', function(){
@@ -140,31 +326,159 @@
           // });
         // });
       })
-      
     },
 
     methods: {
-      create() {
-        this.$axios.post('/zong-jing-li/create-user', qs.stringify({
-            name: 'xuxiukun',
-            phone: 15077822798,
-            nickname: 'xuxk',
-            upperUserId: '10000000000000000000000000000000',//20200611182803879562472539181121
-            upperUser1Id: '10000000000000000000000000000000',
-            upperUser2Id: '10000000000000000000000000000000',
-            upperUser3Id: '10000000000000000000000000000000',
-            password: 123456,
-            type: 0,
-          }))
-          .then(res => {
-            if (res.data.codeMsg) {
-              this.$message({
-                type: 'info',
-                message: res.data.codeMsg
-              })
-            }
-          })
+      yuanzhang(e){
+        if(e==true){
+          this.show1 = true;
+          this.show2 = false;
+          this.paiBanCustomerWorkerHas=1
+        }else{
+           this.show1 = false;
+           this.show2 = false;
+           this.paiBanCustomerWorkerHas=0
+           this.PhoneHasyuanzhang=''
+           this.paiBanCustomerWorkerPhoneHas= ''
+           this.paiBanCustomerWorkerUrgent=''
+           this.paiBanCustomerWorkerLevel= ''
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
       },
+      zhuren(e){
+        if(e==true){
+          this.show3 = true;
+          this.show4 = false;
+          this.zhuRenCustomerWorkerHas=1
+        }else{
+           this.show3 = false;
+           this.show4 = false;
+           this.zhuRenCustomerWorkerHas=0
+           this.PhoneHaszhuren=''
+           this.zhuRenCustomerWorkerPhoneHas= ''
+           this.zhuRenCustomerWorkerUrgent= ''
+           this.zhuRenCustomerWorkerLevel= ''
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+      selectHos(event,i){
+        console.log(i)
+        this.nature=i
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+      selectPhoneyuanzhang(event) {
+        this.phoneIfyuanzhang = event; //获取option对应的value值。
+        if(event==0){
+          this.show2 = true;
+          this.paiBanCustomerWorkerPhoneHas=''
+        }
+        if (event == 1) {
+          this.show2 = true;
+          this.paiBanCustomerWorkerPhoneHas=1
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+      selectPhonezhuren(event) {
+        this.phoneIfzhuren = event; //获取option对应的value值。
+        if(event==0){
+          this.show4 = true;
+          this.zhuRenCustomerWorkerPhoneHas=''
+        }
+        if (event == 1) {
+          this.show4 = true;
+          this.zhuRenCustomerWorkerPhoneHas=1
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+       // 选择是否感兴趣
+      yuanzhanglevel(e){
+        if(e==0){
+          this.paiBanCustomerWorkerLevel=''
+        }else{
+          this.paiBanCustomerWorkerLevel=e
+          if(e==1){
+            this.paiBanCustomerWorkerLevelname='暂不感兴趣'
+          }else if(e==2){
+            this.paiBanCustomerWorkerLevelname='初步感兴趣'
+          }else if(e==3){
+            this.paiBanCustomerWorkerLevelname='非常感兴趣'
+          }else if(e==4){
+            this.paiBanCustomerWorkerLevelname='近期可考察'
+          }else if(e==5){
+            this.paiBanCustomerWorkerLevelname='线上可签单'
+          }
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+      zhurenlevel(e){
+        if(e==0){
+          this.zhuRenCustomerWorkerLevel=''
+        }else{
+          this.zhuRenCustomerWorkerLevel=e
+          if(e==1){
+            this.zhuRenCustomerWorkerLevelname='暂不感兴趣'
+          }else if(e==2){
+            this.zhuRenCustomerWorkerLevelname='初步感兴趣'
+          }else if(e==3){
+            this.zhuRenCustomerWorkerLevelname='非常感兴趣'
+          }else if(e==4){
+            this.zhuRenCustomerWorkerLevelname='近期可考察'
+          }else if(e==5){
+            this.zhuRenCustomerWorkerLevelname='线上可签单'
+          }
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+      // 是否加急
+      yuanzhangjj(e){
+        if(e==true){
+          this.paiBanCustomerWorkerUrgent=1
+        }else{
+          this.paiBanCustomerWorkerUrgent=0
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+      zhurenjj(e){
+        if(e==true){
+          this.zhuRenCustomerWorkerUrgent=1
+        }else{
+          this.zhuRenCustomerWorkerUrgent=0
+        }
+        this.chartsFn()
+        this.statisticalAllFn()
+      },
+
+
+
+      // create() {
+      //   this.$axios.post('/ling-dao/create-user', qs.stringify({
+      //       name: 'xuxiukun',
+      //       phone: 15077822798,
+      //       nickname: 'xuxk',
+      //       upperUserId: '10000000000000000000000000000000', //20200611182803879562472539181121
+      //       upperUser1Id: '10000000000000000000000000000000',
+      //       upperUser2Id: '10000000000000000000000000000000',
+      //       upperUser3Id: '10000000000000000000000000000000',
+      //       password: 123456,
+      //       type: 0,
+      //     }))
+      //     .then(res => {
+      //       if (res.data.codeMsg) {
+      //         this.$message({
+      //           type: 'info',
+      //           message: res.data.codeMsg
+      //         })
+      //       }
+      //     })
+      // },
 
       loginout() {
         this.$confirm('请确认是否退出登录, 是否继续?', '提示', {
@@ -199,30 +513,36 @@
           });
         });
       },
-      memberDetail(id){
-        localStorage.setItem('id',id)
-        this.$router.push({ path : '/leader-lookIndex',query : {time: new Date().getTime()}});
+      memberDetail(id, name) {
+        localStorage.setItem('id', id)
+        this.$router.push({
+          path: '/leader-lookIndex',
+          query: {
+            name: encodeURIComponent(name),
+            time: new Date().getTime()
+          }
+        });
       },
 
       getData() {
-        this.$axios.get('/zong-jing-li/user-list?' + qs.stringify({
+        this.$axios.get('/ling-dao/user-list?' + qs.stringify({
             pn: this.customerPage,
             // ps: 10,
-            order:'asc',
-            sort:'updateTime'
+            order: 'asc',
+            sort: 'updateTime'
           }))
           .then(res => {
-            // console.log(res)
-            if(res.data.codeMsg){
+            console.log(res)
+            if (res.data.codeMsg) {
               console.log(res.data.codeMsg)
               this.$message({
                 type: 'info',
                 message: res.data.codeMsg
               })
             }
-            if(res.data.code ==0){
-              if(res.data.data.itemList.length >0){
-                for(let i in res.data.data.itemList){
+            if (res.data.code == 0) {
+              if (res.data.data.itemList.length > 0) {
+                for (let i in res.data.data.itemList) {
                   this.urgentLevel.push(res.data.data.itemList[i])
                 }
 
@@ -234,35 +554,45 @@
           })
       },
       getDataNumber() {
-        this.$axios.get('/zong-jing-li/user-list-sum')
+        this.$axios.get('/ling-dao/user-list-sum')
           .then(res => {
-            if(res.data.codeMsg){
+            if (res.data.codeMsg) {
               this.$message({
                 type: 'info',
                 message: res.data.codeMsg
               })
             }
-            if(res.data.code ==0){
-              this.totalCount=res.data.data.itemCount
+            if (res.data.code == 0) {
+              this.totalCount = res.data.data.itemCount
             }
           })
       },
-      async getLAllPeopleFn(_time,_nextTime,_paiBanCustomerWorkerPhoneHas){
-        // console.log(this.moment(_time).format('YYYY-MM-DD HH-mm-SS'))
-        // console.log(this.moment(_nextTime-1).format('YYYY-MM-DD HH-mm-ss'))
-        await this.$axios.get('/ling-dao/customer/customer-list-sum?'+qs.stringify({
-          createTimeFrom : _time,
-          createTimeTo : _nextTime-1,
-          paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
-        }))
+      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas) {
+        await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+            nature:this.nature,
+            createTimeFrom : _time,
+            createTimeTo : _nextTime-1,
+            paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+          }))
           .then(res => {
-            if(res.data.codeMsg){
+            if (res.data.codeMsg) {
               this.$message({
                 type: 'info',
                 message: res.data.codeMsg
               })
             }
             if(res.data.code ==0){
+              this.$echarts.init(document.getElementById('main')).clear()
+        this.$echarts.init(document.getElementById('main2')).clear()
+              this.totalCountHosSelect = res.data.data.itemCount
               // console.dir(res.data.data.itemCount)
               if(_paiBanCustomerWorkerPhoneHas){
                 this.lineData.series[1].data.push(res.data.data.itemCount)
@@ -290,57 +620,67 @@
           let nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
           // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
           // console.log(i+'')
-          await this.getLAllPeopleFn(nowTime,nextTime)
-          await this.getLAllPeopleFn(nowTime,nextTime,1)
+          await this.getDataNumberHosSelect(nowTime,nextTime)
+          await this.getDataNumberHosSelect(nowTime,nextTime,1)
           if(i == nowData){
-            this.$echarts.init(document.getElementById('main')).setOption(this.lineData);
-            this.$echarts.init(document.getElementById('main2')).setOption(this.barData);
+            this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+            this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
           }
         }
       },
-      sssFN(){
-        console.log('s')
+      chartsFn(){ 
+        this.lineData.series[0].data = []
+        this.lineData.series[1].data = []
+        this.barData.series[0].data = []
+        this.barData.series[1].data = []
+        this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+        this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+        // console.log('s')
         // 清空绘画内容，清空后实例可用，因为并非释放示例的资源，释放资源我们需要dispose()
-        this.$echarts.init(document.getElementById('main')).clear()
+        // this.$echarts.init(document.getElementById('main')).clear()
         // 释放图表实例，释放后实例不再可用。
-        this.$echarts.init(document.getElementById('main2')).dispose()
+        // this.$echarts.init(document.getElementById('main2')).dispose()
         // 还原图表，各种状态均被清除，还原为最初展现时的状态。
         // this.$echarts.init(document.getElementById('main')).restore()
-        // this.$echarts.init(document.getElementById('main')).setOption({
-        //         title: {
-        //             text: ''
-        //         },
-        //         text: "数据正在载入...",
-        //         tooltip: {},
-        //         legend: {
-        //             data:['客户量','拍板人']
-        //         },
-        //         xAxis: { 
-        //             data: ["组员1","组员2","组员3","组员4","组员5","组员6"]
-        //         },
-        //         yAxis: {
-        //         },
-        //         label: {
-        //             show: true,
-        //             // 标签的文字。
-        //             // formatter: ["1","2","3","4","5","6"]
-        //         },
-        //         series: [
-        //             {
-        //                 name: '客户量',
-        //                 type: 'line',
-        //                 color: ['#37A2DA'],
-        //                 data: [1, 20, 136, 10, 10, 20]
-        //             },
-        //             {
-        //                 name: '拍板人',
-        //                 type: 'line',
-        //                 color: ['red'],
-        //                 data: [20,10, 20, 136, 20 , 1]
-        //             }
-        //         ]
-        //     },)
-      }
+      },
+      getDataNumberHos(nature) {
+        this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            nature: nature
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              if (nature == 1) {
+                this.totalCountHos1 = res.data.data.itemCount
+              } else if (nature == 2) {
+                this.totalCountHos2 = res.data.data.itemCount
+              } else {
+                this.totalCountHos = res.data.data.itemCount
+                this.totalCountHosSelect=res.data.data.itemCount
+              }
+            }
+          })
+      },
+      traceNumber() {
+        this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum')
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              this.traceTotalNumber = res.data.data.itemCount
+            }
+          })
+      },
+
     }
   }
 </script>
@@ -392,6 +732,9 @@
     background: #fff;
   }
 
+  /* .leader_name el-button{
+    margin-left: 15px;
+  } */
   .leader_name span:nth-child(1) {
     font-size: 24px;
     font-family: PingFangSC-Regular, PingFang SC;
@@ -401,7 +744,7 @@
     margin-left: 36px;
   }
 
-  .leader_name span:nth-child(2) {
+  .leader_name span:nth-child(2),.leader_name span:nth-child(3) {
     margin-left: 20px;
     font-size: 20px;
     font-family: PingFangSC-Regular, PingFang SC;
@@ -543,5 +886,175 @@
   }
   >>>.layui-input:hover{
     width: 200px!important;
+  }
+  #leader_index .selectOption {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    font-size: 16px;
+    color: #333333;
+  }
+
+  #leader_index .topselect h2 {
+    display: inline-block;
+    margin: 0;
+    line-height: 80px;
+    font-size: 30px;
+  }
+
+  /* #index #pageSelect{
+  	width: auto!important;
+  }
+  #index .pageWrap{
+  	width: auto!important;
+  } */
+  #leader_index .sel-page {
+    margin-right: 0px !important;
+  }
+
+  #leader_index .addHos {
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    display: inline-block;
+    /* float: right; */
+    font-size: 16px;
+    line-height: 40px;
+    margin-top: 20px;
+    margin-left: 30px;
+    text-align: center;
+    background: #409eff;
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+
+  #leader_index .lookBefore {
+    float: right;
+    line-height: 80px;
+  }
+
+  #leader_index .lastHis {
+    float: right;
+    font-size: 16px;
+    cursor: pointer;
+    color: #337ab7;
+  }
+
+  #leader_index .selectOption input {
+    width: 150px;
+    height: 38px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #e5e5e5;
+    margin-right: 15px;
+    padding: 0 10px;
+
+  }
+
+  #leader_index .selectOption button {
+    width: 80px;
+    height: 38px;
+    border-radius: 4px;
+    line-height: 38px;
+    outline: none;
+    border: 1px solid #e5e5e5;
+    margin-right: 15px;
+    background: #409eff;
+    color: #FFFFFF;
+    vertical-align: middle;
+    margin-top: -3px;
+  }
+
+  #leader_index .selectOption select {
+    width: 140px;
+    height: 38px;
+    border-radius: 4rpx;
+    outline: none;
+    margin-right: 15px;
+    border: 1px solid #e5e5e5;
+  }
+
+  .searchThis input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    margin-top: 7px
+  }
+
+  #leader_index .tableBox {
+    width: 100%;
+    height: auto;
+  }
+
+  #leader_index .tableBox table {
+    width: 100%;
+    height: auto;
+
+  }
+
+  #leader_index .tableBox table thead tr th,
+  #leader_index .tableBox table tbody tr td {
+    height: 40px;
+    line-height: 40px;
+    width: auto;
+    text-align: center;
+  }
+
+  #leader_index .tableBox table tbody tr td {
+    padding: 0 10px;
+    border: 1px solid #e5e5e5;
+
+  }
+
+  #leader_index .tableBox table tbody tr td:last-child {
+    cursor: pointer;
+
+  }
+
+  #leader_index .tableBox table tbody tr td:nth-child(2) {
+    cursor: pointer;
+    text-align: left;
+  }
+
+  #leader_index .tableBox table tbody tr td:nth-child(4) {
+    cursor: pointer;
+  }
+
+  #leader_index .selectOption .province,
+  #leader_index .selectOption .city,
+  #leader_index .selectOption .town {
+    width: 100px;
+    margin-right: 5px;
+  }
+
+
+  .selectRoleAll{
+    margin-left: 34px;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  .selectRoleAll span{
+    color: #999;
+    /* margin-left: 10px; */
+    display: inline-block;
+  }
+  .selectAllThis{
+    width: 100%;
+    padding: 0 34px;
+    box-sizing: border-box;
+    font-size: 18px !important;
+  }
+  .selectAllThis .lineOneThis{
+    width: 100%;
+    display: block;
+    line-height: 30px;
+  }
+  .lineOneThis span{
+    display: inline-block;
+    width: 160px;
+  }
+  .lineOneThis .el-checkbox-group{
+    display: inline-block;
+    width: 500px;
   }
 </style>
