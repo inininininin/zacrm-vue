@@ -40,7 +40,6 @@
     <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
     <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
     <span v-if='paiBanCustomerWorkerUrgent==1'>- 加急 / </span>
-    <!-- <span v-if='paiBanCustomerWorkerHas==1'>- 院长</span> -->
     <span v-if='zhuRenCustomerWorkerHas==1' style="color: #333;">- 主任</span>
     <span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
     <span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
@@ -165,28 +164,6 @@
         peopleType: '', //是院长还是主任
         phoneIfyuanzhang: '', //院长是否有号码
         phoneIfzhuren: '', //主任是否有号码
-        peopleTypeList: [{
-          id: '',
-          title: "-人员类型-"
-        }, {
-          id: 1,
-          title: "院长"
-        }, {
-          id: 2,
-          title: "主任"
-        }],
-        phoneIfList: [{
-          id: '',
-          title: "-是否有号码-"
-        }, {
-          id: 1,
-          title: "有号码"
-        }, {
-          id: 2,
-          title: "没有号码"
-        }],
-        checkedCities: [],
-        cities: cityOptions,
         PhoneHasyuanzhang: '',
         PhoneHaszhuren:'',
         urgentyuanzhang:'',
@@ -398,10 +375,11 @@
       },
       memberDetail(id, name) {
         localStorage.setItem('id', id)
+        localStorage.setItem('nickname', name)
         this.$router.push({
           path: '/leader-lookIndex',
           query: {
-            name: encodeURIComponent(name),
+            // name: encodeURIComponent(name),
             time: new Date().getTime()
           }
         });
@@ -835,6 +813,7 @@
     font-size: 18px;
     color: #666;
     margin-bottom: 15px;
+    margin-top: 15px;
   }
   .selectRoleAll span{
     color: #999;
