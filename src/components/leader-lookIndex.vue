@@ -33,15 +33,21 @@
 						<option value="4">近期可考察</option>
 						<option value="5">线上可签单</option>
 					</select>
-					<select class="address province">
-						<option value="">-省-</option>
+					<select class="nature">
+						<option value="" selected>-追踪医院-</option>
+						<option value="1">追踪</option>
+						<option value="2">未追踪</option>
 					</select>
-					<select class="address city">
-						<option value="">-市-</option>
-					</select>
-					<select class="address town">
-						<option value="">-区-</option>
-					</select>
+          <select class="nature">
+          	<option value="" selected>-院长号码-</option>
+          	<option value="1">有号码</option>
+          	<option value="2">无号码</option>
+          </select>
+          <select class="nature">
+          	<option value="" selected>-拍板人号码-</option>
+          	<option value="1">有号码</option>
+          	<option value="2">无号码</option>
+          </select>
 					<select class="nature">
 						<option value="" selected>-性质-</option>
 						<option value="1">民营医院</option>
@@ -213,7 +219,6 @@ export default {
 				$.ajax({
 					url: '/cache/set',
 					type: 'post',
-
 					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
 					async: true,
 					success: function(res) {
@@ -479,10 +484,10 @@ export default {
         lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list',
+					url: '/ling-dao/customer/customer-list',
 					type: 'GET',
 
-					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
+					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +'&userId='+localStorage.getItem('id')+
 						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
 					async: true,
 					success: function(res) {
@@ -518,11 +523,11 @@ export default {
         lastPageNo() {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list-sum',
+					url: '/ling-dao/customer/customer-list-sum',
 					type: 'GET',
 
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
-						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent,
+						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+'&userId='+localStorage.getItem('id'),
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {

@@ -211,7 +211,7 @@ export default {
 									success: function(res) {
 										if (res.code == 0) {
                       	$('#login .password').val('')
-                      if(res.data.type==1){
+                      if(res.data.type==1||res.data.type==2){
                          _this.$router.replace({path:'/leader-index',query:{time:new Date().getTime()}})
                       }else{
                          _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
