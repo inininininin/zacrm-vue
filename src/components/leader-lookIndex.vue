@@ -10,7 +10,7 @@
 		<div class="mainbox">
 			<div class="topselect">
 				<div style="width: 100%;height: auto;">
-					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
+					<!-- <h2 class="peoname">{{nickname}}</h2><span class="shuju" style="margin: 0 10px;"></span> -->
                   <!--  <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
 					</router-link> -->
@@ -22,58 +22,85 @@
 					 <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
 					 <!-- <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span> -->
 				</div>
-				<div class="selectOption" style="width: 100%;height: auto;">
-					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" />
-					<select class="urgentLevel">
-						<option value="">-级别-</option>
-						<option value="0">加急客户</option>
-						<option value="1">暂不感兴趣</option>
-						<option value="2">初步感兴趣</option>
-						<option value="3">非常感兴趣</option>
-						<option value="4">近期可考察</option>
-						<option value="5">线上可签单</option>
-					</select>
-					<select class="nature">
-						<option value="" selected>-追踪医院-</option>
-						<option value="1">追踪</option>
-						<option value="2">未追踪</option>
-					</select>
-          <select class="nature">
-          	<option value="" selected>-院长号码-</option>
-          	<option value="1">有号码</option>
-          	<option value="2">无号码</option>
-          </select>
-          <select class="nature">
-          	<option value="" selected>-拍板人号码-</option>
-          	<option value="1">有号码</option>
-          	<option value="2">无号码</option>
-          </select>
-					<select class="nature">
-						<option value="" selected>-性质-</option>
-						<option value="1">民营医院</option>
-						<option value="2">公立医院</option>
-					</select>
-					<!-- 回访时间 : <input style="width:170px" @change="
-							debugger;
-							if($event.target.value){
-								toRevisitTimeFrom = new Date($event.target.value+` 00:00:00`).getTime();
-								toRevisitTimeTo = toRevisitTimeFrom+(1*24*60*60-1)*1000;
-							}else{
-								toRevisitTimeFrom = '';
-								toRevisitTimeTo = '';
-							}
-							lastPageNo()
-					" type="date" /> -->
-					<button class="searchThis refresh">重置</button>
+				<div class="leader_name">
+          <span>昵称：{{nicknameThis}}</span>
+				  <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
+				  <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button>
+				  <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
+				  <el-button nature='2' @click='selectHos($event,2)'>公立医院：{{totalCountHos2}}个</el-button>
 				</div>
 			</div>
-      <div class="introDetail">
-        <p>医院数量：<span>195</span></p>
-        <p>追踪数量：<span>195</span></p>
-        <p>有电话的医院数量：<span>195</span></p>
-        <p>有意向的医院数量：<span>195</span></p>
+      <div class="selectRoleAll"><p>筛选条件：<span v-if='nature==0'>所有医院</span><span v-if='nature==1'>民营医院</span><span v-if='nature==2'>公立医院</span>
+      <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
+      <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
+      <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
+      <span v-if='paiBanCustomerWorkerUrgent==1'>- 加急 / </span>
+      <span v-if='zhuRenCustomerWorkerHas==1' style="color: #333;">- 主任</span>
+      <span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
+      <span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
+      <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
+      </p></div>
+      <div class="selectAllThis">
+        <div class="lineOneThis">
+          <span>人员类型：</span>
+          <el-checkbox v-model="checked1" @change='yuanzhang'>院长</el-checkbox>
+        </div>
+        <div class="lineOneThis"  v-if='show1'>
+          <span>院长是否有号码：</span>
+           <el-radio-group v-model="PhoneHasyuanzhang" @change="selectPhoneyuanzhang">
+              <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">有号码</el-radio>
+              <!-- <el-radio :label="2">无号码</el-radio> -->
+            </el-radio-group>
+        </div>
+        <div class="lineOneThis"  v-if='show2' >
+          <span>院长级别：</span>
+           <el-radio-group v-model="urgentyuanzhang" @change='yuanzhanglevel'>
+               <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">暂不感兴趣</el-radio>
+              <el-radio :label="2">初步感兴趣</el-radio>
+              <el-radio :label="3">非常感兴趣</el-radio>
+              <el-radio :label="4">近期可考察</el-radio>
+              <el-radio :label="5">线上可签单</el-radio>
+            </el-radio-group>
+        </div>
+        <div class="lineOneThis"  v-if='show2'>
+          <span>院长是否加急：</span>
+           <el-checkbox v-model="checked3" @change='yuanzhangjj'>加急</el-checkbox>
+        </div>
+        <div class="lineOneThis">
+          <span>人员类型：</span>
+          <el-checkbox v-model="checked2" @change='zhuren'>主任</el-checkbox>
+        </div>
+        <div class="lineOneThis"  v-if='show3'>
+          <span>主任是否有号码：</span>
+           <el-radio-group v-model="PhoneHaszhuren" @change="selectPhonezhuren">
+              <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">有号码</el-radio>
+              <!-- <el-radio :label="2">无号码</el-radio> -->
+            </el-radio-group>
+        </div>
+        <div class="lineOneThis"  v-if='show4'>
+          <span>主任级别：</span>
+           <el-radio-group v-model="urgentzhuren"  @change='zhurenlevel'>
+              <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">暂不感兴趣</el-radio>
+              <el-radio :label="2">初步感兴趣</el-radio>
+              <el-radio :label="3">非常感兴趣</el-radio>
+              <el-radio :label="4">近期可考察</el-radio>
+              <el-radio :label="5">线上可签单</el-radio>
+            </el-radio-group>
+        </div>
+        <div class="lineOneThis"  v-if='show4'>
+          <span>主任是否加急：</span>
+           <el-checkbox v-model="checked4" @change='zhurenjj'>加急</el-checkbox>
+        </div>
       </div>
-			<div class="tableBox">
+      <div>
+        <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0;">共{{totalCountHosSelect}}家医院</p>
+      </div>
+
+			<!-- <div class="tableBox">
 				<table>
 					<thead>
 						<tr>
@@ -87,57 +114,75 @@
 						</tr>
 					</thead>
 					<tbody class="tbody">
-						<!--<td></td>
-						<td></td>
-						<td></td>
-						<td tel='15077822798'>15077822798</td
-						<td></td>
-						<td></td>-->
 					</tbody>
 				</table>
 				<div class="box rt" id="box"></div>
-			</div>
+			</div> -->
 		</div>
 		<div class="seccion">ver : {{$version}}  ser : {{$store.state.serVersion}}</div>
     </div>
 </template>
 <script>
+    import qs from 'qs'
 export default {
 	name: 'index',
 	data () {
 		return {
-			kw : '',
-			level : '',
-			nature : '',
-			area1Id : '',
-			area2Id : '',
-			area3Id : '',
-			ps : 15,
-			urgent : '',
-			pn : 1,
-            totalNum : '',
-            provinceList : undefined,
-            cityList : undefined,
-            townList : undefined,
-            cityItem : undefined,
-            townItem : undefined,
-			query:'',
-			toRevisitTimeFrom:'',
-			toRevisitTimeTo:'',
-      cookie:'',
+			nature:"",
+			paiBanCustomerWorkerHas: '',
+			paiBanCustomerWorkerPhoneHas: '',
+			paiBanCustomerWorkerUrgent: '',
+			paiBanCustomerWorkerLevel: '',
+			zhuRenCustomerWorkerHas: '',
+			zhuRenCustomerWorkerPhoneHas:'',
+			zhuRenCustomerWorkerUrgent: '',
+			zhuRenCustomerWorkerLevel: '',
+			paiBanCustomerWorkerLevelname:'',
+			zhuRenCustomerWorkerLevelname:'',
+      nicknameThis:'',
+      totalCount: '',
+      totalCountHos: '',
+      totalCountHos1: '',
+      totalCountHos2: '',
+      show1: false,
+      show2: false,
+      show3:false,
+      show4:false,
+      peopleType: '', //是院长还是主任
+      phoneIfyuanzhang: '', //院长是否有号码
+      phoneIfzhuren: '', //主任是否有号码
+      PhoneHasyuanzhang: '',
+      PhoneHaszhuren:'',
+      urgentyuanzhang:'',
+      urgentzhuren:'',
+      checked1:false,
+      checked2:false,
+      checked3:false,
+      checked4:false,
+      traceTotalNumber:'',//跟踪总量
+      totalCountHosSelect:'',
 		}
 	},
 	activated(){
 
 		let thisValue = this
 		if(localStorage.getItem('id')){
-      debugger
-      // document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      // document.cookie="loginId="+localStorage.getItem('id');
       this.cookie='loginId='+localStorage.getItem('id')
       console.log( this.cookie,localStorage.getItem('id'))
     }
-
+    
+    Object.assign(this.$data, this.$options.data());
+    // this.getData()
+    this.getDataNumber()
+    this.getDataNumberHos()
+    this.getDataNumberHos(1)
+    this.getDataNumberHos(2)
+    this.traceNumber()
+    if(localStorage.getItem('nickname')){
+      console.log(localStorage.getItem('nickname'))
+      this.nicknameThis = localStorage.getItem('nickname')
+      console.log(this.nicknameThis)
+    }
         // 跳转上次最后一条数据
         if(this.query != JSON.stringify(this.$route.query)){
 			this.query = JSON.stringify(this.$route.query);
@@ -185,29 +230,29 @@ export default {
 					}
 				})
             })
-        $.ajax({
-				url: '/login-refresh',
+    //     $.ajax({
+				// url: '/login-refresh',
 
-				type: 'POST',
-				async: true,
-				success: function(res) {
-					if (res.code == 0) {
-						localStorage.setItem('nickname',res.data.nickname)
-						$('#index .peoname').html(res.data.nickname)
-						$('#index #userName').val(res.data.nickname)
-						//         window.location.href='index.html'
-					} else {
+				// type: 'POST',
+				// async: true,
+				// success: function(res) {
+				// 	if (res.code == 0) {
+				// 		localStorage.setItem('nickname',res.data.nickname)
+				// 		$('#index .peoname').html(res.data.nickname)
+				// 		$('#index #userName').val(res.data.nickname)
+				// 		//         window.location.href='index.html'
+				// 	} else {
 
-						setTimeout(function() {
-                            thisValue.$router.push({path:'/login'})
-                            // location.href='/#/login'
-                            // location.href=location.pathname
-							// location.href = 'login.html'
-						}, 1000)
-					}
-				}
-            })
-        thisValue.lastPageNo()
+				// 		setTimeout(function() {
+    //                         thisValue.$router.push({path:'/login'})
+    //                         // location.href='/#/login'
+    //                         // location.href=location.pathname
+				// 			// location.href = 'login.html'
+				// 		}, 1000)
+				// 	}
+				// }
+    //         })
+        // thisValue.lastPageNo()
         $('#index table').on('click', 'tr .enterHos', function() {
 				$(this).parent().parent().find('.a29905').addClass('a29902').removeClass('a29905')
 				$(this).parent().addClass('a29905').removeClass('a29902')
@@ -485,77 +530,303 @@ export default {
 
     },
     methods:{
+        yuanzhang(e){
+          if(e==true){
+            this.show1 = true;
+            this.show2 = false;
+            this.paiBanCustomerWorkerHas=1
+          }else{
+             this.show1 = false;
+             this.show2 = false;
+             this.paiBanCustomerWorkerHas=0
+             this.PhoneHasyuanzhang=''
+             this.paiBanCustomerWorkerPhoneHas= ''
+             this.paiBanCustomerWorkerUrgent=''
+             this.paiBanCustomerWorkerLevel= ''
+          }
+          this.getDataNumberHosSelect()
+        },
+        zhuren(e){
+          if(e==true){
+            this.show3 = true;
+            this.show4 = false;
+            this.zhuRenCustomerWorkerHas=1
+          }else{
+             this.show3 = false;
+             this.show4 = false;
+             this.zhuRenCustomerWorkerHas=0
+             this.PhoneHaszhuren=''
+             this.zhuRenCustomerWorkerPhoneHas= ''
+             this.zhuRenCustomerWorkerUrgent= ''
+             this.zhuRenCustomerWorkerLevel= ''
+          }
+          this.getDataNumberHosSelect()
+        },
+        selectHos(event,i){
+          console.log(i)
+          this.nature=i
+          this.getDataNumberHosSelect()
+        },
+        selectPhoneyuanzhang(event) {
+          this.phoneIfyuanzhang = event; //获取option对应的value值。
+          if(event==0){
+            this.show2 = true;
+            this.paiBanCustomerWorkerPhoneHas=''
+          }
+          if (event == 1) {
+            this.show2 = true;
+            this.paiBanCustomerWorkerPhoneHas=1
+          }
+          this.getDataNumberHosSelect()
+        },
+        selectPhonezhuren(event) {
+          this.phoneIfzhuren = event; //获取option对应的value值。
+          if(event==0){
+            this.show4 = true;
+            this.zhuRenCustomerWorkerPhoneHas=''
+          }
+          if (event == 1) {
+            this.show4 = true;
+            this.zhuRenCustomerWorkerPhoneHas=1
+          }
+          this.getDataNumberHosSelect()
+        },
+         // 选择是否感兴趣
+        yuanzhanglevel(e){
+          if(e==0){
+            this.paiBanCustomerWorkerLevel=''
+          }else{
+            this.paiBanCustomerWorkerLevel=e
+            if(e==1){
+              this.paiBanCustomerWorkerLevelname='暂不感兴趣'
+            }else if(e==2){
+              this.paiBanCustomerWorkerLevelname='初步感兴趣'
+            }else if(e==3){
+              this.paiBanCustomerWorkerLevelname='非常感兴趣'
+            }else if(e==4){
+              this.paiBanCustomerWorkerLevelname='近期可考察'
+            }else if(e==5){
+              this.paiBanCustomerWorkerLevelname='线上可签单'
+            }
+          }
+          this.getDataNumberHosSelect()
+        },
+        zhurenlevel(e){
+          if(e==0){
+            this.zhuRenCustomerWorkerLevel=''
+          }else{
+            this.zhuRenCustomerWorkerLevel=e
+            if(e==1){
+              this.zhuRenCustomerWorkerLevelname='暂不感兴趣'
+            }else if(e==2){
+              this.zhuRenCustomerWorkerLevelname='初步感兴趣'
+            }else if(e==3){
+              this.zhuRenCustomerWorkerLevelname='非常感兴趣'
+            }else if(e==4){
+              this.zhuRenCustomerWorkerLevelname='近期可考察'
+            }else if(e==5){
+              this.zhuRenCustomerWorkerLevelname='线上可签单'
+            }
+          }
+          this.getDataNumberHosSelect()
+        },
+        // 是否加急
+        yuanzhangjj(e){
+          if(e==true){
+            this.paiBanCustomerWorkerUrgent=1
+          }else{
+            this.paiBanCustomerWorkerUrgent=0
+          }
+          this.getDataNumberHosSelect()
+        },
+        zhurenjj(e){
+          if(e==true){
+            this.zhuRenCustomerWorkerUrgent=1
+          }else{
+            this.zhuRenCustomerWorkerUrgent=0
+          }
+          this.getDataNumberHosSelect()
+        },
+getData() {
+        this.$axios.get('/ling-dao/user-list?' + qs.stringify({
+            pn: this.customerPage,
+            // ps: 10,
+            order: 'asc',
+            sort: 'updateTime',
+            userId:localStorage.getItem('id'),
+          }))
+          .then(res => {
+            console.log(res)
+            if (res.data.codeMsg) {
+              console.log(res.data.codeMsg)
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              if (res.data.data.itemList.length > 0) {
+                for (let i in res.data.data.itemList) {
+                  this.urgentLevel.push(res.data.data.itemList[i])
+                }
 
-        lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
-            let thisValue = this
-				$.ajax({
-					url: '/ling-dao/customer/customer-list',
-					type: 'GET',
 
-					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +'&userId='+localStorage.getItem('id')+
-						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
-					async: true,
-					success: function(res) {
-						console.dir(res)
-						if (res.code == 0) {
-							$('#index .tbody').html('')
-							if (res.data.itemList && res.data.itemList.length > 0) {
-								for (var i in res.data.itemList) {
-									var tel=''
-									// if(res.data.itemList[i].tel){
-									// 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-									// }
-									tel=res.data.itemList[i].tel = res.data.itemList[i].tel
-									let toRevisitTime = '';
-									if(res.data.itemList[i].toRevisitTime){
-										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
-									}else{
-										toRevisitTime = ''
-									}
-                                    $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
-                                    '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
-                                    + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
-											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
-											 toRevisitTime + '</td></tr>')
+              }
 
-                                }
-							}
-						}
-					}
-				})
-		},
-        lastPageNo() {
-            let thisValue = this
-				$.ajax({
-					url: '/ling-dao/customer/customer-list-sum',
-					type: 'GET',
+            }
 
-					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
-						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+'&userId='+localStorage.getItem('id'),
-					async: true,
-					success: function(res) {
-						if (res.code == 0) {
-							thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
-							$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
-							$('#index #box').paging({
-								initPageNo: 1, // 初始页码
-								totalPages: thisValue.totalNum, //总页数
-								//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-								slideSpeed: 600, // 缓动速度。单位毫秒
-								jump: true, //是否支持跳转
-								callback: function(page) { // 回调函数
-									// memberList1(1,page);
-									var nature = $('#index .nature').val()
-									thisValue.pn = page
-									thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-								}
-							})
+          })
+      },
+      getDataNumber() {
+        this.$axios.get('/ling-dao/user-list-sum?'+qs.stringify({userId:localStorage.getItem('id'),}))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              this.totalCount = res.data.data.itemCount
+            }
+          })
+      },
+      getDataNumberHosSelect() {
+        this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+            nature:this.nature,
+            userId:localStorage.getItem('id'),
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+                this.totalCountHosSelect = res.data.data.itemCount
+                console.log(this.totalCountHosSelect)
+            }
+          })
+      },
+      getDataNumberHos(nature) {
+        this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            nature: nature,
+            userId:localStorage.getItem('id'),
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              if (nature == 1) {
+                this.totalCountHos1 = res.data.data.itemCount
+              } else if (nature == 2) {
+                this.totalCountHos2 = res.data.data.itemCount
+              } else {
+                this.totalCountHos = res.data.data.itemCount
+                this.totalCountHosSelect=res.data.data.itemCount
+              }
+            }
+          })
+      },
+      traceNumber() {
+        this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum?'+qs.stringify({userId:localStorage.getItem('id'),}))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              this.traceTotalNumber = res.data.data.itemCount
+            }
+          })
+      },
 
-						}
-					}
-				})
-		},
+
+  //       lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
+  //           let thisValue = this
+		// 		$.ajax({
+		// 			url: '/ling-dao/customer/customer-list',
+		// 			type: 'GET',
+
+		// 			data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +'&userId='+localStorage.getItem('id')+
+		// 				'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
+		// 			async: true,
+		// 			success: function(res) {
+		// 				console.dir(res)
+		// 				if (res.code == 0) {
+		// 					$('#index .tbody').html('')
+		// 					if (res.data.itemList && res.data.itemList.length > 0) {
+		// 						for (var i in res.data.itemList) {
+		// 							var tel=''
+		// 							// if(res.data.itemList[i].tel){
+		// 							// 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+		// 							// }
+		// 							tel=res.data.itemList[i].tel = res.data.itemList[i].tel
+		// 							let toRevisitTime = '';
+		// 							if(res.data.itemList[i].toRevisitTime){
+		// 								toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
+		// 							}else{
+		// 								toRevisitTime = ''
+		// 							}
+  //                                   $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
+  //                                   '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
+  //                                   + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
+		// 									"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
+		// 									"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
+		// 									 toRevisitTime + '</td></tr>')
+
+  //                               }
+		// 					}
+		// 				}
+		// 			}
+		// 		})
+		// },
+  //       lastPageNo() {
+  //           let thisValue = this
+		// 		$.ajax({
+		// 			url: '/ling-dao/customer/customer-list-sum',
+		// 			type: 'GET',
+
+		// 			data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
+		// 				'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+'&userId='+localStorage.getItem('id'),
+		// 			async: true,
+		// 			success: function(res) {
+		// 				if (res.code == 0) {
+		// 					thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
+		// 					$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
+		// 					$('#index #box').paging({
+		// 						initPageNo: 1, // 初始页码
+		// 						totalPages: thisValue.totalNum, //总页数
+		// 						//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+		// 						slideSpeed: 600, // 缓动速度。单位毫秒
+		// 						jump: true, //是否支持跳转
+		// 						callback: function(page) { // 回调函数
+		// 							// memberList1(1,page);
+		// 							var nature = $('#index .nature').val()
+		// 							thisValue.pn = page
+		// 							thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+		// 						}
+		// 					})
+
+		// 				}
+		// 			}
+		// 		})
+		// },
         // 时间转换
         getDateDiff(dateTimeStamp) {
 			if(!dateTimeStamp)
@@ -624,4 +895,66 @@ export default {
   line-height: 60px;
   margin-right: 30px;
 }
+
+/* 新样式 */
+ .leader_name {
+    width: 100%;
+    height: 80px;
+    background: #fff;
+  }
+
+  /* .leader_name el-button{
+    margin-left: 15px;
+  } */
+  .leader_name span:nth-child(1) {
+    font-size: 24px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 80px;
+    /* margin-left: 36px; */
+  }
+
+  .leader_name span:nth-child(2),.leader_name span:nth-child(3) {
+    margin-left: 20px;
+    font-size: 20px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(102, 102, 102, 1);
+    line-height: 80px;
+  }
+
+
+
+.selectRoleAll{
+    /* margin-left: 34px; */
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+  .selectRoleAll span{
+    color: #999;
+    /* margin-left: 10px; */
+    display: inline-block;
+  }
+  .selectAllThis{
+    width: 100%;
+    /* padding: 0 34px; */
+    box-sizing: border-box;
+    font-size: 18px !important;
+  }
+  .selectAllThis .lineOneThis{
+    width: 100%;
+    display: block;
+    line-height: 30px;
+  }
+  .lineOneThis span{
+    display: inline-block;
+    width: 160px;
+  }
+  .lineOneThis .el-checkbox-group{
+    display: inline-block;
+    width: 500px;
+  }
 </style>
