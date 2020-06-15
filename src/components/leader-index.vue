@@ -105,7 +105,7 @@
       </div>
     </div>
     <div>
-      <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0 0 0 34px;">共{{totalCountHosSelect}}家医院</p>
+      <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0 0 0 34px;">搜索结果：{{totalCountHosSelect}} 家医院</p>
     </div>
     <div class="leader_peop">
       <div v-for="item in urgentLevel" @click="memberDetail(item.userId,item.nickname)" :key="item.value" class="leader_eve">
@@ -164,7 +164,6 @@
         zhuRenCustomerWorkerLevelname:'',
         urgentLevel: [],
         customerPage: 1,
-        choseTime:{},
         lineData:{
                 title: {
                     text: ''
@@ -299,26 +298,27 @@
       thisValue.getDataNumberHos(1)
       thisValue.getDataNumberHos(2)
       thisValue.traceNumber()
+      debugger
+      // thisValue.getDataNumberHosSelect('','','',1)
       let nowYear = new Date().getFullYear();
-      let nowMOunth = new Date().getMonth();
+      let nowMOunth = new Date().getMonth()+1;
       if(nowMOunth < 10){
         nowMOunth = '0' + nowMOunth
       }
       thisValue.layuiData = nowYear + '-' + nowMOunth;
       thisValue.$nextTick(()=>{
-        debugger
         // let nowMOunth = new Date().getMonth();
         // let nowYear = new Date().getFullYear();
         layui.use('laydate', function(){
-        console.dir(layui.laydate)
+        // console.dir(layui.laydate)
           layui.laydate.render({
             elem: '#layDateMonth',
             type:'month',
             // value:nowYear + '-' + nowMOunth,
             change:function(value, date, endDate){
-              console.log(value); //得到日期生成的值，如：2017-08-18
-              console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-              console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+              // console.log(value); //得到日期生成的值，如：2017-08-18
+              // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+              // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
               thisValue.nowTime = date
               thisValue.chartsFn()
               thisValue.statisticalAllFn()
@@ -508,10 +508,8 @@
             type: 'success',
             message: '退出成功!'
           });
-          debugger
           this.$axios.post('/logout')
             .then(res => {
-              debugger
               if (res.data.codeMsg) {
                 this.$message({
                   type: 'info',
@@ -550,9 +548,9 @@
             sort: 'updateTime'
           }))
           .then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.data.codeMsg) {
-              console.log(res.data.codeMsg)
+              // console.log(res.data.codeMsg)
               this.$message({
                 type: 'info',
                 message: res.data.codeMsg
@@ -585,8 +583,9 @@
             }
           })
       },
-      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas) {
+      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas,_startValue) {
         let thisValue = this
+        debugger
         await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
@@ -598,7 +597,7 @@
             zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
             nature:this.nature,
             createTimeFrom : _time,
-            createTimeTo : _nextTime-1,
+            createTimeTo : _nextTime? _nextTime-1:'',
             paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
           }))
           .then(res => {
@@ -611,16 +610,22 @@
             if(res.data.code ==0){
               // this.$echarts.init(document.getElementById('main')).clear()
               // this.$echarts.init(document.getElementById('main2')).clear()
-              this.totalCountHosSelect = res.data.data.itemCount
+              debugger
+              if(_startValue == 1){
+                debugger
+                console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
+                console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
+                this.totalCountHosSelect = res.data.data.itemCount
+              }
               // console.dir(res.data.data.itemCount)
-              if(_paiBanCustomerWorkerPhoneHas){
+              if(_paiBanCustomerWorkerPhoneHas == 1){
                 this.lineData.series[1].data.push(res.data.data.itemCount)
                 this.barData.series[1].data.push(res.data.data.itemCount)
-                console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
+                // console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
               }else{
                 this.lineData.series[0].data.push(res.data.data.itemCount)
                 this.barData.series[0].data.push(res.data.data.itemCount)
-                console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
+                // console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
               }
               // this.totalCount=res.data.data.itemCount
             }
@@ -629,7 +634,7 @@
       },
       async statisticalAllFn(){
         let nowData = new Date().getDate();
-        let nowMOunth = new Date().getMonth();
+        let nowMOunth = new Date().getMonth()+1;
         let nowYear = new Date().getFullYear();
 
         // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
@@ -640,26 +645,28 @@
           nowYear = this.nowTime.year;
           nowMOunth = this.nowTime.month;
           nowData = new Date(nowYear, nowMOunth, 0).getDate()
-          console.log('当前月份有：' + nowData)
+          // console.log('当前月份有：' + nowData)
         }
         for(let i=1;i<=nowData;i++){
           this.lineData.xAxis.data.push(i+'日')
           this.barData.xAxis.data.push(i+'日')
-          console.log(i+'日')
+          // console.log(i+'日')
           let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00').getTime();
           let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
           // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
           // console.log(i+'')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime)
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
+          await this.getDataNumberHosSelect(_nowTime,_nextTime,'','')
+          await this.getDataNumberHosSelect(_nowTime,_nextTime,1,'')
           if(i == nowData){
-            debugger
-            console.dir(this.lineData)
-             console.dir(this.barData)
+            // console.dir(this.lineData)
+            //  console.dir(this.barData)
+            await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
             this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
             this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
           }
         }
+        debugger
+        
       },
       chartsFn(){
         this.lineData.series[0].data = []
