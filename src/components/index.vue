@@ -3,7 +3,7 @@
 		<input type='' id='userName' hidden=''>
 		<span class="record1" hidden=""></span>
 		<span class="record2" hidden=""></span>
-		<span class="record3" hidden=""></span>	
+		<span class="record3" hidden=""></span>
 		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
 		<input type="" name="" id="inp_send"  hidden="">
 		<button id="btn_conn" hidden="">发送</button>
@@ -23,7 +23,7 @@
 					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: auto;">
-					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" /> 
+					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" />
 					<select class="urgentLevel">
 						<option value="">-级别-</option>
 						<option value="0">加急客户</option>
@@ -113,12 +113,20 @@ export default {
 			query:'',
 			toRevisitTimeFrom:'',
 			toRevisitTimeTo:'',
+      cookie:'',
 		}
 	},
 	activated(){
+
 		let thisValue = this
-		
-		
+		if(localStorage.getItem('id')){
+      debugger
+      // document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      // document.cookie="loginId="+localStorage.getItem('id');
+      this.cookie='loginId='+localStorage.getItem('id')
+      console.log( this.cookie,localStorage.getItem('id'))
+    }
+
         // 跳转上次最后一条数据
         if(this.query != JSON.stringify(this.$route.query)){
 			this.query = JSON.stringify(this.$route.query);
@@ -168,7 +176,7 @@ export default {
             })
         $.ajax({
 				url: '/login-refresh',
-				
+
 				type: 'POST',
 				async: true,
 				success: function(res) {
@@ -178,7 +186,7 @@ export default {
 						$('#index #userName').val(res.data.nickname)
 						//         window.location.href='index.html'
 					} else {
-						
+
 						setTimeout(function() {
                             thisValue.$router.push({path:'/login'})
                             // location.href='/#/login'
@@ -205,6 +213,7 @@ export default {
 				$.ajax({
 					url: '/cache/set',
 					type: 'post',
+
 					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
 					async: true,
 					success: function(res) {
@@ -354,7 +363,7 @@ export default {
 				})
             })
         $('#index .town').change(function(){
-			
+
 			thisValue.area3Id = $(this).val()
 			thisValue.lastPageNo()
 			$('#index #box').paging({
@@ -372,7 +381,7 @@ export default {
 				})
 		})
 		$('#index').on('click','.tbody .xiugaiTimeFn',function(e){
-			
+
 			$(this).parent().attr('id')
 
 
@@ -419,7 +428,7 @@ export default {
 		// 		url:"/logout",
 		// 		data:"",
 		// 		success:function (data){
-		
+
 		// 		}
 		// 	})
 		//     return "真的离开?";
@@ -432,6 +441,7 @@ export default {
 			$.ajax({
 				type:"post",
 				url:"/logout",
+
 				data:"",
 				success:function (data){
                     // location.href='/#/login'
@@ -443,7 +453,7 @@ export default {
         $('#index table').on('click','tr td:nth-child(4)',function(){
 				debugger
 				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
-					
+
 				}else{
                     debugger
 					//anjie($(this).attr('tel'))
@@ -452,24 +462,26 @@ export default {
 					 	$('.phoneNumber').html($(this).html())
 					 	$('#btn_conn').click()
 					 //2000)
-					
+
 				}
-				
+
 			})
-            
+
 
 
 		}
 
 
-			
+
     },
     methods:{
+
         lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
             let thisValue = this
 				$.ajax({
 					url: '/my-customer/customer-list',
 					type: 'GET',
+
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
 						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
 					async: true,
@@ -496,7 +508,7 @@ export default {
 											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
 											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
 											 toRevisitTime + '</td></tr>')
-									
+
                                 }
 							}
 						}
@@ -508,6 +520,7 @@ export default {
 				$.ajax({
 					url: '/my-customer/customer-list-sum',
 					type: 'GET',
+
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
 						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent,
 					async: true,
@@ -528,7 +541,7 @@ export default {
 									thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 								}
 							})
-							
+
 						}
 					}
 				})
@@ -573,7 +586,7 @@ export default {
 				}
 				return result;
             }
-        
+
     }
 }
 </script>

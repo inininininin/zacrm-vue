@@ -13,15 +13,18 @@ import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';
-import axios from 'axios'
 
 import store from './store'
 import moment from 'moment'
+import axios from 'axios'
+import qs from 'qs'
+
 
 Vue.config.productionTip = false
 Vue.prototype.moment = moment;
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios
+// Vue.prototype.$laydate = laydate
 
 Vue.use(ElementUI);
 Vue.prototype.$echarts = require('echarts')
