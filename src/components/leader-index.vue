@@ -39,11 +39,11 @@
       <p>筛选条件：<span v-if='nature==0'>所有医院</span><span v-if='nature==1'>民营医院</span><span v-if='nature==2'>公立医院</span>
         <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
         <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
-        <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
+        <span v-if='paiBanCustomerWorkerLevelname'>- {{paiBanCustomerWorkerLevelname}}</span>
         <span v-if='paiBanCustomerWorkerUrgent==1'>- 加急 / </span>
         <span v-if='zhuRenCustomerWorkerHas==1' style="color: #333;">- 主任</span>
         <span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
-        <span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
+        <span v-if='zhuRenCustomerWorkerLevelname'>- {{zhuRenCustomerWorkerLevelname}}</span>
         <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
         <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button>
       </p>
@@ -174,7 +174,7 @@
                 legend: {
                     data:['客户量','拍板人']
                 },
-                xAxis: { 
+                xAxis: {
                     data: []
                 },
                 yAxis: {
@@ -216,7 +216,7 @@
                 legend: {
                     data:['客户量','拍板人']
                 },
-                xAxis: { 
+                xAxis: {
                     data: []
                 },
                 yAxis: {
@@ -328,7 +328,7 @@
               thisValue.layuiData = date.year + '-' + date.month
               $('.layui-laydate').remove()
             }
-            
+
           });
         });
       })
@@ -348,6 +348,10 @@
            this.paiBanCustomerWorkerPhoneHas= ''
            this.paiBanCustomerWorkerUrgent=''
            this.paiBanCustomerWorkerLevel= ''
+           this.paiBanCustomerWorkerLevelname=''
+           this.checked3=false
+           this.urgentyuanzhang=''
+
         }
         // this.chartsFn()
         // this.statisticalAllFn()
@@ -365,6 +369,9 @@
            this.zhuRenCustomerWorkerPhoneHas= ''
            this.zhuRenCustomerWorkerUrgent= ''
            this.zhuRenCustomerWorkerLevel= ''
+           this.zhuRenCustomerWorkerLevelname= ''
+           this.checked4=false
+           this.urgentzhuren=''
         }
         // this.chartsFn()
         // this.statisticalAllFn()
@@ -405,6 +412,7 @@
       yuanzhanglevel(e){
         if(e==0){
           this.paiBanCustomerWorkerLevel=''
+          this.paiBanCustomerWorkerLevelname=''
         }else{
           this.paiBanCustomerWorkerLevel=e
           if(e==1){
@@ -617,13 +625,13 @@
               // this.totalCount=res.data.data.itemCount
             }
           })
-        
+
       },
       async statisticalAllFn(){
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth();
         let nowYear = new Date().getFullYear();
-        
+
         // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
         this.lineData.xAxis.data = [];
         this.barData.xAxis.data = [];
@@ -653,7 +661,7 @@
           }
         }
       },
-      chartsFn(){ 
+      chartsFn(){
         this.lineData.series[0].data = []
         this.lineData.series[1].data = []
         this.barData.series[0].data = []

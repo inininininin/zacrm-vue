@@ -7,14 +7,12 @@
         <div id="main4" style="width: 600px;height:400px;"></div>
     </div>
 </template>
-
 <script>
 export default {
     name:'groupLeaderIndex',
     data(){
         return{
-            myChart:'',
-            // line（折线图）、bar（柱状图）、pie（饼图）、scatter（散点图）、graph（关系图）、tree（树图）
+            myChart:'',// line（折线图）、bar（柱状图）、pie（饼图）、scatter（散点图）、graph（关系图）、tree（树图）
         }
     },
     activated(){
@@ -117,7 +115,7 @@ export default {
                                 color: '#37A2DA'
                             }}
                         ],
-                        
+
                     }
                 ]
             },);
@@ -218,7 +216,7 @@ export default {
                                 color: '#37A2DA'
                             }}
                         ],
-                        
+
                     }
                 ]
             },);
