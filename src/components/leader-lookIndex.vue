@@ -43,7 +43,8 @@
 				<span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
 				<span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
 				<span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
-				<el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button>
+				<!-- <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button> -->
+				<el-button @click='selectHospiatlNumFilterFn()' style="margin-left:15px">确认筛选</el-button>
 			</p>
 	  	</div>
       <div class="selectAllThis">
@@ -127,9 +128,10 @@
 		</div>
 		<div class="time">
 			<span>时间选择：</span>
-			<input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;">
+			<input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
+			<el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
 		</div>
-		<div style="width: 1230px;height:800px;margin:30px auto 0px">
+		<div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
 			<div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
 			<div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
 		</div>
@@ -176,6 +178,7 @@ export default {
 			traceTotalNumber:'',//跟踪总量
 			totalCountHosSelect:'',
 			layuiData:'',
+			echartsShowData:false,
 			lineData:{
                 title: {
                     text: ''
@@ -278,8 +281,8 @@ export default {
 		this.getDataNumberHos(1)
 		this.getDataNumberHos(2)
 		this.traceNumber()
-		thisValue.chartsFn()
-		this.statisticalAllFn()
+		// thisValue.chartsFn()
+		// this.statisticalAllFn()
 		let nowYear = new Date().getFullYear();
 		let nowMOunth = new Date().getMonth()+1;
 		if(nowMOunth < 10){
@@ -300,8 +303,8 @@ export default {
 					// console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
 					// console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
 					thisValue.nowTime = date
-					thisValue.chartsFn()
-					thisValue.statisticalAllFn()
+					// thisValue.chartsFn()
+					// thisValue.statisticalAllFn()
 					if(date.month<10){
 						date.month = '0'+date.month
 					}
@@ -788,8 +791,14 @@ export default {
         //   this.getDataNumberHosSelect()
 		},
 		selectFilterFn(){
-			this.chartsFn()
+			this.echartsShowData = true
+			if(!this.echartsShowData){
+				this.chartsFn()
+			}
 			this.statisticalAllFn()
+		},
+		selectHospiatlNumFilterFn(){
+			this.getNumberHosSelect()
 		},
 		getData() {
         	this.$axios.get('/ling-dao/user-list?' + qs.stringify({
