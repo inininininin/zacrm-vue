@@ -672,7 +672,7 @@ export default {
           }else{
              this.show1 = false;
              this.show2 = false;
-             this.paiBanCustomerWorkerHas=0
+             this.paiBanCustomerWorkerHas=''
              this.PhoneHasyuanzhang=''
              this.paiBanCustomerWorkerPhoneHas= ''
              this.paiBanCustomerWorkerUrgent=''
@@ -688,7 +688,7 @@ export default {
           }else{
              this.show3 = false;
              this.show4 = false;
-             this.zhuRenCustomerWorkerHas=0
+             this.zhuRenCustomerWorkerHas=''
              this.PhoneHaszhuren=''
              this.zhuRenCustomerWorkerPhoneHas= ''
              this.zhuRenCustomerWorkerUrgent= ''
@@ -825,11 +825,8 @@ export default {
             }
           })
       },
-      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas,_startValue) {
+      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas) {
 		let thisValue = this;
-		if(_startValue){
-			debugger
-		}
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: thisValue.paiBanCustomerWorkerPhoneHas,
@@ -855,13 +852,13 @@ export default {
             if (res.data.code == 0) {
                 // thisValue.totalCountHosSelect = res.data.data.itemCount
 				// console.log(thisValue.totalCountHosSelect)
-				if(_startValue == 1){
-					debugger
-					console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
-					console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
+				// if(_startValue == 1){
+				// 	debugger
+				// 	console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
+				// 	console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
 
-					thisValue.totalCountHosSelect = res.data.data.itemCount
-				}
+				// 	thisValue.totalCountHosSelect = res.data.data.itemCount
+				// }
 				// console.dir(res.data.data.itemCount)
 				if(_paiBanCustomerWorkerPhoneHas == 1){
 					thisValue.lineData.series[1].data.push(res.data.data.itemCount)
@@ -875,7 +872,35 @@ export default {
             }
           })
 	  },
+	  async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
+		let thisValue = this;
+        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: thisValue.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
+            nature:thisValue.nature,
+			userId:localStorage.getItem('id'),
+            paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              thisValue.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+                thisValue.totalCountHosSelect = res.data.data.itemCount
+            }
+          })
+	  },
 	  async statisticalAllFn(){
+		this.getNumberHosSelect();
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth()+1;
         let nowYear = new Date().getFullYear();
@@ -897,12 +922,12 @@ export default {
           let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
           // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
           // console.log(i+'')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,'','')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,1,'')
+          await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
+          await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
           if(i == nowData){
             // console.dir(this.lineData)
             //  console.dir(this.barData)
-            await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
+            // await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
             this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
             this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
           }

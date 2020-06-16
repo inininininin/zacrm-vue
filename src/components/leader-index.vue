@@ -45,7 +45,7 @@
         <span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
         <span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
         <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
-        <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button>
+        <el-button @click='selectHospiatlNumFilterFn()' style="margin-left:15px">确认筛选</el-button>
       </p>
     </div>
     <div class="selectAllThis">
@@ -137,6 +137,8 @@
     <div class="time">
       <span>时间选择：</span>
       <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;">
+      <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button>
+      
     </div>
     <div style="width: 1230px;height:800px;margin:30px auto 0px">
       <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
@@ -360,7 +362,7 @@
         }else{
            this.show3 = false;
            this.show4 = false;
-           this.zhuRenCustomerWorkerHas=0
+           this.zhuRenCustomerWorkerHas=''
            this.PhoneHaszhuren=''
            this.zhuRenCustomerWorkerPhoneHas= ''
            this.zhuRenCustomerWorkerUrgent= ''
@@ -375,7 +377,7 @@
         // this.chartsFn()
         // this.statisticalAllFn()
       },
-      selectPhoneyuanzhang(event) {
+      selectPhoneyuanzhang(event) {        
         this.phoneIfyuanzhang = event; //获取option对应的value值。
         if(event==0){
           this.show2 = true;
@@ -465,7 +467,9 @@
         this.chartsFn()
         this.statisticalAllFn()
       },
-
+      selectHospiatlNumFilterFn(){
+        this.getNumberHosSelect()
+      },
 
       // create() {
       //   this.$axios.post('/ling-dao/create-user', qs.stringify({
@@ -575,7 +579,7 @@
             }
           })
       },
-      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas,_startValue) {
+      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas) {
         let thisValue = this
         debugger
         await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
@@ -603,12 +607,12 @@
               // this.$echarts.init(document.getElementById('main')).clear()
               // this.$echarts.init(document.getElementById('main2')).clear()
               debugger
-              if(_startValue == 1){
-                debugger
-                console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
-                console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
-                this.totalCountHosSelect = res.data.data.itemCount
-              }
+              // if(_startValue == 1){
+              //   debugger
+              //   console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
+              //   console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD')+res.data.data.itemCount)
+              //   this.totalCountHosSelect = res.data.data.itemCount
+              // }
               // console.dir(res.data.data.itemCount)
               if(_paiBanCustomerWorkerPhoneHas == 1){
                 this.lineData.series[1].data.push(res.data.data.itemCount)
@@ -624,7 +628,36 @@
           })
         
       },
+      async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
+        let thisValue = this
+        debugger
+        await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+            nature:this.nature,
+            paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code ==0){
+              this.totalCountHosSelect = res.data.data.itemCount
+            }
+          })
+        
+      },
       async statisticalAllFn(){
+        this.getNumberHosSelect()
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth()+1;
         let nowYear = new Date().getFullYear();
@@ -646,12 +679,13 @@
           let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
           // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
           // console.log(i+'')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,'','')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,1,'')
+          await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
+          await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
           if(i == nowData){
             // console.dir(this.lineData)
             //  console.dir(this.barData)
-            await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
+            // await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
+            
             this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
             this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
           }
