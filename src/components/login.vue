@@ -67,7 +67,7 @@
         <input class="names" type="text"/>
     <div>
     <img src="image/zhanghu.png" alt=""/>
-    <span>用户名</span> 
+    <span>用户名</span>
 </div>
 </div><div class="number oldpwd" style="margin-top: 24px">
     <input class="passwords" autocomplete="off"  type="password"/><div><img src="../assets/img/mima.png" alt=""/> <span>旧密码</span></div></div><div class="number newpwd" style="margin-top: 24px"><input autocomplete="off"  class="passwords1" type="password"/><div><img src="image/mima.png" alt=""/><span>新密码</span></div></div><div class="pwdbtn" style="margin-top: 50px;"><button @click="changepwd()">确认</button></div>
@@ -75,9 +75,9 @@
 <!-- </div> -->
 </div>
 
-    
+
     </div>
-</template>     
+</template>
 <script>
 
 // import layui from '../assets/layui/layui.js'
@@ -95,7 +95,7 @@ export default {
         // setTimeout(()=>{
         //     alert('layer.open '+window.layer.open)
         // },2000)
-        
+
 	},
 	methods:{
          changepwd(){
@@ -155,7 +155,7 @@ export default {
 				});
             // this.$layui.use("layer",function(){
             //     var layer = layui.layer
-               
+
                 // layer.open({
 				// 	title: '修改密码',
 				// 	type: 1,
@@ -184,8 +184,8 @@ export default {
 				// 	}
 				// });
             // })
-            
-           
+
+
         },
 		submitFn(){
             var _this = this
@@ -210,8 +210,14 @@ export default {
 									async: true,
 									success: function(res) {
 										if (res.code == 0) {
-											$('#login .password').val('')
-                                            _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
+                      	$('#login .password').val('')
+                      if(res.data.type==1||res.data.type==2){
+                         _this.$router.replace({path:'/leader-index',query:{time:new Date().getTime()}})
+                      }else{
+                         _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
+                      }
+
+
 										} else {
 											layer.msg(res.codeMsg)
 										}
@@ -225,7 +231,7 @@ export default {
 
 				}
         }
-	}		
+	}
 }
 </script>
 

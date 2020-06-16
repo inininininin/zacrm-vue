@@ -60,7 +60,7 @@ var phone = [];
 		socket.onopen = function (event) {
 			debugger
 			// 发送一个初始化消息
-//              showmessage('连接成 功');
+//              showmessage('连接成功');
 			if(!callState){
 				var msg = '{"req":"HP_Init","rid":1,"para":{"Para":"0"}}';
 				socket.send(msg);
