@@ -677,6 +677,9 @@ export default {
              this.paiBanCustomerWorkerPhoneHas= ''
              this.paiBanCustomerWorkerUrgent=''
              this.paiBanCustomerWorkerLevel= ''
+             this.paiBanCustomerWorkerLevelname=''
+             this.checked3=false
+             this.urgentyuanzhang=''
           }
         //   this.getDataNumberHosSelect()
         },
@@ -693,6 +696,9 @@ export default {
              this.zhuRenCustomerWorkerPhoneHas= ''
              this.zhuRenCustomerWorkerUrgent= ''
              this.zhuRenCustomerWorkerLevel= ''
+             this.zhuRenCustomerWorkerLevelname= ''
+             this.checked4=false
+             this.urgentzhuren=''
           }
         //   this.getDataNumberHosSelect()
         },
