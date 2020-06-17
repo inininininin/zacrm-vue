@@ -47,6 +47,27 @@
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
 					</select>
+          <select class="paiBanCustomerWorkerHas">
+          	<option value="" selected>-是否有拍板人-</option>
+          	<option value="0">无拍板人</option>
+          	<option value="1">有拍板人</option>
+          </select>
+          <select class="paiBanCustomerWorkerPhoneHas">
+          	<option value="" selected>-拍板人有无号码-</option>
+          	<option value="0">无号码</option>
+          	<option value="1">有号码</option>
+          </select>
+          <select class="zhuRenCustomerWorkerHas">
+          	<option value="" selected>-是否有相关人-</option>
+          	<option value="0">无相关人</option>
+          	<option value="1">有相关人</option>
+          </select>
+
+          <select class="zhuRenCustomerWorkerPhoneHas">
+          	<option value="" selected>-相关人有无号码-</option>
+          	<option value="0">无号码</option>
+          	<option value="1">有号码</option>
+          </select>
 					回访时间 : <input style="width:170px" @change="
 							debugger;
 							if($event.target.value){
@@ -69,7 +90,7 @@
 							<th>序号</th>
 							<th>医院名称</th>
 							<th>拍板人</th>
-							<th>固定电话</th>
+							<th>拍板人手机号码</th>
 							<th>拍板人验证</th>
 							<th>近期跟踪时间</th>
 							<th>回访时间</th>
@@ -103,6 +124,10 @@ export default {
 			area3Id : '',
 			ps : 15,
 			urgent : '',
+      paiBanCustomerWorkerHas:'',
+      paiBanCustomerWorkerPhoneHas:'',
+      zhuRenCustomerWorkerHas:'',
+      zhuRenCustomerWorkerPhoneHas:'',
 			pn : 1,
             totalNum : '',
             provinceList : undefined,
@@ -148,11 +173,19 @@ export default {
 							thisValue.urgent = data.urgent
 							thisValue.pn = data.page
 							thisValue.totalNum = data.totalNum
+              thisValue.paiBanCustomerWorkerHas = data.paiBanCustomerWorkerHas
+              thisValue.paiBanCustomerWorkerPhoneHas = data.paiBanCustomerWorkerPhoneHas
+              thisValue.zhuRenCustomerWorkerHas = data.zhuRenCustomerWorkerHas
+              thisValue.zhuRenCustomerWorkerPhoneHas = data.zhuRenCustomerWorkerPhoneHas
 							$('#index .keyword').val(thisValue.kw)
 							$('#index .urgentLevel').val(thisValue.level || thisValue.urgent)
 							$('#index .nature').val(thisValue.nature)
 							$('#index .province').val(thisValue.area1Id)
 							$('#index .city').val(thisValue.area2Id)
+              $('#index .paibanrenIf').val(thisValue.paiBanCustomerWorkerHas)
+              $('#index .paibanrenPhoneIf').val(thisValue.paiBanCustomerWorkerPhoneHas)
+              $('#index .zhuRenIf').val(thisValue.zhuRenCustomerWorkerHas)
+              $('#index .zhuRenPhoneIf').val(thisValue.zhuRenCustomerWorkerPhoneHas)
 							// console.log(data.page)
 							// $('.keyword').val(thisValue.kw)
 							$('#index #box').paging({
@@ -208,7 +241,11 @@ export default {
 					'area1Id': thisValue.area1Id,
 					'area2Id': thisValue.area2Id,
 					'urgent': thisValue.urgent,
-					'totalNum': thisValue.totalNum
+					'totalNum': thisValue.totalNum,
+          'paiBanCustomerWorkerHas':thisValue.paiBanCustomerWorkerHas,
+          'paiBanCustomerWorkerPhoneHas':thisValue.paiBanCustomerWorkerPhoneHas,
+          'zhuRenCustomerWorkerHas':thisValue.zhuRenCustomerWorkerHas,
+          'zhuRenCustomerWorkerPhoneHas':thisValue.zhuRenCustomerWorkerPhoneHas,
 				}
 				$.ajax({
 					url: '/cache/set',
@@ -291,6 +328,79 @@ export default {
 					}
 				})
             })
+            $('#index .paiBanCustomerWorkerHas').change(function() {
+            thisValue.paiBanCustomerWorkerHas = $(this).val()
+            thisValue.lastPageNo()
+            // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+            $('#index #box').paging({
+            	initPageNo: 1, // 初始页码
+            	totalPages: thisValue.totalNum, //总页数
+            	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            	slideSpeed: 600, // 缓动速度。单位毫秒
+            	jump: true, //是否支持跳转
+            	callback: function(page) { // 回调函数
+            		// memberList1(1,page);
+            		var nature = $('.nature').val()
+            		thisValue.pn = page
+            		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+            	}
+            })
+                })
+            $('#index .paiBanCustomerWorkerPhoneHas').change(function() {
+            thisValue.paiBanCustomerWorkerPhoneHas = $(this).val()
+            thisValue.lastPageNo()
+            // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+            $('#index #box').paging({
+            	initPageNo: 1, // 初始页码
+            	totalPages: thisValue.totalNum, //总页数
+            	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            	slideSpeed: 600, // 缓动速度。单位毫秒
+            	jump: true, //是否支持跳转
+            	callback: function(page) { // 回调函数
+            		// memberList1(1,page);
+            		var nature = $('.nature').val()
+            		thisValue.pn = page
+            		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+            	}
+            })
+                })
+           $('#index .zhuRenCustomerWorkerHas').change(function() {
+           thisValue.zhuRenCustomerWorkerHas = $(this).val()
+           thisValue.lastPageNo()
+           // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+           $('#index #box').paging({
+           	initPageNo: 1, // 初始页码
+           	totalPages: thisValue.totalNum, //总页数
+           	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+           	slideSpeed: 600, // 缓动速度。单位毫秒
+           	jump: true, //是否支持跳转
+           	callback: function(page) { // 回调函数
+           		// memberList1(1,page);
+           		var nature = $('.nature').val()
+           		thisValue.pn = page
+           		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+           	}
+           })
+               })
+           $('#index .zhuRenCustomerWorkerPhoneHas').change(function() {
+           thisValue.zhuRenCustomerWorkerPhoneHas = $(this).val()
+           thisValue.lastPageNo()
+           // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+           $('#index #box').paging({
+           	initPageNo: 1, // 初始页码
+           	totalPages: thisValue.totalNum, //总页数
+           	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+           	slideSpeed: 600, // 缓动速度。单位毫秒
+           	jump: true, //是否支持跳转
+           	callback: function(page) { // 回调函数
+           		// memberList1(1,page);
+           		var nature = $('.nature').val()
+           		thisValue.pn = page
+           		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+           	}
+           })
+               })
+
         // 省市区三级联动
 		// TODO 后期待优化
 		$.getJSON("./assets/js/area.json", function(res) {
@@ -394,6 +504,10 @@ export default {
 				$('#index .town').val('')
 				$('#index .nature').val('')
 				$('#index .urgentLevel').val('')
+        $('#index .paiBanCustomerWorkerHas').val('')
+        $('#index .paiBanCustomerWorkerPhoneHas').val('')
+        $('#index .zhuRenCustomerWorkerHas').val('')
+        $('#index .zhuRenCustomerWorkerPhoneHas').val('')
 				thisValue.kw = ''
 				thisValue.nature = ''
 				thisValue.area1Id = ''
@@ -403,6 +517,10 @@ export default {
 				thisValue.level = ''
 				thisValue.toRevisitTimeFrom = ''
 				thisValue.toRevisitTimeTo = ''
+        thisValue.paiBanCustomerWorkerHas = ''
+        thisValue.paiBanCustomerWorkerPhoneHas = ''
+        thisValue.zhuRenCustomerWorkerHas = ''
+        thisValue.zhuRenCustomerWorkerPhoneHas = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
@@ -483,7 +601,10 @@ export default {
 					type: 'GET',
 
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
-						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
+						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+
+            '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+
+            '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
+             '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
 					async: true,
 					success: function(res) {
 						console.dir(res)
@@ -495,7 +616,7 @@ export default {
 									// if(res.data.itemList[i].tel){
 									// 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
 									// }
-									tel=res.data.itemList[i].tel = res.data.itemList[i].tel
+									tel=res.data.itemList[i].paiBanCustomerWorkerPhone1 //= res.data.itemList[i].tel
 									let toRevisitTime = '';
 									if(res.data.itemList[i].toRevisitTime){
 										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
@@ -522,7 +643,8 @@ export default {
 					type: 'GET',
 
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
-						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent,
+						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+ '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
+             '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {

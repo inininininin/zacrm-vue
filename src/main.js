@@ -19,6 +19,14 @@ import moment from 'moment'
 import axios from 'axios'
 import qs from 'qs'
 
+axios.interceptors.request.use(
+  config => {
+    config.cancelToken = new axios.CancelToken(function (cancel) {
+      store.commit('pushToken', {cancelToken: cancel})
+    })
+    return config
+  }
+)
 
 Vue.config.productionTip = false
 Vue.prototype.moment = moment;
