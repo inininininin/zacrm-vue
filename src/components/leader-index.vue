@@ -797,7 +797,7 @@
     min-height: 100%;
     background: rgba(240, 242, 245, 1);
   }
-
+ 
   .leader_top {
     width: 100%;
     height: 64px;
