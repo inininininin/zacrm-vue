@@ -140,7 +140,7 @@
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
       
     </div>
-    <div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
+    <div style="width: 1230px;height:auto;margin:30px auto 0px" v-if="echartsShowData">
       <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
       <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
     </div>
@@ -473,10 +473,12 @@
         // this.statisticalAllFn()
       },
       selectFilterFn(){
-        this.echartsShowData = true
-        if(!this.echartsShowData){
+        if(this.echartsShowData){
           this.chartsFn()
+          debugger
+          console.log(this.lineData)
         }
+        this.echartsShowData = true
         this.statisticalAllFn()
       },
       selectHospiatlNumFilterFn(){
@@ -591,12 +593,15 @@
             }
           })
       },
-      async getDataNumberHosSelect(_time,_nextTime,_paiBanCustomerWorkerPhoneHas) {
+      async getDataNumberHosSelect(_time,_paiBanCustomerWorkerPhoneHas) {
         let thisValue = this
-        debugger
-        await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+        console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
+        let _pai
+        this.paiBanCustomerWorkerPhoneHas? _pai = this.paiBanCustomerWorkerPhoneHas:_pai = _paiBanCustomerWorkerPhoneHas
+        console.log('_pai'+_pai)
+        await this.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
             paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
             paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
             zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
@@ -604,9 +609,9 @@
             zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
             nature:this.nature,
-            createTimeFrom : _time,
-            createTimeTo : _nextTime? _nextTime-1:'',
-            paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+            // createTimeFrom : _time,
+            // createTimeTo : _nextTime? _nextTime-1:'',
+            createTimeByMonth:_time,
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -616,26 +621,47 @@
               })
             }
             if(res.data.code ==0){
-              // this.$echarts.init(document.getElementById('main')).clear()
-              // this.$echarts.init(document.getElementById('main2')).clear()
-              debugger
-              // if(_startValue == 1){
-              //   debugger
-              //   console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
-              //   console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD')+res.data.data.itemCount)
-              //   this.totalCountHosSelect = res.data.data.itemCount
-              // }
-              // console.dir(res.data.data.itemCount)
-              if(_paiBanCustomerWorkerPhoneHas == 1){
-                this.lineData.series[1].data.push(res.data.data.itemCount)
-                this.barData.series[1].data.push(res.data.data.itemCount)
-                // console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
-              }else{
-                this.lineData.series[0].data.push(res.data.data.itemCount)
-                this.barData.series[0].data.push(res.data.data.itemCount)
-                // console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
+              let nowData = ''
+              let resData = ''
+              let nowTime = ''
+              for(let i in res.data.data.sum){
+                let nowYear = new Date().getFullYear();
+                let nowMOunth = new Date().getMonth()+1;
+                nowData = new Date().getDate();
+                resData = res.data.data.sum[i].date.split('-')[0]+res.data.data.sum[i].date.split('-')[1]+res.data.data.sum[i].date.split('-')[2].split(' ')[0]
+                // console.log('传进来的日期'+resData)
+                if(nowMOunth<10){
+                  nowMOunth = '0'+nowMOunth
+                }
+                nowTime = nowYear.toString()+nowMOunth.toString()+nowData.toString()
+                if(parseInt(resData)<=parseInt(nowTime)){
+                  if(_pai == 1){
+                    this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                    this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
+                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
+                    console.log(this.lineData.series[1].data)
+                    console.log(this.barData.series[1].data)
+                    console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号'+'拍板量当前值为'+res.data.data.sum[i].sum.itemCount)
+                  }else{
+                    this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                    this.barData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                    console.log(this.lineData.series[0].data)
+                    console.log(this.barData.series[0].data)
+                    console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号'+'客户量当前值为'+res.data.data.sum[i].sum.itemCount)
+                  }
+                }
               }
-              // this.totalCount=res.data.data.itemCount
+              if(new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]){
+                if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
+                  this.echartsShowData = false;
+                  this.$message('暂无数据')
+                }else{
+                  this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+                  this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+                }
+              }
+              
             }
           })
 
@@ -643,9 +669,10 @@
       async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
         let thisValue = this
         debugger
+        let _pai = this.paiBanCustomerWorkerPhoneHas? this.paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
         await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
             paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
             zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
@@ -653,7 +680,7 @@
             zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
             nature:this.nature,
-            paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -673,10 +700,10 @@
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth()+1;
         let nowYear = new Date().getFullYear();
-
-        // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
         this.lineData.xAxis.data = [];
         this.barData.xAxis.data = [];
+        // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
+        
         if(this.nowTime){
           console.log(this.nowTime)
           nowYear = this.nowTime.year;
@@ -684,25 +711,23 @@
           nowData = new Date(nowYear, nowMOunth, 0).getDate()
           // console.log('当前月份有：' + nowData)
         }
-        for(let i=1;i<=nowData;i++){
-          this.lineData.xAxis.data.push(i+'日')
-          this.barData.xAxis.data.push(i+'日')
-          // console.log(i+'日')
-          let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00').getTime();
-          let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
-          // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
-          // console.log(i+'')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
-          await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
-          if(i == nowData){
-            // console.dir(this.lineData)
-            //  console.dir(this.barData)
-            // await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
-            
-            this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-            this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
-          }
-        }
+        let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00').getTime();
+        // let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
+        
+        await this.getDataNumberHosSelect(_nowTime,'')
+        await this.getDataNumberHosSelect(_nowTime,1)
+        
+
+        // for(let i=1;i<=nowData;i++){
+        //   this.lineData.xAxis.data.push(i+'日')
+        //   this.barData.xAxis.data.push(i+'日')
+        //   let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00').getTime();
+        //   let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
+        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
+        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
+        //   if(i == nowData){
+        //   }
+        // }
         debugger
         
       },
