@@ -107,6 +107,16 @@
     <div>
       <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0 0 0 34px;">搜索结果：{{totalCountHosSelect}} 家医院</p>
     </div>
+    <div class="time" >
+      <span>时间选择：</span>
+      <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
+      <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
+      
+    </div>
+    <div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
+      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+      <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+    </div>
     <div class="leader_peop">
       <div v-for="item in urgentLevel" @click="memberDetail(item.userId,item.nickname)" :key="item.value" class="leader_eve">
         <img src="../assets/img/PP.svg" alt="">
