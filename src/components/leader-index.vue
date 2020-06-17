@@ -143,17 +143,6 @@
     <div class="leader_chart">
 
     </div>
-
-    <div class="time" >
-      <span>时间选择：</span>
-      <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
-      <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
-      
-    </div>
-    <div style="width: 1230px;height:auto;margin:30px auto 0px" v-if="echartsShowData">
-      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-      <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-    </div>
   </div>
 </template>
 
