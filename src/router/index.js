@@ -40,6 +40,11 @@ const mainRoutes = [
     component: _import( 'history-detail')
   },
   {
+    path: '/history-detail-lindao',
+    name: '/history-detail-lindao',
+    component: _import( 'history-detail-lindao')
+  },
+  {
     path: '/add-hos',
     name: '/add-hos',
     component: _import( 'add-hos')
