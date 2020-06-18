@@ -209,6 +209,7 @@ export default {
             townItem : undefined,
             nickname : '',
             paiBanCustomerWorkerId : '',
+            ifPaiban:'',//是否新增了拍板人
             timerMove : '',
             customerId:'',
             levelLs : '',
@@ -223,6 +224,8 @@ export default {
 	},
 	activated(){
 		debugger
+    localStorage.setItem('ifPaiban','')
+
 		let thisValue = this
 		let a = JSON.stringify(this.$route.query)
 		debugger
@@ -670,7 +673,36 @@ export default {
 					$('#add-hos .modifyThisPaiban').focus()
 				}
             })
+            function setTimeOut(customerWorkerId,param,_this,level){
+              $.ajax({
+              	url: '/my-customer-worker/update-customer-worker',
+              	type: 'post',
+              	data: 'customerWorkerId=' + customerWorkerId + param,
+              	async: false,
+              	success: function(res) {
+              		if (res.code == 0) {
+                    window.clearInterval(int)
+              			if (level == 0) {
+                      $('.paibanren').children().eq(level).html('<div class="line-1">' + _this
+              					.val() + '</div>')
+              				// _this.parent().html('<div class="line-1">' + _this
+              				// 	.val() + '</div>')
+              			} else if (level == 2) {
+              				$('.paibanren').children().eq(level).html('<div class="line-1 lookHis showInputBox" >' + _this.val() + '</div>')
+              			} else if (level == 4) {
+              				$('.paibanren').children().eq(level).html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
+              			} else {
+              				$('.paibanren').children().eq(level).html('<div class="line-1 lookHis">' +
+              					_this.val() + '</div>')
+              			}
+              		} else {
+              			layer.msg(res.codeMsg)
+              		}
+              	},
+              })
+            }
             $('#add-hos table').off('blur', 'tr .modifyThisPaiban').on('blur', 'tr .modifyThisPaiban', function() {
+              console.log( localStorage.getItem('ifPaiban'))
 				var level = $(this).attr('level')
 				if (level == 0) {
 					var param = '&name=' + $(this).val()
@@ -687,74 +719,93 @@ export default {
 				if (level == 4) {
 					var param = '&tel=' + $(this).val()
 				}
-				if (thisValue.paiBanCustomerWorkerId == '' || thisValue.paiBanCustomerWorkerId == null || thisValue.paiBanCustomerWorkerId == undefined) {
-					var _this = $(this)
-					// var show = "show('" + _this.val() + "')"
-					$.ajax({
-						url: '/my-customer-worker/create-customer-worker',
-						type: 'post',
-						data: 'customerId=' + thisValue.customerId + param,
-						async: true,
-						success: function(res) {
-							if (res.code == 0) {
-								thisValue.paiBanCustomerWorkerId = res.data.customerWorkerId
-								_this.parent().parent().attr('relId', thisValue.paiBanCustomerWorkerId)
-								$.ajax({
-									url: '/my-customer/update-customer',
-									type: 'post',
-									data: 'customerId=' + thisValue.customerId + '&paiBanCustomerWorkerId=' + thisValue.paiBanCustomerWorkerId,
-									async: true,
-									success: function(res) {
-										if (res.code == 0) {
-											if (level == 0) {
-												_this.parent().html('<div class="line-1">' +
-													_this.val() + '</div>')
-											} else if (level == 2) {
-												_this.parent().html('<div class="line-1 lookHis showInputBox">' + _this.val() + '</div>')
-											} else if (level == 4) {
-												_this.parent().html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
-											} else {
-												_this.parent().html('<div class="line-1 lookHis" >' + _this.val() + '</div>')
-											}
-										} else {
-											layer.msg(res.codeMsg)
-										}
-									}
-								})
-							} else {
-								$('#add-hos .addHos').attr('disabled',false);
-								layer.msg(res.codeMsg)
-							}
-						}
-					})
-				} else {
-					var customerWorkerId = $(this).parent().parent().attr('relid')
-					// var show = "show('" + $(this).val() + "')"
-					var _this = $(this)
-					$.ajax({
-						url: '/my-customer-worker/update-customer-worker',
-						type: 'post',
-						data: 'customerWorkerId=' + customerWorkerId + param,
-						async: true,
-						success: function(res) {
-							if (res.code == 0) {
-								if (level == 0) {
-									_this.parent().html('<div class="line-1">' + _this
-										.val() + '</div>')
-								} else if (level == 2) {
-									_this.parent().html('<div class="line-1 lookHis showInputBox" >' + _this.val() + '</div>')
-								} else if (level == 4) {
-									_this.parent().html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
-								} else {
-									_this.parent().html('<div class="line-1 lookHis">' +
-										_this.val() + '</div>')
-								}
-							} else {
-								layer.msg(res.codeMsg)
-							}
-						},
-					})
-				}
+        if(localStorage.getItem('ifPaiban')==1){
+           console.log(2+ localStorage.getItem('ifPaiban'))
+          var customerWorkerId = $(this).parent().parent().attr('relid')
+          // var show = "show('" + $(this).val() + "')"
+          console.log(customerWorkerId)
+          var _this = $(this)
+          if(customerWorkerId==''||customerWorkerId==null||customerWorkerId==undefined){
+            console.log(111)
+            var int=window.setInterval(setTimeOut(customerWorkerId,param,_this,level),500);
+          }else{
+            console.log(222)
+            $.ajax({
+            	url: '/my-customer-worker/update-customer-worker',
+            	type: 'post',
+            	data: 'customerWorkerId=' + customerWorkerId + param,
+            	async: false,
+            	success: function(res) {
+            		if (res.code == 0) {
+            			if (level == 0) {
+            				_this.parent().html('<div class="line-1">' + _this
+            					.val() + '</div>')
+            			} else if (level == 2) {
+            				_this.parent().html('<div class="line-1 lookHis showInputBox" >' + _this.val() + '</div>')
+            			} else if (level == 4) {
+            				_this.parent().html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
+            			} else {
+            				_this.parent().html('<div class="line-1 lookHis">' +
+            					_this.val() + '</div>')
+            			}
+            		} else {
+            			layer.msg(res.codeMsg)
+            		}
+            	},
+            })
+          }
+
+
+        }else{
+           console.log(1+ localStorage.getItem('ifPaiban'))
+          var _this = $(this)
+          localStorage.setItem('ifPaiban',1)
+          console.log(3+ localStorage.getItem('ifPaiban'))
+          // var show = "show('" + _this.val() + "')"
+          $.ajax({
+          	url: '/my-customer-worker/create-customer-worker',
+          	type: 'post',
+          	data: 'customerId=' + thisValue.customerId + param,
+          	async: false,
+          	success: function(res) {
+          		if (res.code == 0) {
+                 console.log(777+ localStorage.getItem('ifPaiban'))
+          			thisValue.paiBanCustomerWorkerId = res.data.customerWorkerId
+          			_this.parent().parent().attr('relId', thisValue.paiBanCustomerWorkerId)
+          			$.ajax({
+          				url: '/my-customer/update-customer',
+          				type: 'post',
+          				data: 'customerId=' + thisValue.customerId + '&paiBanCustomerWorkerId=' + thisValue.paiBanCustomerWorkerId,
+          				async: false,
+          				success: function(res) {
+          					if (res.code == 0) {
+          						if (level == 0) {
+          							_this.parent().html('<div class="line-1">' +
+          								_this.val() + '</div>')
+          						} else if (level == 2) {
+          							_this.parent().html('<div class="line-1 lookHis showInputBox">' + _this.val() + '</div>')
+          						} else if (level == 4) {
+          							_this.parent().html('<div class="line-1 lookHis showInputBoxTel" >' + _this.val() + '</div>')
+          						} else {
+          							_this.parent().html('<div class="line-1 lookHis" >' + _this.val() + '</div>')
+          						}
+          					} else {
+          						layer.msg(res.codeMsg)
+          					}
+          				}
+          			})
+          		} else {
+          			$('#add-hos .addHos').attr('disabled',false);
+          			layer.msg(res.codeMsg)
+          		}
+          	}
+          })
+        }
+				// if (thisValue.ifPaiban==''||thisValue.paiBanCustomerWorkerId == '' || thisValue.paiBanCustomerWorkerId == null || thisValue.paiBanCustomerWorkerId == undefined) {
+
+				// } else {
+
+				// }
 
             })
             $('#add-hos .tbody').on('dblclick', 'tr td', function() {
