@@ -176,7 +176,8 @@
                     data:['客户量','拍板人']
                 },
                 xAxis: {
-                    data: []
+                  boundaryGap: false,
+                  data: []
                 },
                 yAxis: {
                 },
@@ -218,7 +219,8 @@
                     data:['客户量','拍板人']
                 },
                 xAxis: {
-                    data: []
+                  boundaryGap: false,
+                  data: []
                 },
                 yAxis: {
                 },
@@ -633,12 +635,17 @@
                   nowMOunth = '0'+nowMOunth
                 }
                 nowTime = nowYear.toString()+nowMOunth.toString()+nowData.toString()
-                if(parseInt(resData)<=parseInt(nowTime)){
+                // if(parseInt(resData)<=parseInt(nowTime)){
                   if(_pai == 1){
                     this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
                     this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
-                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
+                    if(res.data.data.sum[i].date.split('-')[2].split(' ')[0]<10){
+                      this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
+                      this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
+                    }else{
+                      this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0]+'号')
+                      this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0]+'号')
+                    }
                     console.log(this.lineData.series[1].data)
                     console.log(this.barData.series[1].data)
                     console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号'+'拍板量当前值为'+res.data.data.sum[i].sum.itemCount)
@@ -649,16 +656,18 @@
                     console.log(this.barData.series[0].data)
                     console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号'+'客户量当前值为'+res.data.data.sum[i].sum.itemCount)
                   }
-                }
+                // }
               }
               if(new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]){
-                if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
-                  this.echartsShowData = false;
-                  this.$message('暂无数据')
-                }else{
-                  this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-                  this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
-                }
+                // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
+                //   this.echartsShowData = false;
+                //   this.$message('暂无数据')
+                // }else{
+                //   this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+                //   this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+                // }
+                this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+                this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
               }
               
             }
