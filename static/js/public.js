@@ -506,16 +506,17 @@ function loginout(){
 					})
 	           return '提示：未保存的内容将会丢失。';  //好像这个提示并没什么用
 	       });
-				
+
 	       // $('#id_submit_button').click(function () {
 	       //     $(window).unbind('beforeunload');//这个是取消提醒
 	       // });
-	
+
 }
 
 
 // 新增拍板人为电话的时候
 function addpaibanPhone(customerId,phone1,phone2,phone3){
+  	localStorage.setItem('ifPaiban',1)
 	$.ajax({
 		url: '/my-customer-worker/create-customer-worker',
 		type: 'post',
@@ -533,7 +534,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 					async: true,
 					success: function(res) {
 						if(res.code==0){
-							
+
 						}else{
 							layer.msg(res.codeMsg)
 						}
@@ -546,6 +547,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 	})
 	}
 	function addpaibanTel(customerId,tel1,tel2,tel3){
+    	localStorage.setItem('ifPaiban',1)
 		$.ajax({
 			url: '/my-customer-worker/create-customer-worker',
 			type: 'post',
@@ -563,7 +565,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 						async: true,
 						success: function(res) {
 							if(res.code==0){
-								
+
 							}else{
 								layer.msg(res.codeMsg)
 							}
@@ -575,7 +577,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 			}
 		})
 	}
-	
+
 	function addRelPhone(customerId,phone1,phone2,phone3){
 		$.ajax({
 			url: '/my-customer-worker/create-customer-worker',
@@ -587,7 +589,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 					var id=res.data.customerWorkerId
 					$('.paibanren').attr('relId',res.data.customerWorkerId)
 					// _this.parent().parent().attr('relId',paiBanCustomerWorkerId)
-					
+
 				}else{
 								layer.msg(res.codeMsg)
 				}
@@ -605,7 +607,6 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 						var id=res.data.customerWorkerId
 						$('.paibanren').attr('relId',res.data.customerWorkerId)
 						// _this.parent().parent().attr('relId',paiBanCustomerWorkerId)
-						
 					}else{
 									layer.msg(res.codeMsg)
 					}
