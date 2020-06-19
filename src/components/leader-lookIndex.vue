@@ -130,6 +130,7 @@
       <span>时间选择：</span>
       <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
+
     </div>
     <div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
       <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
@@ -142,147 +143,133 @@
   import qs from 'qs'
   export default {
     name: 'index',
-    data() {
-      return {
-        nature: "",
-        paiBanCustomerWorkerHas: '',
-        paiBanCustomerWorkerPhoneHas: '',
-        paiBanCustomerWorkerUrgent: '',
-        paiBanCustomerWorkerLevel: '',
-        zhuRenCustomerWorkerHas: '',
-        zhuRenCustomerWorkerPhoneHas: '',
-        zhuRenCustomerWorkerUrgent: '',
-        zhuRenCustomerWorkerLevel: '',
-        paiBanCustomerWorkerLevelname: '',
-        zhuRenCustomerWorkerLevelname: '',
-        nicknameThis: '',
-        totalCount: '',
-        totalCountHos: '',
-        totalCountHos1: '',
-        totalCountHos2: '',
-        show1: false,
-        show2: false,
-        show3: false,
-        show4: false,
-        peopleType: '', //是院长还是主任
-        phoneIfyuanzhang: '', //院长是否有号码
-        phoneIfzhuren: '', //主任是否有号码
-        PhoneHasyuanzhang: '',
-        PhoneHaszhuren: '',
-        urgentyuanzhang: '',
-        urgentzhuren: '',
-        checked1: false,
-        checked2: false,
-        checked3: false,
-        checked4: false,
-        traceTotalNumber: '', //跟踪总量
-        totalCountHosSelect: '',
-        layuiData: '',
-        echartsShowData: false,
-        lineData: {
-          title: {
-            text: ''
-          },
-          text: "数据正在载入...",
-          tooltip: {},
-          legend: {
-            data: ['客户量', '拍板人']
-          },
-          xAxis: {
-            data: []
-          },
-          yAxis: {},
-          label: {
-            show: true,
-            // 标签的文字。
-            // formatter: ["1","2","3","4","5","6"]
-          },
-          toolbox: {
-            show: true,
-            feature: {
-              dataView: {
-                show: true,
-                readOnly: false
-              },
-              magicType: {
-                show: true,
-                type: ['bar', 'line', 'pie']
-              },
-              restore: {
-                show: false
-              },
-              saveAsImage: {
-                show: true
-              }
-            }
-          },
-          series: [{
-              name: '客户量',
-              type: 'line',
-              color: ['#37A2DA'],
-              data: []
+    data () {
+    	return {
+    		nature:"",
+    		paiBanCustomerWorkerHas: '',
+    		paiBanCustomerWorkerPhoneHas: '',
+    		paiBanCustomerWorkerUrgent: '',
+    		paiBanCustomerWorkerLevel: '',
+    		zhuRenCustomerWorkerHas: '',
+    		zhuRenCustomerWorkerPhoneHas:'',
+    		zhuRenCustomerWorkerUrgent: '',
+    		zhuRenCustomerWorkerLevel: '',
+    		paiBanCustomerWorkerLevelname:'',
+    		zhuRenCustomerWorkerLevelname:'',
+    		nicknameThis:'',
+    		totalCount: '',
+    		totalCountHos: '',
+    		totalCountHos1: '',
+    		totalCountHos2: '',
+    		show1: false,
+    		show2: false,
+    		show3:false,
+    		show4:false,
+    		peopleType: '', //是院长还是主任
+    		phoneIfyuanzhang: '', //院长是否有号码
+    		phoneIfzhuren: '', //主任是否有号码
+    		PhoneHasyuanzhang: '',
+    		PhoneHaszhuren:'',
+    		urgentyuanzhang:'',
+    		urgentzhuren:'',
+    		checked1:false,
+    		checked2:false,
+    		checked3:false,
+    		checked4:false,
+    		traceTotalNumber:'',//跟踪总量
+    		totalCountHosSelect:'',
+    		layuiData:'',
+    		echartsShowData:false,
+    		lineData:{
+                title: {
+                    text: ''
+                },
+                text: "数据正在载入...",
+                tooltip: {},
+                legend: {
+                    data:['客户量','拍板人']
+                },
+                xAxis: { 
+    				boundaryGap: false,
+                    data: []
+                },
+                yAxis: {
+                },
+                label: {
+                    show: true,
+                    // 标签的文字。
+                    // formatter: ["1","2","3","4","5","6"]
+                },
+                toolbox:{
+                  show   : true,
+                  feature: {
+                     dataView : {show: true, readOnly: false},
+                      magicType  : {show: true, type: ['bar', 'line','pie']},
+                      restore    : {show: false},
+                      saveAsImage: {show: true}
+                  }
+                },
+                series: [
+                    {
+                        name: '客户量',
+                        type: 'line',
+                        color: ['#37A2DA'],
+                        data: []
+                    },
+                    {
+                        name: '拍板人',
+                        type: 'line',
+                        color: ['red'],
+                        data: []
+                    }
+                ]
             },
-            {
-              name: '拍板人',
-              type: 'line',
-              color: ['red'],
-              data: []
-            }
-          ]
-        },
-        barData: {
-          title: {
-            text: ''
-          },
-          tooltip: {},
-          legend: {
-            data: ['客户量', '拍板人']
-          },
-          xAxis: {
-            data: []
-          },
-          yAxis: {},
-          label: {
-            show: true,
-            // 标签的文字。
-            // formatter: ["1","2","3","4","5","6"]
-          },
-          toolbox: {
-            show: true,
-            feature: {
-              dataView: {
-                show: true,
-                readOnly: false
-              },
-              magicType: {
-                show: true,
-                type: ['line', 'bar']
-              },
-              restore: {
-                show: false
-              },
-              saveAsImage: {
-                show: true
-              }
-            }
-          },
-          series: [{
-              name: '客户量',
-              type: 'bar',
-              color: ['#37A2DA'],
-              data: []
+          barData:{
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data:['客户量','拍板人']
+                },
+                xAxis: { 
+    				boundaryGap: false,
+                    data: []
+                },
+                yAxis: {
+                },
+                label: {
+                    show: true,
+                    // 标签的文字。
+                    // formatter: ["1","2","3","4","5","6"]
+                },
+                toolbox:{
+                  show   : true,
+                  feature: {
+                     dataView : {show: true, readOnly: false},
+                      magicType  : {show: true, type: ['line', 'bar']},
+                      restore    : {show: false},
+                      saveAsImage: {show: true}
+                  }
+                },
+                series: [
+                    {
+                        name: '客户量',
+                        type: 'bar',
+                        color: ['#37A2DA'],
+                        data: []
+                    },
+                    {
+                        name: '拍板人',
+                        type: 'bar',
+                        color: ['red'],
+                        data: []
+                    }
+                ]
             },
-            {
-              name: '拍板人',
-              type: 'bar',
-              color: ['red'],
-              data: []
-            }
-          ]
-        },
-      }
+    	}
     },
-    activated() {
+  activated() {
 
       let thisValue = this
       if (localStorage.getItem('id')) {
@@ -813,33 +800,19 @@
           this.zhuRenCustomerWorkerUrgent = 0
         }
         //   this.getDataNumberHosSelect()
+
       },
       selectFilterFn() {
-        this.echartsShowData = true
-        if (!this.echartsShowData) {
+        if (this.echartsShowData) {
           this.chartsFn()
         }
+        this.echartsShowData = true
         this.statisticalAllFn()
       },
       selectHospiatlNumFilterFn() {
         this.getNumberHosSelect()
-        // thisValue.area3Id = $(this).val()
         this.lastPageNo()
         this.lastPage(1)
-        // let thisValue=this
-        // $('#index #box').paging({
-        // 		initPageNo: 1, // 初始页码
-        // 		totalPages: thisValue.totalNum, //总页数
-        // 		//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-        // 		slideSpeed: 600, // 缓动速度。单位毫秒
-        // 		jump: true, //是否支持跳转
-        // 		callback: function(page) { // 回调函数
-        // 			// memberList1(1,page);
-        // 			// var nature = $('#index .nature').val()
-        // 			thisValue.pn = page
-        // 			thisValue.lastPage(thisValue.pn)
-        // 		}
-        // 	})
       },
       getData() {
         this.$axios.get('/ling-dao/user-list?' + qs.stringify({
@@ -867,6 +840,7 @@
             }
           })
       },
+
       getDataNumber() {
         this.$axios.get('/ling-dao/user-list-sum?' + qs.stringify({
             userId: localStorage.getItem('id'),
@@ -883,22 +857,30 @@
             }
           })
       },
-      async getDataNumberHosSelect(_time, _nextTime, _paiBanCustomerWorkerPhoneHas) {
+
+      async getDataNumberHosSelect(_time, _paiBanCustomerWorkerPhoneHas) {
         let thisValue = this;
-        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+        let _pai
+        this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
+          _paiBanCustomerWorkerPhoneHas
+        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
+
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: thisValue.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
             paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
             zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
             zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
+
             nature: thisValue.nature,
             userId: localStorage.getItem('id'),
-            createTimeFrom: _time,
-            createTimeTo: _nextTime ? _nextTime - 1 : '',
-            paiBanCustomerWorkerPhoneHas: _paiBanCustomerWorkerPhoneHas
+            createTimeByMonth: _time,
+            // createTimeFrom : _time,
+            // createTimeTo : _nextTime? _nextTime-1:'',
+            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -908,6 +890,64 @@
               })
             }
             if (res.data.code == 0) {
+
+              let nowData = ''
+              let resData = ''
+              let nowTime = ''
+              for (let i in res.data.data.sum) {
+                let nowYear = new Date().getFullYear();
+                let nowMOunth = new Date().getMonth() + 1;
+                nowData = new Date().getDate();
+                resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
+                  .data.sum[i].date.split('-')[2].split(' ')[0]
+                // console.log('传进来的日期'+resData)
+                if (nowMOunth < 10) {
+                  nowMOunth = '0' + nowMOunth
+                }
+                nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
+                // if(parseInt(resData)<=parseInt(nowTime)){
+                if (_pai == 1) {
+                  this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                  this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                  if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
+                      '') + '号')
+                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
+                      '') + '号')
+                  } else {
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
+                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
+                  }
+
+                  console.log(this.lineData.series[1].data)
+                  console.log(this.barData.series[1].data)
+                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    '拍板量当前值为' + res.data.data.sum[i].sum.itemCount)
+                } else {
+                  this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                  this.barData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                  console.log(this.lineData.series[0].data)
+                  console.log(this.barData.series[0].data)
+                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+                }
+                // }
+              }
+              if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
+                // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
+                //   this.echartsShowData = false;
+                //   this.$message('暂无数据')
+                // }else{
+                // 	this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+                // 	this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+                // }
+                this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
+                this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
+              }
+
+
+
+
               // thisValue.totalCountHosSelect = res.data.data.itemCount
               // console.log(thisValue.totalCountHosSelect)
               // if(_startValue == 1){
@@ -918,31 +958,37 @@
               // 	thisValue.totalCountHosSelect = res.data.data.itemCount
               // }
               // console.dir(res.data.data.itemCount)
-              if (_paiBanCustomerWorkerPhoneHas == 1) {
-                thisValue.lineData.series[1].data.push(res.data.data.itemCount)
-                thisValue.barData.series[1].data.push(res.data.data.itemCount)
-                console.log(thisValue.moment(_time).format('YYYY-MM-DD') + '拍板量当前值为' + res.data.data.itemCount)
-              } else {
-                thisValue.lineData.series[0].data.push(res.data.data.itemCount)
-                thisValue.barData.series[0].data.push(res.data.data.itemCount)
-                console.log(thisValue.moment(_time).format('YYYY-MM-DD') + '客户量当前值为' + res.data.data.itemCount)
-              }
+              // if(_paiBanCustomerWorkerPhoneHas == 1){
+              // 	thisValue.lineData.series[1].data.push(res.data.data.itemCount)
+              // 	thisValue.barData.series[1].data.push(res.data.data.itemCount)
+              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
+              // }else{
+              // 	thisValue.lineData.series[0].data.push(res.data.data.itemCount)
+              // 	thisValue.barData.series[0].data.push(res.data.data.itemCount)
+              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
+              // }
             }
           })
       },
       async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
         let thisValue = this;
+        let _pai
+        this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
+          _paiBanCustomerWorkerPhoneHas
+
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: thisValue.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
             paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
             zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
             zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
+
             nature: thisValue.nature,
             userId: localStorage.getItem('id'),
+
             // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
           }))
           .then(res => {
@@ -971,25 +1017,30 @@
           nowMOunth = this.nowTime.month;
           nowData = new Date(nowYear, nowMOunth, 0).getDate()
           // console.log('当前月份有：' + nowData)
+
         }
-        for (let i = 1; i <= nowData; i++) {
-          this.lineData.xAxis.data.push(i + '日')
-          this.barData.xAxis.data.push(i + '日')
-          // console.log(i+'日')
-          let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + i + ' ' + '00:00:00').getTime();
-          let _nextTime = new Date(nowYear + '-' + nowMOunth + '-' + (i + 1) + ' ' + '00:00:00').getTime();
-          // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
-          // console.log(i+'')
-          await this.getDataNumberHosSelect(_nowTime, _nextTime, '')
-          await this.getDataNumberHosSelect(_nowTime, _nextTime, 1)
-          if (i == nowData) {
-            // console.dir(this.lineData)
-            //  console.dir(this.barData)
-            // await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
-            this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-            this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
-          }
-        }
+        let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
+        await this.getDataNumberHosSelect(_nowTime, '')
+        await this.getDataNumberHosSelect(_nowTime, 1)
+        // for(let i=1;i<=nowData;i++){
+        //   this.lineData.xAxis.data.push(i+'日')
+        //   this.barData.xAxis.data.push(i+'日')
+        //   // console.log(i+'日')
+        //   let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00').getTime();
+        //   let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
+        //   // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
+        //   // console.log(i+'')
+        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
+        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
+        //   if(i == nowData){
+        //     // console.dir(this.lineData)
+        //     //  console.dir(this.barData)
+        //     // await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
+        //     this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+        //     this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+        //   }
+        // }
+
       },
       chartsFn() {
         this.lineData.series[0].data = []
@@ -1077,7 +1128,7 @@
             console.dir(res)
             if (res.code == 0) {
               $('#index .tbody').html('')
-              $('.tableBox').css('display','block')
+              $('.tableBox').css('display', 'block')
               if (res.data.itemList && res.data.itemList.length > 0) {
                 for (var i in res.data.itemList) {
                   var tel = ''

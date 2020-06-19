@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 
 Vue.use(Router)
 // const _import = require('./_import_' + process.env.NODE_ENV + '.js')
@@ -83,9 +84,11 @@ const mainRoutes = [
 const router = new Router({
   routes: globalRoutes.concat(mainRoutes)
 })
-
+router.beforeEach((to,from,next) =>{
+    store.commit('clearToken') // 取消请求
+    next()
+})
 router.afterEach((to,from) =>{
-  debugger
   if(to.path == from.path){
     // next({path:'/tihuan',query:to.query})
     router.replace({path:'/tihuan',query:{query:JSON.stringify(to.query),path:to.path}})
