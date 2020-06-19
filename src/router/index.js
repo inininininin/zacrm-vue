@@ -46,6 +46,11 @@ const mainRoutes = [
     component: _import( 'history-detail-lindao')
   },
   {
+    path: '/history-detail-lindao-eve',
+    name: '/history-detail-lindao-eve',
+    component: _import( 'history-detail-lindao-eve')
+  },
+  {
     path: '/add-hos',
     name: '/add-hos',
     component: _import( 'add-hos')

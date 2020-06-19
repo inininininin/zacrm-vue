@@ -703,6 +703,7 @@ export default {
             }
             $('#add-hos table').off('blur', 'tr .modifyThisPaiban').on('blur', 'tr .modifyThisPaiban', function() {
               console.log( localStorage.getItem('ifPaiban'))
+              var customerWorkerId = $(this).parent().parent().attr('relid')
 				var level = $(this).attr('level')
 				if (level == 0) {
 					var param = '&name=' + $(this).val()
@@ -719,9 +720,9 @@ export default {
 				if (level == 4) {
 					var param = '&tel=' + $(this).val()
 				}
-        if(localStorage.getItem('ifPaiban')==1){
+        if(localStorage.getItem('ifPaiban')==1||customerWorkerId!=''){
            console.log(2+ localStorage.getItem('ifPaiban'))
-          var customerWorkerId = $(this).parent().parent().attr('relid')
+          // var customerWorkerId = $(this).parent().parent().attr('relid')
           // var show = "show('" + $(this).val() + "')"
           console.log(customerWorkerId)
           var _this = $(this)
