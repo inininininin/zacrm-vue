@@ -43,6 +43,8 @@ export default {
 		}
     },
     activated(){
+      $('#containBox .trackDetail').html('')
+      this.customerId=GetQueryString('id')
         this.startFn()
 	},
 	methods:{
@@ -56,7 +58,7 @@ export default {
 			let to = this.moment(this.createTimeTo).format('YYYY-MM-DD HH-mm-ss')
 			console.log(from+'+'+to)
 			this.totalNum = '';
-			this.customerId = '';
+			// this.customerId = '';
 			this.customerWorkerId = '';
 			this.containBoxList = []
 			this.startFn()
@@ -67,7 +69,7 @@ export default {
             $.ajax({
 				url: '/ling-dao/customer-worker-trace/customer-worker-trace-list-sum',
 				type: 'GET',
-				data: 'createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo+'&userId='+localStorage.getItem('id'),
+				data: 'customerId=' + _this.customerId+'&createTimeFrom='+_this.createTimeFrom+'&createTimeTo='+_this.createTimeTo+'&userId='+localStorage.getItem('id'),
 				async: false,
 				success: function(res) {
 					if (res.code == 0) {
@@ -85,18 +87,18 @@ export default {
 				jump: true, //是否支持跳转
 				callback: function(page) { // 回调函数
                     // memberList1(1,page);
-                    _this.trackrelList(page)
+                    _this.trackrelList(_this.customerId,_this.customerWorkerId,page)
                 }
 			})
         },
         // 跟踪记录列表
-        trackrelList(pn) {
+        trackrelList(customerId,customerWorkerId,pn) {
           console.log(111)
             let _this = this
 			   	$.ajax({
 			   		url: '/ling-dao/customer-worker-trace/customer-worker-trace-list',
 			   		type: 'GET',
-			   		data: 'pn='+pn+'&ps=20'+
+			   		data: 'customerId=' + customerId+'&customerWorkerId='+customerWorkerId+'&pn='+pn+'&ps=20'+
             '&createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo+'&userId='+localStorage.getItem('id'),
 			   		async: true,
 			   		success: function(res) {
