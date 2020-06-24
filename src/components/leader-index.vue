@@ -132,9 +132,9 @@
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
 
     </div>
-    <div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
+    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
       <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-      <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+      <!-- <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div> -->
     </div>
 
 
@@ -196,7 +196,7 @@
           text: "数据正在载入...",
           tooltip: {},
           legend: {
-            data: ['客户量', '拍板人']
+            data: ['客户量']
           },
           xAxis: {
             boundaryGap: false,
@@ -228,70 +228,64 @@
             }
           },
           series: [{
-              name: '客户量',
+              name: '医院量',
               type: 'line',
               color: ['#37A2DA'],
               data: []
             },
-            {
-              name: '拍板人',
-              type: 'line',
-              color: ['red'],
-              data: []
-            }
           ]
         },
-        barData: {
-          title: {
-            text: ''
-          },
-          tooltip: {},
-          legend: {
-            data: ['客户量', '拍板人']
-          },
-          xAxis: {
-            boundaryGap: false,
-            data: []
-          },
-          yAxis: {},
-          label: {
-            show: true,
-            // 标签的文字。
-            // formatter: ["1","2","3","4","5","6"]
-          },
-          toolbox: {
-            show: true,
-            feature: {
-              dataView: {
-                show: true,
-                readOnly: false
-              },
-              magicType: {
-                show: true,
-                type: ['line', 'bar']
-              },
-              restore: {
-                show: false
-              },
-              saveAsImage: {
-                show: true
-              }
-            }
-          },
-          series: [{
-              name: '客户量',
-              type: 'bar',
-              color: ['#37A2DA'],
-              data: []
-            },
-            {
-              name: '拍板人',
-              type: 'bar',
-              color: ['red'],
-              data: []
-            }
-          ]
-        },
+        // barData: {
+        //   title: {
+        //     text: ''
+        //   },
+        //   tooltip: {},
+        //   legend: {
+        //     data: ['客户量', '拍板人']
+        //   },
+        //   xAxis: {
+        //     boundaryGap: false,
+        //     data: []
+        //   },
+        //   yAxis: {},
+        //   label: {
+        //     show: true,
+        //     // 标签的文字。
+        //     // formatter: ["1","2","3","4","5","6"]
+        //   },
+        //   toolbox: {
+        //     show: true,
+        //     feature: {
+        //       dataView: {
+        //         show: true,
+        //         readOnly: false
+        //       },
+        //       magicType: {
+        //         show: true,
+        //         type: ['line', 'bar']
+        //       },
+        //       restore: {
+        //         show: false
+        //       },
+        //       saveAsImage: {
+        //         show: true
+        //       }
+        //     }
+        //   },
+        //   series: [{
+        //       name: '客户量',
+        //       type: 'bar',
+        //       color: ['#37A2DA'],
+        //       data: []
+        //     },
+        //     {
+        //       name: '拍板人',
+        //       type: 'bar',
+        //       color: ['red'],
+        //       data: []
+        //     }
+        //   ]
+        // },
         totalCount: '',
         nickname: '',
         totalCountHos: '',
@@ -315,7 +309,8 @@
         traceTotalNumber: '', //跟踪总量
         totalCountHosSelect: '',
         nowTime: '',
-        layuiData: ''
+        layuiData: '',
+        createTimeState : ''
       }
     },
     activated() {
@@ -383,6 +378,7 @@
           this.show1 = true;
           this.show2 = false;
           this.paiBanCustomerWorkerHas = 1
+          this.createTimeState = 'paiBanCustomerWorkerInserTime'
         } else {
           this.show1 = false;
           this.show2 = false;
@@ -404,6 +400,7 @@
           this.show3 = true;
           this.show4 = false;
           this.zhuRenCustomerWorkerHas = 1
+          this.createTimeState = 'zhuRenCustomerWorkerInserTime'
         } else {
           this.show3 = false;
           this.show4 = false;
@@ -433,6 +430,7 @@
         }
         if (event == 1) {
           this.show2 = true;
+          this.createTimeState = 'paiBanCustomerWorkerPhoneInsertTime'
           this.paiBanCustomerWorkerPhoneHas = 1
         }
         // this.chartsFn()
@@ -446,7 +444,8 @@
         }
         if (event == 1) {
           this.show4 = true;
-          this.zhuRenCustomerWorkerPhoneHas = 1
+          this.zhuRenCustomerWorkerPhoneHas = 1;
+          this.createTimeState = 'zhuRenCustomerWorkerPhoneInsertTime'
         }
         // this.chartsFn()
         // this.statisticalAllFn()
@@ -458,6 +457,7 @@
           this.paiBanCustomerWorkerLevelname = ''
         } else {
           this.paiBanCustomerWorkerLevel = e
+          this.createTimeState = 'paiBanCustomerWorkerLevelTime'
           if (e == 1) {
             this.paiBanCustomerWorkerLevelname = '暂不感兴趣'
           } else if (e == 2) {
@@ -478,6 +478,7 @@
           this.zhuRenCustomerWorkerLevel = ''
         } else {
           this.zhuRenCustomerWorkerLevel = e
+          this.createTimeState = 'zhuRenCustomerWorkerLevelTime'
           if (e == 1) {
             this.zhuRenCustomerWorkerLevelname = '暂不感兴趣'
           } else if (e == 2) {
@@ -514,12 +515,6 @@
       },
 
       selectFilterFn() {
-        if (this.echartsShowData) {
-
-          this.chartsFn()
-          debugger
-          console.log(this.lineData)
-        }
         this.echartsShowData = true
         this.statisticalAllFn()
       },
@@ -779,29 +774,27 @@
             }
           })
       },
-      async getDataNumberHosSelect(_time, _paiBanCustomerWorkerPhoneHas) {
+      async getDataNumberHosSelect(_time) {
 
         let thisValue = this
         console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
         let _pai
-        this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
-          _paiBanCustomerWorkerPhoneHas
         console.log('_pai' + _pai)
         await this.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
             paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: _pai,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
             paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
             zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
             zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
-
+            whatTime: this.createTimeState,
             nature: this.nature,
             // createTimeFrom : _time,
             // createTimeTo : _nextTime? _nextTime-1:'',
             createTimeByMonth: _time,
-
+            
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -821,40 +814,22 @@
                 nowData = new Date().getDate();
                 resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
                   .data.sum[i].date.split('-')[2].split(' ')[0]
-                // console.log('传进来的日期'+resData)
                 if (nowMOunth < 10) {
                   nowMOunth = '0' + nowMOunth
                 }
                 nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
-                // if(parseInt(resData)<=parseInt(nowTime)){
-                if (_pai == 1) {
-                  this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-                  this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-                  if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
+                if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
                       '') + '号')
-                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      '') + '号')
-                  } else {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
-                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
-                  }
-                  console.log(this.lineData.series[1].data)
-                  console.log(this.barData.series[1].data)
-                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
-                    '拍板量当前值为' + res.data.data.sum[i].sum.itemCount)
                 } else {
-                  this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                  this.barData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                  console.log(this.lineData.series[0].data)
-                  console.log(this.barData.series[0].data)
-                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
-                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
                 }
-                // }
-
+                this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                console.log(this.lineData.series[0].data)
+                console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
               }
-              if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
+              // if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
                 // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
                 //   this.echartsShowData = false;
                 //   this.$message('暂无数据')
@@ -863,8 +838,8 @@
                 //   this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
                 // }
                 this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-                this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
-              }
+                // this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
+              // }
 
             }
           })
@@ -906,10 +881,11 @@
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth() + 1;
         let nowYear = new Date().getFullYear();
+        if (this.lineData.xAxis.data.length != 0) {
+          this.chartsFn()
+        }
         this.lineData.xAxis.data = [];
-        this.barData.xAxis.data = [];
-        // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
-
+        // this.barData.xAxis.data = [];
         if (this.nowTime) {
           console.log(this.nowTime)
           nowYear = this.nowTime.year;
@@ -918,34 +894,18 @@
           // console.log('当前月份有：' + nowData)
         }
         let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
-        // let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
-
-        await this.getDataNumberHosSelect(_nowTime, '')
-        await this.getDataNumberHosSelect(_nowTime, 1)
-
-
-        // for(let i=1;i<=nowData;i++){
-        //   this.lineData.xAxis.data.push(i+'日')
-        //   this.barData.xAxis.data.push(i+'日')
-        //   let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00').getTime();
-        //   let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
-        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
-        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
-        //   if(i == nowData){
-        //   }
-        // }
-        debugger
-
+        await this.getDataNumberHosSelect(_nowTime)
+        // await this.getDataNumberHosSelect(_nowTime, 1)
       },
       chartsFn() {
         this.lineData.series[0].data = []
-        this.lineData.series[1].data = []
-        this.barData.series[0].data = []
-        this.barData.series[1].data = []
+        // this.lineData.series[1].data = []
+        // this.barData.series[0].data = []
+        // this.barData.series[1].data = []
         this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-        this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
+        // this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
         this.$echarts.init(document.getElementById('main')).clear()
-        this.$echarts.init(document.getElementById('main2')).clear()
+        // this.$echarts.init(document.getElementById('main2')).clear()
         // console.log('s')
         // 清空绘画内容，清空后实例可用，因为并非释放示例的资源，释放资源我们需要dispose()
         // this.$echarts.init(document.getElementById('main')).clear()
