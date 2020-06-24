@@ -1,185 +1,186 @@
 <template>
-    <div id="index" class="index">
-		<input type='' id='userName' hidden=''>
-		<span class="record1" hidden=""></span>
-		<span class="record2" hidden=""></span>
-		<span class="record3" hidden=""></span>
-		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
-		<input type="" name="" id="inp_send"  hidden="">
-		<button id="btn_conn" hidden="">发送</button>
-		<div class="mainbox">
-			<div class="topselect">
-				<div style="width: 100%;height: auto;">
-					<!-- <h2 class="peoname">{{nickname}}</h2><span class="shuju" style="margin: 0 10px;"></span> -->
-                  <!--  <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
+  <div id="index" class="index">
+    <input type='' id='userName' hidden=''>
+    <span class="record1" hidden=""></span>
+    <span class="record2" hidden=""></span>
+    <span class="record3" hidden=""></span>
+    <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+    <input type="" name="" id="inp_send" hidden="">
+    <button id="btn_conn" hidden="">发送</button>
+    <div class="mainbox">
+      <div class="topselect">
+        <div style="width: 100%;height: auto;">
+          <!-- <h2 class="peoname">{{nickname}}</h2><span class="shuju" style="margin: 0 10px;"></span> -->
+          <!--  <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
 					</router-link> -->
-                    <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
-					 <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
-					 <router-link :to="{path:'/history-detail-lindao'}"  class="lookBefore">
-						查看昨日工作记录
-					 </router-link>
-					 <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
-					 <!-- <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span> -->
-				</div>
-				<div class="leader_name">
+          <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
+          <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
+          <router-link :to="{path:'/history-detail-lindao'}" class="lookBefore">
+            查看昨日工作记录
+          </router-link>
+          <!-- <a class="lookBefore" href="historyDetail.html">查看昨日工作记录</a> -->
+          <!-- <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span> -->
+        </div>
+        <div class="leader_name">
           <span>昵称：{{nicknameThis}}</span>
-				  <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
-				  <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button>
-				  <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
-				  <el-button nature='2' @click='selectHos($event,2)'>公立医院：{{totalCountHos2}}个</el-button>
-				</div>
-			</div>
-      	<div class="selectRoleAll">
-		  	<p>筛选条件：
-			  <span v-if='nature==0'>所有医院</span>
-			  <span v-if='nature==1'>民营医院</span>
-			  <span v-if='nature==2'>公立医院</span>
-				<span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
-				<span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
-				<span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
-				<span v-if='paiBanCustomerWorkerUrgent==1'>- 加急 / </span>
-				<span v-if='zhuRenCustomerWorkerHas==1' style="color: #333;">- 主任</span>
-				<span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
-				<span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
-				<span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
-				<!-- <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button> -->
-				<el-button @click='selectHospiatlNumFilterFn()' style="margin-left:15px">确认筛选</el-button>
-			</p>
-	  	</div>
+          <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
+          <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button>
+          <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
+          <el-button nature='2' @click='selectHos($event,2)'>公立医院：{{totalCountHos2}}个</el-button>
+        </div>
+      </div>
+      <div class="selectRoleAll">
+        <p>筛选条件：
+          <span v-if='nature==0'>所有医院</span>
+          <span v-if='nature==1'>民营医院</span>
+          <span v-if='nature==2'>公立医院</span>
+          <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
+          <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
+          <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
+          <span v-if='paiBanCustomerWorkerUrgent==1'>- 加急 / </span>
+          <span v-if='zhuRenCustomerWorkerHas==1' style="color: #333;">- 主任</span>
+          <span v-if='zhuRenCustomerWorkerPhoneHas==1'>- 有号码</span>
+          <span v-if='zhuRenCustomerWorkerLevelname!=0'>- {{zhuRenCustomerWorkerLevelname}}</span>
+          <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
+          <!-- <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button> -->
+          <el-button @click='selectHospiatlNumFilterFn()' style="margin-left:15px">确认筛选</el-button>
+        </p>
+      </div>
       <div class="selectAllThis">
         <div class="lineOneThis">
           <span>人员类型：</span>
           <el-checkbox v-model="checked1" @change='yuanzhang'>院长</el-checkbox>
         </div>
-        <div class="lineOneThis"  v-if='show1'>
+        <div class="lineOneThis" v-if='show1'>
           <span>院长是否有号码：</span>
-           <el-radio-group v-model="PhoneHasyuanzhang" @change="selectPhoneyuanzhang">
-              <el-radio :label="0">全部</el-radio>
-              <el-radio :label="1">有号码</el-radio>
-              <!-- <el-radio :label="2">无号码</el-radio> -->
-            </el-radio-group>
+          <el-radio-group v-model="PhoneHasyuanzhang" @change="selectPhoneyuanzhang">
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">有号码</el-radio>
+            <!-- <el-radio :label="2">无号码</el-radio> -->
+          </el-radio-group>
         </div>
-        <div class="lineOneThis"  v-if='show2' >
+        <div class="lineOneThis" v-if='show2'>
           <span>院长级别：</span>
-           <el-radio-group v-model="urgentyuanzhang" @change='yuanzhanglevel'>
-               <el-radio :label="0">全部</el-radio>
-              <el-radio :label="1">暂不感兴趣</el-radio>
-              <el-radio :label="2">初步感兴趣</el-radio>
-              <el-radio :label="3">非常感兴趣</el-radio>
-              <el-radio :label="4">近期可考察</el-radio>
-              <el-radio :label="5">线上可签单</el-radio>
-            </el-radio-group>
+          <el-radio-group v-model="urgentyuanzhang" @change='yuanzhanglevel'>
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">暂不感兴趣</el-radio>
+            <el-radio :label="2">初步感兴趣</el-radio>
+            <el-radio :label="3">非常感兴趣</el-radio>
+            <el-radio :label="4">近期可考察</el-radio>
+            <el-radio :label="5">线上可签单</el-radio>
+          </el-radio-group>
         </div>
-        <div class="lineOneThis"  v-if='show2'>
+        <div class="lineOneThis" v-if='show2'>
           <span>院长是否加急：</span>
-           <el-checkbox v-model="checked3" @change='yuanzhangjj'>加急</el-checkbox>
+          <el-checkbox v-model="checked3" @change='yuanzhangjj'>加急</el-checkbox>
         </div>
         <div class="lineOneThis">
           <span>人员类型：</span>
           <el-checkbox v-model="checked2" @change='zhuren'>主任</el-checkbox>
         </div>
-        <div class="lineOneThis"  v-if='show3'>
+        <div class="lineOneThis" v-if='show3'>
           <span>主任是否有号码：</span>
-           <el-radio-group v-model="PhoneHaszhuren" @change="selectPhonezhuren">
-              <el-radio :label="0">全部</el-radio>
-              <el-radio :label="1">有号码</el-radio>
-              <!-- <el-radio :label="2">无号码</el-radio> -->
-            </el-radio-group>
+          <el-radio-group v-model="PhoneHaszhuren" @change="selectPhonezhuren">
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">有号码</el-radio>
+            <!-- <el-radio :label="2">无号码</el-radio> -->
+          </el-radio-group>
         </div>
-        <div class="lineOneThis"  v-if='show4'>
+        <div class="lineOneThis" v-if='show4'>
           <span>主任级别：</span>
-           <el-radio-group v-model="urgentzhuren"  @change='zhurenlevel'>
-              <el-radio :label="0">全部</el-radio>
-              <el-radio :label="1">暂不感兴趣</el-radio>
-              <el-radio :label="2">初步感兴趣</el-radio>
-              <el-radio :label="3">非常感兴趣</el-radio>
-              <el-radio :label="4">近期可考察</el-radio>
-              <el-radio :label="5">线上可签单</el-radio>
-            </el-radio-group>
+          <el-radio-group v-model="urgentzhuren" @change='zhurenlevel'>
+            <el-radio :label="0">全部</el-radio>
+            <el-radio :label="1">暂不感兴趣</el-radio>
+            <el-radio :label="2">初步感兴趣</el-radio>
+            <el-radio :label="3">非常感兴趣</el-radio>
+            <el-radio :label="4">近期可考察</el-radio>
+            <el-radio :label="5">线上可签单</el-radio>
+          </el-radio-group>
         </div>
-        <div class="lineOneThis"  v-if='show4'>
+        <div class="lineOneThis" v-if='show4'>
           <span>主任是否加急：</span>
-           <el-checkbox v-model="checked4" @change='zhurenjj'>加急</el-checkbox>
+          <el-checkbox v-model="checked4" @change='zhurenjj'>加急</el-checkbox>
         </div>
       </div>
       <div>
         <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0;">搜索结果：{{totalCountHosSelect}}家医院</p>
       </div>
 
-			<!-- <div class="tableBox">
-				<table>
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>医院名称</th>
-							<th>拍板人</th>
-							<th>固定电话</th>
-							<th>拍板人验证</th>
-							<th>近期跟踪时间</th>
-							<th>回访时间</th>
-						</tr>
-					</thead>
-					<tbody class="tbody">
-					</tbody>
-				</table>
-				<div class="box rt" id="box"></div>
-			</div> -->
-		</div>
-		<div class="time">
-			<span>时间选择：</span>
-			<input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
-			<el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
-		</div>
-		<div style="width: 1230px;height:auto;margin:30px auto 0px" v-if="echartsShowData">
-			<div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-			<div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-		</div>
-		<div class="seccion">ver : {{$version}}  ser : {{$store.state.serVersion}}</div>
+      <div class="tableBox" style="display: none;">
+        <table>
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>医院名称</th>
+              <th>拍板人</th>
+              <th>拍板人手机号码</th>
+              <th>拍板人验证</th>
+              <th>近期跟踪时间</th>
+              <th>回访时间</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+          </tbody>
+        </table>
+        <div class="box rt" id="box"></div>
+      </div>
     </div>
+    <div class="time">
+      <span>时间选择：</span>
+      <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
+      <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
+
+    </div>
+    <div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
+      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+      <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+    </div>
+    <div class="seccion">ver : {{$version}} ser : {{$store.state.serVersion}}</div>
+  </div>
 </template>
 <script>
-import qs from 'qs'
-export default {
-	name: 'index',
-	data () {
-		return {
-			nature:"",
-			paiBanCustomerWorkerHas: '',
-			paiBanCustomerWorkerPhoneHas: '',
-			paiBanCustomerWorkerUrgent: '',
-			paiBanCustomerWorkerLevel: '',
-			zhuRenCustomerWorkerHas: '',
-			zhuRenCustomerWorkerPhoneHas:'',
-			zhuRenCustomerWorkerUrgent: '',
-			zhuRenCustomerWorkerLevel: '',
-			paiBanCustomerWorkerLevelname:'',
-			zhuRenCustomerWorkerLevelname:'',
-			nicknameThis:'',
-			totalCount: '',
-			totalCountHos: '',
-			totalCountHos1: '',
-			totalCountHos2: '',
-			show1: false,
-			show2: false,
-			show3:false,
-			show4:false,
-			peopleType: '', //是院长还是主任
-			phoneIfyuanzhang: '', //院长是否有号码
-			phoneIfzhuren: '', //主任是否有号码
-			PhoneHasyuanzhang: '',
-			PhoneHaszhuren:'',
-			urgentyuanzhang:'',
-			urgentzhuren:'',
-			checked1:false,
-			checked2:false,
-			checked3:false,
-			checked4:false,
-			traceTotalNumber:'',//跟踪总量
-			totalCountHosSelect:'',
-			layuiData:'',
-			echartsShowData:false,
-			lineData:{
+  import qs from 'qs'
+  export default {
+    name: 'index',
+    data () {
+    	return {
+    		nature:"",
+    		paiBanCustomerWorkerHas: '',
+    		paiBanCustomerWorkerPhoneHas: '',
+    		paiBanCustomerWorkerUrgent: '',
+    		paiBanCustomerWorkerLevel: '',
+    		zhuRenCustomerWorkerHas: '',
+    		zhuRenCustomerWorkerPhoneHas:'',
+    		zhuRenCustomerWorkerUrgent: '',
+    		zhuRenCustomerWorkerLevel: '',
+    		paiBanCustomerWorkerLevelname:'',
+    		zhuRenCustomerWorkerLevelname:'',
+    		nicknameThis:'',
+    		totalCount: '',
+    		totalCountHos: '',
+    		totalCountHos1: '',
+    		totalCountHos2: '',
+    		show1: false,
+    		show2: false,
+    		show3:false,
+    		show4:false,
+    		peopleType: '', //是院长还是主任
+    		phoneIfyuanzhang: '', //院长是否有号码
+    		phoneIfzhuren: '', //主任是否有号码
+    		PhoneHasyuanzhang: '',
+    		PhoneHaszhuren:'',
+    		urgentyuanzhang:'',
+    		urgentzhuren:'',
+    		checked1:false,
+    		checked2:false,
+    		checked3:false,
+    		checked4:false,
+    		traceTotalNumber:'',//跟踪总量
+    		totalCountHosSelect:'',
+    		layuiData:'',
+    		echartsShowData:false,
+    		lineData:{
                 title: {
                     text: ''
                 },
@@ -189,7 +190,7 @@ export default {
                     data:['客户量','拍板人']
                 },
                 xAxis: { 
-					boundaryGap: false,
+    				boundaryGap: false,
                     data: []
                 },
                 yAxis: {
@@ -232,7 +233,7 @@ export default {
                     data:['客户量','拍板人']
                 },
                 xAxis: { 
-					boundaryGap: false,
+    				boundaryGap: false,
                     data: []
                 },
                 yAxis: {
@@ -266,570 +267,584 @@ export default {
                     }
                 ]
             },
-		}
-	},
-	activated(){
+    	}
+    },
+  activated() {
 
-		let thisValue = this
-		if(localStorage.getItem('id')){
-		this.cookie='loginId='+localStorage.getItem('id')
-		console.log( this.cookie,localStorage.getItem('id'))
-		}
-		
-		Object.assign(this.$data, this.$options.data());
-		// this.getData()
-		this.getDataNumber()
-		this.getDataNumberHos()
-		this.getDataNumberHos(1)
-		this.getDataNumberHos(2)
-		this.traceNumber()
-		// thisValue.chartsFn()
-		// this.statisticalAllFn()
-		let nowYear = new Date().getFullYear();
-		let nowMOunth = new Date().getMonth()+1;
-		if(nowMOunth < 10){
-			nowMOunth = '0' + nowMOunth
-		}
-      	thisValue.layuiData = nowYear + '-' + nowMOunth;
-		thisValue.$nextTick(()=>{
-			// let nowMOunth = new Date().getMonth();
-			// let nowYear = new Date().getFullYear();
-			layui.use('laydate', function(){
-				// console.dir(layui.laydate)
-				layui.laydate.render({
-					elem: '#layDateMonth',
-					type:'month',
-					// value:nowYear + '-' + nowMOunth,
-					change:function(value, date, endDate){
-					// console.log(value); //得到日期生成的值，如：2017-08-18
-					// console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-					// console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-					thisValue.nowTime = date
-					// thisValue.chartsFn()
-					// thisValue.statisticalAllFn()
-					if(date.month<10){
-						date.month = '0'+date.month
-					}
-					thisValue.layuiData = date.year + '-' + date.month
-					$('.layui-laydate').remove()
-					}
-					
-				});
-			});
-		})
-		if(localStorage.getItem('nickname')){
-			console.log(localStorage.getItem('nickname'))
-			this.nicknameThis = localStorage.getItem('nickname')
-			console.log(this.nicknameThis)
-		}
-        // 跳转上次最后一条数据
-        if(this.query != JSON.stringify(this.$route.query)){
-			this.query = JSON.stringify(this.$route.query);
-            $('#index .lastHis').unbind("click").click(function() {
-				$.ajax({
-					url: '/cache/get',
-					type: 'get',
-					data: 'name=' + $('.peoname').html(),
-					async: true,
-					success: function(res) {
-						if (res.code == 0) {
-							console.log(JSON.parse(res.data.value))
-							var data = JSON.parse(res.data.value)
-							thisValue.kw = data.kw
-							thisValue.level = data.level
-							thisValue.nature = data.nature
-							thisValue.area1Id = data.area1Id
-							thisValue.area2Id = data.area2Id
-							thisValue.urgent = data.urgent
-							thisValue.pn = data.page
-							thisValue.totalNum = data.totalNum
-							$('#index .keyword').val(thisValue.kw)
-							$('#index .urgentLevel').val(thisValue.level || thisValue.urgent)
-							$('#index .nature').val(thisValue.nature)
-							$('#index .province').val(thisValue.area1Id)
-							$('#index .city').val(thisValue.area2Id)
-							// console.log(data.page)
-							// $('.keyword').val(thisValue.kw)
-							$('#index #box').paging({
-								initPageNo: thisValue.pn, // 初始页码
-								totalPages: thisValue.totalNum, //总页数
-								//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-								slideSpeed: 600, // 缓动速度。单位毫秒
-								jump: true, //是否支持跳转
-								callback: function(page) { // 回调函数
-									// memberList1(1,page);
-									var nature = $('#index .nature').val()
-									thisValue.pn = page
-									console.log(thisValue.pn)
-									thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-								}
-							})
+      let thisValue = this
+      if (localStorage.getItem('id')) {
+        this.cookie = 'loginId=' + localStorage.getItem('id')
+        console.log(this.cookie, localStorage.getItem('id'))
+      }
 
-						}
-					}
-				})
-            })
-    //     $.ajax({
-				// url: '/login-refresh',
+      Object.assign(this.$data, this.$options.data());
+      // this.getData()
+      this.getDataNumber()
+      this.getDataNumberHos()
+      this.getDataNumberHos(1)
+      this.getDataNumberHos(2)
+      this.traceNumber()
+      // thisValue.chartsFn()
+      // this.statisticalAllFn()
+      let nowYear = new Date().getFullYear();
+      let nowMOunth = new Date().getMonth() + 1;
+      if (nowMOunth < 10) {
+        nowMOunth = '0' + nowMOunth
+      }
+      thisValue.layuiData = nowYear + '-' + nowMOunth;
+      thisValue.$nextTick(() => {
+        // let nowMOunth = new Date().getMonth();
+        // let nowYear = new Date().getFullYear();
+        layui.use('laydate', function() {
+          // console.dir(layui.laydate)
+          layui.laydate.render({
+            elem: '#layDateMonth',
+            type: 'month',
+            // value:nowYear + '-' + nowMOunth,
+            change: function(value, date, endDate) {
+              // console.log(value); //得到日期生成的值，如：2017-08-18
+              // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+              // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+              thisValue.nowTime = date
+              // thisValue.chartsFn()
+              // thisValue.statisticalAllFn()
+              if (date.month < 10) {
+                date.month = '0' + date.month
+              }
+              thisValue.layuiData = date.year + '-' + date.month
+              $('.layui-laydate').remove()
+            }
 
-				// type: 'POST',
-				// async: true,
-				// success: function(res) {
-				// 	if (res.code == 0) {
-				// 		localStorage.setItem('nickname',res.data.nickname)
-				// 		$('#index .peoname').html(res.data.nickname)
-				// 		$('#index #userName').val(res.data.nickname)
-				// 		//         window.location.href='index.html'
-				// 	} else {
+          });
+        });
+      })
+      if (localStorage.getItem('nickname')) {
+        console.log(localStorage.getItem('nickname'))
+        this.nicknameThis = localStorage.getItem('nickname')
+        console.log(this.nicknameThis)
+      }
+      // 跳转上次最后一条数据
+      if (this.query != JSON.stringify(this.$route.query)) {
+        this.query = JSON.stringify(this.$route.query);
+        $('#index .lastHis').unbind("click").click(function() {
+          $.ajax({
+            url: '/cache/get',
+            type: 'get',
+            data: 'name=' + $('.peoname').html(),
+            async: true,
+            success: function(res) {
+              if (res.code == 0) {
+                console.log(JSON.parse(res.data.value))
+                var data = JSON.parse(res.data.value)
+                thisValue.kw = data.kw
+                thisValue.level = data.level
+                thisValue.nature = data.nature
+                thisValue.area1Id = data.area1Id
+                thisValue.area2Id = data.area2Id
+                thisValue.urgent = data.urgent
+                thisValue.pn = data.page
+                thisValue.totalNum = data.totalNum
+                $('#index .keyword').val(thisValue.kw)
+                $('#index .urgentLevel').val(thisValue.level || thisValue.urgent)
+                $('#index .nature').val(thisValue.nature)
+                $('#index .province').val(thisValue.area1Id)
+                $('#index .city').val(thisValue.area2Id)
+                // console.log(data.page)
+                // $('.keyword').val(thisValue.kw)
+                $('#index #box').paging({
+                  initPageNo: thisValue.pn, // 初始页码
+                  totalPages: thisValue.totalNum, //总页数
+                  //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+                  slideSpeed: 600, // 缓动速度。单位毫秒
+                  jump: true, //是否支持跳转
+                  callback: function(page) { // 回调函数
+                    // memberList1(1,page);
+                    var nature = $('#index .nature').val()
+                    thisValue.pn = page
+                    console.log(thisValue.pn)
+                    thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id,
+                      thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+                  }
+                })
 
-				// 		setTimeout(function() {
-    //                         thisValue.$router.push({path:'/login'})
-    //                         // location.href='/#/login'
-    //                         // location.href=location.pathname
-				// 			// location.href = 'login.html'
-				// 		}, 1000)
-				// 	}
-				// }
-    //         })
+              }
+            }
+          })
+        })
+        //     $.ajax({
+        // url: '/login-refresh',
+
+        // type: 'POST',
+        // async: true,
+        // success: function(res) {
+        // 	if (res.code == 0) {
+        // 		localStorage.setItem('nickname',res.data.nickname)
+        // 		$('#index .peoname').html(res.data.nickname)
+        // 		$('#index #userName').val(res.data.nickname)
+        // 		//         window.location.href='index.html'
+        // 	} else {
+
+        // 		setTimeout(function() {
+        //                         thisValue.$router.push({path:'/login'})
+        //                         // location.href='/#/login'
+        //                         // location.href=location.pathname
+        // 			// location.href = 'login.html'
+        // 		}, 1000)
+        // 	}
+        // }
+        //         })
         // thisValue.lastPageNo()
         $('#index table').on('click', 'tr .enterHos', function() {
-				$(this).parent().parent().find('.a29905').addClass('a29902').removeClass('a29905')
-				$(this).parent().addClass('a29905').removeClass('a29902')
-				var param = {
-					'page': thisValue.pn,
-					'level': thisValue.level,
-					'nature': thisValue.nature,
-					'kw': thisValue.kw,
-					'area1Id': thisValue.area1Id,
-					'area2Id': thisValue.area2Id,
-					'urgent': thisValue.urgent,
-					'totalNum': thisValue.totalNum
-				}
-				$.ajax({
-					url: '/cache/set',
-					type: 'post',
-					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
-					async: true,
-					success: function(res) {
-						if (res.code == 0) {
+          $(this).parent().parent().find('.a29905').addClass('a29902').removeClass('a29905')
+          $(this).parent().addClass('a29905').removeClass('a29902')
+          var param = {
+            'page': thisValue.pn,
+            'level': thisValue.level,
+            'nature': thisValue.nature,
+            'kw': thisValue.kw,
+            'area1Id': thisValue.area1Id,
+            'area2Id': thisValue.area2Id,
+            'urgent': thisValue.urgent,
+            'totalNum': thisValue.totalNum
+          }
+          $.ajax({
+            url: '/cache/set',
+            type: 'post',
+            data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
+            async: true,
+            success: function(res) {
+              if (res.code == 0) {
 
-						}
-					}
-				})
+              }
+            }
+          })
 
-            })
+        })
         //点击进入详情页
-			// $('body').on('click','tbody .enterHos',function(){
-			//  // self.location.href='login.html'
-			//   window.location.href='login.html'
-			// // window.open ("login.html", "", "height=100, width=100,top=0, left=0,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=n o,status=no")
-            // })
+        // $('body').on('click','tbody .enterHos',function(){
+        //  // self.location.href='login.html'
+        //   window.location.href='login.html'
+        // // window.open ("login.html", "", "height=100, width=100,top=0, left=0,toolbar=no,menubar=no, scrollbars=no, resizable=no, location=n o,status=no")
+        // })
         // 搜索
-			$('#index .searchThis').unbind("click").click(function() {
-				thisValue.kw = $('#index .keyword').val()
-				thisValue.lastPageNo()
-				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
-			})
+        $('#index .searchThis').unbind("click").click(function() {
+          thisValue.kw = $('#index .keyword').val()
+          thisValue.lastPageNo()
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id,
+                thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
+        })
         $('#index .urgentLevel').change(function() {
-				if ($(this).val() == '') {
-					thisValue.urgent = ''
-					thisValue.level = ''
-				} else if ($(this).val() == 0) {
-					thisValue.urgent = 1
-					thisValue.level = ''
-				} else {
-					thisValue.urgent = ''
-					thisValue.level = $(this).val()
-				}
+          if ($(this).val() == '') {
+            thisValue.urgent = ''
+            thisValue.level = ''
+          } else if ($(this).val() == 0) {
+            thisValue.urgent = 1
+            thisValue.level = ''
+          } else {
+            thisValue.urgent = ''
+            thisValue.level = $(this).val()
+          }
 
-				thisValue.lastPageNo()
-				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
-            })
+          thisValue.lastPageNo()
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id,
+                thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
+        })
         $('#index .nature').change(function() {
-				thisValue.nature = $(this).val()
-				thisValue.lastPageNo()
-				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('.nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
-            })
+          thisValue.nature = $(this).val()
+          thisValue.lastPageNo()
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              // memberList1(1,page);
+              var nature = $('.nature').val()
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id,
+                thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
+        })
         // 省市区三级联动
-		// TODO 后期待优化
-		$.getJSON("./assets/js/area.json", function(res) {
-			thisValue.provinceList = res
-			// $('#index .province').html('<option value="">-请选择-</option>')
-			$.each(res, function(i, field) {
-				$('#index .province').append('<option value="' + field.value + '">' + field.label + '</option>')
-				// $("span").append(field.name + "," + field.goods);
-			});
+        // TODO 后期待优化
+        $.getJSON("./assets/js/area.json", function(res) {
+          thisValue.provinceList = res
+          // $('#index .province').html('<option value="">-请选择-</option>')
+          $.each(res, function(i, field) {
+            $('#index .province').append('<option value="' + field.value + '">' + field.label + '</option>')
+            // $("span").append(field.name + "," + field.goods);
+          });
         });
         $('#index .province').change(function() {
-				let provinceText = $(this).val();
-				$.each(thisValue.provinceList, function(i, item) {
-					if (provinceText == item.value) {
-						thisValue.cityItem = i;
-					}
-				});
-				thisValue.cityList = thisValue.provinceList[thisValue.cityItem]
-				$('#index .city').html('<option value="">-市-</option>')
-				$('#index .town').html('<option value="">-区-</option>')
-				$.each(thisValue.cityList.children, function(i, item) {
-					$('#index .city').append('<option value="' + item.value + '">' + item.label + '</option>')
-				})
-				thisValue.area1Id = $(this).val()
-				thisValue.area2Id = ''
-				thisValue.area3Id = ''
-				thisValue.lastPageNo()
-				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+          let provinceText = $(this).val();
+          $.each(thisValue.provinceList, function(i, item) {
+            if (provinceText == item.value) {
+              thisValue.cityItem = i;
+            }
+          });
+          thisValue.cityList = thisValue.provinceList[thisValue.cityItem]
+          $('#index .city').html('<option value="">-市-</option>')
+          $('#index .town').html('<option value="">-区-</option>')
+          $.each(thisValue.cityList.children, function(i, item) {
+            $('#index .city').append('<option value="' + item.value + '">' + item.label + '</option>')
+          })
+          thisValue.area1Id = $(this).val()
+          thisValue.area2Id = ''
+          thisValue.area3Id = ''
+          thisValue.lastPageNo()
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              // memberList1(1,page);
+              var nature = $('#index .nature').val()
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id,
+                thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
         })
         $('#index .city').change(function() {
-				let cityText = $(this).val();
-				$.each(thisValue.cityList.children, function(i, item) {
-					if (cityText == item.value) {
-						thisValue.townItem = i;
-					}
-				});
-				thisValue.townList = thisValue.cityList.children[thisValue.townItem]
-				$('#index .town').html('<option value="">-区-</option>')
-				$.each(thisValue.townList.children, function(i, item) {
-					$('#index .town').append('<option value="' + item.value + '">' + item.label + '</option>')
-				})
-				thisValue.area2Id = $(this).val()
-				thisValue.lastPageNo()
-				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
-            })
-        $('#index .town').change(function(){
-
-			thisValue.area3Id = $(this).val()
-			thisValue.lastPageNo()
-			$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
-		})
-		$('#index').on('click','.tbody .xiugaiTimeFn',function(e){
-
-			$(this).parent().attr('id')
-
-
-		})
-        // 清空全部搜索条件
-			$('#index .refresh').unbind("click").click(function() {
-				$('#index .keyword').val('')
-				$('#index .province').val('')
-				$('#index .city').val('')
-				$('#index .town').val('')
-				$('#index .nature').val('')
-				$('#index .urgentLevel').val('')
-				thisValue.kw = ''
-				thisValue.nature = ''
-				thisValue.area1Id = ''
-				thisValue.area2Id = ''
-				thisValue.area3Id=''
-				thisValue.urgent = ''
-				thisValue.level = ''
-				thisValue.toRevisitTimeFrom = ''
-				thisValue.toRevisitTimeTo = ''
-				thisValue.lastPageNo()
-				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
-            })
-        // window.onbeforeunload = function()
-		// {
-		// //  这是用来设定一个时间, 时间到了, 就会执行一个指定的 method。
-		//     // setTimeout(onunloadcancel, 10);
-		// 	$.ajax({
-		// 		type:"post",
-		// 		url:"/logout",
-		// 		data:"",
-		// 		success:function (data){
-
-		// 		}
-		// 	})
-		//     return "真的离开?";
-		// }
-		// window.onunloadcancel = function()
-		// {
-		//     alert("取消离开");
-        // }
-        $('#index .loginout').unbind("click").click(function(){
-			$.ajax({
-				type:"post",
-				url:"/logout",
-
-				data:"",
-				success:function (data){
-                    // location.href='/#/login'
-                    location.href=location.pathname
-							// location.href='login.html'
-				}
-			})
+          let cityText = $(this).val();
+          $.each(thisValue.cityList.children, function(i, item) {
+            if (cityText == item.value) {
+              thisValue.townItem = i;
+            }
+          });
+          thisValue.townList = thisValue.cityList.children[thisValue.townItem]
+          $('#index .town').html('<option value="">-区-</option>')
+          $.each(thisValue.townList.children, function(i, item) {
+            $('#index .town').append('<option value="' + item.value + '">' + item.label + '</option>')
+          })
+          thisValue.area2Id = $(this).val()
+          thisValue.lastPageNo()
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              // memberList1(1,page);
+              var nature = $('#index .nature').val()
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id,
+                thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
         })
-        $('#index table').on('click','tr td:nth-child(4)',function(){
-				debugger
-				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+        $('#index .town').change(function() {
 
-				}else{
-                    debugger
-					//anjie($(this).attr('tel'))
-					 //tTimeout(function(){
-					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
-					 	$('.phoneNumber').html($(this).html())
-					 	$('#btn_conn').click()
-					 //2000)
+          thisValue.area3Id = $(this).val()
+          thisValue.lastPageNo()
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              // memberList1(1,page);
+              var nature = $('#index .nature').val()
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id,
+                thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
+        })
+        $('#index').on('click', '.tbody .xiugaiTimeFn', function(e) {
 
-				}
-
-			})
+          $(this).parent().attr('id')
 
 
+        })
+        // 清空全部搜索条件
+        $('#index .refresh').unbind("click").click(function() {
+          $('#index .keyword').val('')
+          $('#index .province').val('')
+          $('#index .city').val('')
+          $('#index .town').val('')
+          $('#index .nature').val('')
+          $('#index .urgentLevel').val('')
+          thisValue.kw = ''
+          thisValue.nature = ''
+          thisValue.area1Id = ''
+          thisValue.area2Id = ''
+          thisValue.area3Id = ''
+          thisValue.urgent = ''
+          thisValue.level = ''
+          thisValue.toRevisitTimeFrom = ''
+          thisValue.toRevisitTimeTo = ''
+          thisValue.lastPageNo()
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              // memberList1(1,page);
+              var nature = $('#index .nature').val()
+              thisValue.pn = page
+              thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id,
+                thisValue.area3Id, thisValue.urgent, thisValue.level)
+            }
+          })
+        })
+        // window.onbeforeunload = function()
+        // {
+        // //  这是用来设定一个时间, 时间到了, 就会执行一个指定的 method。
+        //     // setTimeout(onunloadcancel, 10);
+        // 	$.ajax({
+        // 		type:"post",
+        // 		url:"/logout",
+        // 		data:"",
+        // 		success:function (data){
 
-		}
+        // 		}
+        // 	})
+        //     return "真的离开?";
+        // }
+        // window.onunloadcancel = function()
+        // {
+        //     alert("取消离开");
+        // }
+        $('#index .loginout').unbind("click").click(function() {
+          $.ajax({
+            type: "post",
+            url: "/logout",
+
+            data: "",
+            success: function(data) {
+              // location.href='/#/login'
+              location.href = location.pathname
+              // location.href='login.html'
+            }
+          })
+        })
+        $('#index table').on('click', 'tr td:nth-child(4)', function() {
+          debugger
+          if ($(this).attr('tel') == '' || $(this).attr('tel') == null || $(this).attr('tel') == undefined) {
+
+          } else {
+            debugger
+            //anjie($(this).attr('tel'))
+            //tTimeout(function(){
+            $('#inp_send').val($(this).attr('tel')).attr('linkName', $(this).attr('linkName'))
+            $('.phoneNumber').html($(this).html())
+            $('#btn_conn').click()
+            //2000)
+
+          }
+
+        })
+
+
+
+      }
 
 
 
     },
-    methods:{
-        yuanzhang(e){
-          if(e==true){
-            this.show1 = true;
-            this.show2 = false;
-            this.paiBanCustomerWorkerHas=1
-          }else{
-             this.show1 = false;
-             this.show2 = false;
-             this.paiBanCustomerWorkerHas=''
-             this.PhoneHasyuanzhang=''
-             this.paiBanCustomerWorkerPhoneHas= ''
-             this.paiBanCustomerWorkerUrgent=''
-             this.paiBanCustomerWorkerLevel= ''
-             this.paiBanCustomerWorkerLevelname=''
-             this.checked3=false
-             this.urgentyuanzhang=''
-          }
+    methods: {
+      yuanzhang(e) {
+        if (e == true) {
+          this.show1 = true;
+          this.show2 = false;
+          this.paiBanCustomerWorkerHas = 1
+        } else {
+          this.show1 = false;
+          this.show2 = false;
+          this.paiBanCustomerWorkerHas = ''
+          this.PhoneHasyuanzhang = ''
+          this.paiBanCustomerWorkerPhoneHas = ''
+          this.paiBanCustomerWorkerUrgent = ''
+          this.paiBanCustomerWorkerLevel = ''
+          this.paiBanCustomerWorkerLevelname = ''
+          this.checked3 = false
+          this.urgentyuanzhang = ''
+        }
         //   this.getDataNumberHosSelect()
-        },
-        zhuren(e){
-          if(e==true){
-            this.show3 = true;
-            this.show4 = false;
-            this.zhuRenCustomerWorkerHas=1
-          }else{
-             this.show3 = false;
-             this.show4 = false;
-             this.zhuRenCustomerWorkerHas=''
-             this.PhoneHaszhuren=''
-             this.zhuRenCustomerWorkerPhoneHas= ''
-             this.zhuRenCustomerWorkerUrgent= ''
-             this.zhuRenCustomerWorkerLevel= ''
-             this.zhuRenCustomerWorkerLevelname= ''
-             this.checked4=false
-             this.urgentzhuren=''
-          }
+      },
+      zhuren(e) {
+        if (e == true) {
+          this.show3 = true;
+          this.show4 = false;
+          this.zhuRenCustomerWorkerHas = 1
+        } else {
+          this.show3 = false;
+          this.show4 = false;
+          this.zhuRenCustomerWorkerHas = ''
+          this.PhoneHaszhuren = ''
+          this.zhuRenCustomerWorkerPhoneHas = ''
+          this.zhuRenCustomerWorkerUrgent = ''
+          this.zhuRenCustomerWorkerLevel = ''
+          this.zhuRenCustomerWorkerLevelname = ''
+          this.checked4 = false
+          this.urgentzhuren = ''
+        }
         //   this.getDataNumberHosSelect()
-        },
-        selectHos(event,i){
-          console.log(i)
-          this.nature=i
+      },
+      selectHos(event, i) {
+        console.log(i)
+        this.nature = i
         //   this.getDataNumberHosSelect()
-        },
-        selectPhoneyuanzhang(event) {
-          this.phoneIfyuanzhang = event; //获取option对应的value值。
-          if(event==0){
-            this.show2 = true;
-            this.paiBanCustomerWorkerPhoneHas=''
-          }
-          if (event == 1) {
-            this.show2 = true;
-            this.paiBanCustomerWorkerPhoneHas=1
-          }
+      },
+      selectPhoneyuanzhang(event) {
+        this.phoneIfyuanzhang = event; //获取option对应的value值。
+        if (event == 0) {
+          this.show2 = true;
+          this.paiBanCustomerWorkerPhoneHas = ''
+        }
+        if (event == 1) {
+          this.show2 = true;
+          this.paiBanCustomerWorkerPhoneHas = 1
+        }
         //   this.getDataNumberHosSelect()
-        },
-        selectPhonezhuren(event) {
-          this.phoneIfzhuren = event; //获取option对应的value值。
-          if(event==0){
-            this.show4 = true;
-            this.zhuRenCustomerWorkerPhoneHas=''
-          }
-          if (event == 1) {
-            this.show4 = true;
-            this.zhuRenCustomerWorkerPhoneHas=1
-          }
+      },
+      selectPhonezhuren(event) {
+        this.phoneIfzhuren = event; //获取option对应的value值。
+        if (event == 0) {
+          this.show4 = true;
+          this.zhuRenCustomerWorkerPhoneHas = ''
+        }
+        if (event == 1) {
+          this.show4 = true;
+          this.zhuRenCustomerWorkerPhoneHas = 1
+        }
         //   this.getDataNumberHosSelect()
-        },
-         // 选择是否感兴趣
-        yuanzhanglevel(e){
-          if(e==0){
-            this.paiBanCustomerWorkerLevel=''
-          }else{
-            this.paiBanCustomerWorkerLevel=e
-            if(e==1){
-              this.paiBanCustomerWorkerLevelname='暂不感兴趣'
-            }else if(e==2){
-              this.paiBanCustomerWorkerLevelname='初步感兴趣'
-            }else if(e==3){
-              this.paiBanCustomerWorkerLevelname='非常感兴趣'
-            }else if(e==4){
-              this.paiBanCustomerWorkerLevelname='近期可考察'
-            }else if(e==5){
-              this.paiBanCustomerWorkerLevelname='线上可签单'
+      },
+      // 选择是否感兴趣
+      yuanzhanglevel(e) {
+        if (e == 0) {
+          this.paiBanCustomerWorkerLevel = ''
+        } else {
+          this.paiBanCustomerWorkerLevel = e
+          if (e == 1) {
+            this.paiBanCustomerWorkerLevelname = '暂不感兴趣'
+          } else if (e == 2) {
+            this.paiBanCustomerWorkerLevelname = '初步感兴趣'
+          } else if (e == 3) {
+            this.paiBanCustomerWorkerLevelname = '非常感兴趣'
+          } else if (e == 4) {
+            this.paiBanCustomerWorkerLevelname = '近期可考察'
+          } else if (e == 5) {
+            this.paiBanCustomerWorkerLevelname = '线上可签单'
+          }
+        }
+        //   this.getDataNumberHosSelect()
+      },
+      zhurenlevel(e) {
+        if (e == 0) {
+          this.zhuRenCustomerWorkerLevel = ''
+        } else {
+          this.zhuRenCustomerWorkerLevel = e
+          if (e == 1) {
+            this.zhuRenCustomerWorkerLevelname = '暂不感兴趣'
+          } else if (e == 2) {
+            this.zhuRenCustomerWorkerLevelname = '初步感兴趣'
+          } else if (e == 3) {
+            this.zhuRenCustomerWorkerLevelname = '非常感兴趣'
+          } else if (e == 4) {
+            this.zhuRenCustomerWorkerLevelname = '近期可考察'
+          } else if (e == 5) {
+            this.zhuRenCustomerWorkerLevelname = '线上可签单'
+          }
+        }
+        //   this.getDataNumberHosSelect()
+      },
+      // 是否加急
+      yuanzhangjj(e) {
+        if (e == true) {
+          this.paiBanCustomerWorkerUrgent = 1
+        } else {
+          this.paiBanCustomerWorkerUrgent = 0
+        }
+        //   this.getDataNumberHosSelect()
+      },
+      zhurenjj(e) {
+        if (e == true) {
+          this.zhuRenCustomerWorkerUrgent = 1
+        } else {
+          this.zhuRenCustomerWorkerUrgent = 0
+        }
+        //   this.getDataNumberHosSelect()
+
+      },
+      selectFilterFn() {
+        if (this.echartsShowData) {
+          this.chartsFn()
+        }
+        this.echartsShowData = true
+        this.statisticalAllFn()
+      },
+      selectHospiatlNumFilterFn() {
+        this.getNumberHosSelect()
+        this.lastPageNo()
+        this.lastPage(1)
+      },
+      getData() {
+        this.$axios.get('/ling-dao/user-list?' + qs.stringify({
+            pn: this.customerPage,
+            // ps: 10,
+            order: 'asc',
+            sort: 'updateTime',
+            userId: localStorage.getItem('id'),
+          }))
+          .then(res => {
+            console.log(res)
+            if (res.data.codeMsg) {
+              console.log(res.data.codeMsg)
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
             }
-          }
-        //   this.getDataNumberHosSelect()
-        },
-        zhurenlevel(e){
-          if(e==0){
-            this.zhuRenCustomerWorkerLevel=''
-          }else{
-            this.zhuRenCustomerWorkerLevel=e
-            if(e==1){
-              this.zhuRenCustomerWorkerLevelname='暂不感兴趣'
-            }else if(e==2){
-              this.zhuRenCustomerWorkerLevelname='初步感兴趣'
-            }else if(e==3){
-              this.zhuRenCustomerWorkerLevelname='非常感兴趣'
-            }else if(e==4){
-              this.zhuRenCustomerWorkerLevelname='近期可考察'
-            }else if(e==5){
-              this.zhuRenCustomerWorkerLevelname='线上可签单'
+            if (res.data.code == 0) {
+              if (res.data.data.itemList.length > 0) {
+                for (let i in res.data.data.itemList) {
+                  this.urgentLevel.push(res.data.data.itemList[i])
+                }
+              }
             }
-          }
-        //   this.getDataNumberHosSelect()
-        },
-        // 是否加急
-        yuanzhangjj(e){
-          if(e==true){
-            this.paiBanCustomerWorkerUrgent=1
-          }else{
-            this.paiBanCustomerWorkerUrgent=0
-          }
-        //   this.getDataNumberHosSelect()
-        },
-        zhurenjj(e){
-          if(e==true){
-            this.zhuRenCustomerWorkerUrgent=1
-          }else{
-            this.zhuRenCustomerWorkerUrgent=0
-          }
-        //   this.getDataNumberHosSelect()
-		},
-		selectFilterFn(){
-			if(this.echartsShowData){
-				this.chartsFn()
-			}
-			this.echartsShowData = true
-			this.statisticalAllFn()
-		},
-		selectHospiatlNumFilterFn(){
-			this.getNumberHosSelect()
-		},
-		getData() {
-        	this.$axios.get('/ling-dao/user-list?' + qs.stringify({
-				pn: this.customerPage,
-				// ps: 10,
-				order: 'asc',
-				sort: 'updateTime',
-				userId:localStorage.getItem('id'),
-			}))
-			.then(res => {
-				console.log(res)
-				if (res.data.codeMsg) {
-					console.log(res.data.codeMsg)
-					this.$message({
-						type: 'info',
-						message: res.data.codeMsg
-					})
-				}
-				if (res.data.code == 0) {
-				if (res.data.data.itemList.length > 0) {
-					for (let i in res.data.data.itemList) {
-					this.urgentLevel.push(res.data.data.itemList[i])
-					}
-				}
-				}
-			})
-		},
+          })
+      },
+
       getDataNumber() {
-        this.$axios.get('/ling-dao/user-list-sum?'+qs.stringify({userId:localStorage.getItem('id'),}))
+        this.$axios.get('/ling-dao/user-list-sum?' + qs.stringify({
+            userId: localStorage.getItem('id'),
+          }))
           .then(res => {
             if (res.data.codeMsg) {
               this.$message({
@@ -842,11 +857,14 @@ export default {
             }
           })
       },
-      async getDataNumberHosSelect(_time,_paiBanCustomerWorkerPhoneHas) {
-		let thisValue = this;
-		let _pai
-		this.paiBanCustomerWorkerPhoneHas? _pai = this.paiBanCustomerWorkerPhoneHas:_pai = _paiBanCustomerWorkerPhoneHas
+
+      async getDataNumberHosSelect(_time, _paiBanCustomerWorkerPhoneHas) {
+        let thisValue = this;
+        let _pai
+        this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
+          _paiBanCustomerWorkerPhoneHas
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
+
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -855,12 +873,14 @@ export default {
             zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
-            nature:thisValue.nature,
-			userId:localStorage.getItem('id'),
-			createTimeByMonth:_time,
-			// createTimeFrom : _time,
+
+            nature: thisValue.nature,
+            userId: localStorage.getItem('id'),
+            createTimeByMonth: _time,
+            // createTimeFrom : _time,
             // createTimeTo : _nextTime? _nextTime-1:'',
             // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -870,84 +890,92 @@ export default {
               })
             }
             if (res.data.code == 0) {
-				let nowData = ''
+
+              let nowData = ''
               let resData = ''
               let nowTime = ''
-              for(let i in res.data.data.sum){
+              for (let i in res.data.data.sum) {
                 let nowYear = new Date().getFullYear();
-                let nowMOunth = new Date().getMonth()+1;
+                let nowMOunth = new Date().getMonth() + 1;
                 nowData = new Date().getDate();
-                resData = res.data.data.sum[i].date.split('-')[0]+res.data.data.sum[i].date.split('-')[1]+res.data.data.sum[i].date.split('-')[2].split(' ')[0]
+                resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
+                  .data.sum[i].date.split('-')[2].split(' ')[0]
                 // console.log('传进来的日期'+resData)
-                if(nowMOunth<10){
-                  nowMOunth = '0'+nowMOunth
+                if (nowMOunth < 10) {
+                  nowMOunth = '0' + nowMOunth
                 }
-                nowTime = nowYear.toString()+nowMOunth.toString()+nowData.toString()
+                nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
                 // if(parseInt(resData)<=parseInt(nowTime)){
-                  if(_pai == 1){
-                    this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-					this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-					if(res.data.data.sum[i].date.split('-')[2].split(' ')[0]<10){
-						this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
-                    	this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号')
-					}else{
-						this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0]+'号')
-                    	this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0]+'号')
-					}
-                    
-                    console.log(this.lineData.series[1].data)
-                    console.log(this.barData.series[1].data)
-                    console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号'+'拍板量当前值为'+res.data.data.sum[i].sum.itemCount)
-                  }else{
-                    this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                    this.barData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                    console.log(this.lineData.series[0].data)
-                    console.log(this.barData.series[0].data)
-                    console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,'')+'号'+'客户量当前值为'+res.data.data.sum[i].sum.itemCount)
+                if (_pai == 1) {
+                  this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                  this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                  if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
+                      '') + '号')
+                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
+                      '') + '号')
+                  } else {
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
+                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
                   }
+
+                  console.log(this.lineData.series[1].data)
+                  console.log(this.barData.series[1].data)
+                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    '拍板量当前值为' + res.data.data.sum[i].sum.itemCount)
+                } else {
+                  this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                  this.barData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                  console.log(this.lineData.series[0].data)
+                  console.log(this.barData.series[0].data)
+                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+                }
                 // }
               }
-              if(new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]){
+              if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
                 // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
                 //   this.echartsShowData = false;
                 //   this.$message('暂无数据')
                 // }else{
-				// 	this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-				// 	this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
-				// }
-				this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-				this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+                // 	this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
+                // 	this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+                // }
+                this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
+                this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
               }
 
 
 
 
-                // thisValue.totalCountHosSelect = res.data.data.itemCount
-				// console.log(thisValue.totalCountHosSelect)
-				// if(_startValue == 1){
-				// 	debugger
-				// 	console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
-				// 	console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
+              // thisValue.totalCountHosSelect = res.data.data.itemCount
+              // console.log(thisValue.totalCountHosSelect)
+              // if(_startValue == 1){
+              // 	debugger
+              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
+              // 	console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
 
-				// 	thisValue.totalCountHosSelect = res.data.data.itemCount
-				// }
-				// console.dir(res.data.data.itemCount)
-				// if(_paiBanCustomerWorkerPhoneHas == 1){
-				// 	thisValue.lineData.series[1].data.push(res.data.data.itemCount)
-				// 	thisValue.barData.series[1].data.push(res.data.data.itemCount)
-				// 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
-				// }else{
-				// 	thisValue.lineData.series[0].data.push(res.data.data.itemCount)
-				// 	thisValue.barData.series[0].data.push(res.data.data.itemCount)
-				// 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
-				// }
+              // 	thisValue.totalCountHosSelect = res.data.data.itemCount
+              // }
+              // console.dir(res.data.data.itemCount)
+              // if(_paiBanCustomerWorkerPhoneHas == 1){
+              // 	thisValue.lineData.series[1].data.push(res.data.data.itemCount)
+              // 	thisValue.barData.series[1].data.push(res.data.data.itemCount)
+              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
+              // }else{
+              // 	thisValue.lineData.series[0].data.push(res.data.data.itemCount)
+              // 	thisValue.barData.series[0].data.push(res.data.data.itemCount)
+              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
+              // }
             }
           })
-	  },
-	  async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
-		let thisValue = this;
-		let _pai
-		this.paiBanCustomerWorkerPhoneHas? _pai = this.paiBanCustomerWorkerPhoneHas:_pai = _paiBanCustomerWorkerPhoneHas
+      },
+      async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
+        let thisValue = this;
+        let _pai
+        this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
+          _paiBanCustomerWorkerPhoneHas
+
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
@@ -957,8 +985,10 @@ export default {
             zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
-            nature:thisValue.nature,
-			userId:localStorage.getItem('id'),
+
+            nature: thisValue.nature,
+            userId: localStorage.getItem('id'),
+
             // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
           }))
           .then(res => {
@@ -969,28 +999,29 @@ export default {
               })
             }
             if (res.data.code == 0) {
-                thisValue.totalCountHosSelect = res.data.data.itemCount
+              thisValue.totalCountHosSelect = res.data.data.itemCount
             }
           })
-	  },
-	  async statisticalAllFn(){
-		this.getNumberHosSelect();
+      },
+      async statisticalAllFn() {
+        this.getNumberHosSelect();
         let nowData = new Date().getDate();
-        let nowMOunth = new Date().getMonth()+1;
+        let nowMOunth = new Date().getMonth() + 1;
         let nowYear = new Date().getFullYear();
         // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
         this.lineData.xAxis.data = [];
         this.barData.xAxis.data = [];
-        if(this.nowTime){
+        if (this.nowTime) {
           console.log(this.nowTime)
           nowYear = this.nowTime.year;
           nowMOunth = this.nowTime.month;
           nowData = new Date(nowYear, nowMOunth, 0).getDate()
           // console.log('当前月份有：' + nowData)
-		}
-		let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00').getTime();
-		await this.getDataNumberHosSelect(_nowTime,'')
-        await this.getDataNumberHosSelect(_nowTime,1)
+
+        }
+        let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
+        await this.getDataNumberHosSelect(_nowTime, '')
+        await this.getDataNumberHosSelect(_nowTime, 1)
         // for(let i=1;i<=nowData;i++){
         //   this.lineData.xAxis.data.push(i+'日')
         //   this.barData.xAxis.data.push(i+'日')
@@ -1008,15 +1039,16 @@ export default {
         //     this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
         //     this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
         //   }
-        // }        
+        // }
+
       },
-      chartsFn(){ 
+      chartsFn() {
         this.lineData.series[0].data = []
         this.lineData.series[1].data = []
         this.barData.series[0].data = []
         this.barData.series[1].data = []
-        this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-        this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
+        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
+        this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
         this.$echarts.init(document.getElementById('main')).clear()
         this.$echarts.init(document.getElementById('main2')).clear()
         // console.log('s')
@@ -1032,7 +1064,7 @@ export default {
       getDataNumberHos(nature) {
         this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             nature: nature,
-            userId:localStorage.getItem('id'),
+            userId: localStorage.getItem('id'),
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -1048,13 +1080,15 @@ export default {
                 this.totalCountHos2 = res.data.data.itemCount
               } else {
                 this.totalCountHos = res.data.data.itemCount
-                this.totalCountHosSelect=res.data.data.itemCount
+                this.totalCountHosSelect = res.data.data.itemCount
               }
             }
           })
       },
       traceNumber() {
-        this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum?'+qs.stringify({userId:localStorage.getItem('id'),}))
+        this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum?' + qs.stringify({
+            userId: localStorage.getItem('id'),
+          }))
           .then(res => {
             if (res.data.codeMsg) {
               this.$message({
@@ -1069,147 +1103,180 @@ export default {
       },
 
 
-  //       lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
-  //           let thisValue = this
-		// 		$.ajax({
-		// 			url: '/ling-dao/customer/customer-list',
-		// 			type: 'GET',
+      lastPage(pn) {
+        var param = qs.stringify({
+          paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+          paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+          paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+          paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+          zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+          zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+          zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+          zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+          nature: this.nature,
+          userId: localStorage.getItem('id'),
+        })
+        let thisValue = this
+        $.ajax({
+          url: '/ling-dao/customer/customer-list',
+          type: 'GET',
 
-		// 			data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +'&userId='+localStorage.getItem('id')+
-		// 				'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+ '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo,
-		// 			async: true,
-		// 			success: function(res) {
-		// 				console.dir(res)
-		// 				if (res.code == 0) {
-		// 					$('#index .tbody').html('')
-		// 					if (res.data.itemList && res.data.itemList.length > 0) {
-		// 						for (var i in res.data.itemList) {
-		// 							var tel=''
-		// 							// if(res.data.itemList[i].tel){
-		// 							// 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-		// 							// }
-		// 							tel=res.data.itemList[i].tel = res.data.itemList[i].tel
-		// 							let toRevisitTime = '';
-		// 							if(res.data.itemList[i].toRevisitTime){
-		// 								toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
-		// 							}else{
-		// 								toRevisitTime = ''
-		// 							}
-  //                                   $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
-  //                                   '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
-  //                                   + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-		// 									"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
-		// 									"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
-		// 									 toRevisitTime + '</td></tr>')
+          data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
+            '&ps=15&pn=' + pn,
+          async: true,
+          success: function(res) {
+            console.dir(res)
+            if (res.code == 0) {
+              $('#index .tbody').html('')
+              $('.tableBox').css('display', 'block')
+              if (res.data.itemList && res.data.itemList.length > 0) {
+                for (var i in res.data.itemList) {
+                  var tel = ''
+                  // if(res.data.itemList[i].tel){
+                  // 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+                  // }
+                  tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
+                  let toRevisitTime = '';
+                  if (res.data.itemList[i].toRevisitTime) {
+                    toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD');
+                  } else {
+                    toRevisitTime = ''
+                  }
+                  $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId + '><td>' + (parseInt(i) +
+                      1 + ((pn - 1) * 15)) +
+                    '</td><td class="enterHos"><a href="#/history-detail-lindao-eve?id=' + res.data.itemList[i]
+                    .customerId + '">' +
+                    (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
+                      "") + '</td><td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res.data.itemList[
+                      i].tel || "") + '">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
+                      "") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) +
+                    '</td><td class="xiugaiTimeFn">' +
+                    toRevisitTime + '</td></tr>')
 
-  //                               }
-		// 					}
-		// 				}
-		// 			}
-		// 		})
-		// },
-  //       lastPageNo() {
-  //           let thisValue = this
-		// 		$.ajax({
-		// 			url: '/ling-dao/customer/customer-list-sum',
-		// 			type: 'GET',
-
-		// 			data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
-		// 				'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+'&userId='+localStorage.getItem('id'),
-		// 			async: true,
-		// 			success: function(res) {
-		// 				if (res.code == 0) {
-		// 					thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
-		// 					$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
-		// 					$('#index #box').paging({
-		// 						initPageNo: 1, // 初始页码
-		// 						totalPages: thisValue.totalNum, //总页数
-		// 						//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-		// 						slideSpeed: 600, // 缓动速度。单位毫秒
-		// 						jump: true, //是否支持跳转
-		// 						callback: function(page) { // 回调函数
-		// 							// memberList1(1,page);
-		// 							var nature = $('#index .nature').val()
-		// 							thisValue.pn = page
-		// 							thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-		// 						}
-		// 					})
-
-		// 				}
-		// 			}
-		// 		})
-		// },
-        // 时间转换
-        getDateDiff(dateTimeStamp) {
-			if(!dateTimeStamp)
-				return ''
-            let thisValue = this
-				var result;
-				var minute = 1000 * 60;
-				var hour = minute * 60;
-				var day = hour * 24;
-				var halfamonth = day * 15;
-				var month = day * 30;
-				var now = new Date().getTime();
-				var diffValue = now - dateTimeStamp;
-				if (diffValue < 0) {
-					return;
-				}
-				var monthC = diffValue / month;
-				var weekC = diffValue / (7 * day);
-				var dayC = diffValue / day;
-				var hourC = diffValue / hour;
-				var minC = diffValue / minute;
-				if (monthC >= 1) {
-					if (monthC <= 12)
-						result = "" + parseInt(monthC) + "月前";
-					else {
-						result = "" + parseInt(monthC / 12) + "年前";
-					}
-				} else if (weekC >= 1) {
-					result = "" + parseInt(weekC) + "周前";
-				} else if (dayC >= 1) {
-					result = "" + parseInt(dayC) + "天前";
-				} else if (hourC >= 1) {
-					result = "" + parseInt(hourC) + "小时前";
-				} else if (minC >= 1) {
-					result = "" + parseInt(minC) + "分钟前";
-				} else {
-					result = "刚刚";
-				}
-				return result;
+                }
+              }
             }
+          }
+        })
+      },
+      lastPageNo(pn) {
+        var param = qs.stringify({
+          paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+          paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+          paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+          paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+          zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+          zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+          zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+          zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+          nature: this.nature,
+          userId: localStorage.getItem('id'),
+        })
+        let thisValue = this
+        $.ajax({
+          url: '/ling-dao/customer/customer-list-sum',
+          type: 'GET',
+
+          data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
+            '&ps=15&pn=' + pn,
+          async: true,
+          success: function(res) {
+            if (res.code == 0) {
+              thisValue.totalNum = Math.ceil(res.data.itemCount / 15)
+              console.log(thisValue.totalNum)
+              $('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
+              $('#index #box').paging({
+                initPageNo: 1, // 初始页码
+                totalPages: thisValue.totalNum, //总页数
+                //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+                slideSpeed: 600, // 缓动速度。单位毫秒
+                jump: true, //是否支持跳转
+                callback: function(page) { // 回调函数
+                  // memberList1(1,page);
+                  // var nature = $('#index .nature').val()
+                  thisValue.pn = page
+                  thisValue.lastPage(page)
+                }
+              })
+
+            }
+          }
+        })
+      },
+      // 时间转换
+      getDateDiff(dateTimeStamp) {
+        if (!dateTimeStamp)
+          return ''
+        let thisValue = this
+        var result;
+        var minute = 1000 * 60;
+        var hour = minute * 60;
+        var day = hour * 24;
+        var halfamonth = day * 15;
+        var month = day * 30;
+        var now = new Date().getTime();
+        var diffValue = now - dateTimeStamp;
+        if (diffValue < 0) {
+          return;
+        }
+        var monthC = diffValue / month;
+        var weekC = diffValue / (7 * day);
+        var dayC = diffValue / day;
+        var hourC = diffValue / hour;
+        var minC = diffValue / minute;
+        if (monthC >= 1) {
+          if (monthC <= 12)
+            result = "" + parseInt(monthC) + "月前";
+          else {
+            result = "" + parseInt(monthC / 12) + "年前";
+          }
+        } else if (weekC >= 1) {
+          result = "" + parseInt(weekC) + "周前";
+        } else if (dayC >= 1) {
+          result = "" + parseInt(dayC) + "天前";
+        } else if (hourC >= 1) {
+          result = "" + parseInt(hourC) + "小时前";
+        } else if (minC >= 1) {
+          result = "" + parseInt(minC) + "分钟前";
+        } else {
+          result = "刚刚";
+        }
+        return result;
+      }
 
     }
-}
+  }
 </script>
 <style scoped>
-.seccion{
-	width: 100%;
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	margin-top: 90px;
-	color: #a9a0a0;
+  .seccion {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 90px;
+    color: #a9a0a0;
 
-}
-.introDetail{
-  width: 100%;
-  margin: 0 auto;
-  text-align: left;
-}
-.introDetail p{
-  display: inline-block;
-}
-.introDetail span{
-  font-size: 20px;
-  color: #666666;
-  line-height: 60px;
-  margin-right: 30px;
-}
+  }
 
-/* 新样式 */
- .leader_name {
+  .introDetail {
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .introDetail p {
+    display: inline-block;
+  }
+
+  .introDetail span {
+    font-size: 20px;
+    color: #666666;
+    line-height: 60px;
+    margin-right: 30px;
+  }
+
+  /* 新样式 */
+  .leader_name {
     width: 100%;
     height: 80px;
     background: #fff;
@@ -1227,7 +1294,8 @@ export default {
     /* margin-left: 36px; */
   }
 
-  .leader_name span:nth-child(2),.leader_name span:nth-child(3) {
+  .leader_name span:nth-child(2),
+  .leader_name span:nth-child(3) {
     margin-left: 20px;
     font-size: 20px;
     font-family: PingFangSC-Regular, PingFang SC;
@@ -1238,67 +1306,80 @@ export default {
 
 
 
-.selectRoleAll{
+  .selectRoleAll {
     /* margin-left: 34px; */
     font-size: 18px;
     color: #666;
     margin-bottom: 15px;
     margin-top: 15px;
   }
-  .selectRoleAll span{
+
+  .selectRoleAll span {
     color: #999;
     /* margin-left: 10px; */
     display: inline-block;
   }
-  .selectAllThis{
+
+  .selectAllThis {
     width: 100%;
     /* padding: 0 34px; */
     box-sizing: border-box;
     font-size: 18px !important;
   }
-  .selectAllThis .lineOneThis{
+
+  .selectAllThis .lineOneThis {
     width: 100%;
     display: block;
     line-height: 30px;
   }
-  .lineOneThis span{
+
+  .lineOneThis span {
     display: inline-block;
     width: 160px;
   }
-  .lineOneThis .el-checkbox-group{
+
+  .lineOneThis .el-checkbox-group {
     display: inline-block;
     width: 500px;
   }
-   .time{
+
+  .time {
     /* width: 100%; */
     height: 64px;
     line-height: 40px;
     padding: 12px 24px 12px 0px;
     box-sizing: border-box;
-	width: 80%;
+    width: 80%;
     min-width: 1200px;
     margin: 0 auto;
   }
-  .time span{
+
+  .time span {
     float: left;
   }
-  .timeYear{
+
+  .timeYear {
     float: left;
   }
-  .timeYear input,.timeMounth input{
+
+  .timeYear input,
+  .timeMounth input {
     background-color: transparent;
-    border:1px solid #c3b3b3;
+    border: 1px solid #c3b3b3;
     cursor: pointer;
     padding: 0px 5px;
   }
-  .timeMounth{
+
+  .timeMounth {
     float: left;
     margin-left: 12px
   }
-  >>>.layui-input{
-    width: 200px!important;
+
+  >>>.layui-input {
+    width: 200px !important;
   }
-  >>>.layui-input:hover{
-    width: 200px!important;
+
+  >>>.layui-input:hover {
+    width: 200px !important;
   }
 </style>
