@@ -790,7 +790,7 @@
         if (e == true) {
           this.paiBanCustomerWorkerUrgent = 1
         } else {
-          this.paiBanCustomerWorkerUrgent = 0
+          this.paiBanCustomerWorkerUrgent = ''
         }
         //   this.getDataNumberHosSelect()
       },
@@ -798,7 +798,7 @@
         if (e == true) {
           this.zhuRenCustomerWorkerUrgent = 1
         } else {
-          this.zhuRenCustomerWorkerUrgent = 0
+          this.zhuRenCustomerWorkerUrgent = ''
         }
         //   this.getDataNumberHosSelect()
 
@@ -960,7 +960,7 @@
           })
       },
       async statisticalAllFn() {
-        this.getNumberHosSelect();
+        // this.getNumberHosSelect();
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth() + 1;
         let nowYear = new Date().getFullYear();
