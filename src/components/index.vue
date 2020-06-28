@@ -47,30 +47,31 @@
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
 					</select>
-          <select class="paiBanCustomerWorkerHas">
-          	<option value="" selected>-是否有拍板人-</option>
-          	<option value="0">无拍板人</option>
-          	<option value="1">有拍板人</option>
-          </select>
-          <select class="paiBanCustomerWorkerPhoneHas">
-          	<option value="" selected>-拍板人有无号码-</option>
-          	<option value="0">无号码</option>
-          	<option value="1">有号码</option>
-          </select>
-          <select class="zhuRenCustomerWorkerHas">
-          	<option value="" selected>-是否有相关人-</option>
-          	<option value="0">无相关人</option>
-          	<option value="1">有相关人</option>
-          </select>
+					<select class="paiBanCustomerWorkerHas">
+						<option value="" selected>-是否有拍板人-</option>
+						<option value="0">无拍板人</option>
+						<option value="1">有拍板人</option>
+					</select>
+					<select class="paiBanCustomerWorkerPhoneHas">
+						<option value="" selected>-拍板人有无号码-</option>
+						<option value="0">无号码</option>
+						<option value="1">有号码</option>
+					</select>
+					<select class="zhuRenCustomerWorkerHas">
+						<option value="" selected>-是否有相关人-</option>
+						<option value="0">无相关人</option>
+						<option value="1">有相关人</option>
+					</select>
 
-          <select class="zhuRenCustomerWorkerPhoneHas">
-          	<option value="" selected>-相关人有无号码-</option>
-          	<option value="0">无号码</option>
-          	<option value="1">有号码</option>
-          </select>
-					回访时间 : <input style="width:170px" @change="
+					<select class="zhuRenCustomerWorkerPhoneHas">
+						<option value="" selected>-相关人有无号码-</option>
+						<option value="0">无号码</option>
+						<option value="1">有号码</option>
+					</select>
+					<!-- 回访时间 : <input style="width:170px" @change="
 							debugger;
 							if($event.target.value){
+								debugger
 								toRevisitTimeFrom = new Date($event.target.value+` 00:00:00`).getTime();
 								toRevisitTimeTo = toRevisitTimeFrom+(1*24*60*60-1)*1000;
 							}else{
@@ -78,8 +79,17 @@
 								toRevisitTimeTo = '';
 							}
 							lastPageNo()
-					" type="date" />
+					" type="date" /> -->
+					<el-date-picker
+						v-model="dataValue"
+						type="datetime"
+						placeholder="选择日期时间"
+						align="right"
+						:picker-options="pickerOptions" 
+						@change = "elmentDataFn">
+					</el-date-picker>
 					<button class="searchThis refresh">重置</button>
+					
 				</div>
 			</div>
 
@@ -112,6 +122,7 @@
     </div>
 </template>
 <script>
+import Vue from 'vue'
 export default {
 	name: 'index',
 	data () {
@@ -124,10 +135,10 @@ export default {
 			area3Id : '',
 			ps : 15,
 			urgent : '',
-      paiBanCustomerWorkerHas:'',
-      paiBanCustomerWorkerPhoneHas:'',
-      zhuRenCustomerWorkerHas:'',
-      zhuRenCustomerWorkerPhoneHas:'',
+			paiBanCustomerWorkerHas:'',
+			paiBanCustomerWorkerPhoneHas:'',
+			zhuRenCustomerWorkerHas:'',
+			zhuRenCustomerWorkerPhoneHas:'',
 			pn : 1,
             totalNum : '',
             provinceList : undefined,
@@ -138,7 +149,44 @@ export default {
 			query:'',
 			toRevisitTimeFrom:'',
 			toRevisitTimeTo:'',
-      cookie:'',
+			cookie:'',
+			pickerOptions: {
+				shortcuts: [{
+					text: '今天',
+					onClick(picker) {
+						picker.$emit('pick', new Date());
+					}
+				}, 
+				{
+					text: '近三天',
+					onClick(picker) {
+						const date = new Date();
+						debugger
+						// console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate())
+						// console.log(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime())
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
+						picker.$emit('pick', date);
+					}
+				}, 
+				{
+					text: '近一周',
+					onClick(picker) {
+						const date = new Date();
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 7);
+						picker.$emit('pick', date);
+					}
+				},
+				{
+					text: '近一个月',
+					onClick(picker) {
+						const date = new Date();
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+2)+'-'+date.getDate()+' 00:00:00').getTime());
+						picker.$emit('pick', date);
+					}
+				}
+				]
+			},
+			dataValue:''
 		}
 	},
 	activated(){
@@ -173,19 +221,19 @@ export default {
 							thisValue.urgent = data.urgent
 							thisValue.pn = data.page
 							thisValue.totalNum = data.totalNum
-              thisValue.paiBanCustomerWorkerHas = data.paiBanCustomerWorkerHas
-              thisValue.paiBanCustomerWorkerPhoneHas = data.paiBanCustomerWorkerPhoneHas
-              thisValue.zhuRenCustomerWorkerHas = data.zhuRenCustomerWorkerHas
-              thisValue.zhuRenCustomerWorkerPhoneHas = data.zhuRenCustomerWorkerPhoneHas
+							thisValue.paiBanCustomerWorkerHas = data.paiBanCustomerWorkerHas
+							thisValue.paiBanCustomerWorkerPhoneHas = data.paiBanCustomerWorkerPhoneHas
+							thisValue.zhuRenCustomerWorkerHas = data.zhuRenCustomerWorkerHas
+							thisValue.zhuRenCustomerWorkerPhoneHas = data.zhuRenCustomerWorkerPhoneHas
 							$('#index .keyword').val(thisValue.kw)
 							$('#index .urgentLevel').val(thisValue.level || thisValue.urgent)
 							$('#index .nature').val(thisValue.nature)
 							$('#index .province').val(thisValue.area1Id)
 							$('#index .city').val(thisValue.area2Id)
-              $('#index .paibanrenIf').val(thisValue.paiBanCustomerWorkerHas)
-              $('#index .paibanrenPhoneIf').val(thisValue.paiBanCustomerWorkerPhoneHas)
-              $('#index .zhuRenIf').val(thisValue.zhuRenCustomerWorkerHas)
-              $('#index .zhuRenPhoneIf').val(thisValue.zhuRenCustomerWorkerPhoneHas)
+							$('#index .paibanrenIf').val(thisValue.paiBanCustomerWorkerHas)
+							$('#index .paibanrenPhoneIf').val(thisValue.paiBanCustomerWorkerPhoneHas)
+							$('#index .zhuRenIf').val(thisValue.zhuRenCustomerWorkerHas)
+							$('#index .zhuRenPhoneIf').val(thisValue.zhuRenCustomerWorkerPhoneHas)
 							// console.log(data.page)
 							// $('.keyword').val(thisValue.kw)
 							$('#index #box').paging({
@@ -593,7 +641,18 @@ export default {
 
     },
     methods:{
-
+		elmentDataFn(_value){
+			console.log(this.moment(_value).valueOf())
+			console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
+			if(_value){
+				this.toRevisitTimeFrom = this.moment(_value).valueOf();
+				this.toRevisitTimeTo = this.toRevisitTimeFrom+(1*24*60*60-1)*1000;
+			}else{
+				this.toRevisitTimeFrom = '';
+				this.toRevisitTimeTo = '';
+			}
+			this.lastPageNo()
+		},
         lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
             let thisValue = this
 				$.ajax({

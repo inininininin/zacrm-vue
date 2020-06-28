@@ -38,7 +38,7 @@
 button[disabled]{
 	background: #e5e5e5 !important;
 	}
-#add-hos .selectOption input{
+#add-hos .selectOption>input{
 	width: 150px;
 	height: 38px;
 	border-radius: 4px;
@@ -96,7 +96,7 @@ button[disabled]{
 	/* resize: none; */
 }
 
-#add-hos .selectOption span{
+#add-hos .selectOption>span{
 	line-height: 60px;
 }
 #add-hos .addPeople{
