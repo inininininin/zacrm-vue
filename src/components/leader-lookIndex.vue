@@ -132,9 +132,9 @@
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
 
     </div>
-    <div style="width: 1230px;height:800px;margin:30px auto 0px" v-if="echartsShowData">
+    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
       <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-      <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+      <!-- <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div> -->
     </div>
     <div class="seccion">ver : {{$version}} ser : {{$store.state.serVersion}}</div>
   </div>
@@ -187,7 +187,7 @@
                 text: "数据正在载入...",
                 tooltip: {},
                 legend: {
-                    data:['客户量','拍板人']
+                    data:['客户量','追踪数']
                 },
                 xAxis: { 
     				boundaryGap: false,
@@ -211,62 +211,63 @@
                 },
                 series: [
                     {
-                        name: '客户量',
-                        type: 'line',
-                        color: ['#37A2DA'],
-                        data: []
+                      name: '客户量',
+                      type: 'line',
+                      color: ['#37A2DA'],
+                      data: []
                     },
                     {
-                        name: '拍板人',
-                        type: 'line',
-                        color: ['red'],
-                        data: []
-                    }
-                ]
-            },
-          barData:{
-                title: {
-                    text: ''
-                },
-                tooltip: {},
-                legend: {
-                    data:['客户量','拍板人']
-                },
-                xAxis: { 
-    				boundaryGap: false,
-                    data: []
-                },
-                yAxis: {
-                },
-                label: {
-                    show: true,
-                    // 标签的文字。
-                    // formatter: ["1","2","3","4","5","6"]
-                },
-                toolbox:{
-                  show   : true,
-                  feature: {
-                     dataView : {show: true, readOnly: false},
-                      magicType  : {show: true, type: ['line', 'bar']},
-                      restore    : {show: false},
-                      saveAsImage: {show: true}
-                  }
-                },
-                series: [
-                    {
-                        name: '客户量',
-                        type: 'bar',
-                        color: ['#37A2DA'],
-                        data: []
+                      name: '追踪数',
+                      type: 'line',
+                      color: ['#fb5858'],
+                      data: []
                     },
-                    {
-                        name: '拍板人',
-                        type: 'bar',
-                        color: ['red'],
-                        data: []
-                    }
                 ]
             },
+            createTimeState : ''
+          // barData:{
+          //       title: {
+          //           text: ''
+          //       },
+          //       tooltip: {},
+          //       legend: {
+          //           data:['客户量','拍板人']
+          //       },
+          //       xAxis: { 
+    			// 	boundaryGap: false,
+          //           data: []
+          //       },
+          //       yAxis: {
+          //       },
+          //       label: {
+          //           show: true,
+          //           // 标签的文字。
+          //           // formatter: ["1","2","3","4","5","6"]
+          //       },
+          //       toolbox:{
+          //         show   : true,
+          //         feature: {
+          //            dataView : {show: true, readOnly: false},
+          //             magicType  : {show: true, type: ['line', 'bar']},
+          //             restore    : {show: false},
+          //             saveAsImage: {show: true}
+          //         }
+          //       },
+          //       series: [
+          //           {
+          //               name: '客户量',
+          //               type: 'bar',
+          //               color: ['#37A2DA'],
+          //               data: []
+          //           },
+          //           {
+          //               name: '拍板人',
+          //               type: 'bar',
+          //               color: ['red'],
+          //               data: []
+          //           }
+          //       ]
+          //   },
     	}
     },
   activated() {
@@ -683,6 +684,7 @@
           this.show1 = true;
           this.show2 = false;
           this.paiBanCustomerWorkerHas = 1
+          this.createTimeState = 'paiBanCustomerWorkerInserTime'
         } else {
           this.show1 = false;
           this.show2 = false;
@@ -694,6 +696,10 @@
           this.paiBanCustomerWorkerLevelname = ''
           this.checked3 = false
           this.urgentyuanzhang = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerInserTime' || this.createTimeState == 'paiBanCustomerWorkerPhoneInsertTime'
+          || this.createTimeState == 'paiBanCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         }
         //   this.getDataNumberHosSelect()
       },
@@ -702,6 +708,7 @@
           this.show3 = true;
           this.show4 = false;
           this.zhuRenCustomerWorkerHas = 1
+          this.createTimeState = 'zhuRenCustomerWorkerInserTime'
         } else {
           this.show3 = false;
           this.show4 = false;
@@ -713,6 +720,10 @@
           this.zhuRenCustomerWorkerLevelname = ''
           this.checked4 = false
           this.urgentzhuren = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerInserTime' || this.createTimeState == 'zhuRenCustomerWorkerPhoneInsertTime'
+          || this.createTimeState == 'zhuRenCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         }
         //   this.getDataNumberHosSelect()
       },
@@ -726,10 +737,14 @@
         if (event == 0) {
           this.show2 = true;
           this.paiBanCustomerWorkerPhoneHas = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerPhoneInsertTime'){
+            this.createTimeState = ''
+          }
         }
         if (event == 1) {
           this.show2 = true;
-          this.paiBanCustomerWorkerPhoneHas = 1
+          this.paiBanCustomerWorkerPhoneHas = 1;
+          this.createTimeState = 'paiBanCustomerWorkerPhoneInsertTime'
         }
         //   this.getDataNumberHosSelect()
       },
@@ -738,10 +753,14 @@
         if (event == 0) {
           this.show4 = true;
           this.zhuRenCustomerWorkerPhoneHas = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerPhoneInsertTime'){
+            this.createTimeState = ''
+          }
         }
         if (event == 1) {
           this.show4 = true;
-          this.zhuRenCustomerWorkerPhoneHas = 1
+          this.zhuRenCustomerWorkerPhoneHas = 1;
+          this.createTimeState = 'zhuRenCustomerWorkerPhoneInsertTime'
         }
         //   this.getDataNumberHosSelect()
       },
@@ -749,8 +768,12 @@
       yuanzhanglevel(e) {
         if (e == 0) {
           this.paiBanCustomerWorkerLevel = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         } else {
-          this.paiBanCustomerWorkerLevel = e
+          this.paiBanCustomerWorkerLevel = e;
+          this.createTimeState = 'paiBanCustomerWorkerLevelTime'
           if (e == 1) {
             this.paiBanCustomerWorkerLevelname = '暂不感兴趣'
           } else if (e == 2) {
@@ -768,8 +791,12 @@
       zhurenlevel(e) {
         if (e == 0) {
           this.zhuRenCustomerWorkerLevel = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         } else {
-          this.zhuRenCustomerWorkerLevel = e
+          this.zhuRenCustomerWorkerLevel = e;
+          this.createTimeState = 'zhuRenCustomerWorkerLevelTime'
           if (e == 1) {
             this.zhuRenCustomerWorkerLevelname = '暂不感兴趣'
           } else if (e == 2) {
@@ -789,7 +816,7 @@
         if (e == true) {
           this.paiBanCustomerWorkerUrgent = 1
         } else {
-          this.paiBanCustomerWorkerUrgent = 0
+          this.paiBanCustomerWorkerUrgent = ''
         }
         //   this.getDataNumberHosSelect()
       },
@@ -797,15 +824,12 @@
         if (e == true) {
           this.zhuRenCustomerWorkerUrgent = 1
         } else {
-          this.zhuRenCustomerWorkerUrgent = 0
+          this.zhuRenCustomerWorkerUrgent = ''
         }
         //   this.getDataNumberHosSelect()
 
       },
       selectFilterFn() {
-        if (this.echartsShowData) {
-          this.chartsFn()
-        }
         this.echartsShowData = true
         this.statisticalAllFn()
       },
@@ -858,24 +882,23 @@
           })
       },
 
-      async getDataNumberHosSelect(_time, _paiBanCustomerWorkerPhoneHas) {
+      async getDataNumberHosSelect(_time) {
         let thisValue = this;
         let _pai
-        this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
-          _paiBanCustomerWorkerPhoneHas
+        // this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
+          // _paiBanCustomerWorkerPhoneHas
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
-
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: _pai,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
             paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
             zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
             zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
-
             nature: thisValue.nature,
             userId: localStorage.getItem('id'),
+            whatTime: this.createTimeState,
             createTimeByMonth: _time,
             // createTimeFrom : _time,
             // createTimeTo : _nextTime? _nextTime-1:'',
@@ -905,35 +928,18 @@
                   nowMOunth = '0' + nowMOunth
                 }
                 nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
-                // if(parseInt(resData)<=parseInt(nowTime)){
-                if (_pai == 1) {
-                  this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-                  this.barData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
-                  if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
+                 if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
                       '') + '号')
-                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      '') + '号')
-                  } else {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
-                    this.barData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
-                  }
-
-                  console.log(this.lineData.series[1].data)
-                  console.log(this.barData.series[1].data)
-                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
-                    '拍板量当前值为' + res.data.data.sum[i].sum.itemCount)
                 } else {
-                  this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                  this.barData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                  console.log(this.lineData.series[0].data)
-                  console.log(this.barData.series[0].data)
-                  console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
-                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
                 }
-                // }
+                this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                console.log(this.lineData.series[0].data)
+                console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
               }
-              if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
+              // if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
                 // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
                 //   this.echartsShowData = false;
                 //   this.$message('暂无数据')
@@ -941,31 +947,7 @@
                 // 	this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
                 // 	this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
                 // }
-                this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-                this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
-              }
-
-
-
-
-              // thisValue.totalCountHosSelect = res.data.data.itemCount
-              // console.log(thisValue.totalCountHosSelect)
-              // if(_startValue == 1){
-              // 	debugger
-              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
-              // 	console.log(thisValue.moment(_nextTime).format('YYYY-MM-DD'))
-
-              // 	thisValue.totalCountHosSelect = res.data.data.itemCount
-              // }
-              // console.dir(res.data.data.itemCount)
-              // if(_paiBanCustomerWorkerPhoneHas == 1){
-              // 	thisValue.lineData.series[1].data.push(res.data.data.itemCount)
-              // 	thisValue.barData.series[1].data.push(res.data.data.itemCount)
-              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'拍板量当前值为'+res.data.data.itemCount)
-              // }else{
-              // 	thisValue.lineData.series[0].data.push(res.data.data.itemCount)
-              // 	thisValue.barData.series[0].data.push(res.data.data.itemCount)
-              // 	console.log(thisValue.moment(_time).format('YYYY-MM-DD')+'客户量当前值为'+res.data.data.itemCount)
+                
               // }
             }
           })
@@ -1003,14 +985,37 @@
             }
           })
       },
+      async getCustomerWorkerTrace(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+          createTimeByMonth : _time,
+          userId: localStorage.getItem('id'),
+        }))
+        .then(res => {
+           if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code == 0) {
+              for (let i in res.data.data.sum) {
+                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+              }
+              console.log(this.lineData.series[1].data)
+            }
+        })
+      },
       async statisticalAllFn() {
-        this.getNumberHosSelect();
+        // this.getNumberHosSelect();
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth() + 1;
         let nowYear = new Date().getFullYear();
         // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
-        this.lineData.xAxis.data = [];
-        this.barData.xAxis.data = [];
+        // this.barData.xAxis.data = [];
+        if (this.lineData.xAxis.data.length != 0) {
+          this.lineData.xAxis.data = [];
+          this.chartsFn()
+        }
         if (this.nowTime) {
           console.log(this.nowTime)
           nowYear = this.nowTime.year;
@@ -1020,37 +1025,22 @@
 
         }
         let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
-        await this.getDataNumberHosSelect(_nowTime, '')
-        await this.getDataNumberHosSelect(_nowTime, 1)
-        // for(let i=1;i<=nowData;i++){
-        //   this.lineData.xAxis.data.push(i+'日')
-        //   this.barData.xAxis.data.push(i+'日')
-        //   // console.log(i+'日')
-        //   let _nowTime = new Date(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00').getTime();
-        //   let _nextTime = new Date(nowYear+'-'+nowMOunth+'-'+(i+1)+' '+'00:00:00').getTime();
-        //   // console.log(nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00')
-        //   // console.log(i+'')
-        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,'')
-        //   await this.getDataNumberHosSelect(_nowTime,_nextTime,1)
-        //   if(i == nowData){
-        //     // console.dir(this.lineData)
-        //     //  console.dir(this.barData)
-        //     // await this.getDataNumberHosSelect(nowYear+'-'+nowMOunth+'-'+1+' '+'00:00:00',nowYear+'-'+nowMOunth+'-'+i+' '+'00:00:00','',1)
-        //     this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-        //     this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
-        //   }
-        // }
-
+        await this.getDataNumberHosSelect(_nowTime)
+        await this.getCustomerWorkerTrace(_nowTime)
+        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
+        // await this.getDataNumberHosSelect(_nowTime, 1)
       },
       chartsFn() {
         this.lineData.series[0].data = []
+        debugger
         this.lineData.series[1].data = []
-        this.barData.series[0].data = []
-        this.barData.series[1].data = []
+
+        // this.barData.series[0].data = []
+        // this.barData.series[1].data = []
         this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-        this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
+        // this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
         this.$echarts.init(document.getElementById('main')).clear()
-        this.$echarts.init(document.getElementById('main2')).clear()
+        // this.$echarts.init(document.getElementById('main2')).clear()
         // console.log('s')
         // 清空绘画内容，清空后实例可用，因为并非释放示例的资源，释放资源我们需要dispose()
         // this.$echarts.init(document.getElementById('main')).clear()
@@ -1135,7 +1125,10 @@
                   // if(res.data.itemList[i].tel){
                   // 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
                   // }
-                  tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
+                  if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
+                  	tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 3) + "****"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
+                  }
+                  // tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
                   let toRevisitTime = '';
                   if (res.data.itemList[i].toRevisitTime) {
                     toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD');

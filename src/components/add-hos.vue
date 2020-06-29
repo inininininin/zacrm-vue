@@ -43,7 +43,15 @@
 					</div>
 					<div class="huifangClass">
 						回访时间：
-						<input type="date" :value="toRevisitTime">
+						<!-- <input type="date" :value="toRevisitTime" @change="elmentDataFn"> -->
+						<el-date-picker
+							v-model="toRevisitTime"
+							type="datetime"
+							placeholder="选择日期时间"
+							align="right"
+							:picker-options="pickerOptions" 
+							@change = "elmentDataFn">
+						</el-date-picker>
 					</div>
 					<div class="hosIntroBox">
 						<span>简介 : </span>
@@ -220,6 +228,42 @@ export default {
             customerWorkerIdZz : '',
             timeIs : '',
 			toRevisitTime:'',
+			pickerOptions: {
+				shortcuts: [{
+					text: '今天',
+					onClick(picker) {
+						picker.$emit('pick', new Date());
+					}
+				}, 
+				{
+					text: '近三天',
+					onClick(picker) {
+						const date = new Date();
+						debugger
+						// console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate())
+						// console.log(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime())
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
+						picker.$emit('pick', date);
+					}
+				}, 
+				{
+					text: '近一周',
+					onClick(picker) {
+						const date = new Date();
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 7);
+						picker.$emit('pick', date);
+					}
+				},
+				{
+					text: '近一个月',
+					onClick(picker) {
+						const date = new Date();
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+2)+'-'+date.getDate()+' 00:00:00').getTime());
+						picker.$emit('pick', date);
+					}
+				}
+				]
+			},
 		}
 	},
 	activated(){
@@ -1218,6 +1262,19 @@ export default {
 
     },
     methods:{
+		elmentDataFn(_value){
+			// console.log(this.moment(_value).valueOf())
+			// console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
+			// if(_value){
+			// 	this.toRevisitTimeFrom = this.moment(_value).valueOf();
+			// 	this.toRevisitTimeTo = this.toRevisitTimeFrom+(1*24*60*60-1)*1000;
+			// }else{
+			// 	this.toRevisitTimeFrom = '';
+			// 	this.toRevisitTimeTo = '';
+			// }
+			this.toRevisitTime = this.moment(_value).valueOf()
+			console.log(this.toRevisitTime)
+		},
         modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type){
             let thisValue = this
 				var param=telNameTitle+'='+telName+'&'+telValueTitle+'='+ telValue
@@ -1292,7 +1349,7 @@ export default {
 				var area2Name = $('#add-hos .city option:selected').text()
 				var area3Id = $('#add-hos .town option:selected').val()
 				var area3Name = $('#add-hos .town option:selected').text()
-				let toRevisitTime = $('#add-hos .huifangClass input').val()
+				let toRevisitTime = this.toRevisitTime
 				// if (area1Id == '' || area2Id == '' || area3Id == '') {
 				// 	layer.msg('请选择医院所在地区')
 				// } else if (nature == '') {
@@ -1334,7 +1391,7 @@ export default {
 				var area3Name = $('#add-hos .town option:selected').text()
 				// var toRevisitTime = $('#add-hos .huifangClass').val()
 				debugger
-				let toRevisitTime = new Date($('#add-hos .huifangClass input').val()).getTime()
+				let toRevisitTime = this.moment(this.moment(this.toRevisitTime).valueOf()).format('YYYY-MM-DD HH-mm-ss')
 				console.log(toRevisitTime)
 				if (name == '') {
 
@@ -1404,6 +1461,7 @@ export default {
 							debugger
 							// moment(Time.confirmStart).format('YYYY-MM-DD')
 							thisValue.toRevisitTime = thisValue.moment(res.data.toRevisitTime).format('YYYY-MM-DD')
+							thisValue.toRevisitTime = thisValue.moment(thisValue.moment(res.data.toRevisitTime)).format('YYYY-MM-DD HH:mm:ss')
 							console.log(thisValue.toRevisitTime)
 							document.title = res.data.name + " - " + document.title
 							$('#add-hos .hosname').val(res.data.name)
