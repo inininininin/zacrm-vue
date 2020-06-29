@@ -196,7 +196,7 @@
           text: "数据正在载入...",
           tooltip: {},
           legend: {
-            data: ['客户量']
+            data: ['客户量','追踪数']
           },
           xAxis: {
             boundaryGap: false,
@@ -228,9 +228,15 @@
             }
           },
           series: [{
-              name: '医院量',
+              name: '客户量',
               type: 'line',
               color: ['#37A2DA'],
+              data: []
+            },
+            {
+              name: '追踪数',
+              type: 'line',
+              color: ['#fb5858'],
               data: []
             },
           ]
@@ -390,7 +396,10 @@
           this.paiBanCustomerWorkerLevelname = ''
           this.checked3 = false
           this.urgentyuanzhang = ''
-
+          if(this.createTimeState == 'paiBanCustomerWorkerInserTime' || this.createTimeState == 'paiBanCustomerWorkerPhoneInsertTime'
+          || this.createTimeState == 'paiBanCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         }
         // this.chartsFn()
         // this.statisticalAllFn()
@@ -402,6 +411,10 @@
           this.zhuRenCustomerWorkerHas = 1
           this.createTimeState = 'zhuRenCustomerWorkerInserTime'
         } else {
+          if(this.createTimeState == 'zhuRenCustomerWorkerInserTime' || this.createTimeState == 'zhuRenCustomerWorkerPhoneInsertTime'
+          || this.createTimeState == 'zhuRenCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
           this.show3 = false;
           this.show4 = false;
           this.zhuRenCustomerWorkerHas = ''
@@ -427,6 +440,9 @@
         if (event == 0) {
           this.show2 = true;
           this.paiBanCustomerWorkerPhoneHas = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerPhoneInsertTime'){
+            this.createTimeState = ''
+          }
         }
         if (event == 1) {
           this.show2 = true;
@@ -441,6 +457,9 @@
         if (event == 0) {
           this.show4 = true;
           this.zhuRenCustomerWorkerPhoneHas = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerPhoneInsertTime'){
+            this.createTimeState = ''
+          }
         }
         if (event == 1) {
           this.show4 = true;
@@ -455,6 +474,9 @@
         if (e == 0) {
           this.paiBanCustomerWorkerLevel = ''
           this.paiBanCustomerWorkerLevelname = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         } else {
           this.paiBanCustomerWorkerLevel = e
           this.createTimeState = 'paiBanCustomerWorkerLevelTime'
@@ -476,6 +498,9 @@
       zhurenlevel(e) {
         if (e == 0) {
           this.zhuRenCustomerWorkerLevel = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         } else {
           this.zhuRenCustomerWorkerLevel = e
           this.createTimeState = 'zhuRenCustomerWorkerLevelTime'
@@ -774,8 +799,36 @@
             }
           })
       },
+      async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
+        let thisValue = this
+        debugger
+        let _pai = this.paiBanCustomerWorkerPhoneHas ? this.paiBanCustomerWorkerPhoneHas :
+          _paiBanCustomerWorkerPhoneHas
+        await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: _pai,
+            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+            nature: this.nature,
+            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              this.totalCountHosSelect = res.data.data.itemCount
+            }
+          })
+      },
       async getDataNumberHosSelect(_time) {
-
         let thisValue = this
         console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
         let _pai
@@ -825,66 +878,43 @@
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
                 }
                 this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                console.log(this.lineData.series[0].data)
-                console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
-                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+                // console.log(this.lineData.series[0].data)
+                // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    // '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
               }
-              // if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
-                // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
-                //   this.echartsShowData = false;
-                //   this.$message('暂无数据')
-                // }else{
-                //   this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-                //   this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
-                // }
-                this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-                // this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
-              // }
-
+                
             }
           })
-
       },
-      async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
-
-        let thisValue = this
-        debugger
-        let _pai = this.paiBanCustomerWorkerPhoneHas ? this.paiBanCustomerWorkerPhoneHas :
-          _paiBanCustomerWorkerPhoneHas
-        await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
-            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: _pai,
-            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
-            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
-            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
-            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
-            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
-            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
-            nature: this.nature,
-            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
-          }))
-          .then(res => {
-            if (res.data.codeMsg) {
+      async getCustomerWorkerTrace(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+          createTimeByMonth : _time
+        }))
+        .then(res => {
+           if (res.data.codeMsg) {
               this.$message({
                 type: 'info',
                 message: res.data.codeMsg
               })
             }
-            if (res.data.code == 0) {
-              this.totalCountHosSelect = res.data.data.itemCount
+            if(res.data.code == 0) {
+              for (let i in res.data.data.sum) {
+                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+              }
+              console.log(this.lineData.series[1].data)
             }
-          })
-
+        })
       },
+      
       async statisticalAllFn() {
         // this.getNumberHosSelect()
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth() + 1;
         let nowYear = new Date().getFullYear();
         if (this.lineData.xAxis.data.length != 0) {
+          this.lineData.xAxis.data = [];
           this.chartsFn()
         }
-        this.lineData.xAxis.data = [];
         // this.barData.xAxis.data = [];
         if (this.nowTime) {
           console.log(this.nowTime)
@@ -895,10 +925,13 @@
         }
         let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
         await this.getDataNumberHosSelect(_nowTime)
+        await this.getCustomerWorkerTrace(_nowTime)
+        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
         // await this.getDataNumberHosSelect(_nowTime, 1)
       },
       chartsFn() {
         this.lineData.series[0].data = []
+        this.lineData.series[1].data = []
         // this.lineData.series[1].data = []
         // this.barData.series[0].data = []
         // this.barData.series[1].data = []

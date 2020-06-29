@@ -187,7 +187,7 @@
                 text: "数据正在载入...",
                 tooltip: {},
                 legend: {
-                    data:['医院量']
+                    data:['客户量','追踪数']
                 },
                 xAxis: { 
     				boundaryGap: false,
@@ -211,10 +211,16 @@
                 },
                 series: [
                     {
-                        name: '客户量',
-                        type: 'line',
-                        color: ['#37A2DA'],
-                        data: []
+                      name: '客户量',
+                      type: 'line',
+                      color: ['#37A2DA'],
+                      data: []
+                    },
+                    {
+                      name: '追踪数',
+                      type: 'line',
+                      color: ['#fb5858'],
+                      data: []
                     },
                 ]
             },
@@ -690,6 +696,10 @@
           this.paiBanCustomerWorkerLevelname = ''
           this.checked3 = false
           this.urgentyuanzhang = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerInserTime' || this.createTimeState == 'paiBanCustomerWorkerPhoneInsertTime'
+          || this.createTimeState == 'paiBanCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         }
         //   this.getDataNumberHosSelect()
       },
@@ -710,6 +720,10 @@
           this.zhuRenCustomerWorkerLevelname = ''
           this.checked4 = false
           this.urgentzhuren = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerInserTime' || this.createTimeState == 'zhuRenCustomerWorkerPhoneInsertTime'
+          || this.createTimeState == 'zhuRenCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         }
         //   this.getDataNumberHosSelect()
       },
@@ -723,6 +737,9 @@
         if (event == 0) {
           this.show2 = true;
           this.paiBanCustomerWorkerPhoneHas = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerPhoneInsertTime'){
+            this.createTimeState = ''
+          }
         }
         if (event == 1) {
           this.show2 = true;
@@ -736,6 +753,9 @@
         if (event == 0) {
           this.show4 = true;
           this.zhuRenCustomerWorkerPhoneHas = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerPhoneInsertTime'){
+            this.createTimeState = ''
+          }
         }
         if (event == 1) {
           this.show4 = true;
@@ -748,6 +768,9 @@
       yuanzhanglevel(e) {
         if (e == 0) {
           this.paiBanCustomerWorkerLevel = ''
+          if(this.createTimeState == 'paiBanCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         } else {
           this.paiBanCustomerWorkerLevel = e;
           this.createTimeState = 'paiBanCustomerWorkerLevelTime'
@@ -768,6 +791,9 @@
       zhurenlevel(e) {
         if (e == 0) {
           this.zhuRenCustomerWorkerLevel = ''
+          if(this.createTimeState == 'zhuRenCustomerWorkerLevelTime'){
+            this.createTimeState = ''
+          }
         } else {
           this.zhuRenCustomerWorkerLevel = e;
           this.createTimeState = 'zhuRenCustomerWorkerLevelTime'
@@ -921,7 +947,7 @@
                 // 	this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
                 // 	this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
                 // }
-                this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
+                
               // }
             }
           })
@@ -959,15 +985,35 @@
             }
           })
       },
+      async getCustomerWorkerTrace(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+          createTimeByMonth : _time,
+          userId: localStorage.getItem('id'),
+        }))
+        .then(res => {
+           if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code == 0) {
+              for (let i in res.data.data.sum) {
+                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+              }
+              console.log(this.lineData.series[1].data)
+            }
+        })
+      },
       async statisticalAllFn() {
         // this.getNumberHosSelect();
         let nowData = new Date().getDate();
         let nowMOunth = new Date().getMonth() + 1;
         let nowYear = new Date().getFullYear();
         // console.log(nowYear+'-'+nowMOunth+'-'+nowData+' '+'00:00:00')
-        this.lineData.xAxis.data = [];
         // this.barData.xAxis.data = [];
         if (this.lineData.xAxis.data.length != 0) {
+          this.lineData.xAxis.data = [];
           this.chartsFn()
         }
         if (this.nowTime) {
@@ -980,10 +1026,15 @@
         }
         let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
         await this.getDataNumberHosSelect(_nowTime)
+        await this.getCustomerWorkerTrace(_nowTime)
+        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
         // await this.getDataNumberHosSelect(_nowTime, 1)
       },
       chartsFn() {
         this.lineData.series[0].data = []
+        debugger
+        this.lineData.series[1].data = []
+
         // this.barData.series[0].data = []
         // this.barData.series[1].data = []
         this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
