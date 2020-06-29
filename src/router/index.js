@@ -27,7 +27,7 @@ const mainRoutes = [
   
   {
     path: '/',
-    redirect:'/index'
+    redirect:'/login'
   },
   {
     path: '/index',

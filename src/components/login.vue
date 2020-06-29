@@ -7,14 +7,14 @@
 
 
 		<div class="number phone">
-			<input class="name" type="text"/>
+			<input class="name" type="text" @keyup.enter="submitFn"/>
 			<div>
 				<img src="../assets/img/zhanghu.png" alt="" />
 				<span>用户名</span>
 			</div>
 		</div>
 		<div class="number pwd" style="margin-top: 24px">
-			<input class="password" autocomplete="off"  type="text" onfocus="this.type='password'"  />
+			<input class="password" autocomplete="off" @keyup.enter="submitFn" type="text" onfocus="this.type='password'"  />
 			<div>
 				<img src="../assets/img/mima.png" alt="" />
 				<span>密码</span>
@@ -95,7 +95,24 @@ export default {
         // setTimeout(()=>{
         //     alert('layer.open '+window.layer.open)
         // },2000)
-
+        let _this = this
+        $.ajax({
+            url: '/login-refresh',
+            type: 'POST',
+            async: true,
+            success: function(res) {
+                if (res.code == 0) {
+                    $('#login .password').val('')
+                    if(res.data.type==1||res.data.type==2){
+                        _this.$router.replace({path:'/leader-index',query:{time:new Date().getTime()}})
+                    }else{
+                        _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
+                    }
+                } else {
+                    // layer.msg(res.codeMsg)
+                }
+            }
+        })
 	},
 	methods:{
          changepwd(){
@@ -210,14 +227,12 @@ export default {
 									async: true,
 									success: function(res) {
 										if (res.code == 0) {
-                      	$('#login .password').val('')
-                      if(res.data.type==1||res.data.type==2){
-                         _this.$router.replace({path:'/leader-index',query:{time:new Date().getTime()}})
-                      }else{
-                         _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
-                      }
-
-
+                      	                    $('#login .password').val('')
+                                            if(res.data.type==1||res.data.type==2){
+                                                _this.$router.replace({path:'/leader-index',query:{time:new Date().getTime()}})
+                                            }else{
+                                                _this.$router.replace({path:'/index',query:{time:new Date().getTime()}})
+                                            }
 										} else {
 											layer.msg(res.codeMsg)
 										}
@@ -230,7 +245,7 @@ export default {
 					})
 
 				}
-        }
+        },
 	}
 }
 </script>

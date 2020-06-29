@@ -322,13 +322,18 @@
     activated() {
       let thisValue = this
       Object.assign(thisValue.$data, thisValue.$options.data());
+      
       thisValue.$axios.post('/login-refresh')
         .then(res => {
           if (res.data.codeMsg) {
             thisValue.$message({
               type: 'info',
-              message: res.data.codeMsg
+              message: res.data.codeMsg,
+              onClose:function(){
+                thisValue.$router.push({path:'/login'})
+              }
             })
+            
           }
           if (res.data.code == 0) {
             thisValue.nickname = res.data.data.nickname
@@ -373,11 +378,19 @@
               $('.layui-laydate').remove()
             }
 
-          });
+          }); 
         });
       })
     },
-
+    // watch:{
+    //   $route(to,from){
+    //     console.log(to.path);
+    //     console.log(from.path);
+    //     if(to.path == '/index' && from.path == '/leader-index'){
+    //       this.$router.push({path:'/login'})
+    //     }
+    //   }
+    // },
     methods: {
       yuanzhang(e) {
         if (e == true) {
@@ -583,7 +596,7 @@
           zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
           zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
           nature: this.nature,
-          userId: localStorage.getItem('id'),
+          // userId: localStorage.getItem('id'),
         })
         let thisValue = this
         $.ajax({
@@ -601,10 +614,10 @@
               if (res.data.itemList && res.data.itemList.length > 0) {
                 for (var i in res.data.itemList) {
                   var tel = ''
-                  // if(res.data.itemList[i].tel){
-                  // 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-                  // }
-                  tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
+                  if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
+                  	tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 3) + "****"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
+                  }
+                  // tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
                   let toRevisitTime = '';
                   if (res.data.itemList[i].toRevisitTime) {
                     toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD');
@@ -639,7 +652,7 @@
           zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
           zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
           nature: this.nature,
-          userId: localStorage.getItem('id'),
+          // userId: localStorage.getItem('id'),
         })
         let thisValue = this
         $.ajax({
@@ -734,6 +747,8 @@
               }
               if (res.data.code == 0) {
                 location.href = location.pathname
+                // this.$router.replace({path: '/login'});
+                // location.reload();
               }
             })
           // location.href=location.pathname
