@@ -88,7 +88,7 @@
 	margin-right:15px;
 	border:1px solid #e5e5e5;
 }
-.searchThis input::-webkit-outer-spin-button,
+#index .searchThis input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         margin-top: 7px
     }
@@ -96,31 +96,31 @@
 	width: 100%;
 	height: auto;
 }
-#index .tableBox table,#leader_index .tableBox table{
+#index .tableBox table,#index #leader_index .tableBox table{
 	width: 100%;
 	height: auto;
 
 }
-#index .tableBox table thead tr th,#index .tableBox table tbody tr td,#leader_index .tableBox table thead tr th,#leader_index .tableBox table tbody tr td{
+#index .tableBox table thead tr th,#index .tableBox table tbody tr td,#index #leader_index .tableBox table thead tr th,#leader_index .tableBox table tbody tr td{
 	height: 40px;
 	line-height: 40px;
 	width: auto;
 	text-align: center;
 }
-#index .tableBox table tbody tr td,#leader_index .tableBox table tbody tr td{
+#index .tableBox table tbody tr td,#index #leader_index .tableBox table tbody tr td{
 	padding: 0 10px;
 	border: 1px solid #e5e5e5;
 
 }
-#index .tableBox table tbody tr td:last-child,#leader_index .tableBox table tbody tr td:last-child{
+#index .tableBox table tbody tr td:last-child,#index #leader_index .tableBox table tbody tr td:last-child{
 	cursor: pointer;
 
 }
-#index .tableBox table tbody tr td:nth-child(2),#leader_index .tableBox table tbody tr td:nth-child(2){
+#index .tableBox table tbody tr td:nth-child(2),#index #leader_index .tableBox table tbody tr td:nth-child(2){
 	cursor: pointer;
 	text-align: left;
 }
-#index .tableBox table tbody tr td:nth-child(4),#leader_index .tableBox table tbody tr td:nth-child(4){
+#index .tableBox table tbody tr td:nth-child(4),#index #leader_index .tableBox table tbody tr td:nth-child(4){
 	cursor: pointer;
 }
 
