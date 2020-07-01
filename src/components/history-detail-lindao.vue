@@ -71,7 +71,7 @@ export default {
 				async: false,
 				success: function(res) {
 					if (res.code == 0) {
-						_this.totalNum=Math.ceil(res.data.itemCount/20)
+						_this.totalNum=Math.ceil(res.data.itemCount/15)
 						console.log(_this.totalNum)
 					}
 				},
@@ -96,7 +96,7 @@ export default {
 			   	$.ajax({
 			   		url: '/ling-dao/customer-worker-trace/customer-worker-trace-list',
 			   		type: 'GET',
-			   		data: 'pn='+pn+'&ps=20'+
+			   		data: 'pn='+pn+'&ps=15'+
             '&createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo+'&userId='+localStorage.getItem('id'),
 			   		async: true,
 			   		success: function(res) {
