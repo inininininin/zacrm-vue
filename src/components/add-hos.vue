@@ -49,7 +49,7 @@
 							type="date"
 							placeholder="选择日期时间"
 							align="right"
-							:picker-options="pickerOptions" 
+							:picker-options="pickerOptions"
 							@change = "elmentDataFn">
 						</el-date-picker>
 					</div>
@@ -234,7 +234,7 @@ export default {
 					onClick(picker) {
 						picker.$emit('pick', new Date());
 					}
-				}, 
+				},
 				{
 					text: '近三天',
 					onClick(picker) {
@@ -245,7 +245,7 @@ export default {
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
 						picker.$emit('pick', date);
 					}
-				}, 
+				},
 				{
 					text: '近一周',
 					onClick(picker) {
@@ -1355,6 +1355,15 @@ export default {
 				// } else if (nature == '') {
 				// 	layer.msg('请选择医院性质')
 				// } else
+        if(area1Name=='-省-'||area1Name=='-请选择-'){
+          area1Name=''
+          }
+         if(area2Name=='-市-'||area2Name=='-请选择-'){
+           area2Name=''
+           }
+          if(area3Name=='-区-'||area3Name=='-请选择-'){
+            area3Name=''
+            }
 				if (name == '') {
 					layer.msg('请填写医院名')
 					$('#add-hos .modifyHos').attr('disabled', false);
@@ -1389,6 +1398,15 @@ export default {
 				var area2Name = $('#add-hos .city option:selected').text()
 				var area3Id = $('#add-hos .town option:selected').val()
 				var area3Name = $('#add-hos .town option:selected').text()
+        if(area1Name=='-省-'||area1Name=='-请选择-'){
+          area1Name=''
+          }
+         if(area2Name=='-市-'||area2Name=='-请选择-'){
+           area2Name=''
+           }
+          if(area3Name=='-区-'||area3Name=='-请选择-'){
+            area3Name=''
+            }
 				// var toRevisitTime = $('#add-hos .huifangClass').val()
 				debugger
 				let toRevisitTime = this.moment(this.moment(this.toRevisitTime).valueOf()).format('YYYY-MM-DD HH-mm-ss')
