@@ -129,9 +129,9 @@
     <div class="time">
       <span>时间选择：</span>
       <input type="text" id="layDateDate" v-model="layuiDate" class="layui-input" readonly style="cursor: pointer;display:inline">
-      <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
+      <el-button @click='selectDayFilterFn()' style="margin-left:15px">生成图表</el-button>
     </div>
-    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
+    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsDayShowData">
       <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
     </div>
     <div class="time">
@@ -186,7 +186,8 @@
     		totalCountHosSelect:'',
         layuiData:'',
         layuiDate:'',
-    		echartsShowData:false,
+        echartsShowData : false,
+        echartsDayShowData : false,
     		lineData:{
           title: {
             text: ''
@@ -209,7 +210,7 @@
             show   : true,
             feature: {
               dataView : {show: true, readOnly: false},
-              magicType  : {show: true, type: ['bar', 'line','pie']},
+              magicType  : {show: true, type: ['bar', 'line']},
               restore    : {show: false},
               saveAsImage: {show: true}
             }
@@ -258,18 +259,20 @@
         series: [
           {
               name: '客户量',
-              type: 'bar',
+              type: 'line',
               color: ['#37A2DA'],
               data: []
           },
           {
               name: '拍板人',
-              type: 'bar',
+              type: 'line',
               color: ['red'],
               data: []
           }
         ]
       },
+      nowTime : '',
+      nowDayTime : '',
   	}
   },
   activated() {
@@ -288,13 +291,17 @@
       this.getDataNumberHos(2)
       this.traceNumber()
       // thisValue.chartsFn()
-      // this.statisticalAllFn()
       let nowYear = new Date().getFullYear();
       let nowMOunth = new Date().getMonth() + 1;
+      let nowDate = new Date().getDate();
       if (nowMOunth < 10) {
         nowMOunth = '0' + nowMOunth
       }
+      if (nowDate < 10) {
+        nowDate = '0' + nowDate
+      }
       thisValue.layuiData = nowYear + '-' + nowMOunth;
+      thisValue.layuiDate = nowYear + '-' + nowMOunth + '-' + nowDate;
       thisValue.$nextTick(() => {
         // let nowMOunth = new Date().getMonth();
         // let nowYear = new Date().getFullYear();
@@ -306,11 +313,9 @@
             // value:nowYear + '-' + nowMOunth,
             change: function(value, date, endDate) {
               // console.log(value); //得到日期生成的值，如：2017-08-18
-              // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+              console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
               // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
               thisValue.nowTime = date
-              // thisValue.chartsFn()
-              // thisValue.statisticalAllFn()
               if (date.month < 10) {
                 date.month = '0' + date.month
               }
@@ -321,26 +326,20 @@
           });
           layui.laydate.render({
             elem: '#layDateDate',
-            type: 'month',
+            type: 'date',
             // value:nowYear + '-' + nowMOunth,
-            change: function(value, date, endDate) {
+            done: function(value, date) {
               // console.log(value); //得到日期生成的值，如：2017-08-18
-              // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-              // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-              thisValue.nowTime = date
-              // thisValue.chartsFn()
-              // thisValue.statisticalAllFn()
-              if (date.month < 10) {
-                date.month = '0' + date.month
-              }
-              thisValue.layuiData = date.year + '-' + date.month
+              console.dir(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+              thisValue.nowDayTime = date
+              // thisValue.layuiDate = date.year + '-' + date.month + '-' + date.date
               $('.layui-laydate').remove()
             }
-
           });
-          
         });
       })
+      this.selectFilterFn();
+      this.selectDayFilterFn();
       if (localStorage.getItem('nickname')) {
         console.log(localStorage.getItem('nickname'))
         this.nicknameThis = localStorage.getItem('nickname')
@@ -833,6 +832,10 @@
         this.echartsShowData = true
         this.statisticalAllFn()
       },
+      selectDayFilterFn(){
+        this.echartsDayShowData = true;
+        this.statisticalAllDayFn()
+      },
       selectHospiatlNumFilterFn() {
         this.getNumberHosSelect()
         this.lastPageNo()
@@ -864,7 +867,6 @@
             }
           })
       },
-
       getDataNumber() {
         this.$axios.get('/ling-dao/user-list-sum?' + qs.stringify({
             userId: localStorage.getItem('id'),
@@ -886,7 +888,6 @@
         let _pai
         this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
           _paiBanCustomerWorkerPhoneHas
-
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
@@ -933,6 +934,7 @@
         })
       },
        async getDataNumberHosSelect(_time) {
+         console.log()
         let thisValue = this;
         let _pai
         // this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
@@ -953,7 +955,6 @@
             // createTimeFrom : _time,
             // createTimeTo : _nextTime? _nextTime-1:'',
             // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
-
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -991,6 +992,26 @@
               }
             }
           })
+      },
+      async getCustomerWorkerTrace(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+          createTimeByMonth : _time,
+          userId: localStorage.getItem('id'),
+        }))
+        .then(res => {
+           if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code == 0) {
+              for (let i in res.data.data.sum) {
+                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+              }
+              console.log(this.lineData.series[1].data)
+            }
+        })
       },
        async getInTheDayData(_time) {
         let thisValue = this;
@@ -1034,8 +1055,8 @@
             }
           })
       },
-      async getCustomerWorkerTrace(_time){
-        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+      async getCustomerWorkerTraceDay(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-day?' + qs.stringify({
           createTimeByMonth : _time,
           userId: localStorage.getItem('id'),
         }))
@@ -1048,12 +1069,13 @@
             }
             if(res.data.code == 0) {
               for (let i in res.data.data.sum) {
-                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                this.dayData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
               }
               console.log(this.lineData.series[1].data)
             }
         })
       },
+      
       async statisticalAllFn() {
         // this.getNumberHosSelect();
         let nowData = new Date().getDate();
@@ -1063,33 +1085,51 @@
         // this.barData.xAxis.data = [];
         if (this.lineData.xAxis.data.length != 0) {
           this.lineData.xAxis.data = [];
-          this.chartsFn()
+          this.chartsMounthFn()
         }
         if (this.nowTime) {
           // console.log(this.nowTime)
           nowYear = this.nowTime.year;
           nowMOunth = this.nowTime.month;
-          nowData = new Date(nowYear, nowMOunth, 0).getDate()
-          // console.log('当前月份有：' + nowData)
-
         }
         let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
-        console.log(this.moment(new Date().getTime()).format('YYYY-MM-DD HH:mm:ss'))
-        let _nowDayTime = this.moment(new Date().getTime()).format('YYYY-MM-DD HH:mm:ss');
-        await this.getInTheDayData(_nowDayTime)
-        this.$echarts.init(document.getElementById('main')).setOption(this.dayData, true);
+        console.dir(this.nowTime)
         await this.getDataNumberHosSelect(_nowTime)
         await this.getCustomerWorkerTrace(_nowTime)
         this.$echarts.init(document.getElementById('main2')).setOption(this.lineData, true);
         // await this.getDataNumberHosSelect(_nowTime, 1)
       },
-      chartsFn() {
+      async statisticalAllDayFn(){
+        let nowData = new Date().getDate();
+        let nowMOunth = new Date().getMonth() + 1;
+        let nowYear = new Date().getFullYear();
+        if (this.dayData.xAxis.data.length != 0) {
+          this.dayData.xAxis.data = [];
+          this.chartsDayFn()
+        }
+        console.dir(this.nowDayTime)
+        if (this.nowDayTime) {
+          nowYear = this.nowDayTime.year;
+          nowMOunth = this.nowDayTime.month;
+          nowData = this.nowDayTime.date;
+          // console.log('当前月份有：' + nowData)
+        }
+        let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + nowData + ' ' + '23:59:59').getTime();
+        let _nowDayTime = this.moment(_nowTime).format('YYYY-MM-DD HH:mm:ss');
+        console.log(_nowDayTime)
+        await this.getInTheDayData(_nowTime)
+        await this.getCustomerWorkerTraceDay(_nowTime)
+        this.$echarts.init(document.getElementById('main')).setOption(this.dayData, true);
+      },
+      chartsDayFn(){
+        this.dayData.series[0].data = [];
+        this.dayData.series[1].data = [];
+        this.$echarts.init(document.getElementById('main')).setOption(this.dayData, true);
+        this.$echarts.init(document.getElementById('main')).clear();
+      },
+      chartsMounthFn() {
         this.lineData.series[0].data = []
         this.lineData.series[1].data = []
-        this.dayData.series[0].data = []
-        this.dayData.series[1].data = []
-        this.$echarts.init(document.getElementById('main')).setOption(this.dayData, true);
-        this.$echarts.init(document.getElementById('main')).clear()
         this.$echarts.init(document.getElementById('main2')).setOption(this.lineData, true);
         this.$echarts.init(document.getElementById('main2')).clear()
         // this.$echarts.init(document.getElementById('main2')).clear()
