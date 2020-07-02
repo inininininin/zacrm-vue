@@ -1272,6 +1272,7 @@ export default {
 			// 	this.toRevisitTimeFrom = '';
 			// 	this.toRevisitTimeTo = '';
 			// }
+			console.dir(_value)
 			this.toRevisitTime = this.moment(_value).valueOf()
 			console.log(this.toRevisitTime)
 		},
@@ -1478,8 +1479,10 @@ export default {
 						if (res.code == 0) {
 							debugger
 							// moment(Time.confirmStart).format('YYYY-MM-DD')
-							thisValue.toRevisitTime = thisValue.moment(res.data.toRevisitTime).format('YYYY-MM-DD')
-							thisValue.toRevisitTime = thisValue.moment(thisValue.moment(res.data.toRevisitTime)).format('YYYY-MM-DD HH:mm:ss')
+							if(res.data.toRevisitTime){
+								thisValue.toRevisitTime = thisValue.moment(res.data.toRevisitTime).format('YYYY-MM-DD')
+								thisValue.toRevisitTime = thisValue.moment(thisValue.moment(res.data.toRevisitTime)).format('YYYY-MM-DD HH:mm:ss')
+							}
 							console.log(thisValue.toRevisitTime)
 							document.title = res.data.name + " - " + document.title
 							$('#add-hos .hosname').val(res.data.name)

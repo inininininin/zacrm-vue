@@ -131,16 +131,16 @@
       <input type="text" id="layDateDate" v-model="layuiDate" class="layui-input" readonly style="cursor: pointer;display:inline">
       <el-button @click='selectDayFilterFn()' style="margin-left:15px">生成图表</el-button>
     </div>
-    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsDayShowData">
-      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+    <div style="min-width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsDayShowData">
+      <div id="main" style="min-width: 1200px;height:400px;margin-left:0px auto"></div>
     </div>
     <div class="time">
       <span>时间选择：</span>
       <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
     </div>
-    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
-      <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+    <div style="min-width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
+      <div id="main2" style="min-width: 1200px;height:400px;margin-left:0px auto"></div>
     </div>
     <div class="seccion">ver : {{$version}} ser : {{$store.state.serVersion}}</div>
   </div>
@@ -197,11 +197,17 @@
           legend: {
             data:['客户量','追踪数']
           },
+          
           xAxis: { 
+            name:'时间：日',
+            axisLabel:{ 
+              interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
+            },
             boundaryGap: false,
             data: []
           },
           yAxis: {
+            name:'单位：个',
           },
           label: {
             show: true,
@@ -232,6 +238,7 @@
       },
       createTimeState : '',
       dayData:{
+        
         title: {
           text: ''
         },
@@ -239,11 +246,18 @@
         legend: {
           data:['客户量','拍板人']
         },
+        
         xAxis: { 
+          name:'时间：小时',
+          axisLabel:{ 
+            interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
+          },
           boundaryGap: false,
           data: []
         },
-        yAxis: {},
+        yAxis: {
+          name:'单位：个',
+        },
         label: {
           show: true,
         },
@@ -981,9 +995,9 @@
                 nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
                  if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      '') + '号')
+                      ''))
                 } else {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
                 }
                 this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
                 // console.log(this.lineData.series[0].data)
@@ -1043,9 +1057,9 @@
                 // console.log('传进来的日期'+resData)
                 if (res.data.data.sum[i].date.split(' ')[1].split(':')[0] < 10) {
                     this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0].replace(0,
-                      '') + '点')
+                      ''))
                 } else {
-                    this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0] + '号')
+                    this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0])
                 }
                 this.dayData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
                 // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
