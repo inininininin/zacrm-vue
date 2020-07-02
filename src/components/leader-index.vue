@@ -111,12 +111,12 @@
           <thead>
             <tr>
               <th>序号</th>
+              <th>所属人姓名</th>
               <th>医院名称</th>
               <th>拍板人</th>
               <th>拍板人手机号码</th>
               <th>拍板人验证</th>
-              <th>近期跟踪时间</th>
-              <th>回访时间</th>
+              <th>医院信息更新时间</th>
             </tr>
           </thead>
           <tbody class="tbody" style="background: #ffffff;">
@@ -132,8 +132,8 @@
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
 
     </div>
-    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
-      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+    <div style="min-width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
+      <div id="main" style="min-width: 1200px;height:400px;margin-left:0px auto"></div>
       <!-- <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div> -->
     </div>
 
@@ -142,9 +142,15 @@
 
     <div class="leader_peop">
       <div v-for="item in urgentLevel" @click="memberDetail(item.userId,item.nickname)" :key="item.value" class="leader_eve">
-        <img src="../assets/img/PP.svg" alt="">
-        <div class="leader_detail">
-          <p>{{item.nickname}}</p>
+        <img  src="../assets/img/placedAtTheTop.png" @click.stop="placedAtTheTopFn(item)" alt="">
+        <div class="leader_title">
+          <img src="../assets/img/PP.svg" alt="">
+          <div class="leader_detail">
+            <p>{{item.nickname}}</p>
+          </div>
+        </div>
+        
+        <div class="leader_ul">
           <ul>
             <li>医院数</li>
             <li>{{item.customerCount>9999?item.customerCount/10000+"万":item.customerCount}}</li>
@@ -153,8 +159,11 @@
             <li>追踪数</li>
             <li>{{item.customerTraceCount}}</li>
           </ul>
+          <ul>
+            <li>当日追踪数</li>
+            <li>{{item.todayCustomerTraceCount}}</li>
+          </ul>
         </div>
-
       </div>
 
       <!-- <div class="leader_eveAdd">
@@ -199,10 +208,16 @@
             data: ['客户量','追踪数']
           },
           xAxis: {
+            name:'时间：日',
+            axisLabel:{ 
+              interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
+            },
             boundaryGap: false,
             data: []
           },
-          yAxis: {},
+          yAxis: {
+            name:'单位：个',
+          },
           label: {
             show: true,
             // 标签的文字。
@@ -241,57 +256,7 @@
             },
           ]
         },
-        // barData: {
-        //   title: {
-        //     text: ''
-        //   },
-        //   tooltip: {},
-        //   legend: {
-        //     data: ['客户量', '拍板人']
-        //   },
-        //   xAxis: {
-        //     boundaryGap: false,
-        //     data: []
-        //   },
-        //   yAxis: {},
-        //   label: {
-        //     show: true,
-        //     // 标签的文字。
-        //     // formatter: ["1","2","3","4","5","6"]
-        //   },
-        //   toolbox: {
-        //     show: true,
-        //     feature: {
-        //       dataView: {
-        //         show: true,
-        //         readOnly: false
-        //       },
-        //       magicType: {
-        //         show: true,
-        //         type: ['line', 'bar']
-        //       },
-        //       restore: {
-        //         show: false
-        //       },
-        //       saveAsImage: {
-        //         show: true
-        //       }
-        //     }
-        //   },
-        //   series: [{
-        //       name: '客户量',
-        //       type: 'bar',
-        //       color: ['#37A2DA'],
-        //       data: []
-        //     },
-        //     {
-        //       name: '拍板人',
-        //       type: 'bar',
-        //       color: ['red'],
-        //       data: []
-        //     }
-        //   ]
-        // },
+        orderNo : 0,
         totalCount: '',
         nickname: '',
         totalCountHos: '',
@@ -321,7 +286,7 @@
     },
     activated() {
       let thisValue = this
-      Object.assign(thisValue.$data, thisValue.$options.data());
+      // Object.assign(thisValue.$data, thisValue.$options.data());
       
       thisValue.$axios.post('/login-refresh')
         .then(res => {
@@ -392,6 +357,38 @@
     //   }
     // },
     methods: {
+      placedAtTheTopFn(_value){
+        console.dir(_value)
+        debugger
+        let listInx = this.urgentLevel.findIndex((n)=>n.userId == _value.userId)
+        if(listInx){
+          this.$axios.post('/zong-jing-li/update-user',qs.stringify({
+            userId : _value.userId,
+            orderNo : this.orderNo-1
+          }))
+          .then(res =>{
+            if(res.data.codeMsg){
+              thisValue.$message({
+                type: 'info',
+                message: res.data.codeMsg,
+              })
+            }
+            if(res.data.code == 0){
+              this.orderNo--;
+              
+              let insertValue = this.urgentLevel[listInx]
+              this.urgentLevel.splice(listInx,1)
+              this.urgentLevel.splice(0,0,insertValue)
+            }else{
+              thisValue.$message({
+                type: 'info',
+                message: '请稍后重试',
+              })
+            }
+          })
+        }
+        
+      },
       yuanzhang(e) {
         if (e == true) {
           this.show1 = true;
@@ -626,14 +623,14 @@
                   }
                   $('#leader_index .tbody').append('<tr id=' + res.data.itemList[i].customerId + '><td>' + (
                       parseInt(i) + 1 + ((pn - 1) * 15)) +
+                    '</td><td>' + res.data.itemList[i].userNickname +
                     '</td><td class="enterHos"><a href="#/history-detail-lindao-eve?id=' + res.data.itemList[i]
                     .customerId + '">' +
                     (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
                       "") + '</td><td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res.data.itemList[
                       i].tel || "") + '">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
                       "") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) +
-                    '</td><td class="xiugaiTimeFn">' +
-                    toRevisitTime + '</td></tr>')
+                    '</td></tr>')
 
                 }
               }
@@ -776,7 +773,7 @@
             pn: this.customerPage,
             // ps: 10,
             order: 'asc',
-            sort: 'updateTime'
+            sort: 'orderNo'
           }))
           .then(res => {
             // console.log(res)
@@ -788,6 +785,8 @@
               })
             }
             if (res.data.code == 0) {
+              if(res.data.data.itemList[0])
+                this.orderNo = res.data.data.itemList[0].orderNo
               if (res.data.data.itemList.length > 0) {
                 for (let i in res.data.data.itemList) {
                   this.urgentLevel.push(res.data.data.itemList[i])
@@ -888,9 +887,9 @@
                 nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
                 if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      '') + '号')
+                      ''))
                 } else {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
                 }
                 this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
                 // console.log(this.lineData.series[0].data)
@@ -1088,9 +1087,20 @@
     margin-top: 24px;
     box-sizing: border-box;
     cursor: pointer;
+    position: relative;
   }
-
-  .leader_eve img {
+  .leader_eve>img{
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 11px;
+    top: 24px;
+    cursor: pointer;
+  }
+  .leader_title{
+    height: 48px;
+  }
+  .leader_title img {
     font-size: 24px;
     color: #FFBF00;
     width: 24px;
@@ -1117,13 +1127,20 @@
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
   }
-
-  .leader_detail ul {
-    width: 45%;
-    display: inline-block;
+  .leader_ul{
+    height: 73px;
+    width: 100%;
+    margin-top: 6px;
+    padding: 0px 10px;
+    box-sizing: border-box;
+  }
+  .leader_ul ul {
+    width: 33.33%;
+    float: left;
+    text-align: center
   }
 
-  .leader_detail ul li:nth-child(1) {
+  .leader_ul ul li:nth-child(1) {
     margin-top: 12px;
     margin-bottom: 9px;
     width: auto;
@@ -1135,11 +1152,11 @@
     line-height: 20px;
   }
 
-  .leader_detail ul:nth-child(3) {
-    margin-left: 5%;
+  .leader_ul ul:nth-child(3) {
+    /* margin-left: 5%; */
   }
 
-  .leader_detail ul li:nth-child(2) {
+  .leader_ul ul li:nth-child(2) {
     width: 70px;
     height: 32px;
     font-size: 22px;

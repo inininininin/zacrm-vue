@@ -82,7 +82,7 @@
 					" type="date" /> -->
 					<el-date-picker
 						v-model="dataValue"
-						type="datetime"
+						type="date"
 						placeholder="选择日期时间"
 						align="right"
 						:picker-options="pickerOptions" 
@@ -568,7 +568,8 @@ export default {
         thisValue.paiBanCustomerWorkerHas = ''
         thisValue.paiBanCustomerWorkerPhoneHas = ''
         thisValue.zhuRenCustomerWorkerHas = ''
-        thisValue.zhuRenCustomerWorkerPhoneHas = ''
+		thisValue.zhuRenCustomerWorkerPhoneHas = ''
+		thisValue.dataValue = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({

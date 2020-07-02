@@ -112,12 +112,12 @@
           <thead>
             <tr>
               <th>序号</th>
+              <th>所属人姓名</th>
               <th>医院名称</th>
               <th>拍板人</th>
               <th>拍板人手机号码</th>
               <th>拍板人验证</th>
-              <th>近期跟踪时间</th>
-              <th>回访时间</th>
+              <th>医院信息更新时间</th>
             </tr>
           </thead>
           <tbody class="tbody">
@@ -128,13 +128,19 @@
     </div>
     <div class="time">
       <span>时间选择：</span>
+      <input type="text" id="layDateDate" v-model="layuiDate" class="layui-input" readonly style="cursor: pointer;display:inline">
+      <el-button @click='selectDayFilterFn()' style="margin-left:15px">生成图表</el-button>
+    </div>
+    <div style="min-width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsDayShowData">
+      <div id="main" style="min-width: 1200px;height:400px;margin-left:0px auto"></div>
+    </div>
+    <div class="time">
+      <span>时间选择：</span>
       <input type="text" id="layDateMonth" v-model="layuiData" class="layui-input" readonly style="cursor: pointer;display:inline">
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
-
     </div>
-    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
-      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
-      <!-- <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div> -->
+    <div style="min-width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
+      <div id="main2" style="min-width: 1200px;height:400px;margin-left:0px auto"></div>
     </div>
     <div class="seccion">ver : {{$version}} ser : {{$store.state.serVersion}}</div>
   </div>
@@ -178,98 +184,111 @@
     		checked4:false,
     		traceTotalNumber:'',//跟踪总量
     		totalCountHosSelect:'',
-    		layuiData:'',
-    		echartsShowData:false,
+        layuiData:'',
+        layuiDate:'',
+        echartsShowData : false,
+        echartsDayShowData : false,
     		lineData:{
-                title: {
-                    text: ''
-                },
-                text: "数据正在载入...",
-                tooltip: {},
-                legend: {
-                    data:['客户量','追踪数']
-                },
-                xAxis: { 
-    				boundaryGap: false,
-                    data: []
-                },
-                yAxis: {
-                },
-                label: {
-                    show: true,
-                    // 标签的文字。
-                    // formatter: ["1","2","3","4","5","6"]
-                },
-                toolbox:{
-                  show   : true,
-                  feature: {
-                     dataView : {show: true, readOnly: false},
-                      magicType  : {show: true, type: ['bar', 'line','pie']},
-                      restore    : {show: false},
-                      saveAsImage: {show: true}
-                  }
-                },
-                series: [
-                    {
-                      name: '客户量',
-                      type: 'line',
-                      color: ['#37A2DA'],
-                      data: []
-                    },
-                    {
-                      name: '追踪数',
-                      type: 'line',
-                      color: ['#fb5858'],
-                      data: []
-                    },
-                ]
+          title: {
+            text: ''
+          },
+          text: "数据正在载入...",
+          tooltip: {},
+          legend: {
+            data:['客户量','追踪数']
+          },
+          
+          xAxis: { 
+            name:'时间：日',
+            axisLabel:{ 
+              interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
             },
-            createTimeState : ''
-          // barData:{
-          //       title: {
-          //           text: ''
-          //       },
-          //       tooltip: {},
-          //       legend: {
-          //           data:['客户量','拍板人']
-          //       },
-          //       xAxis: { 
-    			// 	boundaryGap: false,
-          //           data: []
-          //       },
-          //       yAxis: {
-          //       },
-          //       label: {
-          //           show: true,
-          //           // 标签的文字。
-          //           // formatter: ["1","2","3","4","5","6"]
-          //       },
-          //       toolbox:{
-          //         show   : true,
-          //         feature: {
-          //            dataView : {show: true, readOnly: false},
-          //             magicType  : {show: true, type: ['line', 'bar']},
-          //             restore    : {show: false},
-          //             saveAsImage: {show: true}
-          //         }
-          //       },
-          //       series: [
-          //           {
-          //               name: '客户量',
-          //               type: 'bar',
-          //               color: ['#37A2DA'],
-          //               data: []
-          //           },
-          //           {
-          //               name: '拍板人',
-          //               type: 'bar',
-          //               color: ['red'],
-          //               data: []
-          //           }
-          //       ]
-          //   },
-    	}
-    },
+            boundaryGap: false,
+            data: []
+          },
+          yAxis: {
+            name:'单位：个',
+          },
+          label: {
+            show: true,
+          },
+          toolbox:{
+            show   : true,
+            feature: {
+              dataView : {show: true, readOnly: false},
+              magicType  : {show: true, type: ['bar', 'line']},
+              restore    : {show: false},
+              saveAsImage: {show: true}
+            }
+          },
+          series: [
+            {
+              name: '客户量',
+              type: 'line',
+              color: ['#37A2DA'],
+              data: []
+            },
+            {
+              name: '追踪数',
+              type: 'line',
+              color: ['#fb5858'],
+              data: []
+            },
+          ]
+      },
+      createTimeState : '',
+      dayData:{
+        
+        title: {
+          text: ''
+        },
+        tooltip: {},
+        legend: {
+          data:['客户量','拍板人']
+        },
+        
+        xAxis: { 
+          name:'时间：小时',
+          axisLabel:{ 
+            interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
+          },
+          boundaryGap: false,
+          data: []
+        },
+        yAxis: {
+          name:'单位：个',
+        },
+        label: {
+          show: true,
+        },
+        toolbox:{
+          show   : true,
+          feature: {
+            dataView : {show: true, readOnly: false},
+            magicType  : {show: true, type: ['line', 'bar']},
+            restore    : {show: false},
+            saveAsImage: {show: true}
+          }
+        },
+        series: [
+          {
+              name: '客户量',
+              type: 'line',
+              color: ['#37A2DA'],
+              data: []
+          },
+          {
+              name: '拍板人',
+              type: 'line',
+              color: ['red'],
+              data: []
+          }
+        ]
+      },
+      nowTime : '',
+      nowDayTime : '',
+  	}
+  },
   activated() {
 
       let thisValue = this
@@ -286,13 +305,17 @@
       this.getDataNumberHos(2)
       this.traceNumber()
       // thisValue.chartsFn()
-      // this.statisticalAllFn()
       let nowYear = new Date().getFullYear();
       let nowMOunth = new Date().getMonth() + 1;
+      let nowDate = new Date().getDate();
       if (nowMOunth < 10) {
         nowMOunth = '0' + nowMOunth
       }
+      if (nowDate < 10) {
+        nowDate = '0' + nowDate
+      }
       thisValue.layuiData = nowYear + '-' + nowMOunth;
+      thisValue.layuiDate = nowYear + '-' + nowMOunth + '-' + nowDate;
       thisValue.$nextTick(() => {
         // let nowMOunth = new Date().getMonth();
         // let nowYear = new Date().getFullYear();
@@ -304,11 +327,9 @@
             // value:nowYear + '-' + nowMOunth,
             change: function(value, date, endDate) {
               // console.log(value); //得到日期生成的值，如：2017-08-18
-              // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+              console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
               // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
               thisValue.nowTime = date
-              // thisValue.chartsFn()
-              // thisValue.statisticalAllFn()
               if (date.month < 10) {
                 date.month = '0' + date.month
               }
@@ -317,8 +338,22 @@
             }
 
           });
+          layui.laydate.render({
+            elem: '#layDateDate',
+            type: 'date',
+            // value:nowYear + '-' + nowMOunth,
+            done: function(value, date) {
+              // console.log(value); //得到日期生成的值，如：2017-08-18
+              console.dir(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+              thisValue.nowDayTime = date
+              // thisValue.layuiDate = date.year + '-' + date.month + '-' + date.date
+              $('.layui-laydate').remove()
+            }
+          });
         });
       })
+      this.selectFilterFn();
+      this.selectDayFilterFn();
       if (localStorage.getItem('nickname')) {
         console.log(localStorage.getItem('nickname'))
         this.nicknameThis = localStorage.getItem('nickname')
@@ -657,26 +692,13 @@
         $('#index table').on('click', 'tr td:nth-child(4)', function() {
           debugger
           if ($(this).attr('tel') == '' || $(this).attr('tel') == null || $(this).attr('tel') == undefined) {
-
           } else {
-            debugger
-            //anjie($(this).attr('tel'))
-            //tTimeout(function(){
             $('#inp_send').val($(this).attr('tel')).attr('linkName', $(this).attr('linkName'))
             $('.phoneNumber').html($(this).html())
             $('#btn_conn').click()
-            //2000)
-
           }
-
         })
-
-
-
       }
-
-
-
     },
     methods: {
       yuanzhang(e) {
@@ -701,7 +723,6 @@
             this.createTimeState = ''
           }
         }
-        //   this.getDataNumberHosSelect()
       },
       zhuren(e) {
         if (e == true) {
@@ -725,12 +746,10 @@
             this.createTimeState = ''
           }
         }
-        //   this.getDataNumberHosSelect()
       },
       selectHos(event, i) {
         console.log(i)
         this.nature = i
-        //   this.getDataNumberHosSelect()
       },
       selectPhoneyuanzhang(event) {
         this.phoneIfyuanzhang = event; //获取option对应的value值。
@@ -746,7 +765,6 @@
           this.paiBanCustomerWorkerPhoneHas = 1;
           this.createTimeState = 'paiBanCustomerWorkerPhoneInsertTime'
         }
-        //   this.getDataNumberHosSelect()
       },
       selectPhonezhuren(event) {
         this.phoneIfzhuren = event; //获取option对应的value值。
@@ -762,7 +780,6 @@
           this.zhuRenCustomerWorkerPhoneHas = 1;
           this.createTimeState = 'zhuRenCustomerWorkerPhoneInsertTime'
         }
-        //   this.getDataNumberHosSelect()
       },
       // 选择是否感兴趣
       yuanzhanglevel(e) {
@@ -786,7 +803,6 @@
             this.paiBanCustomerWorkerLevelname = '线上可签单'
           }
         }
-        //   this.getDataNumberHosSelect()
       },
       zhurenlevel(e) {
         if (e == 0) {
@@ -809,7 +825,6 @@
             this.zhuRenCustomerWorkerLevelname = '线上可签单'
           }
         }
-        //   this.getDataNumberHosSelect()
       },
       // 是否加急
       yuanzhangjj(e) {
@@ -818,7 +833,6 @@
         } else {
           this.paiBanCustomerWorkerUrgent = ''
         }
-        //   this.getDataNumberHosSelect()
       },
       zhurenjj(e) {
         if (e == true) {
@@ -826,12 +840,15 @@
         } else {
           this.zhuRenCustomerWorkerUrgent = ''
         }
-        //   this.getDataNumberHosSelect()
 
       },
       selectFilterFn() {
         this.echartsShowData = true
         this.statisticalAllFn()
+      },
+      selectDayFilterFn(){
+        this.echartsDayShowData = true;
+        this.statisticalAllDayFn()
       },
       selectHospiatlNumFilterFn() {
         this.getNumberHosSelect()
@@ -864,7 +881,6 @@
             }
           })
       },
-
       getDataNumber() {
         this.$axios.get('/ling-dao/user-list-sum?' + qs.stringify({
             userId: localStorage.getItem('id'),
@@ -881,83 +897,11 @@
             }
           })
       },
-
-      async getDataNumberHosSelect(_time) {
-        let thisValue = this;
-        let _pai
-        // this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
-          // _paiBanCustomerWorkerPhoneHas
-        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
-            paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
-            paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
-            paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
-            zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
-            zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
-            zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
-            zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
-            nature: thisValue.nature,
-            userId: localStorage.getItem('id'),
-            whatTime: this.createTimeState,
-            createTimeByMonth: _time,
-            // createTimeFrom : _time,
-            // createTimeTo : _nextTime? _nextTime-1:'',
-            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
-
-          }))
-          .then(res => {
-            if (res.data.codeMsg) {
-              thisValue.$message({
-                type: 'info',
-                message: res.data.codeMsg
-              })
-            }
-            if (res.data.code == 0) {
-
-              let nowData = ''
-              let resData = ''
-              let nowTime = ''
-              for (let i in res.data.data.sum) {
-                let nowYear = new Date().getFullYear();
-                let nowMOunth = new Date().getMonth() + 1;
-                nowData = new Date().getDate();
-                resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
-                  .data.sum[i].date.split('-')[2].split(' ')[0]
-                // console.log('传进来的日期'+resData)
-                if (nowMOunth < 10) {
-                  nowMOunth = '0' + nowMOunth
-                }
-                nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
-                 if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      '') + '号')
-                } else {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
-                }
-                this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
-                console.log(this.lineData.series[0].data)
-                console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
-                    '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
-              }
-              // if (new Date().getFullYear() == res.data.data.sum[0].date.split('-')[0]) {
-                // if(new Date().getMonth()+1<res.data.data.sum[0].date.split('-')[1]){
-                //   this.echartsShowData = false;
-                //   this.$message('暂无数据')
-                // }else{
-                // 	this.$echarts.init(document.getElementById('main')).setOption(this.lineData,true);
-                // 	this.$echarts.init(document.getElementById('main2')).setOption(this.barData,true);
-                // }
-                
-              // }
-            }
-          })
-      },
       async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
         let thisValue = this;
         let _pai
         this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
           _paiBanCustomerWorkerPhoneHas
-
         await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
@@ -967,10 +911,8 @@
             zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
             zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
             zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
-
             nature: thisValue.nature,
             userId: localStorage.getItem('id'),
-
             // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
           }))
           .then(res => {
@@ -1005,6 +947,149 @@
             }
         })
       },
+       async getDataNumberHosSelect(_time) {
+         console.log()
+        let thisValue = this;
+        let _pai
+        // this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
+          // _paiBanCustomerWorkerPhoneHas
+        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
+            paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
+            nature: thisValue.nature,
+            userId: localStorage.getItem('id'),
+            whatTime: this.createTimeState,
+            createTimeByMonth: _time,
+            // createTimeFrom : _time,
+            // createTimeTo : _nextTime? _nextTime-1:'',
+            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              thisValue.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+
+              let nowData = ''
+              let resData = ''
+              let nowTime = ''
+              for (let i in res.data.data.sum) {
+                let nowYear = new Date().getFullYear();
+                let nowMOunth = new Date().getMonth() + 1;
+                nowData = new Date().getDate();
+                resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
+                  .data.sum[i].date.split('-')[2].split(' ')[0]
+                // console.log('传进来的日期'+resData)
+                if (nowMOunth < 10) {
+                  nowMOunth = '0' + nowMOunth
+                }
+                nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
+                 if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
+                      ''))
+                } else {
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
+                }
+                this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                // console.log(this.lineData.series[0].data)
+                // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                    // '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+              }
+            }
+          })
+      },
+      async getCustomerWorkerTrace(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+          createTimeByMonth : _time,
+          userId: localStorage.getItem('id'),
+        }))
+        .then(res => {
+           if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code == 0) {
+              for (let i in res.data.data.sum) {
+                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+              }
+              console.log(this.lineData.series[1].data)
+            }
+        })
+      },
+       async getInTheDayData(_time) {
+        let thisValue = this;
+        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-day?' + qs.stringify({
+            paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
+            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+            paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
+            paiBanCustomerWorkerLevel: thisValue.paiBanCustomerWorkerLevel,
+            zhuRenCustomerWorkerHas: thisValue.zhuRenCustomerWorkerHas,
+            zhuRenCustomerWorkerPhoneHas: thisValue.zhuRenCustomerWorkerPhoneHas,
+            zhuRenCustomerWorkerUrgent: thisValue.zhuRenCustomerWorkerUrgent,
+            zhuRenCustomerWorkerLevel: thisValue.zhuRenCustomerWorkerLevel,
+            nature: thisValue.nature,
+            userId: localStorage.getItem('id'),
+            whatTime: this.createTimeState,
+            dayTime: _time,
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              thisValue.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if (res.data.code == 0) {
+              let resData = ''
+              for (let i in res.data.data.sum) {
+                let nowYear = new Date().getFullYear();
+                // console.log('传进来的日期'+resData)
+                if (res.data.data.sum[i].date.split(' ')[1].split(':')[0] < 10) {
+                    this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0].replace(0,
+                      ''))
+                } else {
+                    this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0])
+                }
+                this.dayData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
+                //     '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
+              }
+                console.log(this.dayData.series[0].data)
+            }
+          })
+      },
+      async getCustomerWorkerTraceDay(_time){
+        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-day?' + qs.stringify({
+          createTimeByMonth : _time,
+          userId: localStorage.getItem('id'),
+        }))
+        .then(res => {
+           if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg
+              })
+            }
+            if(res.data.code == 0) {
+              for (let i in res.data.data.sum) {
+                this.dayData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+              }
+              console.log(this.lineData.series[1].data)
+            }
+        })
+      },
+      
       async statisticalAllFn() {
         // this.getNumberHosSelect();
         let nowData = new Date().getDate();
@@ -1014,32 +1099,53 @@
         // this.barData.xAxis.data = [];
         if (this.lineData.xAxis.data.length != 0) {
           this.lineData.xAxis.data = [];
-          this.chartsFn()
+          this.chartsMounthFn()
         }
         if (this.nowTime) {
-          console.log(this.nowTime)
+          // console.log(this.nowTime)
           nowYear = this.nowTime.year;
           nowMOunth = this.nowTime.month;
-          nowData = new Date(nowYear, nowMOunth, 0).getDate()
-          // console.log('当前月份有：' + nowData)
-
         }
         let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
+        console.dir(this.nowTime)
         await this.getDataNumberHosSelect(_nowTime)
         await this.getCustomerWorkerTrace(_nowTime)
-        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
+        this.$echarts.init(document.getElementById('main2')).setOption(this.lineData, true);
         // await this.getDataNumberHosSelect(_nowTime, 1)
       },
-      chartsFn() {
+      async statisticalAllDayFn(){
+        let nowData = new Date().getDate();
+        let nowMOunth = new Date().getMonth() + 1;
+        let nowYear = new Date().getFullYear();
+        if (this.dayData.xAxis.data.length != 0) {
+          this.dayData.xAxis.data = [];
+          this.chartsDayFn()
+        }
+        console.dir(this.nowDayTime)
+        if (this.nowDayTime) {
+          nowYear = this.nowDayTime.year;
+          nowMOunth = this.nowDayTime.month;
+          nowData = this.nowDayTime.date;
+          // console.log('当前月份有：' + nowData)
+        }
+        let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + nowData + ' ' + '23:59:59').getTime();
+        let _nowDayTime = this.moment(_nowTime).format('YYYY-MM-DD HH:mm:ss');
+        console.log(_nowDayTime)
+        await this.getInTheDayData(_nowTime)
+        await this.getCustomerWorkerTraceDay(_nowTime)
+        this.$echarts.init(document.getElementById('main')).setOption(this.dayData, true);
+      },
+      chartsDayFn(){
+        this.dayData.series[0].data = [];
+        this.dayData.series[1].data = [];
+        this.$echarts.init(document.getElementById('main')).setOption(this.dayData, true);
+        this.$echarts.init(document.getElementById('main')).clear();
+      },
+      chartsMounthFn() {
         this.lineData.series[0].data = []
-        debugger
         this.lineData.series[1].data = []
-
-        // this.barData.series[0].data = []
-        // this.barData.series[1].data = []
-        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-        // this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
-        this.$echarts.init(document.getElementById('main')).clear()
+        this.$echarts.init(document.getElementById('main2')).setOption(this.lineData, true);
+        this.$echarts.init(document.getElementById('main2')).clear()
         // this.$echarts.init(document.getElementById('main2')).clear()
         // console.log('s')
         // 清空绘画内容，清空后实例可用，因为并非释放示例的资源，释放资源我们需要dispose()
@@ -1137,14 +1243,13 @@
                   }
                   $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId + '><td>' + (parseInt(i) +
                       1 + ((pn - 1) * 15)) +
-                    '</td><td class="enterHos"><a href="#/history-detail-lindao-eve?id=' + res.data.itemList[i]
+                    '</td><td class="xiugaiTimeFn">' +res.data.itemList[i].userNickname + '</td><td class="enterHos"><a href="#/history-detail-lindao-eve?id=' + res.data.itemList[i]
                     .customerId + '">' +
                     (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
                       "") + '</td><td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res.data.itemList[
                       i].tel || "") + '">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
                       "") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) +
-                    '</td><td class="xiugaiTimeFn">' +
-                    toRevisitTime + '</td></tr>')
+                    '</td></tr>')
 
                 }
               }
