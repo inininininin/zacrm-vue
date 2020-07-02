@@ -132,8 +132,8 @@
       <el-button @click='selectFilterFn()' style="margin-left:15px">生成图表</el-button>
 
     </div>
-    <div style="width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
-      <div id="main" style="width: 1100px;height:400px;margin-left:0px auto"></div>
+    <div style="min-width: 1230px;height:400px;margin:30px auto 0px" v-if="echartsShowData">
+      <div id="main" style="min-width: 1200px;height:400px;margin-left:0px auto"></div>
       <!-- <div id="main2" style="width: 1100px;height:400px;margin-left:0px auto"></div> -->
     </div>
 
@@ -208,10 +208,16 @@
             data: ['客户量','追踪数']
           },
           xAxis: {
+            name:'时间：日',
+            axisLabel:{ 
+              interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
+            },
             boundaryGap: false,
             data: []
           },
-          yAxis: {},
+          yAxis: {
+            name:'单位：个',
+          },
           label: {
             show: true,
             // 标签的文字。
@@ -881,9 +887,9 @@
                 nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
                 if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      '') + '号')
+                      ''))
                 } else {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0] + '号')
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
                 }
                 this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
                 // console.log(this.lineData.series[0].data)
