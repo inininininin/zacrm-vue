@@ -1051,9 +1051,21 @@
               })
             }
             if (res.data.code == 0) {
-              let resData = ''
               for (let i in res.data.data.sum) {
                 let nowYear = new Date().getFullYear();
+                let nowMOunth = new Date().getMonth() + 1;
+                let nowData = new Date().getDate();
+                if (nowMOunth < 10) {
+                  nowMOunth = '0' + nowMOunth
+                }
+                if (nowData < 10) {
+                  nowData = '0' + nowData
+                }
+                debugger  
+                console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
+                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data.data.sum[i].date.split('-')[2].split(' ')[0]
+                let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
+                
                 // console.log('传进来的日期'+resData)
                 if (res.data.data.sum[i].date.split(' ')[1].split(':')[0] < 10) {
                     this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0].replace(0,
@@ -1061,7 +1073,10 @@
                 } else {
                     this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0])
                 }
-                this.dayData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                debugger
+                if(resData <= nowTime){
+                  this.dayData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                }
                 // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
                 //     '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
               }
@@ -1083,7 +1098,20 @@
             }
             if(res.data.code == 0) {
               for (let i in res.data.data.sum) {
-                this.dayData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                let nowYear = new Date().getFullYear();
+                let nowMOunth = new Date().getMonth() + 1;
+                let nowData = new Date().getDate();
+                if (nowMOunth < 10) {
+                  nowMOunth = '0' + nowMOunth
+                }
+                if (nowData < 10) {
+                  nowData = '0' + nowData
+                }
+                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data.data.sum[i].date.split('-')[2].split(' ')[0]
+                let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
+                if(resData <= nowTime){
+                  this.dayData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                }
               }
               console.log(this.lineData.series[1].data)
             }
