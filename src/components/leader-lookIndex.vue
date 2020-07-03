@@ -979,27 +979,28 @@
             }
             if (res.data.code == 0) {
 
-              let nowData = ''
-              let resData = ''
-              let nowTime = ''
+              let nowYear = new Date().getFullYear();
+              let nowMOunth = new Date().getMonth() + 1;
+              let nowData = new Date().getDate();
+              // console.log('传进来的日期'+resData)
+              if (nowMOunth < 10) {
+                nowMOunth = '0' + nowMOunth
+              }
+              if (nowData < 10) {
+                nowData = '0' + nowData
+              }
+              let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
               for (let i in res.data.data.sum) {
-                let nowYear = new Date().getFullYear();
-                let nowMOunth = new Date().getMonth() + 1;
-                nowData = new Date().getDate();
-                resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
+                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
                   .data.sum[i].date.split('-')[2].split(' ')[0]
-                // console.log('传进来的日期'+resData)
-                if (nowMOunth < 10) {
-                  nowMOunth = '0' + nowMOunth
-                }
-                nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
                  if (res.data.data.sum[i].date.split('-')[2].split(' ')[0] < 10) {
-                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,
-                      ''))
+                    this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0,''))
                 } else {
                     this.lineData.xAxis.data.push(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
                 }
-                this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                if(resData <= nowTime){
+                  this.lineData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
+                }
                 // console.log(this.lineData.series[0].data)
                 // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
                     // '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
@@ -1020,8 +1021,23 @@
               })
             }
             if(res.data.code == 0) {
+              let nowYear = new Date().getFullYear();
+              let nowMOunth = new Date().getMonth() + 1;
+              let nowData = new Date().getDate();
+              if (nowMOunth < 10) {
+                nowMOunth = '0' + nowMOunth
+              }
+              if (nowData < 10) {
+                nowData = '0' + nowData
+              }
+              let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
               for (let i in res.data.data.sum) {
-                this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data
+                  .data.sum[i].date.split('-')[2].split(' ')[0]
+                  debugger
+                if(resData <= nowTime){
+                  this.lineData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
+                }
               }
               console.log(this.lineData.series[1].data)
             }
@@ -1051,29 +1067,30 @@
               })
             }
             if (res.data.code == 0) {
+              let nowYear = new Date().getFullYear();
+              let nowMOunth = new Date().getMonth() + 1;
+              let nowData = new Date().getDate();
+              let nowHours = new Date().getHours();
+              if (nowMOunth < 10) {
+                nowMOunth = '0' + nowMOunth
+              }
+              if (nowData < 10) {
+                nowData = '0' + nowData
+              }
+              if (nowHours < 10) {
+                nowHours = '0' + nowHours
+              }
+              let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString() + nowHours.toString()
               for (let i in res.data.data.sum) {
-                let nowYear = new Date().getFullYear();
-                let nowMOunth = new Date().getMonth() + 1;
-                let nowData = new Date().getDate();
-                if (nowMOunth < 10) {
-                  nowMOunth = '0' + nowMOunth
-                }
-                if (nowData < 10) {
-                  nowData = '0' + nowData
-                }
-                debugger  
-                console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0])
-                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data.data.sum[i].date.split('-')[2].split(' ')[0]
-                let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
-                
-                // console.log('传进来的日期'+resData)
+                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data.data.sum[i].date.split('-')[2].split(' ')[0] + 
+                res.data.data.sum[i].date.split(' ')[1].split(':')[0]
                 if (res.data.data.sum[i].date.split(' ')[1].split(':')[0] < 10) {
                     this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0].replace(0,
                       ''))
                 } else {
                     this.dayData.xAxis.data.push(res.data.data.sum[i].date.split(' ')[1].split(':')[0])
                 }
-                debugger
+                // debugger
                 if(resData <= nowTime){
                   this.dayData.series[0].data.push(res.data.data.sum[i].sum.itemCount)
                 }
@@ -1086,7 +1103,7 @@
       },
       async getCustomerWorkerTraceDay(_time){
         await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-day?' + qs.stringify({
-          createTimeByMonth : _time,
+          dayTime : _time,
           userId: localStorage.getItem('id'),
         }))
         .then(res => {
@@ -1097,18 +1114,24 @@
               })
             }
             if(res.data.code == 0) {
+              let nowYear = new Date().getFullYear();
+              let nowMOunth = new Date().getMonth() + 1;
+              let nowData = new Date().getDate();
+              let nowHours = new Date().getHours();
+              if (nowMOunth < 10) {
+                nowMOunth = '0' + nowMOunth
+              }
+              if (nowData < 10) {
+                nowData = '0' + nowData
+              }
+              if (nowHours < 10) {
+                nowHours = '0' + nowHours
+              }
+              let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString() + nowHours.toString()
               for (let i in res.data.data.sum) {
-                let nowYear = new Date().getFullYear();
-                let nowMOunth = new Date().getMonth() + 1;
-                let nowData = new Date().getDate();
-                if (nowMOunth < 10) {
-                  nowMOunth = '0' + nowMOunth
-                }
-                if (nowData < 10) {
-                  nowData = '0' + nowData
-                }
-                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data.data.sum[i].date.split('-')[2].split(' ')[0]
-                let nowTime = nowYear.toString() + nowMOunth.toString() + nowData.toString()
+                let resData = res.data.data.sum[i].date.split('-')[0] + res.data.data.sum[i].date.split('-')[1] + res.data.data.sum[i].date.split('-')[2].split(' ')[0] + 
+                res.data.data.sum[i].date.split(' ')[1].split(':')[0]
+                debugger
                 if(resData <= nowTime){
                   this.dayData.series[1].data.push(res.data.data.sum[i].sum.itemCount)
                 }
