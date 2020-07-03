@@ -42,7 +42,7 @@
                 if (data.type == 704) {
 					$win.find('#inp_send').val('');
 				}
-
+                    
 
 
 
