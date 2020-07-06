@@ -628,7 +628,7 @@ export default {
 					 //tTimeout(function(){
 					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
-						console.log()
+						console.log($('#inp_send').val())
 						localStorage.setItem('phone' , $('#inp_send').val())
 					 	// $('#btn_conn').click()
 					 //2000)
