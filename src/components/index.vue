@@ -689,7 +689,7 @@ export default {
                                     $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
                                     '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
                                     + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
+											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
 											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
 											 toRevisitTime + '</td></tr>')
 
