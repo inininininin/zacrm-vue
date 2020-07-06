@@ -1,0 +1,281 @@
+<template>
+  <div id='recore-list'>
+    <div id="index">
+      <div class="selectOption" style="width: 100%;height: auto;">
+        <span style="margin-left: 20px;">筛选条件：</span>
+        <select class="nature">
+          <option value="" selected>-通话时长-</option>
+          <option value="1">0-30s</option>
+          <option value="2">31-60s</option>
+          <option value="3">61-180s</option>
+          <option value="4">180s以上</option>
+        </select>
+      </div>
+      <p class="numberAll"></p>
+      <div class="tableBox" style="display: none;padding-bottom: 50px;">
+        <table>
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>所属人姓名</th>
+              <th>电话号码</th>
+              <th>开始时间</th>
+              <th>结束时间</th>
+              <th>存取时间</th>
+              <th>通话时间</th>
+              <th>是否接通</th>
+              <th>录音地址</th>
+            </tr>
+          </thead>
+          <tbody class="tbody" style="background: #ffffff;">
+          </tbody>
+        </table>
+        <div class="box rt" id="box"></div>
+      </div>
+    </div>
+
+  </div>
+</template>
+<script>
+  import qs from 'qs'
+  export default {
+    name: 'index',
+    data() {
+      return {
+        nature: "",
+      }
+    },
+    activated() {
+      this.lastPage(1)
+      this.lastPageNo(1)
+      let thisValue = this
+      $('#index .nature').change(function() {
+          thisValue.nature = $(this).val()
+          thisValue.lastPageNo(thisValue.nature)
+          // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+          $('#index #box').paging({
+            initPageNo: 1, // 初始页码
+            totalPages: thisValue.totalNum, //总页数
+            //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            slideSpeed: 600, // 缓动速度。单位毫秒
+            jump: true, //是否支持跳转
+            callback: function(page) { // 回调函数
+              // memberList1(1,page);
+              var nature = $('.nature').val()
+              thisValue.pn = page
+              thisValue.lastPage(page, nature)
+            }
+          })
+          })
+        },
+
+        methods: {
+          lastPage(pn, nature) {
+            if (nature == 1) {
+              var durationFrom = 0
+              var durationTo = 30
+            } else if (nature == 2) {
+              var durationFrom = 31
+              var durationTo = 60
+            } else if (nature == 3) {
+              var durationFrom = 61
+              var durationTo = 180
+            } else if (nature == 4) {
+              var durationFrom = 181
+              var durationTo = ''
+            }
+            if (GetQueryString('id')) {
+              var param = '&' + qs.stringify({
+                // paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+                // paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+                // paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+                // paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+                // zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+                // zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+                // zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+                // zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+                // nature: this.nature,
+                userId: localStorage.getItem('id'),
+                nature: nature,
+              })
+            } else {
+              var param = ''
+            }
+
+            let thisValue = this
+            $.ajax({
+              url: '/ling-dao/call-record-list',
+              type: 'GET',
+
+              // data:// param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
+              data: 'ps=15&pn=' + pn + param,
+              async: true,
+              success: function(res) {
+                console.dir(res)
+                if (res.code == 0) {
+                  $('#index .tbody').html('')
+                  $('.tableBox').css('display', 'block')
+                  if (res.data.itemList && res.data.itemList.length > 0) {
+                    console.log(12321312)
+                    for (var i in res.data.itemList) {
+                      var tel = ''
+                      // if(res.data.itemList[i].tel){
+                      // 	tel=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+                      // }
+                      // if (res.data.itemList[i].paiBanCustomerWorkerPhone1) {
+                      //   tel = res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 3) + "****" + res.data.itemList[
+                      //     i].paiBanCustomerWorkerPhone1.substring(8, res.data.itemList[i].paiBanCustomerWorkerPhone1
+                      //     .length)
+                      // }
+                      // tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
+                      // let toRevisitTime = '';
+                      if (res.data.itemList[i].startTime) {
+                        var startTime = thisValue.moment(res.data.itemList[i].startTime).format(
+                          'YYYY-MM-DD HH:mm:ss');
+                      } else {
+                        var startTime = ''
+                      }
+                      if (res.data.itemList[i].endTime) {
+                        var endTime = thisValue.moment(res.data.itemList[i].endTime).format(
+                          'YYYY-MM-DD HH:mm:ss');
+                      } else {
+                        var endTime = ''
+                      }
+                      if (res.data.itemList[i].accessTime) {
+                        var accessTime = thisValue.moment(res.data.itemList[i].accessTime).format(
+                          'YYYY-MM-DD HH:mm:ss');
+                      } else {
+                        var accessTime = ''
+                      }
+                      if (res.data.itemList[i].recStatus == 1) {
+                        var recStatus = '接通';
+                      } else {
+                        var recStatus = '未接通'
+                      }
+                      $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId + '><td>' + (
+                          parseInt(i) +
+                          1 + ((pn - 1) * 15)) +
+                        '</td><td class="xiugaiTimeFn">' + res.data.itemList[i].userNickname +
+                        '</td><td>' + (res.data.itemList[i].calledid ||
+                          "") + '</td><td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res
+                          .data.itemList[
+                            i].tel || "") + '">' + startTime + '</td><td>' + endTime + '</td><td>' +
+                        accessTime +
+                        '</td><td>' + (res.data.itemList[i].duration || "0") +
+                        's</td><td>' + recStatus +
+                        '</td><td class="enterHos"><a href="'+res.data.itemList[i].recordUrl+'"  target=＂_blank＂>录音地址</a></td></tr>')
+
+                    }
+                  }
+                }
+              }
+            })
+          },
+          lastPageNo(pn, nature) {
+            if (GetQueryString('id')) {
+              var param = '&' + qs.stringify({
+                // paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
+                // paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
+                // paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
+                // paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
+                // zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
+                // zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
+                // zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
+                // zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
+                // nature: this.nature,
+                userId: localStorage.getItem('id'),
+                nature: nature,
+              })
+            } else {
+              var param = ''
+            }
+            let thisValue = this
+            $.ajax({
+              url: '/ling-dao/call-record-list-sum',
+              type: 'GET',
+
+              // data: //param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
+              data: 'ps=15&pn=' + pn + param,
+              async: true,
+              success: function(res) {
+                if (res.code == 0) {
+                  thisValue.totalNum = Math.ceil(res.data.itemCount / 15)
+                  console.log(thisValue.totalNum)
+                  $('#index .numberAll').html('( 共' + res.data.itemCount + '条数据 )')
+                  $('#index #box').paging({
+                    initPageNo: 1, // 初始页码
+                    totalPages: thisValue.totalNum, //总页数
+                    //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+                    slideSpeed: 600, // 缓动速度。单位毫秒
+                    jump: true, //是否支持跳转
+                    callback: function(page) { // 回调函数
+                      // memberList1(1,page);
+                      // var nature = $('#index .nature').val()
+                      thisValue.pn = page
+                      thisValue.lastPage(page)
+                    }
+                  })
+
+                }
+              }
+            })
+          },
+          // 时间转换
+          getDateDiff(dateTimeStamp) {
+            if (!dateTimeStamp)
+              return ''
+            let thisValue = this
+            var result;
+            var minute = 1000 * 60;
+            var hour = minute * 60;
+            var day = hour * 24;
+            var halfamonth = day * 15;
+            var month = day * 30;
+            var now = new Date().getTime();
+            var diffValue = now - dateTimeStamp;
+            if (diffValue < 0) {
+              return;
+            }
+            var monthC = diffValue / month;
+            var weekC = diffValue / (7 * day);
+            var dayC = diffValue / day;
+            var hourC = diffValue / hour;
+            var minC = diffValue / minute;
+            if (monthC >= 1) {
+              if (monthC <= 12)
+                result = "" + parseInt(monthC) + "月前";
+              else {
+                result = "" + parseInt(monthC / 12) + "年前";
+              }
+            } else if (weekC >= 1) {
+              result = "" + parseInt(weekC) + "周前";
+            } else if (dayC >= 1) {
+              result = "" + parseInt(dayC) + "天前";
+            } else if (hourC >= 1) {
+              result = "" + parseInt(hourC) + "小时前";
+            } else if (minC >= 1) {
+              result = "" + parseInt(minC) + "分钟前";
+            } else {
+              result = "刚刚";
+            }
+            return result;
+          },
+        },
+      }
+</script>
+
+<style scoped>
+  #index {
+    min-width: 1200px;
+  }
+
+  .numberAll {
+    font-size: 16px;
+    line-height: 35px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    margin: 0;
+    height: 35px;
+    width: 100%;
+  }
+</style>

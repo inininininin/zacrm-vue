@@ -46,6 +46,7 @@
         <span v-if='zhuRenCustomerWorkerLevelname'>- {{zhuRenCustomerWorkerLevelname}}</span>
         <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
         <el-button @click='selectHospiatlNumFilterFn()' style="margin-left:15px">确认筛选</el-button>
+        <el-button @click='lookrecordlist()' style="float:right;margin-right:15px">通话记录汇总</el-button>
       </p>
     </div>
     <div class="selectAllThis">
@@ -149,7 +150,7 @@
             <p>{{item.nickname}}</p>
           </div>
         </div>
-        
+
         <div class="leader_ul">
           <ul>
             <li>医院数</li>
@@ -209,8 +210,8 @@
           },
           xAxis: {
             name:'时间：日',
-            axisLabel:{ 
-              interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推           
+            axisLabel:{
+              interval:0  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推
             },
             boundaryGap: false,
             data: []
@@ -287,7 +288,7 @@
     activated() {
       let thisValue = this
       // Object.assign(thisValue.$data, thisValue.$options.data());
-      
+
       thisValue.$axios.post('/login-refresh')
         .then(res => {
           if (res.data.codeMsg) {
@@ -298,7 +299,7 @@
                 thisValue.$router.push({path:'/login'})
               }
             })
-            
+
           }
           if (res.data.code == 0) {
             thisValue.nickname = res.data.data.nickname
@@ -343,7 +344,7 @@
               $('.layui-laydate').remove()
             }
 
-          }); 
+          });
         });
       })
     },
@@ -375,7 +376,7 @@
             }
             if(res.data.code == 0){
               this.orderNo--;
-              
+
               let insertValue = this.urgentLevel[listInx]
               this.urgentLevel.splice(listInx,1)
               this.urgentLevel.splice(0,0,insertValue)
@@ -387,7 +388,7 @@
             }
           })
         }
-        
+
       },
       yuanzhang(e) {
         if (e == true) {
@@ -558,7 +559,17 @@
         this.lastPageNo()
         this.lastPage(1)
       },
-
+lookrecordlist(){
+   // localStorage.setItem('id', id)
+   // localStorage.setItem('nickname', name)
+   this.$router.push({
+     path: '/record-list',
+     query: {
+       // name: encodeURIComponent(name),
+       time: new Date().getTime()
+     }
+   });
+},
       // create() {
       //   this.$axios.post('/ling-dao/create-user', qs.stringify({
       //       name: 'xuxiukun',
@@ -861,7 +872,7 @@
             // createTimeFrom : _time,
             // createTimeTo : _nextTime? _nextTime-1:'',
             createTimeByMonth: _time,
-            
+
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -896,7 +907,7 @@
                 // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
                     // '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
               }
-                
+
             }
           })
       },
@@ -919,7 +930,7 @@
             }
         })
       },
-      
+
       async statisticalAllFn() {
         // this.getNumberHosSelect()
         let nowData = new Date().getDate();
@@ -998,7 +1009,7 @@
                 }
               })
           },
-      
+
         }
       }
 </script>
