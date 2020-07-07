@@ -474,7 +474,7 @@ export default {
 				var linkName=$(this).parent().children().eq(0).html().substring(0,$(this).parent().children().eq(0).html().length-1)
 				$('#inp_send').val($(this).parent().children().eq(1).html()||'').attr('linkName',linkName||'')
 				localStorage.setItem('phone' , $('#inp_send').val())
-				// $('#btn_conn').click()
+				$('#btn_conn').click()
             })
             if ($('#add-hos .hostel').val() == '' || $('.hostel').val() == null || $('.hostel').val() == undefined) {
 				$('#add-hos .linkHos').css('display', 'none')
@@ -492,12 +492,12 @@ export default {
 				// console.log($(this).parent().parent())
 				$('#inp_send').val($('.hostel').val()).attr('linkName',$(this).parent().find('.hosname').val())
 				localStorage.setItem('phone' , $('#inp_send').val())
-				// $('#btn_conn').click()
+				$('#btn_conn').click()
             })
             $('#add-hos .phoneps').unbind("click").click(function() {
 				$('#inp_send').val($(this).html()).attr('linkName',$(this).parent().parent().children().eq(0).children().html())
 				localStorage.setItem('phone' , $('#inp_send').val())
-				// $('#btn_conn').click()
+				$('#btn_conn').click()
 				// lineFriends($(this).html())
             })
             $('#add-hos .closeThis').unbind("click").click(function() {
@@ -1157,7 +1157,7 @@ export default {
 						$('#inp_send').val(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||"").attr('linkName',thisLinkName)
 						// $('#inp_send').val(thisHtml)
 						localStorage.setItem('phone' , $('#inp_send').val())
-						// $('#btn_conn').click()
+						$('#btn_conn').click()
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
@@ -1213,7 +1213,7 @@ export default {
 						// lineFriends($(this).html())
 						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"").attr('linkName',thisLinkName)
 						localStorage.setItem('phone' , $('#inp_send').val())
-						// $('#btn_conn').click()
+						$('#btn_conn').click()
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')

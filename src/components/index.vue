@@ -630,19 +630,12 @@ export default {
 						$('.phoneNumber').html($(this).html())
 						console.log($('#inp_send').val())
 						localStorage.setItem('phone' , $('#inp_send').val())
-					 	// $('#btn_conn').click()
+					 	$('#btn_conn').click()
 					 //2000)
 
 				}
-
 			})
-
-
-
 		}
-
-
-
     },
     methods:{
 		elmentDataFn(_value){
