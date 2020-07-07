@@ -5,6 +5,7 @@
 		<span class="record2" hidden=""></span>
 		<span class="record3" hidden=""></span>
 		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+		<a href="../assets/call/index.html" target="_blank">话机页面</a>
 		<input type="" name="" id="inp_send"  hidden="">
 		<button id="btn_conn" hidden="">发送</button>
 		<div class="mainbox">
@@ -625,21 +626,16 @@ export default {
                     debugger
 					//anjie($(this).attr('tel'))
 					 //tTimeout(function(){
-					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
-					 	$('.phoneNumber').html($(this).html())
+					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
+						$('.phoneNumber').html($(this).html())
+						console.log($('#inp_send').val())
+						localStorage.setItem('phone' , $('#inp_send').val())
 					 	$('#btn_conn').click()
 					 //2000)
 
 				}
-
 			})
-
-
-
 		}
-
-
-
     },
     methods:{
 		elmentDataFn(_value){

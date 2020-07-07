@@ -10,6 +10,15 @@
     <link href="res.js" rel="stylesheet"/>
     <script src="base.js"></script> 
     <script src="websocket.js"></script>
+    <script>
+        setInterval(()=>{
+            // localStorage.getItem('phone')
+            if(localStorage.getItem('phone')){
+                console.log(localStorage.getItem('phone'))
+                $('#inp_send').val(localStorage.getItem('phone'))
+            }
+        },100)
+    </script>
     <style>
         .ceshiButton{
             height: 34px;
