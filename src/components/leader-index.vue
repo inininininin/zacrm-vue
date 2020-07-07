@@ -560,7 +560,7 @@
         this.lastPage(1)
       },
 lookrecordlist(){
-   // localStorage.setItem('id', id)
+   localStorage.setItem('id', '')
    // localStorage.setItem('nickname', name)
    this.$router.push({
      path: '/record-list',
