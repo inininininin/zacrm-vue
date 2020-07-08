@@ -115,7 +115,7 @@
       }
 
       $('#btn_conn').click(function(){
-        var   data={
+          var data={
                     callUri:$('#inp_send').val(),
                     secret :secret
                   }
@@ -126,7 +126,7 @@
                         // alert("呼叫失败")
                      }
                   })
-      })
+                })
 
 			var _left =''
 			var _top = ''
@@ -204,10 +204,7 @@
 						// console.log(_this._left)
 						// console.log(bodyWidth)
 						$('#phoneNow').css({"left":_this._left+"px","top":_this._top+"px"});
-
-
 					}
-
 				}).mouseup(function(){
 
 					console.log('结束移动')
@@ -215,7 +212,6 @@
 					$('#phoneNow').css('cursor', 'auto')
 				})
 			})
-
 		</script>
 <style>
 
@@ -224,12 +220,10 @@
 			height: 30%;
 			position: fixed;
 			/* top: 0; */
-
 			top:35%;
 			left:35%;
 			z-index: 9;
 			display: none;
-
 			/* background: rgba(0,0,0,0.2); */
 			/* background: #000000; */
 			/* opacity: 0.2; */
@@ -248,7 +242,6 @@
 			text-align: center;
 			top: 20%;
 			color: #fff;
-
 		}
 		.functionImg{
 			position: absolute;

@@ -45,6 +45,7 @@
           <span v-if='zhuRenCustomerWorkerUrgent==1'>- 加急</span>
           <!-- <el-button @click='selectFilterFn()' style="margin-left:15px">确认筛选</el-button> -->
           <el-button @click='selectHospiatlNumFilterFn()' style="margin-left:15px">确认筛选</el-button>
+           <el-button @click='lookrecordlist()' style="float:right;margin-right:15px">通话记录汇总</el-button>
         </p>
       </div>
       <div class="selectAllThis">
@@ -854,6 +855,17 @@
         this.getNumberHosSelect()
         this.lastPageNo()
         this.lastPage(1)
+      },
+      lookrecordlist(){
+         // localStorage.setItem('id', id)
+         // localStorage.setItem('nickname', name)
+         this.$router.push({
+           path: '/record-list',
+           query: {
+             id: localStorage.getItem('id'),
+             time: new Date().getTime()
+           }
+         });
       },
       getData() {
         this.$axios.get('/ling-dao/user-list?' + qs.stringify({
