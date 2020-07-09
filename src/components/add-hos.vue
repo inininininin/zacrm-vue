@@ -299,6 +299,7 @@ export default {
 			$('#add-hos .province').html('<option value="">-请选择-</option>')
 			$('#add-hos .city').html('<option value="">-请选择-</option>')
 			$('#add-hos .town').html('<option value="">-请选择-</option>')
+			document.title = '忠安客户漏斗管理系统'
 			// $('.province').html('')
 			// $('.city').html('')
 			// $('.town').html('')
