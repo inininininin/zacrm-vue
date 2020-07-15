@@ -24,7 +24,7 @@ console.dir(_import)
 
 //页面
 const mainRoutes = [
-  
+
   {
     path: '/',
     redirect:'/login'
@@ -59,7 +59,7 @@ const mainRoutes = [
     path: '/lead-index',
     name: '/lead-index',
     component: ()=>import( '@/components/lead-index')
-    
+
   },
   {
     path: '/groupLeaderIndex',
@@ -70,15 +70,22 @@ const mainRoutes = [
     path: '/leader-index',
     name: '/leader-index',
     component: ()=>import( '@/components/leader-index')
-    
+
   },
+  {
+    path: '/record-list',
+    name: '/record-list',
+    component: ()=>import( '@/components/record-list')
+
+  },
+
   {
     path: '/leader-lookIndex',
     name: '/leader-lookIndex',
     component: ()=>import( '@/components/leader-lookIndex')
-    
+
     }
-  
+
 ]
 
 const router = new Router({
