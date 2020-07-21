@@ -553,10 +553,10 @@ export default {
 				$('#index .town').val('')
 				$('#index .nature').val('')
 				$('#index .urgentLevel').val('')
-        $('#index .paiBanCustomerWorkerHas').val('')
-        $('#index .paiBanCustomerWorkerPhoneHas').val('')
-        $('#index .zhuRenCustomerWorkerHas').val('')
-        $('#index .zhuRenCustomerWorkerPhoneHas').val('')
+				$('#index .paiBanCustomerWorkerHas').val('')
+				$('#index .paiBanCustomerWorkerPhoneHas').val('')
+				$('#index .zhuRenCustomerWorkerHas').val('')
+				$('#index .zhuRenCustomerWorkerPhoneHas').val('')
 				thisValue.kw = ''
 				thisValue.nature = ''
 				thisValue.area1Id = ''
@@ -566,11 +566,11 @@ export default {
 				thisValue.level = ''
 				thisValue.toRevisitTimeFrom = ''
 				thisValue.toRevisitTimeTo = ''
-        thisValue.paiBanCustomerWorkerHas = ''
-        thisValue.paiBanCustomerWorkerPhoneHas = ''
-        thisValue.zhuRenCustomerWorkerHas = ''
-		thisValue.zhuRenCustomerWorkerPhoneHas = ''
-		thisValue.dataValue = ''
+				thisValue.paiBanCustomerWorkerHas = ''
+				thisValue.paiBanCustomerWorkerPhoneHas = ''
+				thisValue.zhuRenCustomerWorkerHas = ''
+				thisValue.zhuRenCustomerWorkerPhoneHas = ''
+				thisValue.dataValue = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
@@ -629,11 +629,23 @@ export default {
 					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
 						console.log($('#inp_send').val())
-						localStorage.setItem('phone' , $('#inp_send').val())
-
-					 	$('#btn_conn').click()
-
-					 //2000)
+						localStorage.setItem('tel' , $('#inp_send').val())
+						let tel = '';
+						if(thisValue.$store.state.telInterval){
+							window.clearInterval(thisValue.$store.state.telInterval);
+						}
+						thisValue.$store.state.telInterval = window.setInterval(()=>{
+							if(tel != localStorage.getItem('currTel')){
+								tel = localStorage.getItem('currTel')
+								$('#btn_conn').click()
+								$('.phoneNow').css('display','inline')
+								$('#phoneNow p').html(tel+"正在通话中. . .")
+							}
+							console.log('计时器')
+						},500)
+						
+						
+					 	
 
 				}
 			})

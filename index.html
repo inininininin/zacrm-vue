@@ -169,6 +169,22 @@
 				$('.dialogMagnify').css('display','inline')
 				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
 			})
+			$('.btn_close').click(function(){
+				$('#phoneNow').css({'height':'30%','width':'30%',"bottom":"0px",'left':'0px','top':'auto','display':'none'});
+				$('.phoneEnd').css({'height':'30px','width':'125px','font-size':'20px','line-height':'30px','top':'55%'})
+				$('#phoneNow p').css({'top':'20%'})
+				$('.quanping').css('display','inline')
+				$('.suoxiao').css('display','none')
+				$('#phoneNow p').css('display','inline')
+				$('.phoneEnd').css('display','inline')
+				$('.dialogMagnify').css('display','none')
+				$('.dialogMin').css('display','inline')
+				if(localStorage.getItem('phone'))
+					localStorage.removeItem('phone')
+				if(localStorage.removeItem('phoneData'))
+					localStorage.removeItem('phoneData')
+				$('#phoneNow p').html("正在通话中. . .")
+			})
 			var moveStata = true;
 			$('#phoneNow').mousedown(function(ev){
 				let _this = this

@@ -474,9 +474,27 @@ export default {
 			$('#add-hos .linePhoneList').off("click",'div .phoneThisTel').on('click','div .phoneThisTel',function(){
 				var linkName=$(this).parent().children().eq(0).html().substring(0,$(this).parent().children().eq(0).html().length-1)
 				$('#inp_send').val($(this).parent().children().eq(1).html()||'').attr('linkName',linkName||'')
-				localStorage.setItem('phone' , $('#inp_send').val())
-
-				$('#btn_conn').click()
+				localStorage.setItem('tel' , $('#inp_send').val())
+				let tel = '';
+				if(thisValue.$store.state.telInterval){
+					window.clearInterval(thisValue.$store.state.telInterval);
+				}
+				thisValue.$store.state.telInterval = window.setInterval(()=>{
+					if(tel != localStorage.getItem('currTel')){
+						tel = localStorage.getItem('currTel')
+						let tel = '';
+						thisValue.$store.state.telInterval = window.setInterval(()=>{
+							if(tel != localStorage.getItem('currTel')){
+								tel = localStorage.getItem('currTel')
+								$('#btn_conn').click()
+								$('.phoneNow').css('display','inline')
+								$('#phoneNow p').html(tel+"正在通话中. . .")
+							}
+							console.log('计时器')
+						},500)
+					}
+					console.log('计时器')
+				},500)
 
             })
             if ($('#add-hos .hostel').val() == '' || $('.hostel').val() == null || $('.hostel').val() == undefined) {
@@ -494,17 +512,39 @@ export default {
             $('#add-hos .linkHos').unbind("click").click(function() {
 				// console.log($(this).parent().parent())
 				$('#inp_send').val($('.hostel').val()).attr('linkName',$(this).parent().find('.hosname').val())
-				localStorage.setItem('phone' , $('#inp_send').val())
-
-				$('#btn_conn').click()
-
+				localStorage.setItem('tel' , $('#inp_send').val())
+				let tel = '';
+				if(thisValue.$store.state.telInterval){
+					window.clearInterval(thisValue.$store.state.telInterval);
+				}
+				thisValue.$store.state.telInterval = window.setInterval(()=>{
+					if(tel != localStorage.getItem('currTel')){
+						tel = localStorage.getItem('currTel')
+						$('#btn_conn').click()
+						$('.phoneNow').css('display','inline')
+						$('#phoneNow p').html(tel+"正在通话中. . .")
+					}
+					console.log('计时器')
+				},500)
             })
             $('#add-hos .phoneps').unbind("click").click(function() {
 				$('#inp_send').val($(this).html()).attr('linkName',$(this).parent().parent().children().eq(0).children().html())
-				localStorage.setItem('phone' , $('#inp_send').val())
-
-				$('#btn_conn').click()
-
+				localStorage.setItem('tel' , $('#inp_send').val())
+				$('.phoneNow').css('display','inline')
+				$('#phoneNow p').html(localStorage.getItem('currTel')+"正在通话中. . .")
+				let tel = '';
+				if(thisValue.$store.state.telInterval){
+					window.clearInterval(thisValue.$store.state.telInterval);
+				}
+				thisValue.$store.state.telInterval = window.setInterval(()=>{
+					if(tel != localStorage.getItem('currTel')){
+						tel = localStorage.getItem('currTel')
+						$('#btn_conn').click()
+						$('.phoneNow').css('display','inline')
+						$('#phoneNow p').html(tel+"正在通话中. . .")
+					}
+					console.log('计时器')
+				},500)
 				// lineFriends($(this).html())
             })
             $('#add-hos .closeThis').unbind("click").click(function() {
@@ -1163,9 +1203,20 @@ export default {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						$('#inp_send').val(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||"").attr('linkName',thisLinkName)
 						// $('#inp_send').val(thisHtml)
-						localStorage.setItem('phone' , $('#inp_send').val())
-
-						$('#btn_conn').click()
+						localStorage.setItem('tel' , $('#inp_send').val())
+						let tel = '';
+						if(thisValue.$store.state.telInterval){
+							window.clearInterval(thisValue.$store.state.telInterval);
+						}
+						thisValue.$store.state.telInterval = window.setInterval(()=>{
+							if(tel != localStorage.getItem('currTel')){
+								tel = localStorage.getItem('currTel')
+								$('#btn_conn').click()
+								$('.phoneNow').css('display','inline')
+								$('#phoneNow p').html(tel+"正在通话中. . .")
+							}
+							console.log('计时器')
+						},500)
 
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
@@ -1221,10 +1272,20 @@ export default {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						// lineFriends($(this).html())
 						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"").attr('linkName',thisLinkName)
-						localStorage.setItem('phone' , $('#inp_send').val())
-
-						$('#btn_conn').click()
-
+						localStorage.setItem('tel' , $('#inp_send').val())
+						let tel = '';
+						if(thisValue.$store.state.telInterval){
+							window.clearInterval(thisValue.$store.state.telInterval);
+						}
+						thisValue.$store.state.telInterval = window.setInterval(()=>{
+							if(tel != localStorage.getItem('currTel')){
+								tel = localStorage.getItem('currTel')
+								$('#btn_conn').click()
+								$('.phoneNow').css('display','inline')
+								$('#phoneNow p').html(tel+"正在通话中. . .")
+							}
+							console.log('计时器')
+						},500)
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
