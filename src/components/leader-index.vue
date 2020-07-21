@@ -165,6 +165,16 @@
             <li>{{item.todayCustomerTraceCount}}</li>
           </ul>
         </div>
+        <div class="leader_ul2">
+          <ul>
+            <li>昨日大于30秒</li>
+            <li>{{item.yesterdayGt30CallRecordCount}}</li>
+          </ul>
+          <ul>
+            <li>昨日大于90秒</li>
+            <li>{{item.yesterdayGt90CallRecordCount}}</li>
+          </ul>
+        </div>
       </div>
 
       <!-- <div class="leader_eveAdd">
@@ -1106,7 +1116,7 @@ lookrecordlist(){
 
   .leader_eve {
     width: 259px;
-    height: 133px;
+    height: 212px;
     background: rgba(255, 255, 255, 1);
     border-radius: 2px;
     border: 1px solid rgba(232, 232, 232, 1);
@@ -1155,10 +1165,10 @@ lookrecordlist(){
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
   }
-  .leader_ul{
+  .leader_ul,.leader_ul2{
     height: 73px;
     width: 100%;
-    margin-top: 6px;
+    margin: 6px 0px;
     padding: 0px 10px;
     box-sizing: border-box;
   }
@@ -1167,8 +1177,12 @@ lookrecordlist(){
     float: left;
     text-align: center
   }
-
-  .leader_ul ul li:nth-child(1) {
+  .leader_ul2 ul {
+    width: 50%;
+    float: left;
+    text-align: center
+  }
+  .leader_ul ul li:nth-child(1) ,.leader_ul2 ul li:nth-child(1){
     margin-top: 12px;
     margin-bottom: 9px;
     width: auto;
@@ -1184,7 +1198,7 @@ lookrecordlist(){
     /* margin-left: 5%; */
   }
 
-  .leader_ul ul li:nth-child(2) {
+  .leader_ul ul li:nth-child(2),.leader_ul2 ul li:nth-child(2){
     width: 70px;
     height: 32px;
     font-size: 22px;
@@ -1192,8 +1206,8 @@ lookrecordlist(){
     font-weight: 500;
     color: rgba(0, 0, 0, 0.65);
     line-height: 32px;
+    margin: 0px auto;
   }
-
   .leader_eveAdd {
     width: 259px;
     height: 133px;
