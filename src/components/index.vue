@@ -630,23 +630,7 @@ export default {
 						$('.phoneNumber').html($(this).html())
 						console.log($('#inp_send').val())
 						localStorage.setItem('tel' , $('#inp_send').val())
-						let tel = '';
-						if(thisValue.$store.state.telInterval){
-							window.clearInterval(thisValue.$store.state.telInterval);
-						}
-						thisValue.$store.state.telInterval = window.setInterval(()=>{
-							if(tel != localStorage.getItem('currTel')){
-								tel = localStorage.getItem('currTel')
-								$('#btn_conn').click()
-								$('.phoneNow').css('display','inline')
-								$('#phoneNow p').html(tel+"正在通话中. . .")
-							}
-							console.log('计时器')
-						},500)
-						
-						
-					 	
-
+						$('#btn_conn').click()
 				}
 			})
 		}

@@ -16,7 +16,16 @@ export default {
     let thisVue=this
     $.get('/config',function(res){
 			thisVue.$store.state.serVersion = res.data.version
-		})
+    })
+    window.setInterval(()=>{
+      if(localStorage.getItem('currTel')){
+        $('.phoneNow').css('display','inline')
+        $('#phoneNow p').html(localStorage.getItem('currTel')+"正在通话中. . .")
+      }else{
+        $('#phoneNow').css({'display':'none'});
+      }
+      console.log(localStorage.getItem('currTel'))
+    },500)
   },
  
 }
