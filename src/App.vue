@@ -35,9 +35,7 @@ export default {
     telTimeMIntenSecondsInterval = window.setInterval(()=>{
       thisVue.$store.state.telTimeMIntenSeconds++
       console.log(thisVue.$store.state.telTimeMIntenSeconds)
-      $('.phoneEnd_num').
-      
-      (thisVue.$store.state.telTimeMIntenSeconds+' s')
+      $('.phoneEnd_num').html(thisVue.$store.state.telTimeMIntenSeconds+' s')
     },1000)
   },
  
