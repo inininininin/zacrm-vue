@@ -631,6 +631,8 @@ export default {
 						console.log($('#inp_send').val())
 						localStorage.setItem('tel' , $('#inp_send').val())
 						$('#btn_conn').click()
+						thisValue.$store.state.telTimeMIntenSeconds = 0
+						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 				}
 			})
 		}
