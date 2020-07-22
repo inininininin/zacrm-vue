@@ -26,6 +26,11 @@ export default {
       }
       console.log(localStorage.getItem('currTel'))
     },500)
+    telTimeMIntenSeconds
+    window.setInterval(()=>{
+      this.$store.state.telTimeMIntenSeconds++
+      $('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
+    },1000)
   },
  
 }
