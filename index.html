@@ -60,7 +60,9 @@
 			<div class="phoneEnd btn_close" id="btn_close">
 				<img src="./assets/img/phoneEnd.png" alt="">
 				<span>挂断电话</span>
+				<span class="phoneEnd_num">59 s</span>
 			</div>
+			
 		</div>
 
 		<script>
@@ -130,6 +132,7 @@
 
 			var _left =''
 			var _top = ''
+			
 			$('.suoxiao').click(function(){
 				$('#phoneNow').css({'height':'30%','width':'30%'})
 				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
@@ -297,6 +300,7 @@
 		} */
 		#phoneNow .phoneEnd{
 			position: absolute;
+			display: inline;
 			width: 125px;
 			height: 30px;
 			background: #ffffff;
@@ -330,6 +334,20 @@
 			border: 1px solid #fff;
 			border-radius: 5px;
 			background: #ffffff;
+		}
+		.phoneEnd_num{
+			position: absolute!important;
+			right: -51px!important;
+			width: 50px!important;
+			height: 30px!important;
+			line-height: 29px!important;
+			background: transparent!important;
+			border: none!important;
+			color: #FFF!important;
+<<<<<<< HEAD
+=======
+			z-index: 999!important;
+>>>>>>> 0398016554b74fd57e00d5055f7a9c1fb5ee54f6
 		}
 		</style>
 

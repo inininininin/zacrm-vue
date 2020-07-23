@@ -14,9 +14,15 @@ export default {
   created(){
     debugger
     let thisVue=this
+    let telTimeMIntenSecondsInterval;
     $.get('/config',function(res){
 			thisVue.$store.state.serVersion = res.data.version
     })
+    $('.phoneEnd_num').click(function(){
+      thisVue.$store.state.telTimeMIntenSeconds = 0
+				$('.phoneEnd_num').html('0 s')
+        event.stopPropagation(); 
+			})
     window.setInterval(()=>{
       if(localStorage.getItem('currTel')){
         $('.phoneNow').css('display','inline')
@@ -24,8 +30,13 @@ export default {
       }else{
         $('#phoneNow').css({'display':'none'});
       }
-      console.log(localStorage.getItem('currTel'))
+      // console.log(localStorage.getItem('currTel'))
     },500)
+    telTimeMIntenSecondsInterval = window.setInterval(()=>{
+      thisVue.$store.state.telTimeMIntenSeconds++
+      console.log(thisVue.$store.state.telTimeMIntenSeconds)
+      $('.phoneEnd_num').html(thisVue.$store.state.telTimeMIntenSeconds+' s')
+    },1000)
   },
  
 }
