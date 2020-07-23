@@ -22,12 +22,6 @@ export default {
       thisVue.$store.state.telTimeMIntenSeconds = 0
 				$('.phoneEnd_num').html('0 s')
         event.stopPropagation(); 
-        clearInterval(telTimeMIntenSecondsInterval)
-        telTimeMIntenSecondsInterval = window.setInterval(()=>{
-          thisVue.$store.state.telTimeMIntenSeconds++
-          console.log(thisVue.$store.state.telTimeMIntenSeconds)
-          $('.phoneEnd_num').html(thisVue.$store.state.telTimeMIntenSeconds+' s')
-        },1000)
 			})
     window.setInterval(()=>{
       if(localStorage.getItem('currTel')){
