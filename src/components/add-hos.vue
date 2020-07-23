@@ -299,6 +299,7 @@ export default {
 			$('#add-hos .province').html('<option value="">-请选择-</option>')
 			$('#add-hos .city').html('<option value="">-请选择-</option>')
 			$('#add-hos .town').html('<option value="">-请选择-</option>')
+			document.title = '忠安客户漏斗管理系统'
 			// $('.province').html('')
 			// $('.city').html('')
 			// $('.town').html('')
@@ -473,8 +474,7 @@ export default {
 			$('#add-hos .linePhoneList').off("click",'div .phoneThisTel').on('click','div .phoneThisTel',function(){
 				var linkName=$(this).parent().children().eq(0).html().substring(0,$(this).parent().children().eq(0).html().length-1)
 				$('#inp_send').val($(this).parent().children().eq(1).html()||'').attr('linkName',linkName||'')
-				localStorage.setItem('phone' , $('#inp_send').val())
-
+				localStorage.setItem('tel' , $('#inp_send').val())
 				$('#btn_conn').click()
 
             })
@@ -493,17 +493,13 @@ export default {
             $('#add-hos .linkHos').unbind("click").click(function() {
 				// console.log($(this).parent().parent())
 				$('#inp_send').val($('.hostel').val()).attr('linkName',$(this).parent().find('.hosname').val())
-				localStorage.setItem('phone' , $('#inp_send').val())
-
+				localStorage.setItem('tel' , $('#inp_send').val())
 				$('#btn_conn').click()
-
             })
             $('#add-hos .phoneps').unbind("click").click(function() {
 				$('#inp_send').val($(this).html()).attr('linkName',$(this).parent().parent().children().eq(0).children().html())
-				localStorage.setItem('phone' , $('#inp_send').val())
-
+				localStorage.setItem('tel' , $('#inp_send').val())
 				$('#btn_conn').click()
-
 				// lineFriends($(this).html())
             })
             $('#add-hos .closeThis').unbind("click").click(function() {
@@ -1162,10 +1158,8 @@ export default {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						$('#inp_send').val(_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3')||"").attr('linkName',thisLinkName)
 						// $('#inp_send').val(thisHtml)
-						localStorage.setItem('phone' , $('#inp_send').val())
-
+						localStorage.setItem('tel' , $('#inp_send').val())
 						$('#btn_conn').click()
-
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
@@ -1220,10 +1214,8 @@ export default {
 					if (thisHtml && thisHtml.split(',').length == 1) {
 						// lineFriends($(this).html())
 						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"").attr('linkName',thisLinkName)
-						localStorage.setItem('phone' , $('#inp_send').val())
-
+						localStorage.setItem('tel' , $('#inp_send').val())
 						$('#btn_conn').click()
-
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')

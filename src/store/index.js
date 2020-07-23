@@ -4,8 +4,8 @@ Vue.use(Vuex)
 
 const state={
 	serVersion:null,
-	cancelTokenArr: [] // 取消请求token数组
-  
+	cancelTokenArr: [], // 取消请求token数组
+	telTimeMIntenSeconds:0	//号码获取计时器
 }
 const getters={
   

@@ -553,10 +553,10 @@ export default {
 				$('#index .town').val('')
 				$('#index .nature').val('')
 				$('#index .urgentLevel').val('')
-        $('#index .paiBanCustomerWorkerHas').val('')
-        $('#index .paiBanCustomerWorkerPhoneHas').val('')
-        $('#index .zhuRenCustomerWorkerHas').val('')
-        $('#index .zhuRenCustomerWorkerPhoneHas').val('')
+				$('#index .paiBanCustomerWorkerHas').val('')
+				$('#index .paiBanCustomerWorkerPhoneHas').val('')
+				$('#index .zhuRenCustomerWorkerHas').val('')
+				$('#index .zhuRenCustomerWorkerPhoneHas').val('')
 				thisValue.kw = ''
 				thisValue.nature = ''
 				thisValue.area1Id = ''
@@ -566,11 +566,11 @@ export default {
 				thisValue.level = ''
 				thisValue.toRevisitTimeFrom = ''
 				thisValue.toRevisitTimeTo = ''
-        thisValue.paiBanCustomerWorkerHas = ''
-        thisValue.paiBanCustomerWorkerPhoneHas = ''
-        thisValue.zhuRenCustomerWorkerHas = ''
-		thisValue.zhuRenCustomerWorkerPhoneHas = ''
-		thisValue.dataValue = ''
+				thisValue.paiBanCustomerWorkerHas = ''
+				thisValue.paiBanCustomerWorkerPhoneHas = ''
+				thisValue.zhuRenCustomerWorkerHas = ''
+				thisValue.zhuRenCustomerWorkerPhoneHas = ''
+				thisValue.dataValue = ''
 				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
 				$('#index #box').paging({
@@ -629,12 +629,10 @@ export default {
 					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
 						console.log($('#inp_send').val())
-						localStorage.setItem('phone' , $('#inp_send').val())
-
-					 	$('#btn_conn').click()
-
-					 //2000)
-
+						localStorage.setItem('tel' , $('#inp_send').val())
+						$('#btn_conn').click()
+						thisValue.$store.state.telTimeMIntenSeconds = 0
+						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 				}
 			})
 		}
