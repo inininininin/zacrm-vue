@@ -11,6 +11,7 @@
     <script>
 		var comeTel
         var socket,tel,msg,started=false;
+        var telNum = 0;
         var url='ws://localhost?sid=789&pid=84529FA7-7195-4541-AA38-B22003CCFF4D&flag=1'
         onTelephone();
 		
@@ -82,8 +83,13 @@
 					tel='';
 					started=true
                 }else if (data.type == 704) {
-					if(tel)
-						$('#historyCallList').prepend('<div style="cursor:pointer;" onclick="$(\'#inp_send\').val('+tel+');startCall();">'+tel+'</div>')
+					if(tel){
+                        
+						$('#historyCallList').prepend(
+                            '<div style="margin-top: 3px;"><div style="cursor:pointer;float: left;" onclick="$(\'#inp_send\').val('+tel+');startCall();">'+tel+'</div><div class="minus" onClick="telNum--;$(\'.telNum\').html(telNum);$(this).parent().empty();">-</div></div>')
+                        telNum++
+                        $('.telNum').html(telNum)
+                    }
 					$('#btn_start').attr('disabled',false);
 					$('#btn_stop').attr('disabled',true);
 					$('#inp_send').val('')
@@ -102,7 +108,13 @@
 				$('#btn_close').attr('disabled',true);
             };
         }
-
+        $('.minus').on('click',function(){
+            console.log('sss')
+            //业务逻辑
+            telNum--
+            $('.telNum').html(telNum)
+            $(this).parent().empty();
+        });
         function offTelephone(){
             debugger
             if (socket) {
@@ -118,6 +130,19 @@
             border: none;
             border-radius: 5px;
             padding: 9px;
+        }
+        .minus{
+            height: 20px;
+            width: 20px;
+            border: 1px solid #e2cece;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 24px;
+            color: #e2cece;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 15px;
         }
     </style>
 </head>
@@ -149,9 +174,11 @@
                 <button type="button" id="btn_stop" class="btn btn-info btn-block ceshiButton" onclick="stopCall()" style="cursor:pointer;">挂断</button>
             </div>
         </div>
-		<div id="historyCallListPad" style="height:500px;width:200px;overflow:auto;">
-	<span>历史通话</span>
-	<button type="button" style="cursor:pointer;" onclick="$('#historyCallList').html('')">清空</button>
+		<div id="historyCallListPad" style="height:500px;width:200px;overflow:auto;margin-top: 8px;">
+    <span>历史通话</span>
+    <button type="button" style="cursor:pointer;" onclick="$('#historyCallList').html('')">清空</button>
+    <span>数量：</span><span class="telNum">0</span>
+    <div></div>
 	<div id="historyCallList" >
 	
 	
