@@ -476,7 +476,8 @@ export default {
 				$('#inp_send').val($(this).parent().children().eq(1).html()||'').attr('linkName',linkName||'')
 				localStorage.setItem('tel' , $('#inp_send').val())
 				$('#btn_conn').click()
-
+				thisValue.$store.state.telTimeMIntenSeconds = 0
+				$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
             })
             if ($('#add-hos .hostel').val() == '' || $('.hostel').val() == null || $('.hostel').val() == undefined) {
 				$('#add-hos .linkHos').css('display', 'none')
@@ -495,11 +496,15 @@ export default {
 				$('#inp_send').val($('.hostel').val()).attr('linkName',$(this).parent().find('.hosname').val())
 				localStorage.setItem('tel' , $('#inp_send').val())
 				$('#btn_conn').click()
+				thisValue.$store.state.telTimeMIntenSeconds = 0
+				$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
             })
             $('#add-hos .phoneps').unbind("click").click(function() {
 				$('#inp_send').val($(this).html()).attr('linkName',$(this).parent().parent().children().eq(0).children().html())
 				localStorage.setItem('tel' , $('#inp_send').val())
 				$('#btn_conn').click()
+				thisValue.$store.state.telTimeMIntenSeconds = 0
+				$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 				// lineFriends($(this).html())
             })
             $('#add-hos .closeThis').unbind("click").click(function() {
@@ -1160,6 +1165,8 @@ export default {
 						// $('#inp_send').val(thisHtml)
 						localStorage.setItem('tel' , $('#inp_send').val())
 						$('#btn_conn').click()
+						thisValue.$store.state.telTimeMIntenSeconds = 0
+						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
@@ -1216,6 +1223,8 @@ export default {
 						$('#inp_send').val(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"").attr('linkName',thisLinkName)
 						localStorage.setItem('tel' , $('#inp_send').val())
 						$('#btn_conn').click()
+						thisValue.$store.state.telTimeMIntenSeconds = 0
+						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					} else {
 						$('#inp_send').attr('linkName',thisLinkName)
 						$('#add-hos .addphoeShow').attr('id', '')
