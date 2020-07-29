@@ -120,7 +120,7 @@
 	cursor: pointer;
 	text-align: left;
 }
-#index .tableBox table tbody tr td:nth-child(4),#index #leader_index .tableBox table tbody tr td:nth-child(4){
+#index .tableBox table tbody tr td:nth-child(3),#index #leader_index .tableBox table tbody tr td:nth-child(3),#index .tableBox table tbody tr td:nth-child(5),#index #leader_index .tableBox table tbody tr td:nth-child(5){
 	cursor: pointer;
 }
 /* #leader_index .tableBox table thead tr th,
