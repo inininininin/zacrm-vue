@@ -86,11 +86,11 @@
 						type="date"
 						placeholder="选择日期时间"
 						align="right"
-						:picker-options="pickerOptions" 
+						:picker-options="pickerOptions"
 						@change = "elmentDataFn">
 					</el-date-picker>
 					<button class="searchThis refresh">重置</button>
-					
+
 				</div>
 			</div>
 
@@ -100,6 +100,7 @@
 						<tr>
 							<th>序号</th>
 							<th>医院名称</th>
+              <th>医院号码</th>
 							<th>拍板人</th>
 							<th>拍板人手机号码</th>
 							<th>拍板人验证</th>
@@ -157,7 +158,7 @@ export default {
 					onClick(picker) {
 						picker.$emit('pick', new Date());
 					}
-				}, 
+				},
 				{
 					text: '近三天',
 					onClick(picker) {
@@ -168,7 +169,7 @@ export default {
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
 						picker.$emit('pick', date);
 					}
-				}, 
+				},
 				{
 					text: '近一周',
 					onClick(picker) {
@@ -618,7 +619,7 @@ export default {
 				}
 			})
         })
-        $('#index table').on('click','tr td:nth-child(4)',function(){
+        $('#index table').on('click','tr td:nth-child(3)',function(){
 				debugger
 				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
 
@@ -626,7 +627,7 @@ export default {
                     debugger
 					//anjie($(this).attr('tel'))
 					 //tTimeout(function(){
-					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
+					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
 						$('.phoneNumber').html($(this).html())
 						console.log($('#inp_send').val())
 						localStorage.setItem('tel' , $('#inp_send').val())
@@ -635,6 +636,23 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 				}
 			})
+      $('#index table').on('click','tr td:nth-child(5)',function(){
+      	debugger
+      	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+      
+      	}else{
+                    debugger
+      		//anjie($(this).attr('tel'))
+      		 //tTimeout(function(){
+      		 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
+      			$('.phoneNumber').html($(this).html())
+      			console.log($('#inp_send').val())
+      			localStorage.setItem('tel' , $('#inp_send').val())
+      			$('#btn_conn').click()
+      			thisValue.$store.state.telTimeMIntenSeconds = 0
+      			$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
+      	}
+      })
 		}
     },
     methods:{
@@ -668,10 +686,13 @@ export default {
 							$('#index .tbody').html('')
 							if (res.data.itemList && res.data.itemList.length > 0) {
 								for (var i in res.data.itemList) {
-									var tel=''
+									var tel='',tel1=''
 									if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
 										tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 3) + "****"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
 									}
+                  if(res.data.itemList[i].tel){
+                  	tel1=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+                  }
 									// tel=res.data.itemList[i].paiBanCustomerWorkerPhone1 //= res.data.itemList[i].tel
 									let toRevisitTime = '';
 									if(res.data.itemList[i].toRevisitTime){
@@ -681,7 +702,7 @@ export default {
 									}
                                     $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
                                     '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
-                                    + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
+                                    + (res.data.itemList[i].name || "") + '</a></td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel1 || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
 											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
 											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
 											 toRevisitTime + '</td></tr>')
