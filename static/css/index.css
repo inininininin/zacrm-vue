@@ -121,6 +121,43 @@
 	text-align: left;
 }
 #index .tableBox table tbody tr td:nth-child(4),#index #leader_index .tableBox table tbody tr td:nth-child(4){
+	/* cursor: pointer; */
+}
+#index .shoujiDiv{
+	display: inline;
+    margin-left: 8px;
+}
+#index .shoujiDiv>div{
+	display: inline-block;
+	position: relative;
+}
+#index .telCall{
+	display: none;
+	position: absolute;
+    bottom: -11px;
+    right: -30px;
+    /* display: block; */
+    width: 40px;
+    background: #e4e1e1;
+    height: 20px;
+    line-height: 20px;
+	border-radius: 20%;
+	
+}
+#index .shoujiDiv>div>img:hover+.telCall {
+	display: block;
+	/* background: red; */
+	cursor: pointer;
+}
+
+.shoujiDiv>div>span:hover{
+	display: block;
+	/* cursor: pointer; */
+}
+#index .shoujiDiv>div:first-child{
+	margin-right: 8px;
+}
+#index .shoujiDiv>div>img{
 	cursor: pointer;
 }
 /* #leader_index .tableBox table thead tr th,

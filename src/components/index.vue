@@ -124,6 +124,9 @@
 </template>
 <script>
 import Vue from 'vue'
+import shouji from "../assets/img/shouji.svg"
+import zuoji from "../assets/img/zuoji.svg"
+import qs from 'qs';
 export default {
 	name: 'index',
 	data () {
@@ -333,6 +336,7 @@ export default {
 					}
 				})
 			})
+			
         $('#index .urgentLevel').change(function() {
 				if ($(this).val() == '') {
 					thisValue.urgent = ''
@@ -542,9 +546,11 @@ export default {
 		$('#index').on('click','.tbody .xiugaiTimeFn',function(e){
 
 			$(this).parent().attr('id')
+			console.log('s')
 
 
 		})
+		
         // 清空全部搜索条件
 			$('#index .refresh').unbind("click").click(function() {
 				$('#index .keyword').val('')
@@ -618,22 +624,48 @@ export default {
 				}
 			})
         })
-        $('#index table').on('click','tr td:nth-child(4)',function(){
-				debugger
-				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+        // $('#index table').on('click','tr td:nth-child(4)',function(){
+		// 		debugger
+		// 		if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
 
-				}else{
-                    debugger
-					//anjie($(this).attr('tel'))
-					 //tTimeout(function(){
-					 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
+		// 		}else{
+        //             debugger
+		// 			//anjie($(this).attr('tel'))
+		// 			 //tTimeout(function(){
+		// 			 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
+		// 				$('.phoneNumber').html($(this).html())
+		// 				console.log($('#inp_send').val())
+		// 				localStorage.setItem('tel' , $('#inp_send').val())
+		// 				$('#btn_conn').click()
+		// 				thisValue.$store.state.telTimeMIntenSeconds = 0
+		// 				$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
+		// 		}
+		// 	})
+			$('#index .tbody').on('click','.shoujiDiv div:first-child img',function(){
+				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+					}else{
+						$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
-						console.log($('#inp_send').val())
+						// console.log($('#inp_send').val())
 						localStorage.setItem('tel' , $('#inp_send').val())
 						$('#btn_conn').click()
 						thisValue.$store.state.telTimeMIntenSeconds = 0
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
-				}
+					}
+			})
+			$('#index .tbody').on('click','.shoujiDiv div:last-child img',function(){
+				thisValue.$axios.post('/push-call',qs.stringify({
+					tel:$(this).parent().parent().parent().attr('tel'),
+					name:$(this).parent().parent().parent().parent().children().eq(2).html(),
+				}))
+				.then(res=>{
+					if (res.data.codeMsg) {
+						this.$message(res.data.codeMsg)
+					}
+					if(res.data.data.code != 0){
+						this.$message('操作失败')
+					}
+				})
 			})
 		}
     },
@@ -682,7 +714,9 @@ export default {
                                     $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
                                     '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
                                     + (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
+											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + '<div style="display:inline-block;width: 100px;">'+(tel || "")+'</div>' + 
+											(tel? '<div class="shoujiDiv"><div><img src="'+zuoji+'" alt=""><span class="telCall">座机</span></div><div><img src="'+shouji+'" alt=""><span class="telCall">手机</span></div></div>':'')+
+											'</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
 											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
 											 toRevisitTime + '</td></tr>')
 
