@@ -142,7 +142,9 @@
     height: 20px;
     line-height: 20px;
 	border-radius: 20%;
-	
+	font-size: 12px;
+    text-align: center;
+    z-index: 9
 }
 #index .shoujiDiv>div>img:hover+.telCall {
 	display: block;
@@ -150,7 +152,7 @@
 	cursor: pointer;
 }
 
-.shoujiDiv>div>span:hover{
+#index .shoujiDiv>div>span:hover{
 	display: block;
 	/* cursor: pointer; */
 }
