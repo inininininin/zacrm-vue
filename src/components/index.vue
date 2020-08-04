@@ -643,9 +643,12 @@ export default {
 		// 		}
 		// 	})
 			$('#index .tbody').on('click','.shoujiDiv div:first-child img',function(){
-				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+				console.log('s')
+				console.log($(this).parent().parent().parent().attr('linkName'))
+				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
 					}else{
-						$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
+						
+						$('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
 						// console.log($('#inp_send').val())
 						localStorage.setItem('tel' , $('#inp_send').val())
@@ -668,23 +671,23 @@ export default {
 					}
 				})
 			})
-      $('#index table').on('click','tr td:nth-child(5)',function(){
-      	debugger
-      	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+    //   $('#index table').on('click','tr td:nth-child(5)',function(){
+    //   	debugger
+    //   	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
       
-      	}else{
-                    debugger
-      		//anjie($(this).attr('tel'))
-      		 //tTimeout(function(){
-      		 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
-      			$('.phoneNumber').html($(this).html())
-      			console.log($('#inp_send').val())
-      			localStorage.setItem('tel' , $('#inp_send').val())
-      			$('#btn_conn').click()
-      			thisValue.$store.state.telTimeMIntenSeconds = 0
-      			$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
-      	}
-      })
+    //   	}else{
+    //                 debugger
+    //   		//anjie($(this).attr('tel'))
+    //   		 //tTimeout(function(){
+    //   		 	$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName'))
+    //   			$('.phoneNumber').html($(this).html())
+    //   			console.log($('#inp_send').val())
+    //   			localStorage.setItem('tel' , $('#inp_send').val())
+    //   			$('#btn_conn').click()
+    //   			thisValue.$store.state.telTimeMIntenSeconds = 0
+    //   			$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
+    //   	}
+    //   })
 		}
     },
     methods:{
