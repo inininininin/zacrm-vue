@@ -643,9 +643,12 @@ export default {
 		// 		}
 		// 	})
 			$('#index .tbody').on('click','.shoujiDiv div:first-child img',function(){
-				if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
+				console.log('s')
+				console.log($(this).parent().parent().parent().attr('linkName'))
+				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
 					}else{
-						$('#inp_send').val($(this).attr('tel')).attr('linkName',$(this).attr('linkName')) 
+						
+						$('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
 						// console.log($('#inp_send').val())
 						localStorage.setItem('tel' , $('#inp_send').val())
