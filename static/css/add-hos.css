@@ -362,7 +362,7 @@ button[disabled]{
 	margin-left: 220px;
 	cursor: pointer;
 }
-#add-hos .addphoen span,#add-hos .addphoeShow span{
+#add-hos .addphoen span,#add-hos .addphoeShow>div>span{
 	display: inline-block;
 	margin: 0 10px;
 }
@@ -379,7 +379,7 @@ button[disabled]{
 	padding: 0 10px;
 	font-size: 14px;
 }
-#add-hos .addphoen span:last-child,#add-hos .addphoeShow span:last-child{
+#add-hos .addphoen span:last-child,#add-hos .addphoeShow>span:last-child{
 	display: block;
 	width: 70px;
 	height: 30px;
@@ -394,6 +394,7 @@ button[disabled]{
 	display: inline-block;
 	cursor: default;
 	border-bottom: 1px solid #e5e5e5;
+	width: 100px;
 }
 
 
@@ -490,11 +491,11 @@ button[disabled]{
 	display: none;
 	/* background: #EEEEEE !important; */
 }
-#add-hos .shoujiDiv{
+#add-hos .shoujiDiv,#add-hos .shoujiDiv1,#add-hos .shoujiDiv2{
 	display: inline;
     margin-left: 8px;
 }
-#add-hos .shoujiDiv>div{
+#add-hos .shoujiDiv>div,#add-hos .shoujiDiv1>div,#add-hos .shoujiDiv2>div{
 	display: inline-block;
 	position: relative;
 	width: 24px;
@@ -516,19 +517,19 @@ button[disabled]{
     text-align: center;
     z-index: 9
 }
-#add-hos .shoujiDiv>div>img:hover+.telCall {
+#add-hos .shoujiDiv>div>img:hover+.telCall, #add-hos .shoujiDiv1>div>img:hover+.telCall,#add-hos .shoujiDiv2>div>img:hover+.telCall{
 	display: block;
 	/* background: red; */
 	cursor: pointer;
 }
 
-#add-hos .shoujiDiv>div>span:hover{
+#add-hos .shoujiDiv>div>span:hover,#add-hos .shoujiDiv1>div>span:hover,#add-hos .shoujiDiv2>div>span:hover{
 	display: block;
 	/* cursor: pointer; */
 }
-#add-hos .shoujiDiv>div:first-child{
+#add-hos .shoujiDiv>div:first-child,#add-hos .shoujiDiv1>div:first-child,#add-hos .shoujiDiv2>div:first-child{
 	margin-right: 8px;
 }
-#add-hos .shoujiDiv>div>img{
+#add-hos .shoujiDiv>div>img,#add-hos .shoujiDiv1>div>img,#add-hos .shoujiDiv2>div>img{
 	cursor: pointer;
 }
