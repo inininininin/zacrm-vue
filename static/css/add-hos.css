@@ -390,7 +390,7 @@ button[disabled]{
 }
 #add-hos .addphoeShow p{
 	display: inline-block;
-	cursor: pointer;
+	cursor: default;
 	border-bottom: 1px solid #e5e5e5;
 }
 
@@ -468,7 +468,7 @@ button[disabled]{
 	border-right:1px solid #e5e5e5;
 	color: #666666;
 }
-#add-hos .linePhoneList>div span{
+#add-hos .linePhoneList>div>span{
 	display: inline-block;
 	margin-right: 15px;
 }
@@ -487,4 +487,46 @@ button[disabled]{
 	border: 1px solid #e5e5e5;
 	display: none;
 	/* background: #EEEEEE !important; */
+}
+#add-hos .shoujiDiv{
+	display: inline;
+    margin-left: 8px;
+}
+#add-hos .shoujiDiv>div{
+	display: inline-block;
+	position: relative;
+	width: 24px;
+	height: 24px;
+	line-height: 24px;
+}
+#add-hos .telCall{
+	display: none;
+	position: absolute;
+    bottom: -18px;
+    right: -30px;
+    /* display: block; */
+    width: 40px;
+    background: #e4e1e1;
+    height: 20px;
+    line-height: 20px;
+	border-radius: 20%;
+	font-size: 12px;
+    text-align: center;
+    z-index: 9
+}
+#add-hos .shoujiDiv>div>img:hover+.telCall {
+	display: block;
+	/* background: red; */
+	cursor: pointer;
+}
+
+#add-hos .shoujiDiv>div>span:hover{
+	display: block;
+	/* cursor: pointer; */
+}
+#add-hos .shoujiDiv>div:first-child{
+	margin-right: 8px;
+}
+#add-hos .shoujiDiv>div>img{
+	cursor: pointer;
 }
