@@ -671,6 +671,35 @@ export default {
 					}
 				})
 			})
+			$('#index .tbody').on('click','.shoujiDiv1 div:first-child img',function(){
+				console.log('s')
+				console.log($(this).parent().parent().parent().attr('linkName'))
+				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
+					}else{
+						
+						$('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
+						$('.phoneNumber').html($(this).html())
+						// console.log($('#inp_send').val())
+						localStorage.setItem('tel' , $('#inp_send').val())
+						$('#btn_conn').click()
+						thisValue.$store.state.telTimeMIntenSeconds = 0
+						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
+					}
+			})
+			$('#index .tbody').on('click','.shoujiDiv1 div:last-child img',function(){
+				thisValue.$axios.post('/push-call',qs.stringify({
+					tel:$(this).parent().parent().parent().attr('tel'),
+					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
+				}))
+				.then(res=>{
+					if (res.data.codeMsg) {
+						this.$message(res.data.codeMsg)
+					}
+					if(res.data.data.code != 0){
+						this.$message('操作失败')
+					}
+				})
+			})
     //   $('#index table').on('click','tr td:nth-child(5)',function(){
     //   	debugger
     //   	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
@@ -723,10 +752,10 @@ export default {
 								for (var i in res.data.itemList) {
 									var tel='',tel1=''
 									if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
-										tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 3) + "****"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
+										tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(4, 7) + "***"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
 									}
                   if(res.data.itemList[i].tel){
-                  	tel1=res.data.itemList[i].tel.substring(0, 3) + "****"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+                  	tel1=res.data.itemList[i].tel.substring(4, 7) + "***"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
                   }
 									// tel=res.data.itemList[i].paiBanCustomerWorkerPhone1 //= res.data.itemList[i].tel
 									let toRevisitTime = '';
@@ -737,7 +766,7 @@ export default {
 									}
                                     $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
                                     '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
-                                    + (res.data.itemList[i].name || "") + '</a></td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + (tel1 || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
+                                    + (res.data.itemList[i].name || "") + '</a></td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + '<div style="display:inline-block;width: 100px;">'+ (tel1 || "") + '</div>' + '<div class="shoujiDiv1"><div><img src="'+zuoji+'" alt=""><span class="telCall">座机</span></div><div><img src="'+shouji+'" alt=""><span class="telCall">手机</span></div></div>' + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
 											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + '<div style="display:inline-block;width: 100px;">'+(tel || "")+'</div>' + 
 											(tel? '<div class="shoujiDiv"><div><img src="'+zuoji+'" alt=""><span class="telCall">座机</span></div><div><img src="'+shouji+'" alt=""><span class="telCall">手机</span></div></div>':'')+
 											'</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
