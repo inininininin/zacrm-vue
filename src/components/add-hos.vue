@@ -56,7 +56,7 @@
 					</div>
 					<div class="hosIntroBox">
 						<span>简介 : </span>
-						<textarea class="hosIntro" rows="3" cols="20"></textarea>
+						<textarea class="hosIntro" rows="3" cols="20" disabled="disabled"></textarea>
 					</div>
 				</div>
 			</div>
@@ -1736,12 +1736,12 @@ export default {
 										// var show2 = "show('" + res.data.itemList[i].verifyWay + "')"
 										// var show3 = "show('" + res.data.itemList[i].tel + "')"
 
-										// if(phoneAll){
-										// 	var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
-										// }
-										// if(telAll){
-											// 	var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
-										// }
+										if(phoneAll){
+											var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
+										}
+										if(telAll){
+												var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
+										}
 										var phoneAll = phoneAll
 										var telAll=telAll
 										$('#add-hos .tbody').append('<tr relId="' + res.data.itemList[i].customerWorkerId +
@@ -1757,12 +1757,12 @@ export default {
 											'<td><div class="line-1 lookHis showInputBoxTel" tel1="'+(res.data.itemList[i].tel1||"")+'" tel2="'+(res.data.itemList[i].tel2||"")+'" tel3="'+(res.data.itemList[i].tel3||"")+'">'+telAll+// + (res.data.itemList[i].tel || "") +
 											'</div></td></tr>')
 									}else{
-										// if(phoneAll){
-										// 	var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
-										// }
-										// if(telAll){
-										// 	var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
-										// }
+										if(phoneAll){
+											var phoneAll=phoneAll.substring(0, 3) + "****"+phoneAll.substring(8,phoneAll.length)
+										}
+										if(telAll){
+											var telAll=telAll.substring(0, 3) + "****"+telAll.substring(8,telAll.length)
+										}
 										var phoneAll=phoneAll
 										var telAll=telAll
 										$('#add-hos .paibanren .showInputBox').html(phoneAll).attr('phone1',(res.data.itemList[i].phone1||"")).attr('phone2',(res.data.itemList[i].phone2||"")).attr('phone3',(res.data.itemList[i].phone3||""))
