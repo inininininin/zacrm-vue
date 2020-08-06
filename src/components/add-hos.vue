@@ -506,7 +506,7 @@ export default {
             $('.linePhoneList').off("click",'div .modifyThisTel').on('click','div .modifyThisTel',function(){
 				$('#add-hos .addNewTelBox').css('display','block')
 				$('#add-hos .telName').val($(this).parent().parent().parent().children().eq(0).html().substring(0,$(this).parent().parent().parent().children().eq(0).html().length-1)||'')
-				$('#add-hos .telValue').val($(this).parent().parent().parent().children().eq(1).html()||'')
+				$('#add-hos .telValue').val($(this).parent().parent().parent().children().eq(1).attr('telvaluenew')||'')
 				var telNameTitle=$(this).parent().parent().parent().attr('typeId')+'Remark';
 				var telValueTitle=$(this).parent().parent().parent().attr('typeId');
 				$('#add-hos #submit_newTel').attr('typeId',telValueTitle)
@@ -673,6 +673,12 @@ export default {
 				$('#add-hos .phonep1').html('')
 				$('#add-hos .phonep2').html('')
 				$('#add-hos .phonep3').html('')
+				$('#add-hos .phonep1').attr('phonep','')
+				$('#add-hos .phonep2').attr('phonep','')
+				$('#add-hos .phonep3').attr('phonep','')
+				$('#add-hos .phonep1').attr('phonepname','')
+				$('#add-hos .phonep2').attr('phonepname','')
+				$('#add-hos .phonep3').attr('phonepname','')
             })
 
 
@@ -1546,7 +1552,8 @@ export default {
 			// }, 1000)
    //      },
         modifyNewHos() {
-            let thisValue = this
+			let thisValue = this
+			debugger
 				var name = $('#add-hos .hosname').val()
 				var tel = $('#add-hos .hostel').val()
 				var nature = $('#add-hos .hosnature  option:selected').val()
@@ -1693,12 +1700,12 @@ export default {
 							// console.log(thisValue.toRevisitTime)
 							let hostelNum = '';
 							if(res.data.tel){
-								hostelNum=res.data.tel.substring(0, 4) + "***"+res.data.tel.substring(8,res.data.tel.length)
+								// hostelNum=res.data.tel.substring(0, 4) + "***"+res.data.tel.substring(8,res.data.tel.length)
 							}
 							document.title = res.data.name + " - " + document.title
 							$('#add-hos .hosname').val(res.data.name)
 							$('#add-hos .hosIntro').val(res.data.brief)
-							$('#add-hos .hostel').val(hostelNum)
+							$('#add-hos .hostel').val(res.data.tel)
 							$('#add-hos .hostel').attr('hostelNum',res.data.tel)
 							thisValue.telCallName = res.data.name,
 							thisValue.telCallNum = res.data.tel,
