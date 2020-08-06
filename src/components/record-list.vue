@@ -18,7 +18,7 @@
         <el-input v-model="tiaojian.secondTo" placeholder="通话时长To" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
         <el-input v-model="tiaojian.telephoneFrom" placeholder="主叫号码" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
         <el-input v-model="tiaojian.telephoneTo" placeholder="被叫号码" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
-        <el-date-picker v-model="tiaojian.callTimeFrom" type="datetime" placeholder="请选择通话时间from" align="right" @change="elmentDataStartFn">
+        <el-date-picker v-model="tiaojian.callTimeFrom" default-time="00:00:00" type="datetime" placeholder="请选择通话时间from" align="right" @change="elmentDataStartFn">
         </el-date-picker>
         <el-date-picker v-model="tiaojian.callTimeTo"  default-time="23:59:59" type="datetime" placeholder="选择结束通话时间To" align="right" @change="elmentDataEndFn">
         </el-date-picker>
