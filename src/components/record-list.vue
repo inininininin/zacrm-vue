@@ -9,24 +9,20 @@
           <option value="2">31-90s</option>
           <option value="3">90s以上</option>
         </select> -->
-        <el-input v-model="input" placeholder="通话时间长From" style="display: inline-block;width: 150px;"></el-input>
-        <el-input v-model="input" placeholder="通话时间长to" style="display: inline-block;width: 150px;"></el-input>
-        <el-input v-model="input" placeholder="主叫号码" style="display: inline-block;width: 150px;"></el-input>
-        <el-input v-model="input" placeholder="被叫号码" style="display: inline-block;width: 150px;"></el-input>
-        <el-input v-model="input" placeholder="通话时间From" style="display: inline-block;width: 150px;"></el-input>
-        <el-input v-model="input" placeholder="通话时间to" style="display: inline-block;width: 150px;"></el-input>
-        <el-date-picker v-model="dataValueStart" type="datetime" placeholder="选择开始时间" align="right" @change="elmentDataStartFn">
-        
+        <el-input v-model="tiaojian.secondFrom" placeholder="通话时间长From" style="display: inline-block;width: 150px;"></el-input>
+        <el-input v-model="tiaojian.secondTo" placeholder="通话时间长to" style="display: inline-block;width: 150px;"></el-input>
+        <el-input v-model="tiaojian.telephoneFrom" placeholder="主叫号码" style="display: inline-block;width: 150px;"></el-input>
+        <el-input v-model="tiaojian.telephoneTo" placeholder="被叫号码" style="display: inline-block;width: 150px;"></el-input>
+        <el-date-picker v-model="tiaojian.callTimeFrom" type="datetime" placeholder="请选择通话时间from" align="right" @change="elmentDataStartFn">
         </el-date-picker>
-        <el-date-picker v-model="dataValueEnd"  default-time="23:59:59" type="datetime" placeholder="选择结束时间" align="right" @change="elmentDataEndFn">
+        <el-date-picker v-model="tiaojian.callTimeTo"  default-time="23:59:59" type="datetime" placeholder="选择结束通话时间to" align="right" @change="elmentDataEndFn">
         </el-date-picker>
 
-        <select class="lineEve">
+        <!-- <select class="lineEve">
           <option value="" selected>-是否接通-</option>
           <option value="1">接通</option>
           <option value="0">未接通</option>
-          <!-- <option value="4">90s以上</option> -->
-        </select>
+        </select> -->
       </div>
       <p class="numberAll"></p>
       <div class="tableBox" style="display: none;padding-bottom: 50px;">
@@ -65,20 +61,19 @@
         startTime: '',
         endTime: '',
         lineEve:'',
-        // tiaojian:{
-        //   second:'',
-        //   callTime:'',
-          
-        // }
+        tiaojian:{
+          secondFrom:'',
+          secondTo:'',
+          telephoneFrom:'',
+          telephoneTo : '',
+          callTimeFrom : '',
+          callTimeTo : '',
+
+        }
       }
     },
     activated() {
-       this.nature= "",
-       this.dataValueStart= '',
-       this.dataValueEnd= '',
-       this.startTime= '',
-       this.endTime= '',
-       this.lineEve='',
+      Object.assign(this.$data, this.$options.data());
        $('#index .nature').val('')
        $('#index .lineEve').val('')
        // $('#index .nature').val('')
@@ -183,12 +178,13 @@
           var durationTo = ''
         }
         var param = '&' + qs.stringify({
-           recStatus:this.lineEve,
-          startTime:this.startTime,
-          endTime:this.endTime,
-          durationFrom: durationFrom,
-          durationTo: durationTo,
           userId: localStorage.getItem('id') || '',
+          secondFrom : this.tiaojian.secondFrom,
+          secondTo : this.tiaojian.secondTo,
+          telephoneFrom : this.tiaojian.telephoneFrom,
+          telephoneTo : this.tiaojian.telephoneTo,
+          callTimeFrom : this.tiaojian.callTimeFrom,
+          callTimeTo : this.tiaojian.callTimeTo,
         })
         let thisValue = this
         $.ajax({
@@ -263,12 +259,13 @@
           var durationTo = ''
         }
         var param = qs.stringify({
-          recStatus:this.lineEve,
-          startTime:this.startTime,
-          endTime:this.endTime,
-          durationFrom: durationFrom,
-          durationTo: durationTo,
           userId: localStorage.getItem('id') || '',
+          secondFrom : this.tiaojian.secondFrom,
+          secondTo : this.tiaojian.secondTo,
+          telephoneFrom : this.tiaojian.telephoneFrom,
+          telephoneTo : this.tiaojian.telephoneTo,
+          callTimeFrom : this.tiaojian.callTimeFrom,
+          callTimeTo : this.tiaojian.callTimeTo,
         })
         let thisValue = this
         $.ajax({
