@@ -642,7 +642,7 @@ export default {
 		// 				$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 		// 		}
 		// 	})
-			$('#index .tbody').on('click','.shoujiDiv div:first-child img',function(){
+			$('#index .tbody').off('click', '.shoujiDiv div:first-child img').on('click','.shoujiDiv div:first-child img',function(){
 				console.log('s')
 				console.log($(this).parent().parent().parent().attr('linkName'))
 				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
@@ -657,21 +657,21 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			$('#index .tbody').on('click','.shoujiDiv div:last-child img',function(){
+			$('#index .tbody').off('click', '.shoujiDiv div:last-child img').on('click','.shoujiDiv div:last-child img',function(){
 				thisValue.$axios.post('/push-call',qs.stringify({
 					tel:$(this).parent().parent().parent().attr('tel'),
 					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
 				}))
 				.then(res=>{
 					if (res.data.codeMsg) {
-						this.$message(res.data.codeMsg)
+						thisValue.$message(res.data.codeMsg)
 					}
-					if(res.data.data.code != 0){
-						this.$message('操作失败')
+					if(res.data.code == 0){
+						thisValue.$message('已发推送到手机中')
 					}
 				})
 			})
-			$('#index .tbody').on('click','.shoujiDiv1 div:first-child img',function(){
+			$('#index .tbody').off('click', '.shoujiDiv1 div:first-child img').on('click','.shoujiDiv1 div:first-child img',function(){
 				console.log('s')
 				console.log($(this).parent().parent().parent().attr('linkName'))
 				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
@@ -686,17 +686,17 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			$('#index .tbody').on('click','.shoujiDiv1 div:last-child img',function(){
+			$('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
 				thisValue.$axios.post('/push-call',qs.stringify({
 					tel:$(this).parent().parent().parent().attr('tel'),
 					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
 				}))
 				.then(res=>{
 					if (res.data.codeMsg) {
-						this.$message(res.data.codeMsg)
+						thisValue.$message(res.data.codeMsg)
 					}
-					if(res.data.data.code != 0){
-						this.$message('操作失败')
+					if(res.data.code == 0){
+						thisValue.$message('已发推送到手机中')
 					}
 				})
 			})
@@ -752,11 +752,11 @@ export default {
 								for (var i in res.data.itemList) {
 									var tel='',tel1=''
 									if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
-										tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(4, 7) + "***"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
+										tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 4) + "***"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
 									}
-                  if(res.data.itemList[i].tel){
-                  	tel1=res.data.itemList[i].tel.substring(4, 7) + "***"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-                  }
+									if(res.data.itemList[i].tel){
+										tel1=res.data.itemList[i].tel.substring(0, 4) + "***"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+									}
 									// tel=res.data.itemList[i].paiBanCustomerWorkerPhone1 //= res.data.itemList[i].tel
 									let toRevisitTime = '';
 									if(res.data.itemList[i].toRevisitTime){
@@ -764,14 +764,45 @@ export default {
 									}else{
 										toRevisitTime = ''
 									}
-                                    $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId +'><td>'+(parseInt(i)+1+((pn-1)*15))+
-                                    '</td><td class="enterHos"><a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'
-                                    + (res.data.itemList[i].name || "") + '</a></td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + '<div style="display:inline-block;width: 100px;">'+ (tel1 || "") + '</div>' + '<div class="shoujiDiv1"><div><img src="'+zuoji+'" alt=""><span class="telCall">座机</span></div><div><img src="'+shouji+'" alt=""><span class="telCall">手机</span></div></div>' + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-											"") + '</td><td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + '<div style="display:inline-block;width: 100px;">'+(tel || "")+'</div>' + 
-											(tel? '<div class="shoujiDiv"><div><img src="'+zuoji+'" alt=""><span class="telCall">座机</span></div><div><img src="'+shouji+'" alt=""><span class="telCall">手机</span></div></div>':'')+
-											'</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
-											"") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td><td class="xiugaiTimeFn">' +
-											 toRevisitTime + '</td></tr>')
+                                    $('#index .tbody').append(
+										'<tr id=' + res.data.itemList[i].customerId +'>' +
+											'<td>'+(parseInt(i)+1+((pn-1)*15))+'</td>' +
+											'<td class="enterHos">' +
+												'<a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
+											'</td>'+
+											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
+												'<div style="display:inline-block;width: 100px;">'+ (tel1 || "") + '</div>' + 
+												'<div class="shoujiDiv1">'+
+													'<div>'+
+														'<img src="'+zuoji+'" alt="">'+
+														'<span class="telCall">座机</span>'+
+													'</div>'+
+													'<div>'+
+														'<img src="'+shouji+'" alt="">'+
+														'<span class="telCall">手机</span>'+
+													'</div>'+
+												'</div>' + 
+											'</td>'+
+											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
+											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + 
+												'<div style="display:inline-block;width: 100px;">'+(tel || "")+'</div>' + 
+												(tel? 
+													'<div class="shoujiDiv">'+
+														'<div><img src="'+zuoji+'" alt="">'+
+															'<span class="telCall">座机</span>'+
+														'</div>'+
+														'<div>'+
+														'<img src="'+shouji+'" alt="">'+
+															'<span class="telCall">手机</span>'+
+														'</div>'+
+													'</div>':''
+												)+
+											'</td>'+
+											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay || "") + '</td>'+
+											'<td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td>'+
+											'<td class="xiugaiTimeFn">' + toRevisitTime + '</td>'+
+										'</tr>'
+									)
 
                                 }
 							}
