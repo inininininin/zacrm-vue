@@ -81,8 +81,20 @@
 
       <!-- </div> -->
     </div>
-
-
+    <el-dialog title="端口选择" :visible.sync="dialogTableVisible" width='500px' top="20%">
+      <div style="height: 50px;box-sizing: border-box;width: 100%;">
+          <router-link :to="{path:'/index',query:'time: new Date().getTime()'}" replace>
+        <div class="typeDialogClass" @click="dialogTableVisible= false"> 
+            用户端
+        </div>
+          </router-link>
+          <router-link :to="{path:'/leader-index',query:'time: new Date().getTime()'}" replace>
+        <div class="typeDialogClass" @click="dialogTableVisible= false">
+            管理端
+          </div>
+        </router-link>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -95,12 +107,14 @@
         // password:'',
         // password:'',
         // newPassword:''
+        dialogTableVisible:false,
       }
     },
     activated() {
       // setTimeout(()=>{
       //     alert('layer.open '+window.layer.open)
       // },2000)
+      Object.assign(this.$data, this.$options.data());
       let _this = this
       $.ajax({
         url: '/login-refresh',
@@ -109,13 +123,14 @@
         success: function(res) {
           if (res.code == 0) {
             $('#login .password').val('')
-            if (res.data.type == 1 || res.data.type == 2) {
-              _this.$router.replace({
-                path: '/leader-index',
-                query: {
-                  time: new Date().getTime()
-                }
-              })
+            if (res.data.branchIs == 1) {
+              _this.dialogTableVisible = true
+              // _this.$router.replace({
+              //   path: '/leader-index',
+              //   query: {
+              //     time: new Date().getTime()
+              //   }
+              // })
             } else {
               _this.$router.replace({
                 path: '/index',
@@ -221,6 +236,7 @@
 
       },
       submitFn() {
+       
         var _this = this
         var name = $('#login .name').val()
         var password = $('#login .password').val()
@@ -244,13 +260,16 @@
                   success: function(res) {
                     if (res.code == 0) {
                       $('#login .password').val('')
-                      if (res.data.type == 1 || res.data.type == 2) {
-                        _this.$router.replace({
-                          path: '/leader-index',
-                          query: {
-                            time: new Date().getTime()
-                          }
-                        })
+                      
+                        console.log(res.data.branchIs)
+                      if (res.data.branchIs) {
+                        _this.dialogTableVisible = true
+                        // _this.$router.replace({
+                        //   path: '/leader-index',
+                        //   query: {
+                        //     time: new Date().getTime()
+                        //   }
+                        // })
                       } else {
                         _this.$router.replace({
                           path: '/index',
@@ -407,5 +426,31 @@
   .registernow {
     color: #1890ff;
     cursor: pointer;
+  }
+  >>>.el-dialog__header{
+    text-align: center
+  }
+  >>>.el-dialog__title{
+    font-weight: 500;
+    font-size: 26px
+  }
+  >>>.el-dialog__body{
+    padding: 0px;
+  }
+  .typeDialogClass{
+    float:left;
+    width:50%;
+    height:50px;
+    line-height:50px;
+    text-align:center;
+    cursor: pointer;
+    background:linear-gradient( #e4e3e3 50%,white 50%);
+    background-size: 100% 200%;
+    background-position: 0 100%;
+  }
+  .typeDialogClass:hover{
+    background-position: 0 0%;
+    color:#000;
+    transition: background .3s ease;
   }
 </style>

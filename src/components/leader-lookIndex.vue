@@ -858,11 +858,13 @@
       },
       lookrecordlist(){
          // localStorage.setItem('id', id)
-         // localStorage.setItem('nickname', name)
+        //  localStorage.setItem('nickname', name)
+        console.log(localStorage.getItem('nickname'))
          this.$router.push({
            path: '/record-list',
            query: {
              id: localStorage.getItem('id'),
+             nickname: localStorage.getItem('nickname'),
              time: new Date().getTime()
            }
          });
