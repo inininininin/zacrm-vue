@@ -377,7 +377,7 @@ export default {
 			$('.phoneInput1').val('')
 			$('.phoneInput2').val('')
 			$('.phoneInput3').val('')
-
+			$('#add-hos .hostel').attr('hostelNum','')
 			$('#add-hos .addphoen').css('display', 'none')
 			$('#add-hos .addphoeShow').css('display', 'none')
 			$('#add-hos .addphoeShow .phonep1').html('')

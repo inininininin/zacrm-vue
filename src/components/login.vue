@@ -109,7 +109,7 @@
         success: function(res) {
           if (res.code == 0) {
             $('#login .password').val('')
-            if (res.data.type == 1 || res.data.type == 2) {
+            if (res.data.branchIs == 1) {
               _this.$router.replace({
                 path: '/leader-index',
                 query: {
@@ -244,7 +244,7 @@
                   success: function(res) {
                     if (res.code == 0) {
                       $('#login .password').val('')
-                      if (res.data.type == 1 || res.data.type == 2) {
+                      if (res.data.branchIs) {
                         _this.$router.replace({
                           path: '/leader-index',
                           query: {
