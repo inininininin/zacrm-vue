@@ -1331,7 +1331,7 @@ export default {
 						// }
 						let tel1Attr =_this_.attr('tel1')? _this_.attr('tel1').substring(0, 4) + "***"+_this_.attr('tel1').substring(8,_this_.attr('tel1').length):'';
 						let tel2Attr =_this_.attr('tel2')? _this_.attr('tel2').substring(0, 4) + "***"+_this_.attr('tel2').substring(8,_this_.attr('tel2').length):'';
-						let tel3Attr =_this_.attr('tel3')? _this_.attr('tel2').substring(0, 4) + "***"+_this_.attr('tel2').substring(8,_this_.attr('tel2').length):'';
+						let tel3Attr =_this_.attr('tel3')? _this_.attr('tel3').substring(0, 4) + "***"+_this_.attr('tel3').substring(8,_this_.attr('tel3').length):'';
 						$('#add-hos .phonep1').attr('phonep',_this_.attr('tel1'))
 						$('#add-hos .phonep2').attr('phonep',_this_.attr('tel2'))
 						$('#add-hos .phonep3').attr('phonep',_this_.attr('tel3'))
