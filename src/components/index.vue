@@ -771,7 +771,7 @@ export default {
 												'<a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
 											'</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
-												'<div style="display:inline-block;width: 100px;">'+ (tel1 || "") + '</div>' + 
+												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
 												'<div class="shoujiDiv1">'+
 													'<div>'+
 														'<img src="'+zuoji+'" alt="">'+
@@ -785,7 +785,7 @@ export default {
 											'</td>'+
 											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + 
-												'<div style="display:inline-block;width: 100px;">'+(tel || "")+'</div>' + 
+												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].paiBanCustomerWorkerPhone1+'">'+(tel || "")+'</div>' + 
 												(tel? 
 													'<div class="shoujiDiv">'+
 														'<div><img src="'+zuoji+'" alt="">'+
