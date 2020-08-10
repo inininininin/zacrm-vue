@@ -478,20 +478,20 @@ export default {
 				$('#add-hos .addNewTelBox').css('display','block')
             })
             $('#add-hos #submit_newTel').unbind("click").click(function(){
-				var telName=$('#add-hos .telName').val()
-				var telValue=$('#add-hos .telValue').val()
+				let telName=$('#add-hos .telName').val()
+				let telValue=$('#add-hos .telValue').val()
 				if($(this).attr('typeId')==''){
-					var numberSec=$('#add-hos .linePhoneList').children().length;
+					let numberSec=$('#add-hos .linePhoneList').children().length;
 					if(numberSec>=9){
 						layer.msg('当前最多新增9个号码！如有更多需求！请联系软件部')
 						return
 					}else{
-						var telNameTitle='tel'+(numberSec+1)+'Remark';
-						var telValueTitle='tel'+(numberSec+1);
+						let telNameTitle='tel'+(numberSec+1)+'Remark';
+						let telValueTitle='tel'+(numberSec+1);
+						console.log("telNameTitle:"+telNameTitle,',telName:'+telName+',telValueTitle:'+telValueTitle,"+telValue:"+telValue+",0"+0)
 						thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,0)
 						thisValue.removeTel()
 					}
-
 				}else{
 					// if($(this).attr('typeId')&&$(this).attr('typeId').split('Remark')){
 					// 	var telNameTitle=$(this).attr('typeId');
@@ -500,11 +500,12 @@ export default {
 					// 	var telNameTitle=$(this).attr('typeId')+'Remark';
 					// 	var telValueTitle=$(this).attr('typeId');
 					// }
-					var telNameTitle=$(this).attr('typeId')+'Remark';
-					var telValueTitle=$(this).attr('typeId');
-					var type=telValueTitle.substring(telValueTitle.length-1,telValueTitle.length)
-					console.log(telNameTitle,telValueTitle,type)
+					let telNameTitle=$(this).attr('typeId')+'Remark';
+					let telValueTitle=$(this).attr('typeId');
+					let type=telValueTitle.substring(telValueTitle.length-1,telValueTitle.length)
+					// console.log(telNameTitle,telValueTitle,type)
 					$('#submit_newTel').attr('typeId','')
+					console.log("telNameTitle:"+telNameTitle,',telName:'+telName+',telValueTitle:'+telValueTitle,"+telValue:"+telValue+",type"+type)
 					thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type)
 					thisValue.removeTel()
 				}
