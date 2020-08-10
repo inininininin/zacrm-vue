@@ -23,7 +23,7 @@
 					<input class="hostel" placeholder="" type='text' onkeyup="value=value.replace(/[^\d\-\d]/g,'')"  maxlength=20  style="margin-right:2px" />
 					<!-- <i class="linkHos" style="margin-right: 15px;margin-left: -10px;display: none;cursor: pointer;" class="layui-icon">&#xe678;</i> -->
 					<!-- <img src="../assets/img/connent.png" class="linkHos" style="margin-right: 15px;margin-left: -20px;display: none;cursor: pointer;width: 20px;height: 20px;"> -->
-					<div class="shoujiDiv" style="margin-right: 8px;" v-if="telState">
+					<div class="shoujiDiv" style="margin-right: 8px;" v-if="telState1">
 						<div>
 							<img src="../assets/img/zuoji.svg" alt="">
 							<span class="telCall">座机</span>
@@ -254,7 +254,8 @@ export default {
 	name: 'index',
 	data () {
 		return {
-			telState:false,
+			telState1:false,
+			telState:true,
             query:'',
             provinceList : undefined,
             cityList : undefined,
@@ -356,6 +357,11 @@ export default {
 			// $(".town").find("option").remove();
 
 			$('#add-hos .trackDetail').html('')
+			$('#add-hos .phonep1').removeAttr('title','phonep','phonepname')
+			$('#add-hos .phonep2').removeAttr('title','phonep','phonepname')
+			$('#add-hos .phonep3').removeAttr('title','phonep','phonepname')
+			
+
 
 
 
@@ -373,7 +379,7 @@ export default {
 			$('#add-hos .phonep1').html('')
 			$('#add-hos .phonep2').html('')
 			$('#add-hos .phonep3').html('')
-
+			$('#add-hos .addNewTelBox').css('display','none')
 			$('.phoneInput1').val('')
 			$('.phoneInput2').val('')
 			$('.phoneInput3').val('')
@@ -472,20 +478,25 @@ export default {
 				$('#add-hos .addNewTelBox').css('display','block')
             })
             $('#add-hos #submit_newTel').unbind("click").click(function(){
-				var telName=$('#add-hos .telName').val()
-				var telValue=$('#add-hos .telValue').val()
+				let telName=$('#add-hos .telName').val()
+				let telValue=$('#add-hos .telValue').val()
+				
 				if($(this).attr('typeId')==''){
-					var numberSec=$('#add-hos .linePhoneList').children().length;
+					let numberSec=$('#add-hos .linePhoneList').children().length;
 					if(numberSec>=9){
-						layer.msg('当前最多新增9个号码！如有更多需求！请联系软件部')
+						layer.msg('已超出上限')
 						return
 					}else{
-						var telNameTitle='tel'+(numberSec+1)+'Remark';
-						var telValueTitle='tel'+(numberSec+1);
-						thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,0)
-						thisValue.removeTel()
+						let telNameTitle='tel'+(numberSec+1)+'Remark';
+						let telValueTitle='tel'+(numberSec+1);
+						console.log("telNameTitle:"+telNameTitle,',telName:'+telName+',telValueTitle:'+telValueTitle,"+telValue:"+telValue+",0"+0)
+						if(!telName || !telValue){
+							layer.msg('请填写完整信息')
+						}else{
+							thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,0)
+							thisValue.removeTel()
+						}
 					}
-
 				}else{
 					// if($(this).attr('typeId')&&$(this).attr('typeId').split('Remark')){
 					// 	var telNameTitle=$(this).attr('typeId');
@@ -494,14 +505,21 @@ export default {
 					// 	var telNameTitle=$(this).attr('typeId')+'Remark';
 					// 	var telValueTitle=$(this).attr('typeId');
 					// }
-					var telNameTitle=$(this).attr('typeId')+'Remark';
-					var telValueTitle=$(this).attr('typeId');
-					var type=telValueTitle.substring(telValueTitle.length-1,telValueTitle.length)
-					console.log(telNameTitle,telValueTitle,type)
+					let telNameTitle=$(this).attr('typeId')+'Remark';
+					let telValueTitle=$(this).attr('typeId');
+					let type=telValueTitle.substring(telValueTitle.length-1,telValueTitle.length)
+					// console.log(telNameTitle,telValueTitle,type)
 					$('#submit_newTel').attr('typeId','')
-					thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type)
-					thisValue.removeTel()
+					console.log("telNameTitle:"+telNameTitle,',telName:'+telName+',telValueTitle:'+telValueTitle,"+telValue:"+telValue+",type"+type)
+					if(!telName || !telValue){
+						layer.msg('请填写完整信息')
+					}else{
+						thisValue.modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type)
+						thisValue.removeTel()
+					}
+					
 				}
+				
             })
             $('.linePhoneList').off("click",'div .modifyThisTel').on('click','div .modifyThisTel',function(){
 				$('#add-hos .addNewTelBox').css('display','block')
@@ -526,18 +544,18 @@ export default {
             // })
             if ($('#add-hos .hostel').val() == '' || $('.hostel').val() == null || $('.hostel').val() == undefined) {
 				// $('#add-hos .linkHos').css('display', 'none')
-				thisValue.telState = false;
+				thisValue.telState1 = false;
 			} else {
 				$('#add-hos .linkHos').css('display', 'inline-block')
-				thisValue.telState = true;
+				thisValue.telState1 = true;
             }
             $('.hostel').change(function() {
 				if ($(this).val() != '') {
 					$('#add-hos .linkHos').css('display', 'inline-block')
-					thisValue.telState = true;
+					thisValue.telState1 = true;
 				} else {
 					$('#add-hos .linkHos').css('display', 'none')
-					thisValue.telState = false;
+					thisValue.telState1 = false;
 				}
             })
             // $('#add-hos .linkHos').unbind("click").click(function() {
@@ -564,7 +582,9 @@ export default {
 				$('#add-hos .phonep1').attr('phonep',$('#add-hos .phoneInput1').val())
 				$('#add-hos .phonep2').attr('phonep',$('#add-hos .phoneInput2').val())
 				$('#add-hos .phonep3').attr('phonep',$('#add-hos .phoneInput3').val())
-
+				$('#add-hos .phonep1').attr('title',$('#add-hos .phoneInput1').val())
+				$('#add-hos .phonep2').attr('title',$('#add-hos .phoneInput2').val())
+				$('#add-hos .phonep3').attr('title',$('#add-hos .phoneInput3').val())
 				let phoneInput1val =$('#add-hos .phoneInput1').val()?  $('#add-hos .phoneInput1').val().substring(0, 4) + "***"+$('#add-hos .phoneInput1').val().substring(8,$('#add-hos .phoneInput1').val().length):''
 				let phoneInput2val =$('#add-hos .phoneInput2').val()?  $('#add-hos .phoneInput2').val().substring(0, 4) + "***"+$('#add-hos .phoneInput2').val().substring(8,$('#add-hos .phoneInput2').val().length):''
 				let phoneInput3val =$('#add-hos .phoneInput3').val()?  $('#add-hos .phoneInput3').val().substring(0, 4) + "***"+$('#add-hos .phoneInput3').val().substring(8,$('#add-hos .phoneInput3').val().length):''
@@ -676,6 +696,9 @@ export default {
 				$('#add-hos .phonep1').attr('phonep','')
 				$('#add-hos .phonep2').attr('phonep','')
 				$('#add-hos .phonep3').attr('phonep','')
+				$('#add-hos .phonep1').attr('title','')
+				$('#add-hos .phonep2').attr('title','')
+				$('#add-hos .phonep3').attr('title','')
 				$('#add-hos .phonep1').attr('phonepname','')
 				$('#add-hos .phonep2').attr('phonepname','')
 				$('#add-hos .phonep3').attr('phonepname','')
@@ -1258,6 +1281,9 @@ export default {
 						$('#add-hos .phonep1').attr('phonep',_this_.attr('phone1'))
 						$('#add-hos .phonep2').attr('phonep',_this_.attr('phone2'))
 						$('#add-hos .phonep3').attr('phonep',_this_.attr('phone3'))
+						$('#add-hos .phonep1').attr('title',_this_.attr('phone1'))
+						$('#add-hos .phonep2').attr('title',_this_.attr('phone2'))
+						$('#add-hos .phonep3').attr('title',_this_.attr('phone3'))
 						$('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
 						$('#add-hos .phonep2').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
 						$('#add-hos .phonep3').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
@@ -1281,6 +1307,7 @@ export default {
 					$('#add-hos table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
 					$('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					$('#add-hos .phonep1').attr('title',_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3'))
 					$('#add-hos .phonep1').attr('phonep',_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3'))
 					$('#add-hos .phonep1').html(_this_attrVal||_this_attrVal2||_this_attrVal3||'')
 				} else {
@@ -1293,6 +1320,10 @@ export default {
 					// 	var num = parseInt(i) + 1
 					// 	$('.phonep' + num).html(phones[i])
 					// }
+
+					$('#add-hos .phonep1').attr('title',_this_.attr('phone1'))
+					$('#add-hos .phonep2').attr('title',_this_.attr('phone2'))
+					$('#add-hos .phonep3').attr('title',_this_.attr('phone3'))
 					$('#add-hos .phonep1').attr('phonep',_this_.attr('phone1'))
 					$('#add-hos .phonep2').attr('phonep',_this_.attr('phone2'))
 					$('#add-hos .phonep3').attr('phonep',_this_.attr('phone3'))
@@ -1332,6 +1363,9 @@ export default {
 						let tel1Attr =_this_.attr('tel1')? _this_.attr('tel1').substring(0, 4) + "***"+_this_.attr('tel1').substring(8,_this_.attr('tel1').length):'';
 						let tel2Attr =_this_.attr('tel2')? _this_.attr('tel2').substring(0, 4) + "***"+_this_.attr('tel2').substring(8,_this_.attr('tel2').length):'';
 						let tel3Attr =_this_.attr('tel3')? _this_.attr('tel3').substring(0, 4) + "***"+_this_.attr('tel3').substring(8,_this_.attr('tel3').length):'';
+						$('#add-hos .phonep1').attr('title',_this_.attr('tel1'))
+						$('#add-hos .phonep2').attr('title',_this_.attr('tel2'))
+						$('#add-hos .phonep3').attr('title',_this_.attr('tel3'))
 						$('#add-hos .phonep1').attr('phonep',_this_.attr('tel1'))
 						$('#add-hos .phonep2').attr('phonep',_this_.attr('tel2'))
 						$('#add-hos .phonep3').attr('phonep',_this_.attr('tel3'))
@@ -1355,6 +1389,7 @@ export default {
 					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
 					$('#add-hos table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
+					$('#add-hos .phonep1').attr('title',_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3'))
 					$('#add-hos .phonep1').attr('phonep',_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3'))
 					$('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
 					$('#add-hos .phonep1').html(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
@@ -1368,6 +1403,9 @@ export default {
 					// 	var num = parseInt(i) + 1
 					// 	$('#add-hos .phonep' + num).html(phones[i])
 					// }
+					$('#add-hos .phonep1').attr('title',_this_.attr('tel1'))
+					$('#add-hos .phonep2').attr('title',_this_.attr('tel2'))
+					$('#add-hos .phonep3').attr('title',_this_.attr('tel3'))
 					$('#add-hos .phonep1').attr('phonep',_this_.attr('tel1'))
 					$('#add-hos .phonep2').attr('phonep',_this_.attr('tel2'))
 					$('#add-hos .phonep3').attr('phonep',_this_.attr('tel3'))
@@ -1472,7 +1510,12 @@ export default {
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
-							layer.msg('操作成功')
+							if(!telName && !telValue){
+								
+							}else{
+								layer.msg('操作成功')
+							}
+							
 							let telValueNew = ''
 							if(telValue){
 								telValueNew = telValue.substring(0, 4) + "***"+telValue.substring(8,telValue.length)
@@ -1480,51 +1523,52 @@ export default {
 								telValueNew = telValue
 							}
 							if(type==0){
-								$('.linePhoneList').append('<div typeId='+telValueTitle+'>'+
-								'<span>'+telName+':</span>'+
-								'<span telValueNew="'+telValue+''+'">'+telValueNew+'</span>'+
-								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
-									'<div>'+
-										'<img src="'+zuoji+'" alt="" onClick="telFn()">'+
-										'<span class="telCall">座机</span>'+
-									'</div>'+
-									'<div>'+
-										'<img src="'+shouji+'" alt="" onClick="telFn()">'+
-										'<span class="telCall" >手机</span>'+
-									'</div>'+
-									'<div>'+
-										'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
-									'</div>'+
-								'</div>'+
-								'</div>')
+								if(!telValueNew && !telName){
+									
+								}else{
+									$('.linePhoneList').append('<div typeId='+telValueTitle+'>'+
+										'<span>'+telName+':</span>'+
+										'<span telValueNew="'+telValue+''+'" Title="'+telValue+'">'+telValueNew+'</span>'+
+										'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
+											'<div>'+
+												'<img src="'+zuoji+'" alt="" onClick="telFn()">'+
+												'<span class="telCall">座机</span>'+
+											'</div>'+
+											'<div>'+
+												'<img src="'+shouji+'" alt="" onClick="telFn()">'+
+												'<span class="telCall" >手机</span>'+
+											'</div>'+
+											'<div>'+
+												'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">'+
+											'</div>'+
+										'</div>'+
+									'</div>')
+								}
+								
 							}else{
-								$('.linePhoneList').children().eq(type-1).html('<span>'+telName+':</span>'+
-								'<span telValueNew="'+telValue+''+'">'+telValueNew+'</span>'+
-								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
-									'<div>'+
-										'<img src="'+zuoji+'" alt="" onClick="telFn()">'+
-										'<span class="telCall">座机</span>'+
-									'</div>'+
-									'<div>'+
-										'<img src="'+shouji+'" alt="" onClick="telFn()">'+
-										'<span class="telCall">手机</span>'+
-									'</div>'+
-									'<div>'+
-										'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">').attr('typeId',telValueTitle)+
-									'</div>'+
-								'</div>'
+								if(!telValueNew && !telName){
+									// $('.linePhoneList').children().eq(type-1).remove()
+								}else{
+									$('.linePhoneList').children().eq(type-1).html('<span>'+telName+':</span>'+
+										'<span telValueNew="'+telValue+''+'" Title="'+telValue+'">'+telValueNew+'</span>'+
+										'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
+											'<div>'+
+												'<img src="'+zuoji+'" alt="" onClick="telFn()">'+
+												'<span class="telCall">座机</span>'+
+											'</div>'+
+											'<div>'+
+												'<img src="'+shouji+'" alt="" onClick="telFn()">'+
+												'<span class="telCall">手机</span>'+
+											'</div>'+
+											'<div>'+
+												'<img class="modifyThisTel" src="'+require('../assets/img/edit.svg')+'" alt="">').attr('typeId',telValueTitle)+
+											'</div>'+
+										'</div>'
+								}
 								
 
-								// html('<div typeId='+telNameTitle+'>'+
-								// '<span>'+telName+':</span>'+
-								// '<span>'+telValue+'</span>'+
-								// '<img class="phoneThisTel"  src="./image/connent.png" alt="">'+
-								// '<img class="modifyThisTel" src="./image/edit.svg" alt="">'+
-								// // '<img src="./image/delete.svg" alt="">'+
-								// '</div>')
 							}
 
-							// window.history.refresh()
 						}
 					}
 				})
@@ -1712,7 +1756,7 @@ export default {
 							$('#add-hos .hosnature').val(res.data.nature)
 							if (res.data.tel != '' && res.data.tel != null && res.data.tel != undefined) {
 								// $('#add-hos .linkHos').css('display', 'inline-block')
-								thisValue.telState = true;
+								thisValue.telState1 = true;
 							}
 							thisValue.paiBanCustomerWorkerId = res.data.paiBanCustomerWorkerId
 							$('#add-hos .paibanren').attr('relId', res.data.paiBanCustomerWorkerId || '')
@@ -1733,10 +1777,14 @@ export default {
 								$('#add-hos .paibanren').children().eq(4).children().html(res.data.paiBanCustomerWorkerTel)
 							}
 							// let connent = require('../assets/img/connent.png')
-							if(res.data.tel1){
+							if(res.data.tel1 || res.data.tel1Remark){
+								let tel = "";
+								if(res.data.tel1){
+									tel = res.data.tel1.substring(0, 4) + "***"+res.data.tel1.substring(8,res.data.tel1.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel1">'+
-								'<span>'+res.data.tel1Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel1+''+'">'+res.data.tel1.substring(0, 4) + "***"+res.data.tel1.substring(8,res.data.tel1.length)+'</span>'+
+								'<span>'+(res.data.tel1Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel1+''+'" Title="'+res.data.tel1+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1752,10 +1800,14 @@ export default {
 								'</div>'+
 								'</div>')
 							}
-							if(res.data.tel2){
+							if(res.data.tel2 || res.data.tel2Remark){
+								let tel = "";
+								if(res.data.tel2){
+									tel = res.data.tel2.substring(0, 4) + "***"+res.data.tel2.substring(8,res.data.tel2.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel2">'+
-								'<span>'+res.data.tel2Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel2+''+'">'+res.data.tel2.substring(0, 4) + "***"+res.data.tel2.substring(8,res.data.tel2.length)+'</span>'+
+								'<span>'+(res.data.tel2Remark || "")+':</span>'+
+								'<span telValueNew="'+res.data.tel2+''+'" Title="'+res.data.tel2+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1771,10 +1823,14 @@ export default {
 								'</div>'+
 								'</div>')
 							}
-							if(res.data.tel3){
+							if(res.data.tel3 || res.data.tel3Remark){
+								let tel = "";
+								if(res.data.tel3){
+									tel = res.data.tel3.substring(0, 4) + "***"+res.data.tel3.substring(8,res.data.tel3.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel3">'+
-								'<span>'+res.data.tel3Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel3+''+'">'+res.data.tel3.substring(0, 4) + "***"+res.data.tel3.substring(8,res.data.tel3.length)+'</span>'+
+								'<span>'+(res.data.tel3Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel3+''+'" Title="'+res.data.tel3+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1790,10 +1846,14 @@ export default {
 								'</div>'+
 								'</div>')
 							}
-							if(res.data.tel4){
+							if(res.data.tel4 || res.data.tel4Remark){
+								let tel = "";
+								if(res.data.tel4){
+									tel = res.data.tel4.substring(0, 4) + "***"+res.data.tel4.substring(8,res.data.tel4.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel4">'+
-								'<span>'+res.data.tel4Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel4+''+'">'+res.data.tel4.substring(0, 4) + "***"+res.data.tel4.substring(8,res.data.tel4.length)+'</span>'+
+								'<span>'+(res.data.tel4Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel4+''+'" Title="'+res.data.tel4+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1810,10 +1870,14 @@ export default {
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
-							if(res.data.tel5){
+							if(res.data.tel5  || res.data.tel5Remark){
+								let tel = "";
+								if(res.data.tel5){
+									tel = res.data.tel5.substring(0, 4) + "***"+res.data.tel5.substring(8,res.data.tel5.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel5">'+
-								'<span>'+res.data.tel5Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel5+''+'">'+res.data.tel5.substring(0, 4) + "***"+res.data.tel5.substring(8,res.data.tel5.length)+'</span>'+
+								'<span>'+(res.data.tel5Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel5+''+'" Title="'+res.data.tel5+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1830,10 +1894,15 @@ export default {
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
-							if(res.data.tel6){
+							if(res.data.tel6 || res.data.tel6Remark){
+								let tel = ""
+								if(res.data.tel6){
+									tel = res.data.tel6.substring(0, 4) + "***"+res.data.tel6.substring(8,res.data.tel6.length)
+								}
+
 								$('#add-hos .linePhoneList').append('<div typeId="tel6">'+
-								'<span>'+res.data.tel6Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel6+''+'">'+res.data.tel6.substring(0, 4) + "***"+res.data.tel6.substring(8,res.data.tel6.length)+'</span>'+
+								'<span>'+(res.data.tel6Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel6+''+'" Title="'+res.data.tel6+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1850,10 +1919,14 @@ export default {
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
-							if(res.data.tel7){
+							if(res.data.tel7 || res.data.tel7Remark){
+								let tel = ""
+								if(res.data.tel7){
+									tel = res.data.tel7.substring(0, 4) + "***"+res.data.tel7.substring(8,res.data.tel7.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel7">'+
-								'<span>'+res.data.tel7Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel7+''+'">'+res.data.tel7.substring(0, 4) + "***"+res.data.tel7.substring(8,res.data.tel7.length)+'</span>'+
+								'<span>'+(res.data.tel7Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel7+''+'" Title="'+res.data.tel7+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1870,10 +1943,14 @@ export default {
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
-							if(res.data.tel8){
+							if(res.data.tel8 || res.data.tel8Remark){
+								let tel = "";
+								if(res.data.tel8){
+									tel = res.data.tel8.substring(0, 4) + "***"+res.data.tel8.substring(8,res.data.tel8.length);
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel8">'+
-								'<span>'+res.data.tel8Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel8+''+'">'+res.data.tel8.substring(0, 4) + "***"+res.data.tel8.substring(8,res.data.tel8.length)+'</span>'+
+								'<span>'+(res.data.tel8Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel8+''+'" Title="'+res.data.tel8+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
@@ -1890,10 +1967,14 @@ export default {
 								// '<img src="./image/delete.svg" alt="">'+
 								'</div>')
 							}
-							if(res.data.tel9){
+							if(res.data.tel9 || res.data.tel9Remark){
+								let tel = "";
+								if(res.data.tel9){
+									tel = res.data.tel9.substring(0, 4) + "***"+res.data.tel9.substring(8,res.data.tel9.length)
+								}
 								$('#add-hos .linePhoneList').append('<div typeId="tel9">'+
-								'<span>'+res.data.tel9Remark+':</span>'+
-								'<span telValueNew="'+res.data.tel9+''+'">'+res.data.tel9.substring(0, 4) + "***"+res.data.tel9.substring(8,res.data.tel9.length)+'</span>'+
+								'<span>'+(res.data.tel9Remark||"")+':</span>'+
+								'<span telValueNew="'+res.data.tel9+''+'" Title="'+res.data.tel9+'">'+tel+'</span>'+
 								'<div class="shoujiDiv1" id="callId1" style="margin-right: 8px;" v-if="telState">'+
 									'<div>'+
 										'<img src="'+zuoji+'" />'+
