@@ -137,6 +137,7 @@
     activated () {
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
+        this.options = area;
       }
     },
     mounted () {
