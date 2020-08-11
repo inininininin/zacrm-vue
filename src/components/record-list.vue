@@ -1,26 +1,33 @@
 <template>
   <div id='recore-list'>
     <div id="index">
-      <div class="selectOption" style="width: 100%;height: auto;">
-        <span style="margin-left: 20px;">筛选条件：</span>
-        <select class="nature">
+      <div style="width: 100%;height: auto;padding: 0px 20px;" v-if="$route.query.nickname">
+        <h1 style="font-size: 24px;font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400; color: rgba(0, 0, 0, 0.85); line-height: 60px;">昵称：{{$route.query.nickname}}</h1>
+      </div>
+      <div class="selectOption" style="width: 100%;height: auto;padding: 0px 20px;">
+        <span>筛选条件：</span>
+        <!-- <select class="nature">
           <option value="" selected>-通话时长-</option>
           <option value="1">0-30s</option>
           <option value="2">31-90s</option>
           <option value="3">90s以上</option>
-          <!-- <option value="4">90s以上</option> -->
-        </select>
-        <el-date-picker v-model="dataValueStart" type="datetime" placeholder="选择开始时间" align="right" @change="elmentDataStartFn">
+        </select> -->
+         <el-input v-model="tiaojian.kw" placeholder="关键字" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
+        <el-input v-model="tiaojian.secondFrom" placeholder="通话时长From" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
+        <el-input v-model="tiaojian.secondTo" placeholder="通话时长To" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
+        <el-input v-model="tiaojian.telephoneFrom" placeholder="主叫号码" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
+        <el-input v-model="tiaojian.telephoneTo" placeholder="被叫号码" style="display: inline-block;width: 150px;" @change="screeningFn()"></el-input>
+        <el-date-picker v-model="tiaojian.callTimeFrom" default-time="00:00:00" type="datetime" placeholder="请选择通话时间from" align="right" @change="elmentDataStartFn">
         </el-date-picker>
-        <el-date-picker v-model="dataValueEnd"  default-time="23:59:59" type="datetime" placeholder="选择结束时间" align="right" @change="elmentDataEndFn">
+        <el-date-picker v-model="tiaojian.callTimeTo"  default-time="23:59:59" type="datetime" placeholder="选择结束通话时间To" align="right" @change="elmentDataEndFn">
         </el-date-picker>
 
-        <select class="lineEve">
+        <!-- <select class="lineEve">
           <option value="" selected>-是否接通-</option>
           <option value="1">接通</option>
           <option value="0">未接通</option>
-          <!-- <option value="4">90s以上</option> -->
-        </select>
+        </select> -->
       </div>
       <p class="numberAll"></p>
       <div class="tableBox" style="display: none;padding-bottom: 50px;">
@@ -29,12 +36,10 @@
             <tr>
               <th>序号</th>
               <th>所属人姓名</th>
-              <th>电话号码</th>
-              <th>开始时间</th>
-              <th>结束时间</th>
-              <th>存取时间</th>
+              <th>主叫号码</th>
+              <th>被叫号码</th>
               <th>通话时间</th>
-              <th>是否接通</th>
+              <th>通话时长</th>
               <th>录音地址</th>
             </tr>
           </thead>
@@ -59,15 +64,20 @@
         startTime: '',
         endTime: '',
         lineEve:'',
+        tiaojian:{
+          secondFrom:'',
+          secondTo:'',
+          telephoneFrom:'',
+          telephoneTo : '',
+          callTimeFrom : '',
+          callTimeTo : '',
+          kw:'',
+
+        }
       }
     },
     activated() {
-       this.nature= "",
-       this.dataValueStart= '',
-       this.dataValueEnd= '',
-       this.startTime= '',
-       this.endTime= '',
-       this.lineEve='',
+      Object.assign(this.$data, this.$options.data());
        $('#index .nature').val('')
        $('#index .lineEve').val('')
        // $('#index .nature').val('')
@@ -77,8 +87,23 @@
       let thisValue = this
       $('#index .nature').change(function() {
         thisValue.nature = $(this).val()
+        thisValue.lastPageNo()
+        $('#index #box').paging({
+          initPageNo: 1, // 初始页码
+          totalPages: thisValue.totalNum, //总页数
+          slideSpeed: 600, // 缓动速度。单位毫秒
+          jump: true, //是否支持跳转
+          callback: function(page) { // 回调函数
+            // memberList1(1,page);
+            // var nature = $('.nature').val()
+            thisValue.pn = page
+            thisValue.lastPage(page)
+          }
+        })
+      }),
+      $('#index .lineEve').change(function() {
+        thisValue.lineEve = $(this).val()
         thisValue.lastPageNo(thisValue.nature)
-        // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
         $('#index #box').paging({
           initPageNo: 1, // 初始页码
           totalPages: thisValue.totalNum, //总页数
@@ -87,46 +112,31 @@
           jump: true, //是否支持跳转
           callback: function(page) { // 回调函数
             // memberList1(1,page);
-            // var nature = $('.nature').val()
+
             thisValue.pn = page
-            thisValue.lastPage(page, thisValue.nature)
+            thisValue.lastPage(page)
           }
         })
-      }),
-      $('#index .lineEve').change(function() {
-        // var nature = $('.nature').val()
-      thisValue.lineEve = $(this).val()
-      thisValue.lastPageNo(thisValue.nature)
-      // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-      $('#index #box').paging({
-      	initPageNo: 1, // 初始页码
-      	totalPages: thisValue.totalNum, //总页数
-      	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-      	slideSpeed: 600, // 缓动速度。单位毫秒
-      	jump: true, //是否支持跳转
-      	callback: function(page) { // 回调函数
-      		// memberList1(1,page);
-
-      		thisValue.pn = page
-      		thisValue.lastPage(page, thisValue.nature)
-      	}
       })
-          })
     },
 
     methods: {
+      screeningFn(){
+        console.log('s')
+         this.lastPageNo()
+      },
       elmentDataStartFn(_value) {
-        console.log(_value,this.endTime, this.moment(_value).valueOf())
-        if (!this.endTime||this.moment(_value).valueOf() < this.endTime) {
+        // console.log(_value,this.tiaojian.callTimeTo, this.moment(_value).valueOf())
+        if (!this.tiaojian.callTimeTo||this.moment(_value).valueOf() < this.tiaojian.callTimeTo) {
           if (_value) {
-            this.startTime = this.moment(_value).valueOf();
+            this.tiaojian.callTimeFrom = this.moment(_value).valueOf();
             // this.toRevisitTimeTo = this.toRevisitTimeFrom+(1*24*60*60-1)*1000;
           } else {
-            this.startTime = '';
+            this.tiaojian.callTimeFrom = '';
             // this.toRevisitTimeTo = '';
           }
-          console.log(2,this.startTime)
-          this.lastPageNo(this.nature)
+          // console.log(2,this.tiaojian.callTimeFrom)
+          this.lastPageNo()
         } else {
           this.$message({
             type: 'info',
@@ -135,17 +145,17 @@
         }
       },
       elmentDataEndFn(_value) {
-        console.log(_value,this.startTime, this.moment(_value).valueOf())
-        if (!this.startTime || this.moment(_value).valueOf() > this.startTime) {
+        // console.log(_value,this.tiaojian.callTimeFrom, this.moment(_value).valueOf())
+        if (!this.tiaojian.callTimeFrom || this.moment(_value).valueOf() > this.tiaojian.callTimeFrom) {
           console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
           if (_value) {
-            this.endTime = this.moment(_value).valueOf();
+            this.tiaojian.callTimeTo = this.moment(_value).valueOf();
             // this.toRevisitTimeTo = this.toRevisitTimeFrom+(1*24*60*60-1)*1000;
           } else {
-            this.endTime = '';
+            this.tiaojian.callTimeTo = '';
             // this.toRevisitTimeTo = '';
           }
-          this.lastPageNo(this.nature)
+          this.lastPageNo()
         } else {
           this.$message({
             type: 'info',
@@ -157,27 +167,29 @@
 
       },
 
-      lastPage(pn, nature) {
-        if (nature == 1) {
-          var durationFrom = 0
-          var durationTo = 30
-        } else if (nature == 2) {
-          var durationFrom = 31
-          var durationTo = 90
-        } else if (nature == 3) {
-          var durationFrom = 90
-          var durationTo = ''
-        }  else {
-          var durationFrom = ''
-          var durationTo = ''
-        }
+      lastPage(pn) {
+        // if (nature == 1) {
+        //   var durationFrom = 0
+        //   var durationTo = 30
+        // } else if (nature == 2) {
+        //   var durationFrom = 31
+        //   var durationTo = 90
+        // } else if (nature == 3) {
+        //   var durationFrom = 90
+        //   var durationTo = ''
+        // }  else {
+        //   var durationFrom = ''
+        //   var durationTo = ''
+        // }
         var param = '&' + qs.stringify({
-           recStatus:this.lineEve,
-          startTime:this.startTime,
-          endTime:this.endTime,
-          durationFrom: durationFrom,
-          durationTo: durationTo,
           userId: localStorage.getItem('id') || '',
+          secondFrom : this.tiaojian.secondFrom,
+          secondTo : this.tiaojian.secondTo,
+          telephoneFrom : this.tiaojian.telephoneFrom,
+          telephoneTo : this.tiaojian.telephoneTo,
+          callTimeFrom : this.tiaojian.callTimeFrom,
+          callTimeTo : this.tiaojian.callTimeTo,
+          kw : this.tiaojian.kw,
         })
         let thisValue = this
         $.ajax({
@@ -194,42 +206,53 @@
                 console.log(12321312)
                 for (var i in res.data.itemList) {
                   var tel = ''
-                  if (res.data.itemList[i].startTime) {
-                    var startTime = thisValue.moment(res.data.itemList[i].startTime).format(
-                      'YYYY-MM-DD HH:mm:ss');
+                  // if (res.data.itemList[i].startTime) {
+                  //   var startTime = thisValue.moment(res.data.itemList[i].startTime).format(
+                  //     'YYYY-MM-DD HH:mm:ss');
+                  // } else {
+                  //   var startTime = ''
+                  // }
+                  // if (res.data.itemList[i].endTime) {
+                  //   var endTime = thisValue.moment(res.data.itemList[i].endTime).format(
+                  //     'YYYY-MM-DD HH:mm:ss');
+                  // } else {
+                  //   var endTime = ''
+                  // }
+                  // if (res.data.itemList[i].accessTime) {
+                  //   var accessTime = thisValue.moment(res.data.itemList[i].accessTime).format(
+                  //     'YYYY-MM-DD HH:mm:ss');
+                  // } else {
+                  //   var accessTime = ''
+                  // }
+                  // if (res.data.itemList[i].recStatus == 1) {
+                  //   var recStatus = '接通';
+                  // } else {
+                  //   var recStatus = '未接通'
+                  // }
+                  let _callTime = ''
+                  if (res.data.itemList[i].callTime) {
+                    _callTime = thisValue.moment(res.data.itemList[i].callTime).format('YYYY-MM-DD HH:mm:ss');
                   } else {
-                    var startTime = ''
+                    _callTime = ''
                   }
-                  if (res.data.itemList[i].endTime) {
-                    var endTime = thisValue.moment(res.data.itemList[i].endTime).format(
-                      'YYYY-MM-DD HH:mm:ss');
-                  } else {
-                    var endTime = ''
-                  }
-                  if (res.data.itemList[i].accessTime) {
-                    var accessTime = thisValue.moment(res.data.itemList[i].accessTime).format(
-                      'YYYY-MM-DD HH:mm:ss');
-                  } else {
-                    var accessTime = ''
-                  }
-                  if (res.data.itemList[i].recStatus == 1) {
-                    var recStatus = '接通';
-                  } else {
-                    var recStatus = '未接通'
-                  }
-                  $('#index .tbody').append('<tr id=' + res.data.itemList[i].customerId + '><td>' + (
-                      parseInt(i) +
-                      1 + ((pn - 1) * 15)) +
-                    '</td><td class="xiugaiTimeFn">' + res.data.itemList[i].userNickname +
-                    '</td><td>' + (res.data.itemList[i].calledid ||
-                      "") + '</td><td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res
-                      .data.itemList[
-                        i].tel || "") + '">' + startTime + '</td><td>' + endTime + '</td><td>' +
-                    accessTime +
-                    '</td><td>' + (res.data.itemList[i].duration || "0") +
-                    's</td><td>' + recStatus +
-                    '</td><td class="enterHos"><a href="' + res.data.itemList[i].recordUrl +
-                    '"  target=＂_blank＂>录音地址</a></td></tr>')
+                  $('#index .tbody').append(
+                    '<tr id=' + res.data.itemList[i].customerId + '>'+
+                      '<td>' + (parseInt(i) + 1 + ((pn - 1) * 15)) +'</td>'+
+                      '<td class="xiugaiTimeFn">' + res.data.itemList[i].userNickname +'</td>'+
+                      // '<td>' + (res.data.itemList[i].calledid || "") + '</td>'+
+                      // '<td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res .data.itemList[
+                          // i].tel || "") + '">' + startTime + '</td><td>' + endTime + '</td>'+
+                      // '<td>' + accessTime + '</td>'+
+                      '<td>' + res.data.itemList[i].telephoneFrom + '</td>'+
+                      '<td>' + res.data.itemList[i].telephoneTo + '</td>'+
+                      '<td>' + _callTime + '</td>'+
+                      '<td>' + (res.data.itemList[i].second || "0") + 's</td>'+
+                      // '<td>' + recStatus + '</td>'+
+                      '<td class="enterHos">'+
+                        '<a href="' + res.data.itemList[i].url + '"  target=＂_blank＂>录音地址</a>'+
+                      '</td>'+
+                    '</tr>'
+                  )
 
                 }
               }
@@ -237,27 +260,30 @@
           }
         })
       },
-      lastPageNo(nature) {
-        if (nature == 1) {
-          var durationFrom = 0
-          var durationTo = 30
-        } else if (nature == 2) {
-          var durationFrom = 31
-          var durationTo = 90
-        } else if (nature == 3) {
-          var durationFrom = 90
-          var durationTo = ''
-        }  else {
-          var durationFrom = ''
-          var durationTo = ''
-        }
+      lastPageNo() {
+        // if (nature == 1) {
+        //   var durationFrom = 0
+        //   var durationTo = 30
+        // } else if (nature == 2) {
+        //   var durationFrom = 31
+        //   var durationTo = 90
+        // } else if (nature == 3) {
+        //   var durationFrom = 90
+        //   var durationTo = ''
+        // }  else {
+        //   var durationFrom = ''
+        //   var durationTo = ''
+        // }+
+
         var param = qs.stringify({
-          recStatus:this.lineEve,
-          startTime:this.startTime,
-          endTime:this.endTime,
-          durationFrom: durationFrom,
-          durationTo: durationTo,
           userId: localStorage.getItem('id') || '',
+          secondFrom : this.tiaojian.secondFrom,
+          secondTo : this.tiaojian.secondTo,
+          telephoneFrom : this.tiaojian.telephoneFrom,
+          telephoneTo : this.tiaojian.telephoneTo,
+          callTimeFrom : this.tiaojian.callTimeFrom,
+          callTimeTo : this.tiaojian.callTimeTo,
+          kw : this.tiaojian.kw,
         })
         let thisValue = this
         $.ajax({
@@ -280,7 +306,7 @@
                   // memberList1(1,page);
                   // var nature = $('#index .nature').val()
                   thisValue.pn = page
-                  thisValue.lastPage(page, nature)
+                  thisValue.lastPage(page)
                 }
               })
 

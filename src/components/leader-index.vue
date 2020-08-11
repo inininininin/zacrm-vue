@@ -168,11 +168,11 @@
         <div class="leader_ul2">
           <ul>
             <li>昨日大于30秒</li>
-            <li>{{item.yesterdayGt30CallRecordCount}}</li>
+            <li>{{item.yesterdayCallCount1}}</li>
           </ul>
           <ul>
             <li>昨日大于90秒</li>
-            <li>{{item.yesterdayGt90CallRecordCount}}</li>
+            <li>{{item.yesterdayCallCount2}}</li>
           </ul>
         </div>
       </div>

@@ -116,11 +116,55 @@
 	cursor: pointer;
 
 }
-#index .tableBox table tbody tr td:nth-child(2),#index #leader_index .tableBox table tbody tr td:nth-child(2){
+#index .tableBox table tbody tr td:nth-child(2),#index #leader_index .tableBox table tbody tr td:nth-child(2),
+#index .tableBox table tbody tr td:nth-child(3),#index .tableBox table tbody tr td:nth-child(4),
+#index .tableBox table tbody tr td:nth-child(5),#index .tableBox table tbody tr td:nth-child(6){
 	cursor: pointer;
 	text-align: left;
 }
-#index .tableBox table tbody tr td:nth-child(3),#index #leader_index .tableBox table tbody tr td:nth-child(3),#index .tableBox table tbody tr td:nth-child(5),#index #leader_index .tableBox table tbody tr td:nth-child(5){
+#index .tableBox table tbody tr td:nth-child(3),#index .tableBox table tbody tr td:nth-child(5){
+	cursor: default;
+}
+#index .tableBox table tbody tr td:nth-child(4),#index #leader_index .tableBox table tbody tr td:nth-child(4){
+	/* cursor: pointer; */
+}
+#index .shoujiDiv,#index .shoujiDiv1{
+	display: inline;
+    margin-left: 8px;
+}
+#index .shoujiDiv>div,#index .shoujiDiv1>div{
+	display: inline-block;
+	position: relative;
+}
+#index .telCall{
+	display: none;
+	position: absolute;
+    bottom: -11px;
+    right: -30px;
+    /* display: block; */
+    width: 40px;
+    background: #e4e1e1;
+    height: 20px;
+    line-height: 20px;
+	border-radius: 20%;
+	font-size: 12px;
+    text-align: center;
+    z-index: 9
+}
+#index .shoujiDiv>div>img:hover+.telCall, #index .shoujiDiv1>div>img:hover+.telCall {
+	display: block;
+	/* background: red; */
+	cursor: pointer;
+}
+
+#index .shoujiDiv>div>span:hover,#index .shoujiDiv1>div>span:hover{
+	display: block;
+	/* cursor: pointer; */
+}
+#index .shoujiDiv>div:first-child,#index .shoujiDiv1>div:first-child{
+	margin-right: 8px;
+}
+#index .shoujiDiv>div>img,#index .shoujiDiv1>div>img{
 	cursor: pointer;
 }
 /* #leader_index .tableBox table thead tr th,
@@ -146,7 +190,6 @@
     cursor: pointer;
     text-align: left;
   }
-
   #leader_index .tableBox table tbody tr td:nth-child(5) {
     cursor: pointer;
   }
