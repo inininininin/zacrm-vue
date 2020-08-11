@@ -3,7 +3,7 @@
     <div class="addIndexBox">
       <div>
         <div class="addIndexBoxTitle">
-          <span class="title">某某医院</span>
+          <span class="title">医院基本信息</span>
           <el-button v-show="show" @click='modify()' class="modify" type="primary">修改</el-button>
           <el-button v-show="!show" @click='saveIs()' class="saveIs" type="primary">保存</el-button>
           <el-button v-show="!show" @click='refuse()' class="refuse" plain>取消</el-button>
@@ -20,7 +20,7 @@
                 <span>医院电话：</span>
                 <span>{{hospitalDetail.tel}}</span>
                 <img v-show="hospitalDetail.tel" src="../assets/img/zuoji.svg" alt="">
-                <img v-show="hospitalDetail.tel"  src="../assets/img/shouji.svg" alt="">
+                <img v-show="hospitalDetail.tel" src="../assets/img/shouji.svg" alt="">
               </div>
             </div>
             <div class="detailLine">
@@ -35,13 +35,18 @@
               </div>
             </div>
             <!-- 回访时间 -->
-            <!-- <div class="toRevisitTime">
-              <el-date-picker
-                    v-model="value1"
+
+            <div class=" detailLine">
+              <div class="toRevisitTime">
+                <span>回访时间：</span>
+                <span>{{hospitalDetail.toRevisitTimeThis}}</span>
+              </div>
+              <!-- <el-date-picker
+                    v-model="hospitalDetail.toRevisitTime"
                     type="date"
                     placeholder="选择日期">
-                  </el-date-picker>
-            </div> -->
+                  </el-date-picker> -->
+            </div>
             <div class="detailLine">
               <div>
                 <span>医院地址：</span>
@@ -80,7 +85,8 @@
               </div>
               <div>
                 <span>医院电话：</span>
-                <el-input class="hospitalPhone"  type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20  v-model="hospitalDetail.tel" placeholder='请输入医院名称'></el-input>
+                <el-input class="hospitalPhone" type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20
+                  v-model="hospitalDetail.tel" placeholder='请输入医院名称'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -98,6 +104,16 @@
                 <div class="addHospitalTel" @click="(e)=>{telName<9?dialogFormVisible = true:this.$message({type: 'info',message: '当前最多添加9个备用电话'})}"><img
                     src="../assets/img/jia.svg" alt=""><span>添加电话</span></div>
               </div>
+            </div>
+            <div class=" detailLine detailLineModify">
+              <div class="toRevisitTime">
+                <span>回访时间：</span>
+                <!-- <span>{{hospitalDetail.toRevisitTime}}</span> -->
+                <el-date-picker v-model="hospitalDetail.toRevisitTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
+                  value-format="timestamp">
+                </el-date-picker>
+              </div>
+
             </div>
             <div class="detailLine detailLineModify">
               <div>
@@ -133,7 +149,7 @@
         <div class="detailBottomlf">
 
           <div class="linkmanBox">
-            <div class="linkmanBoxTitle"><span>拍板人</span></div>
+            <div class="linkmanBoxTitle" @click="traceList(paibanrenDetail.customerWorkerId,1,paibanrenDetail.name.name)"><span>拍板人</span></div>
             <div class="linkmanBoxRt">
               <div class="linkmanBoxRtLine">
                 <p @click="dblName(paibanrenDetail.customerWorkerId,paibanrenDetail.name.name,'key')">
@@ -179,7 +195,7 @@
           </div>
           <!-- 相关人 -->
           <div class="linkmanBox" v-for="( item, key ) in linkmanList " :key=key>
-            <div class="linkmanBoxTitle"><span>相关人</span></div>
+            <div class="linkmanBoxTitle" @click="traceList(item.customerWorkerId,1,item.name.name)"><span>相关人</span></div>
             <div class="linkmanBoxRt">
               <div class="linkmanBoxRtLine">
                 <p @click="dblName(item.customerWorkerId,item.name.name,key)">
@@ -227,21 +243,22 @@
         <div class="detailBottomrt">
           <div class="trackAllDetail">
             <div class="trackTop">
-              <el-button class="lookAllTrack" type="primary">查看全部</el-button>
-              <p>某某的跟踪记录</p>
+              <el-button v-show="!showAll" class="lookAllTrack" @click="lookAllTrack" type="primary">查看全部</el-button>
+              <p v-show="showAll" style="width: 100%;">{{hospitalDetail.name}}的跟踪记录</p>
+              <p v-show="!showAll">{{linkmanTraceList}}的跟踪记录</p>
             </div>
-            <div class="trackMid">
-              <div class="trackMidEve">
-                <p><span>2020-09-23</span><span>田晴晴</span></p>
-                <p>请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录请输入跟踪记录</p>
+            <div class="trackMid" ref="scrollRef">
+              <div class="trackMidEve" v-for="(item,i) in traceDetailList" :accesskey=i>
+                <p><span>{{item.updateTimeThis}}</span><span>{{item.customerWorkerName}}</span></p>
+                <p>{{item.content}}</p>
               </div>
             </div>
             <div class="trackBottom">
               <div class="trackBottomTwo">
                 <el-input class="trackText" type="textarea" :autosize="{ minRows: 3, maxRows: 3}" placeholder="请输入跟踪记录"
-                  resize='none' v-model="textarea">
+                  resize='none' v-model="linkmanTracecontent">
                 </el-input>
-                <el-button class="sendYes">发送</el-button>
+                <el-button class="sendYes" @click="sendYes">发送</el-button>
               </div>
             </div>
           </div>
@@ -319,6 +336,8 @@
           name: '',
           tel: '',
           nature: '',
+          toRevisitTimeThis: '',
+          toRevisitTime: '',
           dili: [],
           diliNow: {
             shenfen: {
@@ -349,7 +368,7 @@
         },
         checked: true,
         radio: 3,
-        textarea: '',
+        linkmanTracecontent: '',
         hospitalContent: '医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介,医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介',
         hospitalName: '大厂医院',
         hospitalPhone: '15077822798',
@@ -393,17 +412,20 @@
         dialogFormVisibleReaTel: false,
         formLabelWidth: '120px',
         linkmanList: [],
+        traceDetailList: [],
         modifyThisTelValue: '', // 是否修改医院的备注号码''否，其他是
-        telName: 0
+        telName: 0,
+        linkmanTraceList: '',
+        showAll: true,
+        linkmanTraceId: ''
       };
     },
     activated () {
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
-         this.options = area;
+        this.options = area;
       }
       let thisValue = this;
-      console.log(this.$route.query.id);
       thisValue.customerId = thisValue.$route.query.id;
 
       this.customer();
@@ -419,12 +441,24 @@
     mounted () {
       this.options = area;
     },
+    // watch: {
 
+    //   list (val) {
+    //     console.log(111);
+    //     // 执行滚动到底部的逻辑
+    //     this.$nextTick(() => { // 必须使用nextTick（在下次 DOM 更新循环结束之后执行延迟回调）
+    //       var scrollRef = this.$refs.scrollRef;
+    //       scrollRef.scrollTop = scrollRef.scrollHeight;
+    //       console.log(scrollRef);
+    //     });
+    //   }
+    // },
     methods: {
+
       // 医院信息
-     async customer () {
+      async customer () {
         let thisValue = this;
-       await thisValue.$axios.get('/my-customer/customer?customerId=' + thisValue.customerId)
+        await thisValue.$axios.get('/my-customer/customer?customerId=' + thisValue.customerId)
           .then(res => {
             if (res.data.codeMsg) {
               thisValue.$message({
@@ -525,16 +559,22 @@
                 });
                 thisValue.telName = 9;
               }
+              if (res.data.data.toRevisitTime) {
+                res.data.data.toRevisitTimeThis = this.moment(res.data.data.toRevisitTime).format('YYYY-MM-DD');
+              } else {
+                res.data.data.toRevisitTimeThis = '';
+              }
+
               thisValue.hospitalDetail = res.data.data;
-              console.log(res.data.data, thisValue.hospitalDetail);
               this.customerList();
+              this.traceList('', 1, '');
             }
           });
       },
       // 相关人等列表
-     async customerList () {
+      async customerList () {
         var thisValue = this;
-       await thisValue.$axios.get('/my-customer-worker/customer-worker-list?customerId=' + this.customerId +
+        await thisValue.$axios.get('/my-customer-worker/customer-worker-list?customerId=' + this.customerId +
             '&sort=createTime&order=asc')
           .then(res => {
             var number = '';
@@ -551,13 +591,10 @@
             } else if (res.data.code === 0) {
               var itemList = res.data.data.itemList;
               for (var i in itemList) {
-                console.log(thisValue.hospitalDetail, thisValue.hospitalDetail.paiBanCustomerWorkerId, itemList[i].customerWorkerId);
-
                 if (thisValue.hospitalDetail.paiBanCustomerWorkerId && thisValue.hospitalDetail.paiBanCustomerWorkerId ===
                   itemList[i].customerWorkerId) {
                   itemList[i].paiban = 1;
                   number = i;
-                  console.log(itemList[i].paiban);
                 } else {
                   itemList[i].paiban = 2;
                 }
@@ -653,15 +690,94 @@
 
               if (number !== '') {
                 thisValue.paibanrenDetail = itemList[number];
-                console.log(number);
                 thisValue.paibanrenDetail.key = number;
                 itemList.splice(number, 1);
-                console.log(thisValue.paibanrenDetail.paiban);
               }
               thisValue.dialogFormVisibleReaTel = false;
               thisValue.relationTel.tel = '';
               thisValue.linkmanList = res.data.data.itemList;
-              console.log(thisValue.linkmanList);
+            }
+          });
+      },
+      // 追踪列表
+      async traceList (customerWorkerId, pageNo, name) {
+        let thisValue = this;
+        if (name) {
+          thisValue.showAll = false;
+          thisValue.linkmanTraceList = name;
+          thisValue.linkmanTraceId = customerWorkerId;
+        } else {
+          thisValue.showAll = true;
+          thisValue.linkmanTraceList = '';
+          thisValue.linkmanTraceId = customerWorkerId;
+        }
+        await thisValue.$axios.get('/my-customer-worker-trace/customer-worker-trace-list?' + // +'&customerWorkerId='+customerWorkerId+'&sort=createTime&order=asc'
+            qs.stringify({
+              customerId: this.customerId,
+              customerWorkerId: customerWorkerId,
+              sort: 'updateTime',
+              order: 'asc',
+              pn: pageNo,
+              ps: 200
+            }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              thisValue.$message({
+                type: 'info',
+                message: res.data.codeMsg,
+                onClose: function () {
+                  thisValue.$router.push({
+                    path: '/login'
+                  });
+                }
+              });
+            } else if (res.data.code === 0) {
+              for (var i in res.data.data.itemList) {
+                res.data.data.itemList[i].updateTimeThis = this.moment(res.data.data.updateTime).format(
+                  'YYYY-MM-DD');
+              }
+              thisValue.traceDetailList = res.data.data.itemList;
+                 var scrollRef = this.$refs.scrollRef;
+                 // dom节点加载后操作
+                 this.$nextTick()
+                   .then(function () {
+                     scrollRef.scrollTop = scrollRef.scrollHeight;
+                   });
+            }
+          });
+      },
+      // 查看所有追踪
+      lookAllTrack () {
+        this.traceList('', 1, '');
+      },
+      sendYes () {
+        if (!this.linkmanTraceId) {
+          this.$message({
+            type: 'info',
+            message: '请点击左侧相关人或者拍板人列表中的蓝色区域'
+          });
+          return;
+        }
+        this.$axios.post('/my-customer-worker-trace/create-customer-worker-trace?' +
+            qs.stringify({
+              content: this.linkmanTracecontent,
+              customerWorkerId: this.linkmanTraceId
+            }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: 'info',
+                message: res.data.codeMsg,
+                onClose: function () {
+                  this.$router.push({
+                    path: '/login'
+                  });
+                }
+              });
+            } else if (res.data.code === 0) {
+              // this.traceDetailList = this.traceDetailList.push({'customerWorkerName':this.linkmanTracecontent,'customerWorkerName':this.linkmanTracecontent,'customerWorkerName':this.linkmanTracecontent});
+              this.linkmanTracecontent = '';
+              this.traceList(this.linkmanTraceId, 1, this.linkmanTraceList);
             }
           });
       },
@@ -679,9 +795,8 @@
                 });
               }
               if (res.data.code === 0) {
-                console.log(res.data.data.customerWorkerId);
                 // debugger;
-                 this.$axios.post('/my-customer/update-customer?' + qs.stringify({
+                this.$axios.post('/my-customer/update-customer?' + qs.stringify({
                     customerId: this.customerId,
                     paiBanCustomerWorkerId: res.data.data.customerWorkerId
                   }))
@@ -693,10 +808,10 @@
                       });
                     }
                     if (res.data.code === 0) {
-                       this.customer();
+                      this.customer();
                       this.customerList();
                     }
-              });
+                  });
               }
             });
         } else {
@@ -813,6 +928,7 @@
                 type: 'success',
                 message: '修改成功！'
               });
+              this.customer();
               this.show = !this.show;
             }
           });
@@ -892,7 +1008,6 @@
       },
       // 修改是否加急
       urgentQuick (id, ifBule) {
-        console.log(ifBule);
         if (ifBule === false) {
           this.modifyRealtion(id, 'urgent=0', '', '', '');
         } else {
@@ -936,7 +1051,6 @@
         }
       },
       dblTel (id, tel, key, keys) {
-        console.log(keys);
         if (key === 'key') {
           this.paibanrenDetail.tels[keys].type = 1;
         } else {
@@ -954,7 +1068,6 @@
       },
       // 相关人新增电话
       addPhoneTel (id, keys, key) {
-        // console.log(keys)
         if (keys.length === 6) {
           this.$message({
             type: 'info',
@@ -1237,6 +1350,7 @@
   }
 
   .linkmanBox .linkmanBoxTitle {
+    cursor: pointer;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1444,6 +1558,7 @@
     height: 427px;
     box-sizing: border-box;
     border-bottom: 1px solid #EEEEEE;
+    overflow-y: scroll;
   }
 
   .trackMidEve {
@@ -1459,14 +1574,20 @@
     text-align: left;
     color: #999999;
     line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
   }
 
   .trackMidEve>p:nth-child(1) span:nth-child(2) {
     color: #666666;
     margin-left: 10px;
+    word-break: break-all;
+    word-wrap: break-word;
   }
 
   .trackMidEve>p:nth-child(2) {
+    word-break: break-all;
+    word-wrap: break-word;
     width: 610px;
     font-size: 16px;
     font-family: PingFangSC, PingFangSC-Regular;
