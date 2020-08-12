@@ -301,7 +301,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleRea = false">取 消</el-button>
+        <el-button @click="(e)=>{dialogFormVisibleRea = false;relation.name=''} ">取 消</el-button>
         <el-button type="primary" @click='addRealtionSure'>确 定</el-button>
       </div>
     </el-dialog>
@@ -314,7 +314,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="(e)=>{this.dialogFormVisibleReaTel = false;this.relationTel.tel=''}">取 消</el-button>
+        <el-button @click="(e)=>{dialogFormVisibleReaTel = false;relationTel.tel=''}">取 消</el-button>
         <el-button type="primary" @click='addRealtionSureTel'>确 定</el-button>
       </div>
     </el-dialog>
