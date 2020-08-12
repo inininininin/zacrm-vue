@@ -86,7 +86,7 @@
               <div>
                 <span>医院电话：</span>
                 <el-input class="hospitalPhone" type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20
-                  v-model="hospitalDetail.tel" placeholder='请输入医院名称'></el-input>
+                  v-model="hospitalDetail.tel" placeholder='请输入医院电话'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -289,7 +289,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="makerefuseAdd">取 消</el-button>
         <el-button type="primary" @click="makesureAdd">确 定</el-button>
       </div>
     </el-dialog>
@@ -314,7 +314,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleReaTel = false">取 消</el-button>
+        <el-button @click="(e)=>{this.dialogFormVisibleReaTel = false;this.relationTel.tel=''}">取 消</el-button>
         <el-button type="primary" @click='addRealtionSureTel'>确 定</el-button>
       </div>
     </el-dialog>
@@ -945,6 +945,19 @@
             this.hospitalDetail.nature = this.hospitalNature[i].hospitalNatureValue;
           }
         }
+      },
+
+      makerefuseAdd () {
+        // this.dialogFormVisible = tel;
+        // this.form.tel = tel;
+        // this.form.name = name;
+        // this.modifyThisTelValue = telName.slice(3, 4);
+        this.form.name = '';
+        this.form.tel = '';
+        this.telName = this.addNewTelDetail.keys.length;
+        console.log(this.telName);
+        this.modifyThisTelValue = '';
+        this.dialogFormVisible = false;
       },
       // 新增电话
       makesureAdd () {

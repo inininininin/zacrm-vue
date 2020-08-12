@@ -19,7 +19,7 @@
               </div>
               <div>
                 <span>医院电话：</span>
-                <el-input class="hospitalPhone" v-model="hospitalDetail.tel" type="text" placeholder='请输入医院名称'></el-input>
+                <el-input class="hospitalPhone" v-model="hospitalDetail.tel" type="text" placeholder='请输入医院电话'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -75,7 +75,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="(e)=>{dialogFormVisible = false;form.name='';form.tel='';}">取 消</el-button>
         <el-button type="primary" @click="makesureAdd">确 定</el-button>
       </div>
     </el-dialog>
