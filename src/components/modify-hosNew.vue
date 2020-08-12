@@ -181,11 +181,13 @@
                 <div class="telinput" v-for="( itemed, keysIf ) in paibanrenDetail.tels" :key=keysIf>
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)">
-                    <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)" :disabled="itemed.type == '0'"
-                      placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
-                      autocomplete='off'></el-input>
-                    <img class="shouji" src="../assets/img/shouji.svg" alt="">
-                    <img class="zuoji" src="../assets/img/zuoji.svg" alt="">
+                    <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)"
+                      :disabled="itemed.type == '0'" placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20"
+                      onkeyup="value=value.replace(/[^\d\-\d]/g,'')" autocomplete='off'></el-input>
+                    <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
+                      alt="">
+                    <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg"
+                      alt="">
                   </p>
                 </div>
                 <div class="addPhoneTel" @click="addPhoneTel(paibanrenDetail.customerWorkerId,paibanrenDetail.tels,'key')"><img
@@ -227,8 +229,9 @@
                     <el-input @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels)" :disabled="itemed.type == '0'"
                       placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
                       autocomplete='off'></el-input>
-                    <img class="shouji" src="../assets/img/shouji.svg" alt="">
-                    <img class="zuoji" src="../assets/img/zuoji.svg" alt="">
+                    <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
+                      alt="">
+                    <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="">
                   </p>
                 </div>
                 <div class="addPhoneTel" @click="addPhoneTel(item.customerWorkerId,item.tels,key)"><img src="../assets/img/jia.svg"
@@ -566,6 +569,7 @@
               }
 
               thisValue.hospitalDetail = res.data.data;
+
               this.customerList();
               this.traceList('', 1, '');
             }
@@ -619,7 +623,7 @@
                   tels.push({
                     'telName': 'tel',
                     'tel': itemList[i].tel,
-                     type: 0
+                    type: 0
                   });
                 }
                 if (itemList[i].tel1 === '' || itemList[i].tel1 == null || itemList[i].tel1 === undefined) {
@@ -737,12 +741,12 @@
                   'YYYY-MM-DD');
               }
               thisValue.traceDetailList = res.data.data.itemList;
-                 var scrollRef = this.$refs.scrollRef;
-                 // dom节点加载后操作
-                 this.$nextTick()
-                   .then(function () {
-                     scrollRef.scrollTop = scrollRef.scrollHeight;
-                   });
+              var scrollRef = this.$refs.scrollRef;
+              // dom节点加载后操作
+              this.$nextTick()
+                .then(function () {
+                  scrollRef.scrollTop = scrollRef.scrollHeight;
+                });
             }
           });
       },
@@ -933,11 +937,29 @@
             }
           });
       },
+      // 座机拨号
       zuojiTel (name, tel) {
-        alert(tel);
+        $('#inp_send').val(tel);
+        $('.phoneNumber').html(name);
+        // console.log($('#inp_send').val())
+        localStorage.setItem('tel', $('#inp_send').val());
+        $('#btn_conn').click();
+        this.$store.state.telTimeMIntenSeconds = 0;
+        $('.phoneEnd_num').html(this.$store.state.telTimeMIntenSeconds + ' s');
       },
       shoujiTel (name, tel) {
-        alert(tel);
+        this.$axios.post('/push-call', qs.stringify({
+            tel: tel,
+            name: name
+          }))
+          .then(res => {
+            if (res.data.codeMsg) {
+              this.$message(res.data.codeMsg);
+            }
+            if (res.data.code === 0) {
+              this.$message('已发推送到手机中');
+            }
+          });
       },
       selectChanged (value) {
         for (var i in this.hospitalNature) {
@@ -954,7 +976,7 @@
         // this.modifyThisTelValue = telName.slice(3, 4);
         this.form.name = '';
         this.form.tel = '';
-        this.telName = this.addNewTelDetail.keys.length;
+        this.telName = this.hospitalDetail.telList.length;
         console.log(this.telName);
         this.modifyThisTelValue = '';
         this.dialogFormVisible = false;
@@ -972,13 +994,14 @@
         } else {
           var remark = '';
           var tel = '';
+          console.log(this.modifyThisTelValue);
           if (this.modifyThisTelValue !== '') {
             remark = 'tel' + this.modifyThisTelValue + 'Remark';
             tel = 'tel' + this.modifyThisTelValue;
           } else {
-            this.telName = this.telName + 1;
-            remark = 'tel' + this.telName + 'Remark';
-            tel = 'tel' + this.telName;
+            this.telName = parseInt(this.telName) + 1;
+            remark = 'tel' + parseInt(this.telName) + 'Remark';
+            tel = 'tel' + parseInt(this.telName);
           }
           this.$axios.post('/my-customer/update-customer?customerId=' + this.customerId + '&' + remark + '=' +
               encodeURIComponent(this.form.name) + '&' + tel + '=' + this.form.tel)
@@ -995,29 +1018,36 @@
                 });
               }
               if (res.data.code === 0) {
-                this.dialogFormVisible = false;
                 if (this.modifyThisTelValue !== '') {
                   this.hospitalDetail.telList[this.modifyThisTelValue - 1].name = this.form.name;
                   this.hospitalDetail.telList[this.modifyThisTelValue - 1].tel = this.form.tel;
                 } else {
                   this.hospitalDetail.telList.push({
                     name: this.form.name,
-                    tel: this.form.tel
+                    tel: this.form.tel,
+                    telName: 'tel' + this.telName
                   });
                 }
-
+                console.log(this.hospitalDetail.telList);
                 this.form.name = '';
                 this.form.tel = '';
+                this.telName = this.hospitalDetail.telList.length;
+                console.log(this.telName);
+                this.modifyThisTelValue = '';
+                this.dialogFormVisible = false;
               }
             });
         }
       },
       // 修改电话
       modifyThisTel (telName, tel, name) {
-        this.dialogFormVisible = tel;
+        this.dialogFormVisible = true;
         this.form.tel = tel;
         this.form.name = name;
+        // this.telName = telName;
+        console.log(telName);
         this.modifyThisTelValue = telName.slice(3, 4);
+        console.log(this.modifyThisTelValue);
       },
       // 修改是否加急
       urgentQuick (id, ifBule) {
@@ -1087,12 +1117,18 @@
             keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
           }
           keyStr = keyStr.slice(1, keyStr.length);
-          console.log(keyStr.split('tel0')[0], keyStr.split('tel0')[1]);
-          if (keyStr.split('tel0')) {
+          console.log(keyStr.split('tel0')[0]);
+          console.log(keyStr.split('tel0')[1]);
+          console.log(keyStr.slice(3, 4));
+          if (keyStr && keyStr.slice(3, 4) == 0) {
             keyStr = 'tel' + keyStr.split('tel0')[1];
+            console.log(keyStr.split('tel0')[1]);
+            console.log('tel' + keyStr.split('tel0')[1]);
+            console.log(keyStr);
           }
+          console.log(keyStr);
           this.modifyRealtion(id, keyStr, key, 'tel', keys);
-           this.linkmanList[key].tels[keys].type = 0;
+          // this.linkmanList[key].tels[keys].type = 0;
         }
       },
       // 相关人新增电话
@@ -1120,11 +1156,15 @@
           });
           return;
         }
-         console.log(this.addNewTelDetail.keys);
+        console.log(this.addNewTelDetail.keys);
         if (this.addNewTelDetail.keys.length === 0) {
           str = 'tel=' + (this.relationTel.tel || '');
         } else {
-          this.addNewTelDetail.keys.push({'tel': (this.relationTel.tel || ''), 'telName': 'tel' + [this.addNewTelDetail.keys.length], 'type': 0});
+          this.addNewTelDetail.keys.push({
+            'tel': (this.relationTel.tel || ''),
+            'telName': 'tel' + [this.addNewTelDetail.keys.length],
+            'type': 0
+          });
           console.log(this.addNewTelDetail.keys);
           for (var i in this.addNewTelDetail.keys) {
             if (i === 0) {
@@ -1133,6 +1173,9 @@
               str = str + '&tel' + (i || '') + '=' + (this.addNewTelDetail.keys[i].tel || '');
             }
           }
+           if (str.split('tel0')) {
+             str = 'tel' + str.split('tel0')[1];
+           }
         }
         if (!this.addNewTelDetail.id) {
           this.$message({
