@@ -180,8 +180,8 @@
               <div class="linkmanBoxRtLine">
                 <div class="telinput" v-for="( itemed, keysIf ) in paibanrenDetail.tels" :key=keysIf>
                   <span class="linkmanTitle">电话：</span>
-                  <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf)">
-                    <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf)" :disabled="itemed.type == '0'"
+                  <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)">
+                    <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)" :disabled="itemed.type == '0'"
                       placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
                       autocomplete='off'></el-input>
                     <img class="shouji" src="../assets/img/shouji.svg" alt="">
@@ -223,8 +223,8 @@
               <div class="linkmanBoxRtLine">
                 <div class="telinput" v-for="( itemed, keys ) in item.tels " :key=keys>
                   <span class="linkmanTitle">电话：</span>
-                  <p class="withBox" @click="dblTel(item.customerWorkerId,itemed.tel,key,keys)">
-                    <el-input @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys)" :disabled="itemed.type == '0'"
+                  <p class="withBox" @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels)">
+                    <el-input @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels)" :disabled="itemed.type == '0'"
                       placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
                       autocomplete='off'></el-input>
                     <img class="shouji" src="../assets/img/shouji.svg" alt="">
@@ -248,7 +248,7 @@
               <p v-show="!showAll">{{linkmanTraceList}}的跟踪记录</p>
             </div>
             <div class="trackMid" ref="scrollRef">
-              <div class="trackMidEve" v-for="(item,i) in traceDetailList" :accesskey=i>
+              <div class="trackMidEve" v-for="(item,i) in traceDetailList" :key=i>
                 <p><span>{{item.updateTimeThis}}</span><span>{{item.customerWorkerName}}</span></p>
                 <p>{{item.content}}</p>
               </div>
@@ -619,7 +619,7 @@
                   tels.push({
                     'telName': 'tel',
                     'tel': itemList[i].tel,
-                    type: 0
+                     type: 0
                   });
                 }
                 if (itemList[i].tel1 === '' || itemList[i].tel1 == null || itemList[i].tel1 === undefined) {
@@ -668,6 +668,7 @@
                   });
                 }
                 itemList[i].tels = tels;
+                console.log(tels, itemList[i].tels);
                 itemList[i].levelList = [{
                   level: 1,
                   label: '暂不感兴趣'
@@ -687,11 +688,10 @@
                 }];
               }
               res.data.data.itemList = itemList;
-
               if (number !== '') {
-                thisValue.paibanrenDetail = itemList[number];
+                thisValue.paibanrenDetail = res.data.data.itemList[number];
                 thisValue.paibanrenDetail.key = number;
-                itemList.splice(number, 1);
+                res.data.data.itemList.splice(number, 1);
               }
               thisValue.dialogFormVisibleReaTel = false;
               thisValue.relationTel.tel = '';
@@ -1050,20 +1050,36 @@
           this.linkmanList[key].post.type = 0;
         }
       },
-      dblTel (id, tel, key, keys) {
+      dblTel (id, tel, key, keys, keysAll) {
+        console.log(keysAll);
+        console.log(this.paibanrenDetail.tels);
         if (key === 'key') {
           this.paibanrenDetail.tels[keys].type = 1;
         } else {
           this.linkmanList[key].tels[keys].type = 1;
         }
       },
-      dblTelEnd (id, tel, key, keys) {
-        if (keys === 0) {
+      dblTelEnd (id, tel, key, keys, keysAll) {
+        //
+        // console.log(keysAll.length, keysAll, this.paibanrenDetail.tels);
+        if (keysAll.length === 1 && keys === 0) {
           this.modifyRealtion(id, 'tel=' + (tel || ''), key, 'tel', keys);
-          this.paibanrenDetail.tels[keys].type = 0;
         } else {
-          this.modifyRealtion(id, 'tel' + [keys] + '=' + (tel || ''), key, 'tel', keys);
-          this.linkmanList[key].tels[keys].type = 0;
+          // console.log(keysAll.length, keysAll);
+          let keyStr = '';
+          keysAll[keys].tel = tel;
+          keysAll[keys].telName = 'tel' + keys;
+          keysAll[keys].type = 1;
+          for (var i in keysAll) {
+            keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
+          }
+          keyStr = keyStr.slice(1, keyStr.length);
+          console.log(keyStr.split('tel0')[0], keyStr.split('tel0')[1]);
+          if (keyStr.split('tel0')) {
+            keyStr = 'tel' + keyStr.split('tel0')[1];
+          }
+          this.modifyRealtion(id, keyStr, key, 'tel', keys);
+           this.linkmanList[key].tels[keys].type = 0;
         }
       },
       // 相关人新增电话
@@ -1091,14 +1107,26 @@
           });
           return;
         }
+         console.log(this.addNewTelDetail.keys);
         if (this.addNewTelDetail.keys.length === 0) {
-          // this.modifyRealtion(this.addNewTelDetail.id, 'tel=' + this.relationTel.tel, this.addNewTelDetail.key, 'tel',
-          //   this.addNewTelDetail.keys.length)
           str = 'tel=' + (this.relationTel.tel || '');
         } else {
-          // this.modifyRealtion(this.addNewTelDetail.id, 'tel' + [this.addNewTelDetail.keys.length] + '=' + this.relationTel
-          //   .tel, this.addNewTelDetail.key, 'tel', this.addNewTelDetail.keys.length)
-          str = 'tel' + [this.addNewTelDetail.keys.length] + '=' + (this.relationTel.tel || '');
+          this.addNewTelDetail.keys.push({'tel': (this.relationTel.tel || ''), 'telName': 'tel' + [this.addNewTelDetail.keys.length], 'type': 0});
+          console.log(this.addNewTelDetail.keys);
+          for (var i in this.addNewTelDetail.keys) {
+            if (i === 0) {
+              str = str + 'tel=' + (this.addNewTelDetail.keys[i].tel || '');
+            } else {
+              str = str + '&tel' + (i || '') + '=' + (this.addNewTelDetail.keys[i].tel || '');
+            }
+          }
+        }
+        if (!this.addNewTelDetail.id) {
+          this.$message({
+            type: 'info',
+            message: '请先填写拍板人或相关人姓名'
+          });
+          return;
         }
         this.$axios.post('/my-customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
             customerWorkerId: this.addNewTelDetail.id
