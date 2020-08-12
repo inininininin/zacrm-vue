@@ -573,7 +573,7 @@
       },
       // 相关人等列表
       async customerList () {
-        var thisValue = this;
+        let thisValue = this;
         await thisValue.$axios.get('/my-customer-worker/customer-worker-list?customerId=' + this.customerId +
             '&sort=createTime&order=asc')
           .then(res => {
@@ -1015,7 +1015,7 @@
         }
       },
       levelList (id, level) {
-        this.modifyRealtion(id, 'level=' + level, '', '', '');
+        this.modifyRealtion(id, 'level=' + (level || ''), '', '', '');
       },
       // 双击修改名字
       dblName (id, name, key) {
@@ -1027,10 +1027,10 @@
       },
       dblNameEnd (id, name, key) {
         if (key === 'key') {
-          this.modifyRealtion(id, 'name=' + name, key, 'name', '');
+          this.modifyRealtion(id, 'name=' + (name || ''), key, 'name', '');
           this.paibanrenDetail.name.type = 0;
         } else {
-          this.modifyRealtion(id, 'name=' + name, key, 'name', '');
+          this.modifyRealtion(id, 'name=' + (name || ''), key, 'name', '');
           this.linkmanList[key].name.type = 0;
         }
       },
@@ -1043,10 +1043,10 @@
       },
       dblPostEnd (id, post, key) {
         if (key === 'key') {
-          this.modifyRealtion(id, 'post=' + post, key, 'post', '');
+          this.modifyRealtion(id, 'post=' + (post || ''), key, 'post', '');
           this.paibanrenDetail.post.type = 0;
         } else {
-          this.modifyRealtion(id, 'post=' + post, key, 'post', '');
+          this.modifyRealtion(id, 'post=' + (post || ''), key, 'post', '');
           this.linkmanList[key].post.type = 0;
         }
       },
@@ -1059,10 +1059,10 @@
       },
       dblTelEnd (id, tel, key, keys) {
         if (keys === 0) {
-          this.modifyRealtion(id, 'tel=' + tel, key, 'tel', keys);
+          this.modifyRealtion(id, 'tel=' + (tel || ''), key, 'tel', keys);
           this.paibanrenDetail.tels[keys].type = 0;
         } else {
-          this.modifyRealtion(id, 'tel' + [keys] + '=' + tel, key, 'tel', keys);
+          this.modifyRealtion(id, 'tel' + [keys] + '=' + (tel || ''), key, 'tel', keys);
           this.linkmanList[key].tels[keys].type = 0;
         }
       },
@@ -1084,14 +1084,21 @@
       // 确定新增号码
       addRealtionSureTel () {
         let str = '';
+        if (!this.relationTel.tel) {
+          this.$message({
+            type: 'info',
+            message: '请填写号码'
+          });
+          return;
+        }
         if (this.addNewTelDetail.keys.length === 0) {
           // this.modifyRealtion(this.addNewTelDetail.id, 'tel=' + this.relationTel.tel, this.addNewTelDetail.key, 'tel',
           //   this.addNewTelDetail.keys.length)
-          str = 'tel=' + this.relationTel.tel;
+          str = 'tel=' + (this.relationTel.tel || '');
         } else {
           // this.modifyRealtion(this.addNewTelDetail.id, 'tel' + [this.addNewTelDetail.keys.length] + '=' + this.relationTel
           //   .tel, this.addNewTelDetail.key, 'tel', this.addNewTelDetail.keys.length)
-          str = 'tel' + [this.addNewTelDetail.keys.length] + '=' + this.relationTel.tel;
+          str = 'tel' + [this.addNewTelDetail.keys.length] + '=' + (this.relationTel.tel || '');
         }
         this.$axios.post('/my-customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
             customerWorkerId: this.addNewTelDetail.id
@@ -1121,7 +1128,14 @@
         this.dialogFormVisibleRea = true;
       },
       addRealtionSure () {
-        var thisValue = this;
+        let thisValue = this;
+        if (!thisValue.relation.name) {
+          this.$message({
+            type: 'info',
+            message: '请填写相关人姓名'
+          });
+          return;
+        }
         thisValue.$axios.post('/my-customer-worker/create-customer-worker?name=' + thisValue.relation.name +
             '&customerId=' + this.customerId)
           .then(res => {
