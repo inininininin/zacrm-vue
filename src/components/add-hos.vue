@@ -6,6 +6,9 @@
 		<span class="record3" hidden=""></span>
 		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
 		<a href="../assets/call/index.html" target="_blank">话机页面</a>
+		<router-link :to="{path:'modify-hosNew',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">
+			新版本页面
+		</router-link>
 		<input type="" name="" id="inp_send" hidden="">
 		<button id="btn_conn" hidden="">发送</button>
 		<div class="thiscontent" style="display: none;">
@@ -1294,22 +1297,35 @@ export default {
 				}, 300)
             })
             $('#add-hos tbody').off("dblclick", 'tr .showInputBox').on('dblclick', 'tr .showInputBox', function() {
+				debugger
 				clearTimeout(thisValue.timeIs)
 				var thisHtml = $(this).html()
 				var _this_=$(this)
 				thisValue.closePopWindow()
 				let _this_attrVal =_this_.attr('phone1')? _this_.attr('phone1').substring(0, 4) + "***"+_this_.attr('phone1').substring(8,_this_.attr('phone1').length):''
-				let _this_attrVal2 =_this_.attr('phone2')? _this_.attr('phone2').substring(0, 4) + "***"+_this_.attr('phone2').substring(8,_this_.attr('pho ne2').length):''
+				let _this_attrVal2 =_this_.attr('phone2')? _this_.attr('phone2').substring(0, 4) + "***"+_this_.attr('phone2').substring(8,_this_.attr('phone2').length):''
 				let _this_attrVal3 =_this_.attr('phone3')? _this_.attr('phone3').substring(0, 4) + "***"+_this_.attr('phone3').substring(8,_this_.attr('phone3').length):''
 				if (thisHtml && thisHtml.split(',').length == 1) {
 					$('#add-hos .addphoeShow').attr('id', '')
 					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
 					$('#add-hos table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
+					// $('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					// $('#add-hos .phonep1').attr('title',_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3'))
+					// $('#add-hos .phonep1').attr('phonep',_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3'))
+					// $('#add-hos .phonep1').html(_this_attrVal||_this_attrVal2||_this_attrVal3||'')
+					$('#add-hos .phonep1').attr('title',_this_.attr('phone1'))
+					$('#add-hos .phonep2').attr('title',_this_.attr('phone2'))
+					$('#add-hos .phonep3').attr('title',_this_.attr('phone3'))
+					$('#add-hos .phonep1').attr('phonep',_this_.attr('phone1'))
+					$('#add-hos .phonep2').attr('phonep',_this_.attr('phone2'))
+					$('#add-hos .phonep3').attr('phonep',_this_.attr('phone3'))
 					$('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
-					$('#add-hos .phonep1').attr('title',_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3'))
-					$('#add-hos .phonep1').attr('phonep',_this_.attr('phone1')||_this_.attr('phone2')||_this_.attr('phone3'))
-					$('#add-hos .phonep1').html(_this_attrVal||_this_attrVal2||_this_attrVal3||'')
+					$('#add-hos .phonep2').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					$('#add-hos .phonep3').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					$('#add-hos .phonep1').html(_this_attrVal||'')
+					$('#add-hos .phonep2').html(_this_attrVal2||'')
+					$('#add-hos .phonep3').html(_this_attrVal3||'')
 				} else {
 					$('#add-hos .addphoeShow').attr('id', '')
 					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 1)
@@ -1320,7 +1336,6 @@ export default {
 					// 	var num = parseInt(i) + 1
 					// 	$('.phonep' + num).html(phones[i])
 					// }
-
 					$('#add-hos .phonep1').attr('title',_this_.attr('phone1'))
 					$('#add-hos .phonep2').attr('title',_this_.attr('phone2'))
 					$('#add-hos .phonep3').attr('title',_this_.attr('phone3'))
@@ -1389,10 +1404,22 @@ export default {
 					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
 					$('#add-hos table').find('.jsModify').removeClass('jsModify')
 					_this_.addClass('jsModify')
-					$('#add-hos .phonep1').attr('title',_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3'))
-					$('#add-hos .phonep1').attr('phonep',_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3'))
+					// $('#add-hos .phonep1').attr('title',_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3'))
+					// $('#add-hos .phonep1').attr('phonep',_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3'))
+					// $('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					// $('#add-hos .phonep1').html(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
+					$('#add-hos .phonep1').attr('title',_this_.attr('tel1'))
+					$('#add-hos .phonep2').attr('title',_this_.attr('tel2'))
+					$('#add-hos .phonep3').attr('title',_this_.attr('tel3'))
+					$('#add-hos .phonep1').attr('phonep',_this_.attr('tel1'))
+					$('#add-hos .phonep2').attr('phonep',_this_.attr('tel2'))
+					$('#add-hos .phonep3').attr('phonep',_this_.attr('tel3'))
 					$('#add-hos .phonep1').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
-					$('#add-hos .phonep1').html(_this_.attr('tel1')||_this_.attr('tel2')||_this_.attr('tel3')||"")
+					$('#add-hos .phonep2').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					$('#add-hos .phonep3').attr('phonepname',_this_.parent().parent().children().eq(0).children().eq(0).html())
+					$('#add-hos .phonep1').html(_this_.attr('tel1')||'')
+					$('#add-hos .phonep2').html(_this_.attr('tel2')||'')
+					$('#add-hos .phonep3').html(_this_.attr('tel3')||'')
 				} else {
 					$('#add-hos .addphoeShow').attr('id', '')
 					$('#add-hos .addphoeShow').css('display', 'block').attr('id', _this_.parent().parent().attr('relId')).attr('type', 2)
