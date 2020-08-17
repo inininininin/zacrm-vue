@@ -1,8 +1,9 @@
 <template>
   <div id='addIndex'>
-    <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
-    <a href="../assets/call/index.html" target="_blank">话机页面</a>
+
     <div class="addIndexBox">
+      <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+      <a href="../assets/call/index.html" target="_blank">话机页面</a>
       <div>
         <div class="addIndexBoxTitle">
           <span class="title">医院基本信息</span>
@@ -1112,13 +1113,35 @@
           keysAll[keys].tel = tel;
           keysAll[keys].telName = 'tel' + keys;
           keysAll[keys].type = 1;
+          console.log(keysAll.length);
+          // for (var i in keysAll) {
+          //   keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
+          // }
           for (var i in keysAll) {
-            keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
+            keyStr = keyStr + '&tel' + i + '=' + keysAll[i].tel;
           }
+           if (keysAll.length == 1) {
+             keyStr = keyStr + '&tel1=&tel=&tel3=&tel4=&tel5=';
+           }
+           if (keysAll.length == 2) {
+             keyStr = keyStr + '&tel=&tel3=&tel4=&tel5=';
+           }
+           if (keysAll.length == 3) {
+             keyStr = keyStr + '&tel3=&tel4=&tel5=';
+           }
+           if (keysAll.length == 4) {
+             keyStr = keyStr + '&tel4=&tel5=';
+           }
+           if (keysAll.length == 5) {
+             keyStr = keyStr + '&tel5=';
+           }
+          console.log(keyStr);
           keyStr = keyStr.slice(1, keyStr.length);
+          console.log(keyStr);
           if (keyStr && keyStr.slice(3, 4) == 0) {
             keyStr = 'tel' + keyStr.split('tel0')[1];
           }
+          console.log(keyStr);
           this.modifyRealtion(id, keyStr, key, 'tel', keys);
         }
       },
