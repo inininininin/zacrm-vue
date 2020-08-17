@@ -56,6 +56,16 @@ const mainRoutes = [
     component: _import( 'add-hos')
   },
   {
+    path: '/add-hosNew',
+    name: '/add-hosNew',
+    component: _import( 'add-hosNew')
+  },
+  {
+    path: '/modify-hosNew',
+    name: '/modify-hosNew',
+    component: _import( 'modify-hosNew')
+  },
+  {
     path: '/lead-index',
     name: '/lead-index',
     component: ()=>import( '@/components/lead-index')
