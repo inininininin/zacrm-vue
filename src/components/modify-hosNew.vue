@@ -66,7 +66,7 @@
             <div>
               <span>医院简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="请输入内容" v-model="hospitalDetail.brief">
+                placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
 
               <!-- <span>
@@ -135,7 +135,7 @@
             <div>
               <span>医院简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="请输入内容" v-model="hospitalDetail.brief">
+                placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
             </div>
           </div>
@@ -1103,12 +1103,9 @@
         }
       },
       dblTelEnd (id, tel, key, keys, keysAll) {
-        //
-        // console.log(keysAll.length, keysAll, this.paibanrenDetail.tels);
         if (keysAll.length === 1 && keys === 0) {
           this.modifyRealtion(id, 'tel=' + (tel || ''), key, 'tel', keys);
         } else {
-          // console.log(keysAll.length, keysAll);
           let keyStr = '';
           keysAll[keys].tel = tel;
           keysAll[keys].telName = 'tel' + keys;
@@ -1117,18 +1114,10 @@
             keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
           }
           keyStr = keyStr.slice(1, keyStr.length);
-          console.log(keyStr.split('tel0')[0]);
-          console.log(keyStr.split('tel0')[1]);
-          console.log(keyStr.slice(3, 4));
           if (keyStr && keyStr.slice(3, 4) == 0) {
             keyStr = 'tel' + keyStr.split('tel0')[1];
-            console.log(keyStr.split('tel0')[1]);
-            console.log('tel' + keyStr.split('tel0')[1]);
-            console.log(keyStr);
           }
-          console.log(keyStr);
           this.modifyRealtion(id, keyStr, key, 'tel', keys);
-          // this.linkmanList[key].tels[keys].type = 0;
         }
       },
       // 相关人新增电话
@@ -1144,7 +1133,6 @@
           this.addNewTelDetail.key = key;
           this.addNewTelDetail.keys = keys;
         }
-        // this.dialogFormVisibleRea = true;
       },
       // 确定新增号码
       addRealtionSureTel () {
@@ -1252,7 +1240,6 @@
               thisValue.customerList();
             }
           });
-        // this.addNewRea(this.relation.name);
       }
 
     }

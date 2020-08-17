@@ -56,7 +56,7 @@
             <div>
               <span>医院简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="请输入内容" v-model="hospitalDetail.brief">
+                placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
             </div>
           </div>
