@@ -1,5 +1,7 @@
 <template>
   <div id='addIndex'>
+    <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+    <a href="../assets/call/index.html" target="_blank">话机页面</a>
     <div class="addIndexBox">
       <div>
         <div class="addIndexBoxTitle">
