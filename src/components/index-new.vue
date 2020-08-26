@@ -897,4 +897,8 @@ export default {
 	color: #a9a0a0;
 
 }
+
+table thead{
+    background: #8dc5ff;
+}
 </style>
