@@ -30,7 +30,7 @@
             <div class="detailLine">
               <div>
                 <span style="display:block">其他号码：</span>
-                <p v-for="(item, i) in hospitalDetail.telList" :key=i style="display:block">
+                <p v-for="(item, i) in hospitalDetail.telList" :key=i style="width:385px">
                   <span>{{item.name}}：</span>
                   <span>{{item.tel}}</span>
                   <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
@@ -99,7 +99,7 @@
             <div class="detailLine detailLineModify">
               <div>
                 <span style="display:block">其他号码：</span>
-                <p class="modifyTel" style="width:295px" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
+                <p class="modifyTel" style="width:350px" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
                   <span>{{item.name}}：</span><span>{{item.tel}}</span>
                   <!-- <img src="../assets/img/zuoji.svg" alt="">
                     <img src="../assets/img/shouji.svg" alt=""> -->
@@ -288,10 +288,10 @@
     <el-dialog title="新增/修改号码" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="名称备注:" :label-width="formLabelWidth">
-          <el-input v-model="form.name" maxlength="8" autocomplete="off"></el-input>
+          <el-input v-model="form.name" maxlength="10" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话号码:" :label-width="formLabelWidth">
-          <el-input type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=13 v-model="form.tel"
+          <el-input type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=15 v-model="form.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -1334,7 +1334,7 @@
   }
 
   .addmainBox {
-    width: 726px;
+    width: 1026px;
     float: left;
     /* display: inline-block; */
     box-sizing: border-box;
@@ -1342,7 +1342,7 @@
   }
 
   .addContent {
-    width: 680px;
+    width: 380px;
     float: left;
     height: auto;
     /* display: inline-block; */
@@ -1386,7 +1386,7 @@
   .detailLine>div>p {
     display: inline-block;
     font-size: 16px;
-    margin-right: 10px;
+    margin-right: 20px;
   }
 
   .detailLine>div {
@@ -1402,7 +1402,13 @@
     height: 24px;
     /* margin-left: 10px; */
     cursor: pointer;
+    float: right;
+    margin-top: 13px;
+    
   }
+    .detailLine>div img:last-child{
+      margin-right: 5px;
+    }
 
   .detailLine>div>span:nth-child(1) {
     font-family: PingFangSC, PingFangSC-Medium;
