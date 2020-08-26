@@ -48,7 +48,7 @@
               <!-- <el-date-picker
                     v-model="hospitalDetail.toRevisitTime"
                     type="date"
-                    placeholder="选择日期">
+                    placeholder="">
                   </el-date-picker> -->
             </div>
             <div class="detailLine">
@@ -113,7 +113,7 @@
               <div class="toRevisitTime">
                 <span>回访时间：</span>
                 <!-- <span>{{hospitalDetail.toRevisitTime}}</span> -->
-                <el-date-picker v-model="hospitalDetail.toRevisitTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
+                <el-date-picker v-model="hospitalDetail.toRevisitTime" type="date" placeholder="" format="yyyy 年 MM 月 dd 日"
                   value-format="timestamp">
                 </el-date-picker>
               </div>
