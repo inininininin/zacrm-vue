@@ -4,7 +4,7 @@
     <div class="addIndexBox">
       <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
       <a href="../assets/call/index.html" target="_blank">话机页面</a>
-      <router-link :to="{path:'add-hos',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link>
+      <!-- <router-link :to="{path:'add-hos',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link> -->
       <div>
         <div class="addIndexBoxTitle">
           <span class="title">医院基本信息</span>
@@ -22,20 +22,23 @@
               </div>
               <div>
                 <span>医院电话：</span>
-                <span>{{hospitalDetail.tel}}</span>
-                <img v-show="hospitalDetail.tel" src="../assets/img/zuoji.svg" alt="">
-                <img v-show="hospitalDetail.tel" src="../assets/img/shouji.svg" alt="">
+                <span style="margin-right:10px">{{hospitalDetail.tel}}</span>
+                <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt="">
+                <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt="">
               </div>
             </div>
             <div class="detailLine">
-              <div>
-                <span style="display:block">其他号码：</span>
-                <p v-for="(item, i) in hospitalDetail.telList" :key=i style="width:385px">
-                  <span>{{item.name}}：</span>
-                  <span>{{item.tel}}</span>
-                  <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
-                  <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt="">
-                </p>
+              <div style="margin-right: 0px;">
+                <span style="float: left;width: 80px;">其他号码：</span>
+                <div style="width: 850px;float: left;">
+                  <p v-for="(item, i) in hospitalDetail.telList" :key=i style="width:385px">
+                    <span>{{item.name}}：</span>
+                    <span>{{item.tel}}</span>
+                    <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
+                    <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt="">
+                  </p>
+                </div>
+                
               </div>
             </div>
             <!-- 回访时间 -->
@@ -97,18 +100,19 @@
               </div>
             </div>
             <div class="detailLine detailLineModify">
-              <div>
-                <span style="display:block">其他号码：</span>
-                <p class="modifyTel" style="width:350px" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
-                  <span>{{item.name}}：</span><span>{{item.tel}}</span>
-                  <!-- <img src="../assets/img/zuoji.svg" alt="">
-                    <img src="../assets/img/shouji.svg" alt=""> -->
-                </p>
-                <!-- @click="telName<9? dialogFormVisible = true:this.$message({type: 'info',message: '当前最多添加9个备用电话'})" -->
-                <div class="addHospitalTel" @click="(e)=>{telName<9?dialogFormVisible = true:this.$message({type: 'info',message: '当前最多添加9个备用电话'})}"><img
+              <div style="margin-right: 0px;">
+                <span style="float: left;width: 80px;">其他号码：</span>
+                <div style="width: 850px;float: left;">
+                  <p class="modifyTel" style="width:350px" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
+                    <span>{{item.name}}：</span><span>{{item.tel}}</span>
+                    <!-- <img src="../assets/img/zuoji.svg" alt="">
+                      <img src="../assets/img/shouji.svg" alt=""> -->
+                  </p>
+                  <div class="addHospitalTel" @click="(e)=>{telName<9?dialogFormVisible = true:this.$message({type: 'info',message: '当前最多添加9个备用电话'})}"><img
                     src="../assets/img/jia.svg" alt=""><span>添加电话</span></div>
+                </div>
               </div>
-            </div>
+                <!-- @click="telName<9? dialogFormVisible = true:this.$message({type: 'info',message: '当前最多添加9个备用电话'})" -->            </div>
             <div class=" detailLine detailLineModify">
               <div class="toRevisitTime">
                 <span>回访时间：</span>
@@ -180,6 +184,12 @@
                      placeholder='单击填写职务' type="text" v-model="paibanrenDetail.post.name"
                     maxlength="20"></el-input>
                 </p>
+                <div> 
+                  <span style="float: left;margin-right: 3px;">手机: </span>
+                  <p @click="telShowFn(paibanrenDetail.phone1,paibanrenDetail.phone2,paibanrenDetail.phone3)" style="float:none;cursor: pointer;width: 300px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;">
+                    {{(paibanrenDetail.phone1? paibanrenDetail.phone1:"") + (paibanrenDetail.phone2? ','+paibanrenDetail.phone2:"")+(paibanrenDetail.phone3? ','+paibanrenDetail.phone3:"")}}
+                  </p>
+                </div>
               </div>
               <div class="linkmanBoxRtLine">
                 <div class="telinput" v-for="( itemed, keysIf ) in paibanrenDetail.tels" :key=keysIf>
@@ -225,6 +235,12 @@
                   <el-input @blur="dblPostEnd(item.customerWorkerId,item.post.name,key,$event)" class="withBox" 
                     placeholder='单击填写职务' type="text" v-model="item.post.name" maxlength="20"></el-input>
                 </p>
+                <div> 
+                  <span style="float: left;margin-right: 3px;">手机: </span>
+                  <p @click="telShowFn(item.phone1,item.phone2,item.phone3)" style="float:none;cursor: pointer;width: 300px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;">
+                    {{(item.phone1? item.phone1:"") + (item.phone2? ','+item.phone2:"")+(item.phone3? ','+item.phone3:"")}}
+                  </p>
+                </div>
               </div>
               <div class="linkmanBoxRtLine">
                 <div class="telinput" v-for="( itemed, keys ) in item.tels " :key=keys>
@@ -461,7 +477,15 @@
     //   }
     // },
     methods: {
-
+      telShowFn(tel1,tel2,tel3){
+        console.log(tel1,','+tel2,','+tel3);
+        this.$alert((tel1? tel1:'')+(tel2? ','+tel2:'')+(tel3? ','+tel3:''), '查看号码', {
+          confirmButtonText: '确定',
+          callback: action => {
+            
+          }
+        })
+      },
       // 医院信息
       async customer () {
         let thisValue = this;
@@ -1383,7 +1407,7 @@
     line-height: 51px;
   }
 
-  .detailLine>div>p {
+  .detailLine>div>div>p {
     display: inline-block;
     font-size: 16px;
     margin-right: 20px;
@@ -1403,7 +1427,8 @@
     /* margin-left: 10px; */
     cursor: pointer;
     float: right;
-    margin-top: 13px;
+    margin-top: 9px;
+    margin-left: 3px;
     
   }
     .detailLine>div img:last-child{

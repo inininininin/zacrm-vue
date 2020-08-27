@@ -800,7 +800,7 @@ export default {
 												)+
 											'</td>'+
 											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay || "") + '</td>'+
-											'<td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td>'+
+											'<td>' + thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) + '</td>'+
 											'<td class="xiugaiTimeFn">' + toRevisitTime + '</td>'+
 										'</tr>'
 									)
@@ -855,7 +855,7 @@ export default {
 				var halfamonth = day * 15;
 				var month = day * 30;
 				var now = new Date().getTime();
-				var diffValue = now - dateTimeStamp;
+				var diffValue = now - dateTimeStamp.createTime;
 				if (diffValue < 0) {
 					return;
 				}

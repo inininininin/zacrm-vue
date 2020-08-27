@@ -296,10 +296,10 @@ export default {
 					'area2Id': thisValue.area2Id,
 					'urgent': thisValue.urgent,
 					'totalNum': thisValue.totalNum,
-          'paiBanCustomerWorkerHas':thisValue.paiBanCustomerWorkerHas,
-          'paiBanCustomerWorkerPhoneHas':thisValue.paiBanCustomerWorkerPhoneHas,
-          'zhuRenCustomerWorkerHas':thisValue.zhuRenCustomerWorkerHas,
-          'zhuRenCustomerWorkerPhoneHas':thisValue.zhuRenCustomerWorkerPhoneHas,
+					'paiBanCustomerWorkerHas':thisValue.paiBanCustomerWorkerHas,
+					'paiBanCustomerWorkerPhoneHas':thisValue.paiBanCustomerWorkerPhoneHas,
+					'zhuRenCustomerWorkerHas':thisValue.zhuRenCustomerWorkerHas,
+					'zhuRenCustomerWorkerPhoneHas':thisValue.zhuRenCustomerWorkerPhoneHas,
 				}
 				$.ajax({
 					url: '/cache/set',
@@ -800,7 +800,7 @@ export default {
 												)+
 											'</td>'+
 											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay || "") + '</td>'+
-											'<td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) + '</td>'+
+											'<td>' + thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) + '</td>'+
 											'<td class="xiugaiTimeFn">' + toRevisitTime + '</td>'+
 										'</tr>'
 									)
@@ -847,6 +847,7 @@ export default {
         getDateDiff(dateTimeStamp) {
 			if(!dateTimeStamp)
 				return ''
+			// console.log(dateTimeStamp.createTime)
             let thisValue = this
 				var result;
 				var minute = 1000 * 60;
@@ -855,7 +856,7 @@ export default {
 				var halfamonth = day * 15;
 				var month = day * 30;
 				var now = new Date().getTime();
-				var diffValue = now - dateTimeStamp;
+				var diffValue = now - dateTimeStamp.createTime;
 				if (diffValue < 0) {
 					return;
 				}
