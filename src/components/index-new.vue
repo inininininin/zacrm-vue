@@ -6,14 +6,14 @@
 		<span class="record3" hidden=""></span>
 		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
 		<a href="../assets/call/index.html" target="_blank">话机页面</a>
-		<router-link :to="{path:'index-new',query:{time:new Date().getTime()}}" style="padding: 10px 20px;" title="欢迎体验">新版本页面</router-link>
+		<router-link :to="{path:'index',query:{time:new Date().getTime()}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link>
 		<input type="" name="" id="inp_send"  hidden="">
 		<button id="btn_conn" hidden="">发送</button>
 		<div class="mainbox">
 			<div class="topselect">
 				<div style="width: 100%;height: auto;">
 					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
-                    <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
+                    <router-link :to="{path:'/add-hosNew',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
 					</router-link>
                     <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
@@ -769,7 +769,7 @@ export default {
 										'<tr id=' + res.data.itemList[i].customerId +'>' +
 											'<td>'+(parseInt(i)+1+((pn-1)*15))+'</td>' +
 											'<td class="enterHos">' +
-												'<a href="#/add-hos?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
+												'<a href="#/modify-hosNew?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
 											'</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
 												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
@@ -896,5 +896,9 @@ export default {
 	margin-top: 90px;
 	color: #a9a0a0;
 
+}
+
+table thead{
+    background: #8dc5ff;
 }
 </style>

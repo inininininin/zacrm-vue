@@ -1,6 +1,10 @@
 <template>
   <div id='addIndex'>
+
     <div class="addIndexBox">
+      <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
+      <a href="../assets/call/index.html" target="_blank">话机页面</a>
+      <router-link :to="{path:'add-hos',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link>
       <div>
         <div class="addIndexBoxTitle">
           <span class="title">医院基本信息</span>
@@ -25,8 +29,8 @@
             </div>
             <div class="detailLine">
               <div>
-                <span>其他号码：</span>
-                <p v-for="(item, i) in hospitalDetail.telList" :key=i>
+                <span style="display:block">其他号码：</span>
+                <p v-for="(item, i) in hospitalDetail.telList" :key=i style="width:385px">
                   <span>{{item.name}}：</span>
                   <span>{{item.tel}}</span>
                   <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
@@ -44,7 +48,7 @@
               <!-- <el-date-picker
                     v-model="hospitalDetail.toRevisitTime"
                     type="date"
-                    placeholder="选择日期">
+                    placeholder="">
                   </el-date-picker> -->
             </div>
             <div class="detailLine">
@@ -94,8 +98,8 @@
             </div>
             <div class="detailLine detailLineModify">
               <div>
-                <span>其他号码：</span>
-                <p class="modifyTel" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
+                <span style="display:block">其他号码：</span>
+                <p class="modifyTel" style="width:350px" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
                   <span>{{item.name}}：</span><span>{{item.tel}}</span>
                   <!-- <img src="../assets/img/zuoji.svg" alt="">
                     <img src="../assets/img/shouji.svg" alt=""> -->
@@ -109,7 +113,7 @@
               <div class="toRevisitTime">
                 <span>回访时间：</span>
                 <!-- <span>{{hospitalDetail.toRevisitTime}}</span> -->
-                <el-date-picker v-model="hospitalDetail.toRevisitTime" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
+                <el-date-picker v-model="hospitalDetail.toRevisitTime" type="date" placeholder="" format="yyyy 年 MM 月 dd 日"
                   value-format="timestamp">
                 </el-date-picker>
               </div>
@@ -152,10 +156,10 @@
             <div class="linkmanBoxTitle" @click="traceList(paibanrenDetail.customerWorkerId,1,paibanrenDetail.name.name)"><span>拍板人</span></div>
             <div class="linkmanBoxRt">
               <div class="linkmanBoxRtLine">
-                <p @click="dblName(paibanrenDetail.customerWorkerId,paibanrenDetail.name.name,'key')">
+                <p @click="dblName(paibanrenDetail.customerWorkerId,paibanrenDetail.name.name,'key',$event)">
                   <span class="linkmanTitle">姓名：</span>
-                  <el-input @blur="dblNameEnd(paibanrenDetail.customerWorkerId,paibanrenDetail.name.name,'key')" class="withBox"
-                    :disabled="paibanrenDetail.name.type=='0'" type="text" placeholder="双击填写姓名" v-model="paibanrenDetail.name.name"
+                  <el-input @blur="dblNameEnd(paibanrenDetail.customerWorkerId,paibanrenDetail.name.name,'key',$event)" class="withBox"
+                     type="text" placeholder="单击填写姓名" v-model="paibanrenDetail.name.name"
                     maxlength="20"></el-input>
                 </p>
                 <div class="ifQuick">
@@ -170,19 +174,19 @@
                 </div>
               </div>
               <div class="linkmanBoxRtLine">
-                <p @click="dblPost(paibanrenDetail.customerWorkerId,paibanrenDetail.post.name,'key')">
+                <p @click="dblPost(paibanrenDetail.customerWorkerId,paibanrenDetail.post.name,'key',$event)">
                   <span class="linkmanTitle">职务：</span>
-                  <el-input @blur="dblPostEnd(paibanrenDetail.customerWorkerId,paibanrenDetail.post.name,'key')" class="withBox"
-                    :disabled="paibanrenDetail.post.type == '0'" placeholder='双击填写职务' type="text" v-model="paibanrenDetail.post.name"
+                  <el-input @blur="dblPostEnd(paibanrenDetail.customerWorkerId,paibanrenDetail.post.name,'key',$event)" class="withBox"
+                     placeholder='单击填写职务' type="text" v-model="paibanrenDetail.post.name"
                     maxlength="20"></el-input>
                 </p>
               </div>
               <div class="linkmanBoxRtLine">
                 <div class="telinput" v-for="( itemed, keysIf ) in paibanrenDetail.tels" :key=keysIf>
                   <span class="linkmanTitle">电话：</span>
-                  <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)">
-                    <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels)"
-                      :disabled="itemed.type == '0'" placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20"
+                  <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)">
+                    <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)"
+                       placeholder='单击输入电话' type="tel" v-model="itemed.tel" maxlength="20"
                       onkeyup="value=value.replace(/[^\d\-\d]/g,'')" autocomplete='off'></el-input>
                     <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
@@ -200,11 +204,11 @@
             <div class="linkmanBoxTitle" @click="traceList(item.customerWorkerId,1,item.name.name)"><span>相关人</span></div>
             <div class="linkmanBoxRt">
               <div class="linkmanBoxRtLine">
-                <p @click="dblName(item.customerWorkerId,item.name.name,key)">
+                <p @click="dblName(item.customerWorkerId,item.name.name,key,$event)">
                   <span class="linkmanTitle">姓名：</span>
                   <!-- <span v-show='item.name.show' class="withBox" @click="changeName()">{{item.name.name}}</span> -->
-                  <el-input @blur="dblNameEnd(item.customerWorkerId,item.name.name,key)" class="withBox" :disabled="item.name.type=='0'"
-                    type="text" placeholder="双击填写姓名" v-model="item.name.name" maxlength="20"></el-input>
+                  <el-input @blur="dblNameEnd(item.customerWorkerId,item.name.name,key,$event)" class="withBox" 
+                    type="text" placeholder="单击填写姓名" v-model="item.name.name" maxlength="20"></el-input>
                 </p>
                 <div class="ifQuick">
                   <el-checkbox @change='urgentQuick(item.customerWorkerId,item.urgentQuick)' v-model="item.urgentQuick"
@@ -216,18 +220,18 @@
                 </div>
               </div>
               <div class="linkmanBoxRtLine">
-                <p @click="dblPost(item.customerWorkerId,item.post.name,key)">
+                <p @click="dblPost(item.customerWorkerId,item.post.name,key,$event)">
                   <span class="linkmanTitle">职务：</span>
-                  <el-input @blur="dblPostEnd(item.customerWorkerId,item.post.name,key)" class="withBox" :disabled="item.post.type == '0'"
-                    placeholder='双击填写职务' type="text" v-model="item.post.name" maxlength="20"></el-input>
+                  <el-input @blur="dblPostEnd(item.customerWorkerId,item.post.name,key,$event)" class="withBox" 
+                    placeholder='单击填写职务' type="text" v-model="item.post.name" maxlength="20"></el-input>
                 </p>
               </div>
               <div class="linkmanBoxRtLine">
                 <div class="telinput" v-for="( itemed, keys ) in item.tels " :key=keys>
                   <span class="linkmanTitle">电话：</span>
-                  <p class="withBox" @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels)">
-                    <el-input @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels)" :disabled="itemed.type == '0'"
-                      placeholder='双击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
+                  <p class="withBox " @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)">
+                    <el-input   @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)" 
+                      placeholder='单击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
                       autocomplete='off'></el-input>
                     <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
@@ -284,10 +288,10 @@
     <el-dialog title="新增/修改号码" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="名称备注:" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="form.name" maxlength="10" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话号码:" :label-width="formLabelWidth">
-          <el-input type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20 v-model="form.tel"
+          <el-input type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=15 v-model="form.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -672,7 +676,6 @@
                   });
                 }
                 itemList[i].tels = tels;
-                console.log(tels, itemList[i].tels);
                 itemList[i].levelList = [{
                   level: 1,
                   label: '暂不感兴趣'
@@ -830,6 +833,10 @@
                 });
               }
               if (res.data.code === 0) {
+                 this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
                 // if (key != 'key') {
                 //   if (names == 'name') { this.linkmanList[key].name.type = 0; }
                 //   if (names == 'post') { this.linkmanList[key].post.type = 0; }
@@ -977,7 +984,6 @@
         this.form.name = '';
         this.form.tel = '';
         this.telName = this.hospitalDetail.telList.length;
-        console.log(this.telName);
         this.modifyThisTelValue = '';
         this.dialogFormVisible = false;
       },
@@ -994,7 +1000,6 @@
         } else {
           var remark = '';
           var tel = '';
-          console.log(this.modifyThisTelValue);
           if (this.modifyThisTelValue !== '') {
             remark = 'tel' + this.modifyThisTelValue + 'Remark';
             tel = 'tel' + this.modifyThisTelValue;
@@ -1028,11 +1033,9 @@
                     telName: 'tel' + this.telName
                   });
                 }
-                console.log(this.hospitalDetail.telList);
                 this.form.name = '';
                 this.form.tel = '';
                 this.telName = this.hospitalDetail.telList.length;
-                console.log(this.telName);
                 this.modifyThisTelValue = '';
                 this.dialogFormVisible = false;
               }
@@ -1045,9 +1048,7 @@
         this.form.tel = tel;
         this.form.name = name;
         // this.telName = telName;
-        console.log(telName);
         this.modifyThisTelValue = telName.slice(3, 4);
-        console.log(this.modifyThisTelValue);
       },
       // 修改是否加急
       urgentQuick (id, ifBule) {
@@ -1060,7 +1061,7 @@
       levelList (id, level) {
         this.modifyRealtion(id, 'level=' + (level || ''), '', '', '');
       },
-      // 双击修改名字
+      // 单击修改名字
       dblName (id, name, key) {
         if (key === 'key') {
           this.paibanrenDetail.name.type = 1;
@@ -1093,16 +1094,20 @@
           this.linkmanList[key].post.type = 0;
         }
       },
-      dblTel (id, tel, key, keys, keysAll) {
-        console.log(keysAll);
-        console.log(this.paibanrenDetail.tels);
+      dblTel (id, tel, key, keys, keysAll,e) {
+        console.log(e.currentTarget)
+        console.log(e.target)
         if (key === 'key') {
           this.paibanrenDetail.tels[keys].type = 1;
         } else {
           this.linkmanList[key].tels[keys].type = 1;
         }
+        //  this.$nextTick()
+        //         .then(function () {
+        //           e.target.focus()
+        //         });
       },
-      dblTelEnd (id, tel, key, keys, keysAll) {
+      dblTelEnd (id, tel, key, keys, keysAll,e) {
         if (keysAll.length === 1 && keys === 0) {
           this.modifyRealtion(id, 'tel=' + (tel || ''), key, 'tel', keys);
         } else {
@@ -1110,9 +1115,28 @@
           keysAll[keys].tel = tel;
           keysAll[keys].telName = 'tel' + keys;
           keysAll[keys].type = 1;
+          console.log(keysAll.length);
+          // for (var i in keysAll) {
+          //   keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
+          // }
           for (var i in keysAll) {
-            keyStr = keyStr + '&' + keysAll[i].telName + '=' + keysAll[i].tel;
+            keyStr = keyStr + '&tel' + i + '=' + keysAll[i].tel;
           }
+           if (keysAll.length == 1) {
+             keyStr = keyStr + '&tel1=&tel=&tel3=&tel4=&tel5=';
+           }
+           if (keysAll.length == 2) {
+             keyStr = keyStr + '&tel=&tel3=&tel4=&tel5=';
+           }
+           if (keysAll.length == 3) {
+             keyStr = keyStr + '&tel3=&tel4=&tel5=';
+           }
+           if (keysAll.length == 4) {
+             keyStr = keyStr + '&tel4=&tel5=';
+           }
+           if (keysAll.length == 5) {
+             keyStr = keyStr + '&tel5=';
+           }
           keyStr = keyStr.slice(1, keyStr.length);
           if (keyStr && keyStr.slice(3, 4) == 0) {
             keyStr = 'tel' + keyStr.split('tel0')[1];
@@ -1144,7 +1168,6 @@
           });
           return;
         }
-        console.log(this.addNewTelDetail.keys);
         if (this.addNewTelDetail.keys.length === 0) {
           str = 'tel=' + (this.relationTel.tel || '');
         } else {
@@ -1153,7 +1176,6 @@
             'telName': 'tel' + [this.addNewTelDetail.keys.length],
             'type': 0
           });
-          console.log(this.addNewTelDetail.keys);
           for (var i in this.addNewTelDetail.keys) {
             if (i === 0) {
               str = str + 'tel=' + (this.addNewTelDetail.keys[i].tel || '');
@@ -1183,6 +1205,10 @@
               });
             }
             if (res.data.code === 0) {
+                this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
               // if (names == 'name')
               //   this.linkmanList[key].name.type = 0;
               // if (names == 'post')
@@ -1308,7 +1334,7 @@
   }
 
   .addmainBox {
-    width: 726px;
+    width: 1026px;
     float: left;
     /* display: inline-block; */
     box-sizing: border-box;
@@ -1316,7 +1342,7 @@
   }
 
   .addContent {
-    width: 680px;
+    width: 380px;
     float: left;
     height: auto;
     /* display: inline-block; */
@@ -1360,7 +1386,7 @@
   .detailLine>div>p {
     display: inline-block;
     font-size: 16px;
-    margin-right: 10px;
+    margin-right: 20px;
   }
 
   .detailLine>div {
@@ -1376,7 +1402,13 @@
     height: 24px;
     /* margin-left: 10px; */
     cursor: pointer;
+    float: right;
+    margin-top: 13px;
+    
   }
+    .detailLine>div img:last-child{
+      margin-right: 5px;
+    }
 
   .detailLine>div>span:nth-child(1) {
     font-family: PingFangSC, PingFangSC-Medium;
@@ -1893,6 +1925,7 @@
     font-size: 14px;
     margin-top: 20px;
   }
+ 
 
   /* input框的placeholder样式 */
   >>>input::-webkit-input-placeholder {
@@ -1906,4 +1939,10 @@
   >>>input::-ms-input-placeholder {
     color: #c0c4cc !important;
   }
+   >>>input{
+    color: #999999 !important;
+  }
+  >>>input:focus {
+            color: #000000 !important;
+   }
 </style>

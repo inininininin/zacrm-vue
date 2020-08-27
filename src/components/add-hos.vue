@@ -61,7 +61,7 @@
 						<el-date-picker
 							v-model="toRevisitTime"
 							type="date"
-							placeholder="选择日期时间"
+							placeholder=""
 							align="right"
 							:picker-options="pickerOptions"
 							@change = "elmentDataFn">
