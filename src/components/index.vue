@@ -54,7 +54,7 @@
 						<option value="0">无拍板人</option>
 						<option value="1">有拍板人</option>
 					</select>
-					<select class="paiBanCustomerWorkerPhoneHas">
+					<select class="paiBanCustomerWorkerPhoneHas" style="width: 152px;">
 						<option value="" selected>-拍板人有无号码-</option>
 						<option value="0">无号码</option>
 						<option value="1">有号码</option>
@@ -65,7 +65,7 @@
 						<option value="1">有相关人</option>
 					</select>
 
-					<select class="zhuRenCustomerWorkerPhoneHas">
+					<select class="zhuRenCustomerWorkerPhoneHas" style="width: 152px;">
 						<option value="" selected>-相关人有无号码-</option>
 						<option value="0">无号码</option>
 						<option value="1">有号码</option>
@@ -722,11 +722,18 @@ export default {
     },
     methods:{
 		elmentDataFn(_value){
-			console.log(this.moment(_value).valueOf())
-			console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
-			if(_value){
-				this.toRevisitTimeFrom = this.moment(_value).valueOf();
-				this.toRevisitTimeTo = this.toRevisitTimeFrom+(1*24*60*60-1)*1000;
+			// console.log( typeof _value)
+			// console.log(this.moment(_value).valueOf())
+			// console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
+			let time = this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+			time = time[0].replace(/-/g,'/') +' 00:00:00'
+			let nowTime = this.moment(this.moment(new Date().getTime()).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+			nowTime = nowTime[0].replace(/-/g,'/') +' 00:00:00' 
+			if(time){
+				this.toRevisitTimeFrom = this.moment(nowTime).valueOf();
+				this.toRevisitTimeTo = this.moment(time).valueOf()+(1*24*60*60*1000-1);
+				console.log("toRevisitTimeFrom"+this.moment(this.toRevisitTimeFrom).format('YYYY-MM-DD HH-mm-ss'))
+				console.log("toRevisitTimeTo"+this.moment(this.toRevisitTimeTo).format('YYYY-MM-DD HH-mm-ss'))
 			}else{
 				this.toRevisitTimeFrom = '';
 				this.toRevisitTimeTo = '';
@@ -893,6 +900,11 @@ export default {
 }
 </script>
 <style scoped>
+#index{
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+}
 .seccion{
 	width: 100%;
 	height: 30px;

@@ -189,6 +189,11 @@
 </script>
 
 <style scoped>
+#lead_index{
+  width: 100%;
+	height: 100%;
+  overflow: scroll;
+}
   #lead_index h3 {
     line-height: 60px;
     font-size: 14px;

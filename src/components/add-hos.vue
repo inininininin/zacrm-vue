@@ -73,7 +73,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="showIs" style="display: none;">
+			<div class="showIs" style="display: none;min-width:1270px;">
 				<div class=" addPeople">
 					<h2>相关人员</h2>
 				</div>
@@ -401,7 +401,7 @@ export default {
 
 
 			$('#add-hos .enterHos div').html('')
-			$('#add-hos .trackName').html('')
+			$('#add-hos .trackName').html('所有人的跟踪记录')
             // 省市区三级联动
 			// TODO 后期待优化
 
@@ -1522,9 +1522,11 @@ export default {
 			// 	this.toRevisitTimeFrom = '';
 			// 	this.toRevisitTimeTo = '';
 			// }
-			console.dir(_value)
-			this.toRevisitTime = this.moment(_value).valueOf()
-			console.log(this.toRevisitTime)
+			let time = this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+			time = time[0].replace(/-/g,'/') +' 00:00:00'
+			console.dir(time)
+			this.toRevisitTime = this.moment(time).valueOf()
+			console.log( this.moment(this.toRevisitTime).format('YYYY-MM-DD HH-mm-ss'))
 		},
         modifyHosTel(telNameTitle,telName,telValueTitle,telValue,type){
             let thisValue = this
@@ -2310,6 +2312,11 @@ export default {
 }
 </script>
 <style scoped>
+#add-hos{
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+}
 .huifangClass{
 	width:auto
 }

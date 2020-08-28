@@ -296,6 +296,11 @@
 </script>
 
 <style scoped>
+  #login{
+    width: 100%;
+	  height: 100%;
+    overflow: scroll;
+  }
   .login {
     width: 100%;
     height: 100%;

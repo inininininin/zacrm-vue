@@ -1,6 +1,6 @@
 #add-hos .mainbox{
 	width: 90%;
-	min-width: 1200px;
+	min-width: 1280px;
 	margin: 0 auto 100px;
 }
 #add-hos .topselect{
@@ -276,6 +276,7 @@ button[disabled]{
 	height: 60px;
 	line-height: 60px;
 	border-bottom: 1px solid #e5e5e5;
+	min-width: 641px;
 }
 #add-hos .selectQuick>div{
 	display: inline-block;
