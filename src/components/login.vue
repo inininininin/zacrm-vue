@@ -95,6 +95,7 @@
         </router-link>
       </div>
     </el-dialog>
+    <div class="seccion">ver : {{$version}}  ser : {{$store.state.serVersion}}</div>
   </div>
 </template>
 <script>
@@ -457,5 +458,13 @@
     background-position: 0 0%;
     color:#000;
     transition: background .3s ease;
+  }
+  .seccion{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 90px;
+    color: #a9a0a0;
   }
 </style>

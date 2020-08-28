@@ -261,6 +261,7 @@
     min-width: 1440px;
     background: #f0f2f5;
     overflow: scroll;
+    overflow-x: hidden;
   }
 
   .addIndexBox {

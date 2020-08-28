@@ -22,7 +22,7 @@
 						align="right"
 						@change = "searchFn">
 					</el-date-picker>
-				<button class="searchThis refresh" @click="searchFn">重置</button>
+				<button class="searchThis refresh" @click="resertFn">重置</button>
 			</div>
 			<div class="trackDetail">
 				<ul v-for="(item,inx) in containBoxList" :key="inx">

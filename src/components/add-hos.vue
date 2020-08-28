@@ -243,7 +243,7 @@
 			<div id="addNewTelMid">
 				<div><p>新增/修改号码</p><i class="layui-icon closeAddThis">&#x1006;</i></div>
 				<div class='divBox'><span>名称备注:</span><input class="telName" type="text"></div>
-				<div class='divBox'><span>电话号码:</span><input class="telValue" type="text"></div>
+				<div class='divBox'><span>电话号码:</span><input class="telValue"  onkeyup="value=value.replace(/[^\d\-\d]/g,'')"  type="text"></div>
 				<button type="button" id='submit_newTel' typeId=''>提交</button>
 			</div>
 		</div>
