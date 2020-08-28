@@ -3,8 +3,8 @@
 		<div class="containBox" id="containBox">
 			<h2>昨天工作记录列表</h2>
 			<div class="selectOption" style="width: 100%;height: 80px;">
-				<!-- <button class="searchThis" @click="searchFn">搜索</button> -->
-					回访时间 : <input style="width:170px" v-model="returnVisitTime" @change="
+				<button class="searchThis" @click="searchFn">搜索</button>
+					<!-- 回访时间 : <input style="width:170px" v-model="returnVisitTime" @change="
 							debugger;
 							if($event.target.value){
 								createTimeFrom = new Date($event.target.value+` 00:00:00`).getTime();
@@ -14,8 +14,15 @@
 							createTimeTo = '';
 							}
 							searchFn()
-					" type="date" />
-				<button class="searchThis refresh" @click="resertFn">重置</button>
+					" type="date" /> -->
+					<el-date-picker
+						v-model="returnVisitTime"
+						type="date"
+						placeholder="回访时间"
+						align="right"
+						@change = "searchFn">
+					</el-date-picker>
+				<button class="searchThis refresh" @click="searchFn">重置</button>
 			</div>
 			<div class="trackDetail">
 				<ul v-for="(item,inx) in containBoxList" :key="inx">
@@ -53,7 +60,16 @@ export default {
 			Object.assign(this.$data, this.$options.data());
 			this.startFn()
 		},
-		searchFn(){
+		searchFn(_value){
+			if(_value){
+				let time = this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+				time = time[0].replace(/-/g,'/') +' 00:00:00'
+				this.createTimeFrom = this.moment(time).valueOf();
+				this.createTimeTo = this.createTimeFrom+(1*24*60*60*1000-1);
+			}else{
+				this.createTimeFrom = '';
+				this.createTimeTo = '';
+			}
 			console.log(this.createTimeFrom)
 			let from = this.moment(this.createTimeFrom).format('YYYY-MM-DD HH-mm-ss')
 			let to = this.moment(this.createTimeTo).format('YYYY-MM-DD HH-mm-ss')
