@@ -7,7 +7,6 @@
       <!-- <router-link :to="{path:'add-hos',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link> -->
       <div>
         <div class="addIndexBoxTitle">
-          <span class="title">医院基本信息</span>
           <el-button v-show="show" @click='modify()' class="modify" type="primary">修改</el-button>
           <el-button v-show="!show" @click='saveIs()' class="saveIs" type="primary">保存</el-button>
           <el-button v-show="!show" @click='refuse()' class="refuse" plain>取消</el-button>
@@ -17,11 +16,11 @@
           <div class="addmainBox">
             <div class="detailLine">
               <div>
-                <span>医院名称：</span>
+                <span>医院名：</span>
                 <span>{{hospitalDetail.name}}</span>
               </div>
               <div>
-                <span>医院电话：</span>
+                <span>电话：</span>
                 <span style="margin-right:10px">{{hospitalDetail.tel}}</span>
                 <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt="">
                 <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt="">
@@ -56,22 +55,22 @@
             </div>
             <div class="detailLine">
               <div>
-                <span>医院地址：</span>
-                <p>
+                <span>地址：</span>
+                <span>
                   <span>{{hospitalDetail.diliNow.shenfen.name}}-</span>
                   <span>{{hospitalDetail.diliNow.city.name}}-</span>
                   <span>{{hospitalDetail.diliNow.qu.name}}</span>
-                </p>
+                </span>
               </div>
               <div>
-                <span>医院性质：</span>
+                <span>性质：</span>
                 <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
               </div>
             </div>
           </div>
           <div class="addContent">
             <div>
-              <span>医院简介：</span>
+              <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
@@ -87,13 +86,13 @@
           <div class="addmainBox">
             <div class="detailLine detailLineModify">
               <div>
-                <span>医院名称：</span>
-                <el-input class="hospitalName" v-model="hospitalDetail.name" type="text" placeholder='请输入医院名称'></el-input>
+                <span>医院名：</span>
+                <el-input class="hospitalName" v-model="hospitalDetail.name" type="text" placeholder='请输入'></el-input>
               </div>
               <div>
-                <span>医院电话：</span>
+                <span>电话：</span>
                 <el-input class="hospitalPhone" type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20
-                  v-model="hospitalDetail.tel" placeholder='请输入医院电话'></el-input>
+                  v-model="hospitalDetail.tel" placeholder='请输入'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -125,11 +124,11 @@
             </div>
             <div class="detailLine detailLineModify">
               <div>
-                <span>医院地址：</span>
+                <span>地址：</span>
                 <el-cascader class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
               </div>
               <div>
-                <span>医院性质：</span>
+                <span>性质：</span>
                 <!-- hospitalNatureValue -->
                 <el-select @change="selectChanged" class="hospitalNature" v-model="hospitalDetail.nature" placeholder="请选择">
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
@@ -141,7 +140,7 @@
           </div>
           <div class="addContent">
             <div>
-              <span>医院简介：</span>
+              <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
@@ -185,7 +184,7 @@
                     maxlength="20"></el-input>
                 </p>
                 <div> 
-                  <span style="float: left;margin-right: 3px;">手机: </span>
+                  <span style="float: left;margin-right: 3px;">历史号码: </span>
                   <p @click="telShowFn(paibanrenDetail.phone1,paibanrenDetail.phone2,paibanrenDetail.phone3)" style="float:none;cursor: pointer;width: 300px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;">
                     {{(paibanrenDetail.phone1? paibanrenDetail.phone1:"") + (paibanrenDetail.phone2? ','+paibanrenDetail.phone2:"")+(paibanrenDetail.phone3? ','+paibanrenDetail.phone3:"")}}
                   </p>
@@ -236,7 +235,7 @@
                     placeholder='单击填写职务' type="text" v-model="item.post.name" maxlength="20"></el-input>
                 </p>
                 <div> 
-                  <span style="float: left;margin-right: 3px;">手机: </span>
+                  <span style="float: left;margin-right: 3px;">历史号码: </span>
                   <p @click="telShowFn(item.phone1,item.phone2,item.phone3)" style="float:none;cursor: pointer;width: 300px;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;">
                     {{(item.phone1? item.phone1:"") + (item.phone2? ','+item.phone2:"")+(item.phone3? ','+item.phone3:"")}}
                   </p>
@@ -278,7 +277,7 @@
             </div>
             <div class="trackBottom">
               <div class="trackBottomTwo">
-                <el-input class="trackText" type="textarea" :autosize="{ minRows: 3, maxRows: 3}" placeholder="请输入跟踪记录"
+                <el-input class="trackText" type="textarea" :autosize="{ minRows: 3, maxRows: 3}" placeholder="请输入"
                   resize='none' v-model="linkmanTracecontent">
                 </el-input>
                 <el-button class="sendYes" @click="sendYes">发送</el-button>
@@ -785,7 +784,7 @@
         if (!this.linkmanTraceId) {
           this.$message({
             type: 'info',
-            message: '请点击左侧相关人或者拍板人列表中的蓝色区域'
+            message: '请点击左边蓝色区域选择追踪目标'
           });
           return;
         }
@@ -1320,7 +1319,7 @@
   }
 
   .addIndexBoxTitle {
-    height: 70px;
+    height: 41px;
   }
 
   .addIndexBoxTitle .title {
@@ -1343,7 +1342,7 @@
     background: #1890ff;
     border-radius: 4px;
     float: right;
-    margin: 21px 24px 0 0;
+    margin: 0 24px 0 0;
   }
 
   .addIndexBoxTitle .refuse {
@@ -1353,7 +1352,7 @@
     color: #1890ff;
     border-radius: 4px;
     float: right;
-    margin: 21px 24px 0 0;
+    margin: 0 24px 0 0;
     /* border: 1px solid #1890ff; */
   }
 
@@ -1404,7 +1403,7 @@
   .detailLine>div {
     display: inline-block;
     margin-right: 115px;
-    line-height: 51px;
+    line-height: 40px;
   }
 
   .detailLine>div>div>p {

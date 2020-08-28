@@ -17,12 +17,12 @@
           <div class="addmainBox">
             <div class="detailLine detailLineModify">
               <div>
-                <span>医院名称：</span>
-                <el-input class="hospitalName" v-model="hospitalDetail.name" type="text" placeholder='请输入医院名称'></el-input>
+                <span>医院名：</span>
+                <el-input class="hospitalName" v-model="hospitalDetail.name" type="text" placeholder='请输入'></el-input>
               </div>
               <div>
-                <span>医院电话：</span>
-                <el-input class="hospitalPhone" v-model="hospitalDetail.tel" type="text" placeholder='请输入医院电话'></el-input>
+                <span>电话：</span>
+                <el-input class="hospitalPhone" v-model="hospitalDetail.tel" type="text" placeholder='请输入'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -41,11 +41,11 @@
 
             <div class="detailLine detailLineModify">
               <div>
-                <span>医院地址：</span>
+                <span>地址：</span>
                 <el-cascader class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
               </div>
               <div>
-                <span>医院性质：</span>
+                <span>性质：</span>
                 <!-- hospitalNatureValue -->
                 <el-select @change="selectChanged" class="hospitalNature" v-model="hospitalDetail.nature" placeholder="请选择">
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
@@ -57,7 +57,7 @@
           </div>
           <div class="addContent">
             <div>
-              <span>医院简介：</span>
+              <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
