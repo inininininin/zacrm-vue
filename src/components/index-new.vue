@@ -54,7 +54,7 @@
 						<option value="0">无拍板人</option>
 						<option value="1">有拍板人</option>
 					</select>
-					<select class="paiBanCustomerWorkerPhoneHas">
+					<select class="paiBanCustomerWorkerPhoneHas" style="width: 152px;">
 						<option value="" selected>-拍板人有无号码-</option>
 						<option value="0">无号码</option>
 						<option value="1">有号码</option>
@@ -65,7 +65,7 @@
 						<option value="1">有相关人</option>
 					</select>
 
-					<select class="zhuRenCustomerWorkerPhoneHas">
+					<select class="zhuRenCustomerWorkerPhoneHas" style="width: 152px;">
 						<option value="" selected>-相关人有无号码-</option>
 						<option value="0">无号码</option>
 						<option value="1">有号码</option>
@@ -106,7 +106,13 @@
 							<th>拍板人手机号码</th>
 							<th>拍板人验证</th>
 							<th>近期跟踪时间</th>
-							<th>回访时间</th>
+							<th style="cursor: pointer;" @click="sortingFn('toRevisitTime')">
+								回访时间
+								<i class="el-icon-caret-bottom" v-if="sortingObj.toRevisitTimeData"></i>
+								<i class="el-icon-caret-top" v-if="!sortingObj.toRevisitTimeData"></i>
+								
+								
+							</th>
 						</tr>
 					</thead>
 					<tbody class="tbody">
@@ -133,6 +139,11 @@ export default {
 	name: 'index',
 	data () {
 		return {
+			sorts:'toRevisitTime',
+			orders:'desc',
+			sortingObj:{
+				toRevisitTimeData:true,
+			},
 			kw : '',
 			level : '',
 			nature : '',
@@ -721,12 +732,35 @@ export default {
 		}
     },
     methods:{
+		sortingFn(_value){
+			switch(_value){
+				case 'toRevisitTime':
+					this.sorts = 'toRevisitTime'
+					if(this.sortingObj.toRevisitTimeData){
+						
+						this.orders = 'asc'
+						this.sortingObj.toRevisitTimeData =false;
+					}else{
+						this.orders = 'desc'
+						this.sortingObj.toRevisitTimeData =true;
+					}
+					console.log(this.sorts+'-'+this.orders)
+					this.lastPageNo()
+				break;
+			}
+		},
 		elmentDataFn(_value){
-			console.log(this.moment(_value).valueOf())
-			console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
+			// console.log(this.moment(_value).valueOf())
+			// console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
+			let time = this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+			time = time[0].replace(/-/g,'/') +' 00:00:00'
+			let nowTime = this.moment(this.moment(new Date().getTime()).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+			nowTime = nowTime[0].replace(/-/g,'/') +' 00:00:00'
 			if(_value){
-				this.toRevisitTimeFrom = this.moment(_value).valueOf();
-				this.toRevisitTimeTo = this.toRevisitTimeFrom+(1*24*60*60-1)*1000;
+				this.toRevisitTimeFrom = this.moment(nowTime).valueOf();
+				this.toRevisitTimeTo = this.moment(time).valueOf()+(1*24*60*60-1)*1000;
+				console.log("toRevisitTimeFrom"+this.moment(this.toRevisitTimeFrom).format('YYYY-MM-DD HH-mm-ss'))
+				console.log("toRevisitTimeTo"+this.moment(this.toRevisitTimeTo).format('YYYY-MM-DD HH-mm-ss'))
 			}else{
 				this.toRevisitTimeFrom = '';
 				this.toRevisitTimeTo = '';
@@ -742,7 +776,7 @@ export default {
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
 						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+
             '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+
-            '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
+            '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+'&order=' + thisValue.orders + '&sort=' + thisValue.sorts+
              '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
 					async: true,
 					success: function(res) {
@@ -819,7 +853,7 @@ export default {
 
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
 						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+ '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
-             '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
+             '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas+'&order=' + thisValue.orders + '&sort=' + thisValue.sorts,
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
@@ -892,6 +926,11 @@ export default {
 }
 </script>
 <style scoped>
+#index{
+	height: 100%;
+	width: 100%;
+	overflow: scroll;
+}
 .seccion{
 	width: 100%;
 	height: 30px;

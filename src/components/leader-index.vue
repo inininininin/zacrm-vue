@@ -1045,9 +1045,11 @@ lookrecordlist(){
   #leader_index {
     width: 100%;
     min-width: 1200px;
-    height: auto;
+    /* height: auto; */
+    height: 100%;
     min-height: 100%;
     background: rgba(240, 242, 245, 1);
+    overflow: scroll;
   }
 
   .leader_top {
