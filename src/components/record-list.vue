@@ -359,6 +359,11 @@
 </script>
 
 <style scoped>
+  #recore-list{
+    width: 100%;
+	  height: 100%;
+    overflow: scroll;
+  }
   #index {
     min-width: 1200px;
   }

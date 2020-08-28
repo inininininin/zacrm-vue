@@ -1411,6 +1411,11 @@
   }
 </script>
 <style scoped>
+  #index{
+    width: 100%;
+	  height: 100%;
+    overflow: scroll;
+  }
   .seccion {
     width: 100%;
     height: 30px;
