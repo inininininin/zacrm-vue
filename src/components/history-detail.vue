@@ -3,7 +3,7 @@
 		<div class="containBox" id="containBox">
 			<h2>昨天工作记录列表</h2>
 			<div class="selectOption" style="width: 100%;height: 80px;">
-				<button class="searchThis" @click="searchFn">搜索</button>
+				<!-- <button class="searchThis" @click="searchFn">搜索</button> -->
 					<!-- 回访时间 : <input style="width:170px" v-model="returnVisitTime" @change="
 							debugger;
 							if($event.target.value){
