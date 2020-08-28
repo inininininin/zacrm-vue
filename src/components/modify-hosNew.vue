@@ -22,8 +22,8 @@
               <div>
                 <span>电话：</span>
                 <span style="margin-right:10px">{{hospitalDetail.tel}}</span>
-                <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt="">
                 <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt="">
+                <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt="">
               </div>
             </div>
             <div class="detailLine">
@@ -33,8 +33,8 @@
                   <p v-for="(item, i) in hospitalDetail.telList" :key=i style="width:385px">
                     <span>{{item.name}}：</span>
                     <span>{{item.tel}}</span>
-                    <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
                     <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt="">
+                    <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
                   </p>
                 </div>
                 
@@ -1306,6 +1306,7 @@
     min-width: 1440px;
     background: #f0f2f5;
     overflow: scroll;
+    overflow-x: hidden;
   }
 
   .addIndexBox {
