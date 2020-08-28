@@ -6,7 +6,6 @@
       <a href="../assets/call/index.html" target="_blank">话机页面</a>
       <div>
         <div class="addIndexBoxTitle">
-          <span class="title">医院基本信息</span>
           <!-- <el-button v-show="show" @click='modify()' class="modify" type="primary">修改</el-button> -->
           <el-button @click='saveIs()' class="saveIs" type="primary">保存</el-button>
           <el-button @click='refuse()' class="refuse" plain>取消</el-button>
@@ -196,6 +195,7 @@
         this.telList = this.detail.telList;
         this.hospitalNatureValue = this.detail.hospitalNatureValue;
         this.hospitalLabel = this.detail.hospitalLabel;
+        this.$router.back()
       },
       // 保存
       saveIs () {
@@ -276,7 +276,7 @@
   }
 
   .addIndexBoxTitle {
-    height: 70px;
+    height: 40px;
   }
 
   .addIndexBoxTitle .title {
@@ -299,7 +299,7 @@
     background: #1890ff;
     border-radius: 4px;
     float: right;
-    margin: 21px 24px 0 0;
+    margin: 0 24px 0 0;
   }
 
   .addIndexBoxTitle .refuse {
@@ -309,7 +309,7 @@
     color: #1890ff;
     border-radius: 4px;
     float: right;
-    margin: 21px 24px 0 0;
+    margin: 0 24px 0 0;
     /* border: 1px solid #1890ff; */
   }
 
