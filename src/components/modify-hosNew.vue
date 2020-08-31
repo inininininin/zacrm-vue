@@ -272,7 +272,7 @@
             </div>
             <div class="trackMid" ref="scrollRef">
               <div class="trackMidEve" v-for="(item,i) in traceDetailList" :key=i>
-                <p><span>{{item.updateTimeThis}}</span><span>{{item.customerWorkerName}}</span></p>
+                <p><span>{{item.createTime}}</span><span>{{item.customerWorkerName}}</span></p>
                 <p>{{item.content}}</p>
               </div>
             </div>
@@ -766,10 +766,13 @@
               });
             } else if (res.data.code === 0) {
               for (var i in res.data.data.itemList) {
-                res.data.data.itemList[i].updateTimeThis = this.moment(res.data.data.updateTime).format(
-                  'YYYY-MM-DD');
+                console.log(res.data.data.itemList[i].createTime)
+                res.data.data.itemList[i].createTime = thisValue.moment(res.data.data.itemList[i].createTime).format(
+                  'YYYY-MM-DD HH:mm:ss');
               }
+
               thisValue.traceDetailList = res.data.data.itemList;
+              
               var scrollRef = this.$refs.scrollRef;
               // dom节点加载后操作
               this.$nextTick()
