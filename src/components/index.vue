@@ -125,6 +125,8 @@
     </div>
 </template>
 <script>
+let nowTimeData = false;
+let nowThis = this;
 import Vue from 'vue'
 import shouji from "../assets/img/shouji.svg"
 import zuoji from "../assets/img/zuoji.svg"
@@ -160,6 +162,7 @@ export default {
 				shortcuts: [{
 					text: '今天',
 					onClick(picker) {
+						nowThis.nowTimeData = true;
 						picker.$emit('pick', new Date());
 					}
 				},
@@ -168,6 +171,7 @@ export default {
 					onClick(picker) {
 						const date = new Date();
 						debugger
+						nowThis.nowTimeData = true;
 						// console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate())
 						// console.log(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime())
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
@@ -178,6 +182,7 @@ export default {
 					text: '近一周',
 					onClick(picker) {
 						const date = new Date();
+						nowThis.nowTimeData = true;
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 7);
 						picker.$emit('pick', date);
 					}
@@ -186,6 +191,7 @@ export default {
 					text: '近一个月',
 					onClick(picker) {
 						const date = new Date();
+						nowThis.nowTimeData = true;
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+2)+'-'+date.getDate()+' 00:00:00').getTime());
 						picker.$emit('pick', date);
 					}
@@ -555,6 +561,7 @@ export default {
 		
         // 清空全部搜索条件
 			$('#index .refresh').unbind("click").click(function() {
+				Object.assign(thisValue.$data, thisValue.$options.data());
 				$('#index .keyword').val('')
 				$('#index .province').val('')
 				$('#index .city').val('')
@@ -723,12 +730,14 @@ export default {
     methods:{
 		elmentDataFn(_value){
 			// console.log( typeof _value)
-			// console.log(this.moment(_value).valueOf())
-			// console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
 			let time = this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
 			time = time[0].replace(/-/g,'/') +' 00:00:00'
-			let nowTime = this.moment(this.moment(new Date().getTime()).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
-			nowTime = nowTime[0].replace(/-/g,'/') +' 00:00:00' 
+			let nowTime = time;
+			if(nowThis.nowTimeData){
+				nowTime = this.moment(this.moment(new Date().getTime()).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+				nowTime = nowTime[0].replace(/-/g,'/') +' 00:00:00'
+				nowThis.nowTimeData = false;
+			}
 			if(time){
 				this.toRevisitTimeFrom = this.moment(nowTime).valueOf();
 				this.toRevisitTimeTo = this.moment(time).valueOf()+(1*24*60*60*1000-1);
@@ -823,8 +832,8 @@ export default {
 				$.ajax({
 					url: '/my-customer/customer-list-sum',
 					type: 'GET',
-
-					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
+					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id
+					+'&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+'&toRevisitTimeTo='+thisValue.toRevisitTimeTo+
 						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+ '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
              '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
 					async: true,

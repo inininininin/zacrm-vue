@@ -92,7 +92,7 @@
               </div>
               <div>
                 <span>医院电话：</span>
-                <el-input class="hospitalPhone" type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20
+                <el-input class="hospitalPhone" type="number" maxlength=20
                   v-model="hospitalDetail.tel" placeholder='请输入医院电话'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
@@ -108,7 +108,7 @@
                     <!-- <img src="../assets/img/zuoji.svg" alt="">
                       <img src="../assets/img/shouji.svg" alt=""> -->
                   </p>
-                  <div class="addHospitalTel" @click="(e)=>{telName<9?dialogFormVisible = true:this.$message({type: 'info',message: '当前最多添加9个备用电话'})}"><img
+                  <div class="addHospitalTel" @click="addThisTel()"><img
                     src="../assets/img/jia.svg" alt=""><span>添加电话</span></div>
                 </div>
               </div>
@@ -196,8 +196,7 @@
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)">
                     <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)"
-                       placeholder='单击输入电话' type="tel" v-model="itemed.tel" maxlength="20"
-                      onkeyup="value=value.replace(/[^\d\-\d]/g,'')" autocomplete='off'></el-input>
+                       placeholder='单击输入电话' type="number" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
                     <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg"
@@ -247,8 +246,7 @@
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox " @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)">
                     <el-input   @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)" 
-                      placeholder='单击输入电话' type="tel" v-model="itemed.tel" maxlength="20" onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
-                      autocomplete='off'></el-input>
+                      placeholder='单击输入电话' type="number" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
                     <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="">
@@ -307,7 +305,8 @@
           <el-input v-model="form.name" maxlength="10" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="电话号码:" :label-width="formLabelWidth">
-          <el-input type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=15 v-model="form.tel"
+          <!-- @input="kwReplaceFn()" -->
+          <el-input type="number" maxlength=15  v-model="form.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -317,7 +316,7 @@
       </div>
     </el-dialog>
     <!-- 新增相关人 -->
-    <el-dialog title="新增相关人" :visible.sync="dialogFormVisibleRea">
+    <el-dialog title="新增相关人" :visible.sync="dialogFormVisibleRea">     
       <el-form :model="relation">
         <el-form-item label="相关人姓名" :label-width="formLabelWidth">
           <el-input v-model="relation.name" autocomplete="off"></el-input>
@@ -332,7 +331,7 @@
     <el-dialog title="新增相关人号码" :visible.sync="dialogFormVisibleReaTel">
       <el-form :model="relationTel">
         <el-form-item label="号码" :label-width="formLabelWidth">
-          <el-input type="tel" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20 v-model="relationTel.tel"
+          <el-input type="number" maxlength=20 v-model="relationTel.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -1018,6 +1017,7 @@
       },
       // 新增电话
       makesureAdd () {
+        console.log(this.form.name+'---'+this.form.tel)
         if (this.form.name === '' || this.form.tel === '') {
           this.$message({
             type: 'info',
@@ -1072,11 +1072,20 @@
         }
       },
       // 修改电话
-      modifyThisTel (telName, tel, name) {
+      addThisTel(telName){
+        if(this.hospitalDetail.telList.length>8){
+          this.$message({type: 'info',message: '当前最多添加9个备用电话'})
+          return '';
+        }
+        this.dialogFormVisible = true;
+        this.form.tel = '';
+        this.form.name = '';
+        // this.modifyThisTelValue = telName.slice(3, 4);
+      },
+      modifyThisTel(telName,tel, name) { 
         this.dialogFormVisible = true;
         this.form.tel = tel;
         this.form.name = name;
-        // this.telName = telName;
         this.modifyThisTelValue = telName.slice(3, 4);
       },
       // 修改是否加急
@@ -1302,6 +1311,7 @@
 </script>
 
 <style scoped>
+  
   #addIndex {
     padding: 0;
     margin: 0;
@@ -1977,4 +1987,10 @@
   >>>input:focus {
             color: #000000 !important;
    }
+  >>>input::-webkit-outer-spin-button,
+  >>>input::-webkit-inner-spin-button{
+   -webkit-appearance: none !important;
+   margin: 0;
+  }
+  >>>input[type="number"]{-moz-appearance:textfield;}
 </style>
