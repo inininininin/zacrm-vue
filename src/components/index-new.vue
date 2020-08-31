@@ -25,7 +25,7 @@
 					 <span class="lastHis" style="float: right;line-height: 80px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: auto;">
-					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" />
+					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" @keyup.enter="kwSearchFn"/>
 					<select class="urgentLevel">
 						<option value="">-级别-</option>
 						<option value="0">加急客户</option>
@@ -732,6 +732,23 @@ export default {
 		}
     },
     methods:{
+		kwSearchFn(){
+			let thisValue = this;
+			thisValue.kw = $('#index .keyword').val()
+			thisValue.lastPageNo()
+			// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+			$('#index #box').paging({
+				initPageNo: 1, // 初始页码
+				totalPages: thisValue.totalNum, //总页数
+				//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				slideSpeed: 600, // 缓动速度。单位毫秒
+				jump: true, //是否支持跳转
+				callback: function(page) { // 回调函数
+					thisValue.pn = page
+					thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				}
+			})
+		},
 		sortingFn(_value){
 			switch(_value){
 				case 'toRevisitTime':
