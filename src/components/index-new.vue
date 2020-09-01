@@ -25,7 +25,7 @@
 					 <span class="lastHis" style="float: right;line-height: 70px;margin-right: 20px;">上次浏览记录</span>
 				</div>
 				<div class="selectOption" style="width: 100%;height: auto;">
-					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" />
+					<button class="searchThis">搜索</button><input type="text" class="keyword" placeholder="关键字" @keyup.enter="kwSearchFn"/>
 					<select class="urgentLevel">
 						<option value="">-级别-</option>
 						<option value="0">加急客户</option>
@@ -131,6 +131,8 @@
     </div>
 </template>
 <script>
+let nowTimeData = false;
+let nowThis = this;
 import Vue from 'vue'
 import shouji from "../assets/img/shouji.svg"
 import zuoji from "../assets/img/zuoji.svg"
@@ -171,14 +173,18 @@ export default {
 				shortcuts: [{
 					text: '今天',
 					onClick(picker) {
+						nowThis.nowTimeData = true;
 						picker.$emit('pick', new Date());
 					}
 				},
 				{
 					text: '近三天',
 					onClick(picker) {
+						console.log(Vue)
 						const date = new Date();
+						nowThis.nowTimeData = true;
 						debugger
+						console.log(nowThis.nowTimeData)
 						// console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate())
 						// console.log(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime())
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
@@ -188,6 +194,7 @@ export default {
 				{
 					text: '近一周',
 					onClick(picker) {
+						nowThis.nowTimeData = true;
 						const date = new Date();
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 7);
 						picker.$emit('pick', date);
@@ -196,6 +203,7 @@ export default {
 				{
 					text: '近一个月',
 					onClick(picker) {
+						nowThis.nowTimeData = true;
 						const date = new Date();
 						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+2)+'-'+date.getDate()+' 00:00:00').getTime());
 						picker.$emit('pick', date);
@@ -449,23 +457,24 @@ export default {
            })
                })
            $('#index .zhuRenCustomerWorkerPhoneHas').change(function() {
-           thisValue.zhuRenCustomerWorkerPhoneHas = $(this).val()
-           thisValue.lastPageNo()
-           // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-           $('#index #box').paging({
-           	initPageNo: 1, // 初始页码
-           	totalPages: thisValue.totalNum, //总页数
-           	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-           	slideSpeed: 600, // 缓动速度。单位毫秒
-           	jump: true, //是否支持跳转
-           	callback: function(page) { // 回调函数
-           		// memberList1(1,page);
-           		var nature = $('.nature').val()
-           		thisValue.pn = page
-           		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-           	}
-           })
-               })
+				// thisValue.zhuRenCustomerWorkerPhoneHas = $(this).val()
+				// thisValue.lastPageNo()
+				console.log(thisValue.totalNum)
+				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('.nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
+            })
 
         // 省市区三级联动
 		// TODO 后期待优化
@@ -566,6 +575,7 @@ export default {
 		
         // 清空全部搜索条件
 			$('#index .refresh').unbind("click").click(function() {
+				Object.assign(thisValue.$data, thisValue.$options.data());
 				$('#index .keyword').val('')
 				$('#index .province').val('')
 				$('#index .city').val('')
@@ -732,6 +742,23 @@ export default {
 		}
     },
     methods:{
+		kwSearchFn(){
+			let thisValue = this;
+			thisValue.kw = $('#index .keyword').val()
+			thisValue.lastPageNo()
+			// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+			$('#index #box').paging({
+				initPageNo: 1, // 初始页码
+				totalPages: thisValue.totalNum, //总页数
+				//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				slideSpeed: 600, // 缓动速度。单位毫秒
+				jump: true, //是否支持跳转
+				callback: function(page) { // 回调函数
+					thisValue.pn = page
+					thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				}
+			})
+		},
 		sortingFn(_value){
 			switch(_value){
 				case 'toRevisitTime':
@@ -750,15 +777,22 @@ export default {
 			}
 		},
 		elmentDataFn(_value){
+			debugger
+			console.log(this)
+			let thisValue = this;
 			// console.log(this.moment(_value).valueOf())
-			// console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
+			console.log(this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss'))
 			let time = this.moment(this.moment(_value).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
 			time = time[0].replace(/-/g,'/') +' 00:00:00'
-			let nowTime = this.moment(this.moment(new Date().getTime()).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
-			nowTime = nowTime[0].replace(/-/g,'/') +' 00:00:00'
+			let nowTime = time;
+			if(nowThis.nowTimeData){
+				nowTime = this.moment(this.moment(new Date().getTime()).valueOf()).format('YYYY-MM-DD HH-mm-ss').split(/[ ]+/)
+				nowTime = nowTime[0].replace(/-/g,'/') +' 00:00:00'
+				nowThis.nowTimeData = false;
+			}
 			if(_value){
 				this.toRevisitTimeFrom = this.moment(nowTime).valueOf();
-				this.toRevisitTimeTo = this.moment(time).valueOf()+(1*24*60*60-1)*1000;
+				this.toRevisitTimeTo = this.moment(time).valueOf()+(1*24*60*60*1000-1);
 				console.log("toRevisitTimeFrom"+this.moment(this.toRevisitTimeFrom).format('YYYY-MM-DD HH-mm-ss'))
 				console.log("toRevisitTimeTo"+this.moment(this.toRevisitTimeTo).format('YYYY-MM-DD HH-mm-ss'))
 			}else{
@@ -851,7 +885,8 @@ export default {
 					url: '/my-customer/customer-list-sum',
 					type: 'GET',
 
-					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id +
+					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id 
+					+'&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+'&toRevisitTimeTo='+thisValue.toRevisitTimeTo+
 						'&area3Id=' + thisValue.area3Id + '&urgent=' + thisValue.urgent+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+ '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
              '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas+'&order=' + thisValue.orders + '&sort=' + thisValue.sorts,
 					async: true,
@@ -859,6 +894,7 @@ export default {
 						if (res.code == 0) {
 							thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
 							$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
+							console.log(thisValue.totalNum)
 							$('#index #box').paging({
 								initPageNo: 1, // 初始页码
 								totalPages: thisValue.totalNum, //总页数
