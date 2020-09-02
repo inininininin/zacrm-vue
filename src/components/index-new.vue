@@ -132,7 +132,7 @@
 </template>
 <script>
 let nowTimeData = false;
-let nowThis = this;
+export const nowThis = this;
 import Vue from 'vue'
 import shouji from "../assets/img/shouji.svg"
 import zuoji from "../assets/img/zuoji.svg"
