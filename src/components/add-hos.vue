@@ -2284,7 +2284,13 @@ export default {
 			console.log(num)
 			if(num){
 				$('#inp_send').val(num)
-				localStorage.setItem('tel' , $('#inp_send').val())
+				let telNow = ''
+				if($('#inp_send').val().split('-').length>1){
+					telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
+				}else{
+					telNow = $('#inp_send').val()
+				}
+				localStorage.setItem('tel' , telNow)
 				$('#btn_conn').click()
 				this.$store.state.telTimeMIntenSeconds = 0
 				$('.phoneEnd_num').html(this.$store.state.telTimeMIntenSeconds+' s')
@@ -2293,8 +2299,14 @@ export default {
 		mobilePhoneFn(name,num){
 			console.log(name+num)
 			if(name != '' && num != ''){
+				let telNow = ''
+				if(num.split('-').length>1){
+					telNow = num.split('-')[0]+num.split('-')[1]
+				}else{
+					telNow = num
+				}
 				this.$axios.post('/push-call',qs.stringify({
-					tel:num,
+					tel:telNow,
 					name:name,
 				}))
 				.then(res=>{

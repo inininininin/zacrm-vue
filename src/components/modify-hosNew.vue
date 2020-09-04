@@ -91,7 +91,7 @@
               </div>
               <div>
                 <span>电话：</span>
-                <el-input class="hospitalPhone" type="number" maxlength=20
+                <el-input class="hospitalPhone" type="text" maxlength=20 onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
                   v-model="hospitalDetail.tel" placeholder='请输入'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
@@ -195,7 +195,7 @@
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)">
                     <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)"
-                       placeholder='单击输入电话' type="number" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
+                       placeholder='单击输入电话' type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
                     <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg"
@@ -245,7 +245,7 @@
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox " @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)">
                     <el-input   @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)" 
-                      placeholder='单击输入电话' type="number" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
+                      placeholder='单击输入电话' type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
                     <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="">
@@ -305,7 +305,7 @@
         </el-form-item>
         <el-form-item label="电话号码:" :label-width="formLabelWidth">
           <!-- @input="kwReplaceFn()" -->
-          <el-input type="number" maxlength=15  v-model="form.tel"
+          <el-input type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=15  v-model="form.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -330,7 +330,7 @@
     <el-dialog title="新增相关人号码" :visible.sync="dialogFormVisibleReaTel">
       <el-form :model="relationTel">
         <el-form-item label="号码" :label-width="formLabelWidth">
-          <el-input type="number" maxlength=20 v-model="relationTel.tel"
+          <el-input type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20 v-model="relationTel.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -352,7 +352,7 @@
         value1: '',
         customerId: '',
         show: true,
-        detail: [],
+        detail: {},
         hospitalDetail: {
           name: '',
           tel: '',
@@ -597,7 +597,6 @@
               }
 
               thisValue.hospitalDetail = res.data.data;
-
               this.customerList();
               this.traceList('', 1, '');
             }
@@ -934,6 +933,7 @@
       // 修改保存
       saveIs () {
         // var keshiList=hospitalDetail.telList
+        console.log('this.hospitalDetail.tel' + this.hospitalDetail.tel)
         var keshiList = '';
         for (var i in this.hospitalDetail.telList) {
           keshiList = keshiList + '&tel' + (parseInt(i) + 1) + '=' + this.hospitalDetail.telList[i].tel + '&tel' + (
@@ -976,14 +976,26 @@
         $('#inp_send').val(tel);
         $('.phoneNumber').html(name);
         // console.log($('#inp_send').val())
-        localStorage.setItem('tel', $('#inp_send').val());
+        let telNow = ''
+        if($('#inp_send').val().split('-').length>1){
+          telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
+        }else{
+          telNow = $('#inp_send').val()
+        }
+        localStorage.setItem('tel', telNow);
         $('#btn_conn').click();
         this.$store.state.telTimeMIntenSeconds = 0;
         $('.phoneEnd_num').html(this.$store.state.telTimeMIntenSeconds + ' s');
       },
       shoujiTel (name, tel) {
+        let telNow = ''
+        if(tel.split('-').length>1){
+          telNow = tel.split('-')[0]+tel.split('-')[1]
+        }else{
+          telNow = tel
+        }
         this.$axios.post('/push-call', qs.stringify({
-            tel: tel,
+            tel: telNow,
             name: name
           }))
           .then(res => {

@@ -659,15 +659,27 @@ export default {
 						$('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
 						// console.log($('#inp_send').val())
-						localStorage.setItem('tel' , $('#inp_send').val())
+						let telNow = ''
+						if($('#inp_send').val().split('-').length>1){
+							telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
+						}else{
+							telNow = $('#inp_send').val()
+						}
+						localStorage.setItem('tel' , telNow)
 						$('#btn_conn').click()
 						thisValue.$store.state.telTimeMIntenSeconds = 0
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
 			$('#index .tbody').off('click', '.shoujiDiv div:last-child img').on('click','.shoujiDiv div:last-child img',function(){
+				let telNow = ''
+				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+				}else{
+					telNow = $(this).parent().parent().parent().attr('tel')
+				}
 				thisValue.$axios.post('/push-call',qs.stringify({
-					tel:$(this).parent().parent().parent().attr('tel'),
+					tel:telNow,
 					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
 				}))
 				.then(res=>{
@@ -688,15 +700,27 @@ export default {
 						$('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
 						$('.phoneNumber').html($(this).html())
 						// console.log($('#inp_send').val())
-						localStorage.setItem('tel' , $('#inp_send').val())
+						let telNow = ''
+						if($('#inp_send').val().split('-').length>1){
+							telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
+						}else{
+							telNow = $('#inp_send').val()
+						}
+						localStorage.setItem('tel' , telNow)
 						$('#btn_conn').click()
 						thisValue.$store.state.telTimeMIntenSeconds = 0
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
 			$('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
+				let telNow = ''
+				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+				}else{
+					telNow = $(this).parent().parent().parent().attr('tel')
+				}
 				thisValue.$axios.post('/push-call',qs.stringify({
-					tel:$(this).parent().parent().parent().attr('tel'),
+					tel:telNow,
 					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
 				}))
 				.then(res=>{
