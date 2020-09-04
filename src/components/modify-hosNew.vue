@@ -91,8 +91,8 @@
               </div>
               <div>
                 <span>电话：</span>
-                <el-input class="hospitalPhone" type="text" maxlength=20 onkeyup="value=value.replace(/[^\d\-\d]/g,'')"
-                  v-model="hospitalDetail.tel" placeholder='请输入'></el-input>
+                <el-input class="hospitalPhone" type="text" maxlength=20 @input="hospitalDetail.tel=hospitalDetail.tel.replace(/[^\d\-\d]/g,'')"
+                  v-model="hospitalDetail.tel " placeholder='请输入'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -195,7 +195,7 @@
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)">
                     <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)"
-                       placeholder='单击输入电话' type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
+                       placeholder='单击输入电话' type="text" @input="itemed.tel=itemed.tel.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
                     <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg"
@@ -245,7 +245,7 @@
                   <span class="linkmanTitle">电话：</span>
                   <p class="withBox " @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)">
                     <el-input   @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)" 
-                      placeholder='单击输入电话' type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
+                      placeholder='单击输入电话' type="text" @input="itemed.tel=itemed.tel.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt="">
                     <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="">
@@ -305,7 +305,7 @@
         </el-form-item>
         <el-form-item label="电话号码:" :label-width="formLabelWidth">
           <!-- @input="kwReplaceFn()" -->
-          <el-input type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=15  v-model="form.tel"
+          <el-input type="text" @input="form.tel=form.tel.replace(/[^\d\-\d]/g,'')" maxlength=15  v-model="form.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -330,7 +330,7 @@
     <el-dialog title="新增相关人号码" :visible.sync="dialogFormVisibleReaTel">
       <el-form :model="relationTel">
         <el-form-item label="号码" :label-width="formLabelWidth">
-          <el-input type="text" onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20 v-model="relationTel.tel"
+          <el-input type="text" @input="relationTel.tel=relationTel.tel.replace(/[^\d\-\d]/g,'')" maxlength=20 v-model="relationTel.tel"
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>

@@ -864,7 +864,7 @@ export default {
 												'<a href="#/modify-hosNew?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
 											'</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
-												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
+												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
 												'<div class="shoujiDiv1">'+
 													'<div>'+
 														'<img src="'+zuoji+'" alt="">'+
@@ -878,7 +878,7 @@ export default {
 											'</td>'+
 											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + 
-												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].paiBanCustomerWorkerPhone1+'">'+(tel || "")+'</div>' + 
+												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].paiBanCustomerWorkerPhone1+'">'+(tel || "")+'</div>' + 
 												(tel? 
 													'<div class="shoujiDiv">'+
 														'<div><img src="'+zuoji+'" alt="">'+
