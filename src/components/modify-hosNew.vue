@@ -501,6 +501,7 @@
                 }
               });
             } else if (res.data.code === 0) {
+              document.title = '忠安客户漏斗管理系统'
               document.title = res.data.data.name + " - " + document.title
               res.data.data.telList = [];
               res.data.data.dili = [res.data.data.area1Id, res.data.data.area2Id, res.data.data.area3Id];
