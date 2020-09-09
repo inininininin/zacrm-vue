@@ -844,8 +844,8 @@ export default {
 							if (res.data.itemList && res.data.itemList.length > 0) {
 								for (var i in res.data.itemList) {
 									var tel='',tel1=''
-									if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
-										tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 4) + "***"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
+									if(res.data.itemList[i].paiBanCustomerWorkerTel){
+										tel=res.data.itemList[i].paiBanCustomerWorkerTel.substring(0, 4) + "***"+res.data.itemList[i].paiBanCustomerWorkerTel.substring(8,res.data.itemList[i].paiBanCustomerWorkerTel.length)
 									}
 									if(res.data.itemList[i].tel){
 										tel1=res.data.itemList[i].tel.substring(0, 4) + "***"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
@@ -877,8 +877,8 @@ export default {
 												'</div>' + 
 											'</td>'+
 											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
-											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + 
-												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].paiBanCustomerWorkerPhone1+'">'+(tel || "")+'</div>' + 
+											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerTel || "")+'">' + 
+												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].paiBanCustomerWorkerTel+'">'+(tel || "")+'</div>' + 
 												(tel? 
 													'<div class="shoujiDiv">'+
 														'<div><img src="'+zuoji+'" alt="">'+

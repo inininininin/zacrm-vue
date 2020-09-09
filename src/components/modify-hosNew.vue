@@ -764,7 +764,7 @@
               });
             } else if (res.data.code === 0) {
               for (var i in res.data.data.itemList) {
-                console.log(res.data.data.itemList[i].createTime)
+                console.log(thisValue.moment(res.data.data.itemList[i].createTime).format('YYYY-MM-DD HH:mm:ss'))
                 res.data.data.itemList[i].createTime = thisValue.moment(res.data.data.itemList[i].createTime).format(
                   'YYYY-MM-DD HH:mm:ss');
               }
