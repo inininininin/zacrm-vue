@@ -824,7 +824,6 @@
             .then(res => {
               if (res.data.codeMsg) {
                 this.$message({
-                  duration:500000,
                   type: 'info',
                   message: res.data.codeMsg
                 });
@@ -838,7 +837,6 @@
                   .then(res => {
                     if (res.data.codeMsg) {
                       this.$message({
-                        duration:500000,
                         type: 'info',
                         message: res.data.codeMsg
                       });
