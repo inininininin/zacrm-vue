@@ -102,7 +102,7 @@
               <div style="margin-right: 0px;">
                 <span style="float: left;width: 80px;">其他号码：</span>
                 <div style="width: 850px;float: left;">
-                  <p class="modifyTel" style="width:350px" v-for="(item, ids) in modifyhospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
+                  <p class="modifyTel" style="width:350px" v-for="(item, ids) in modifyhospitalDetail.telList" :key=ids @click="modifyThisTel(item,ids)">
                     <span>{{item.name}}：</span><span>{{item.tel}}</span>
                     <!-- <img src="../assets/img/zuoji.svg" alt="">
                       <img src="../assets/img/shouji.svg" alt=""> -->
@@ -416,7 +416,8 @@
         hospitalLabel: '民营医院',
         form: {
           name: '',
-          tel: ''
+          tel: '',
+          inx:''
         },
         relation: {
           name: ''
@@ -914,14 +915,14 @@
         let name1 = area.find(n => n.value === _value[0]);
         let name2 = name1.children.find(n => n.value === _value[1]);
         let name3 = name2.children.find(n => n.value === _value[2]);
-        this.hospitalDetail.area1Id = name1.value;
-        this.hospitalDetail.area2Id = name2.value;
-        this.hospitalDetail.area3Id = name3.value;
-        this.hospitalDetail.area1Name = name1.label;
-        this.hospitalDetail.area2Name = name2.label;
-        this.hospitalDetail.area3Name = name3.label;
-        this.hospitalDetail.dili = [name1.value, name2.value, name3.value];
-        this.hospitalDetail.diliNow = {
+        this.modifyhospitalDetail.area1Id = name1.value;
+        this.modifyhospitalDetail.area2Id = name2.value;
+        this.modifyhospitalDetail.area3Id = name3.value;
+        this.modifyhospitalDetail.area1Name = name1.label;
+        this.modifyhospitalDetail.area2Name = name2.label;
+        this.modifyhospitalDetail.area3Name = name3.label;
+        this.modifyhospitalDetail.dili = [name1.value, name2.value, name3.value];
+        this.modifyhospitalDetail.diliNow = {
           shenfen: {
             name: name1.label,
             id: name1.value
@@ -939,8 +940,8 @@
       modify () {
         this.show = !this.show;
         debugger
-        if(Object.keys(this.modifyhospitalDetail).length == 0)
-          this.modifyhospitalDetail = Object.assign({}, this.hospitalDetail);
+        this.modifyhospitalDetail = JSON.parse(JSON.stringify(this.hospitalDetail));
+        console.dir(this.modifyhospitalDetail)
         // this.detail.hospitalName = this.hospitalDetail.name;
         // this.detail.hospitalPhone = this.hospitalDetail.tel;
         // this.detail.dili = this.hospitalDetail.dili;
@@ -996,7 +997,7 @@
                 type: 'success',
                 message: '修改成功！'
               });
-              this.hospitalDetail = Object.assign({}, this.modifyhospitalDetail);
+              this.hospitalDetail = JSON.parse(JSON.stringify(this.modifyhospitalDetail));
               this.customer();
               this.show = !this.show;
             }
@@ -1069,66 +1070,84 @@
             }
           });
         } else {
-          var remark = '';
-          var tel = '';
-          if (this.modifyThisTelValue !== '') {
-            remark = 'tel' + this.modifyThisTelValue + 'Remark';
-            tel = 'tel' + this.modifyThisTelValue;
-          } else {
-            this.telName = parseInt(this.telName) + 1;
-            remark = 'tel' + parseInt(this.telName) + 'Remark';
-            tel = 'tel' + parseInt(this.telName);
+          if(this.form.state){
+            this.modifyhospitalDetail.telList[--this.form.state] = {
+              name : this.form.name,
+              tel : this.form.tel
+            }
+            this.dialogFormVisible = false;
+            return ''
           }
-          this.$axios.post('/my-customer/update-customer?customerId=' + this.customerId + '&' + remark + '=' +
-              encodeURIComponent(this.form.name) + '&' + tel + '=' + this.form.tel)
-            // ('/my-customer/update-customer?' + qs.stringify({
-            //     remark: this.form.name,
-            //     tel: this.form.tel,
-            //     customerId: this.customerId
-            //   }))
-            .then(res => {
-              if (res.data.codeMsg) {
-                this.$message({
-                  type: 'info',
-                  message: res.data.codeMsg
-                });
-              }
-              if (res.data.code === 0) {
-                if (this.modifyThisTelValue !== '') {
-                  this.hospitalDetail.telList[this.modifyThisTelValue - 1].name = this.form.name;
-                  this.hospitalDetail.telList[this.modifyThisTelValue - 1].tel = this.form.tel;
-                } else {
-                  this.hospitalDetail.telList.push({
-                    name: this.form.name,
-                    tel: this.form.tel,
-                    telName: 'tel' + this.telName
-                  });
-                }
-                this.form.name = '';
-                this.form.tel = '';
-                this.telName = this.hospitalDetail.telList.length;
-                this.modifyThisTelValue = '';
-                this.dialogFormVisible = false;
-              }
-            });
+          this.modifyhospitalDetail.telList.push({
+            name : this.form.name,
+            tel : this.form.tel
+          })
+          this.dialogFormVisible = false;
+          // var remark = '';
+          // var tel = '';
+          // if (this.modifyThisTelValue !== '') {
+          //   remark = 'tel' + this.modifyThisTelValue + 'Remark';
+          //   tel = 'tel' + this.modifyThisTelValue;
+          // } else {
+          //   this.telName = parseInt(this.telName) + 1;
+          //   remark = 'tel' + parseInt(this.telName) + 'Remark';
+          //   tel = 'tel' + parseInt(this.telName);
+          // }
+          // this.$axios.post('/my-customer/update-customer?customerId=' + this.customerId + '&' + remark + '=' +
+          //     encodeURIComponent(this.form.name) + '&' + tel + '=' + this.form.tel)
+          //   // ('/my-customer/update-customer?' + qs.stringify({
+          //   //     remark: this.form.name,
+          //   //     tel: this.form.tel,
+          //   //     customerId: this.customerId
+          //   //   }))
+          //   .then(res => {
+          //     if (res.data.codeMsg) {
+          //       this.$message({
+          //         type: 'info',
+          //         message: res.data.codeMsg
+          //       });
+          //     }
+          //     if (res.data.code === 0) {
+          //       if (this.modifyThisTelValue !== '') {
+          //         this.modifyhospitalDetail.telList[this.modifyThisTelValue - 1].name = this.form.name;
+          //         this.modifyhospitalDetail.telList[this.modifyThisTelValue - 1].tel = this.form.tel;
+          //       } else {
+          //         this.modifyhospitalDetail.telList.push({
+          //           name: this.form.name,
+          //           tel: this.form.tel,
+          //           telName: 'tel' + this.telName
+          //         });
+          //       }
+          //       this.form.name = '';
+          //       this.form.tel = '';
+          //       this.telName = this.modifyhospitalDetail.telList.length;
+          //       this.modifyThisTelValue = '';
+          //       this.dialogFormVisible = false;
+          //     }
+          //   });
         }
       },
       // 修改电话
       addThisTel(telName){
-        if(this.hospitalDetail.telList.length>8){
+        debugger
+        if(this.modifyhospitalDetail.telList.length>8){
           this.$message({type: 'info',message: '当前最多添加9个备用电话'})
           return '';
         }
         this.dialogFormVisible = true;
         this.form.tel = '';
         this.form.name = '';
+        this.form.state = ''
         // this.modifyThisTelValue = telName.slice(3, 4);
       },
-      modifyThisTel(telName,tel, name) { 
+      modifyThisTel(item,ids) { 
+        console.log(ids)
+        if(++ids){
+          this.form.state = ids
+        }
         this.dialogFormVisible = true;
-        this.form.tel = tel;
-        this.form.name = name;
-        this.modifyThisTelValue = telName.slice(3, 4);
+        this.form.tel = item.tel;
+        this.form.name = item.name;
       },
       // 修改是否加急
       urgentQuick (id, ifBule) {
