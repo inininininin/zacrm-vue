@@ -57,8 +57,8 @@
               <div>
                 <span>地址：</span>
                 <span>
-                  <span>{{hospitalDetail.diliNow.shenfen.name}}-</span>
-                  <span>{{hospitalDetail.diliNow.city.name}}-</span>
+                  <span>{{hospitalDetail.diliNow.shenfen.name? hospitalDetail.diliNow.shenfen.name+'-':''}}</span>
+                  <span>{{hospitalDetail.diliNow.city.name? hospitalDetail.diliNow.city.name+'-':''}}</span>
                   <span>{{hospitalDetail.diliNow.qu.name}}</span>
                 </span>
               </div>
@@ -125,7 +125,7 @@
             <div class="detailLine detailLineModify">
               <div>
                 <span>地址：</span>
-                <el-cascader class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
+                <el-cascader ref="cascader" class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
               </div>
               <div>
                 <span>性质：</span>
@@ -445,6 +445,8 @@
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
         document.title = '忠安客户漏斗管理系统'
+        this.$refs.cascader.$refs.panel.activePath = []
+        this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         this.options = area;
       }
       let thisValue = this;

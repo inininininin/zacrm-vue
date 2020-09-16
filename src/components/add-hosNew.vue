@@ -41,7 +41,7 @@
             <div class="detailLine detailLineModify">
               <div>
                 <span>地址：</span>
-                <el-cascader class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
+                <el-cascader ref="cascader" class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
               </div>
               <div>
                 <span>性质：</span>
@@ -94,7 +94,7 @@
       return {
 
         detail: [],
-        hospitalDetail: [{
+        hospitalDetail: {
           name: '',
           tel: '',
           nature: '',
@@ -114,7 +114,7 @@
             }
           }
 
-        }],
+        },
         options: [],
         hospitalNature: [{
           hospitalNatureValue: 1,
@@ -139,11 +139,14 @@
     activated () {
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
+        this.$refs.cascader.$refs.panel.activePath = []
+        this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
+        this.hospitalDetail.dili = []
         this.options = area;
       }
     },
     mounted () {
-      this.options = area;
+      // this.options = area;
     },
 
     methods: {
@@ -232,7 +235,7 @@
                 type: 'success',
                 message: '新增成功！'
               });
-              this.$router.push({
+              this.$router.replace({
                 path: '/modify-hosNew',
                 query: {
                   id: res.data.data.customerId,
