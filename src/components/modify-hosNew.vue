@@ -724,7 +724,7 @@
                 thisValue.paibanrenDetail.key = number;
                 res.data.data.itemList.splice(number, 1);
               }
-              thisValue.dialogFormVisibleReaTel = false;
+              // thisValue.dialogFormVisibleReaTel = false;
               thisValue.relationTel.tel = '';
               thisValue.linkmanList = res.data.data.itemList;
             }
@@ -824,6 +824,7 @@
             .then(res => {
               if (res.data.codeMsg) {
                 this.$message({
+                  duration:500000,
                   type: 'info',
                   message: res.data.codeMsg
                 });
@@ -837,6 +838,7 @@
                   .then(res => {
                     if (res.data.codeMsg) {
                       this.$message({
+                        duration:500000,
                         type: 'info',
                         message: res.data.codeMsg
                       });
@@ -1244,7 +1246,7 @@
           });
           return;
         }
-        this.$axios.post('/my-customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
+         this.$axios.post('/my-customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
             customerWorkerId: this.addNewTelDetail.id
           }))
           .then(res => {
@@ -1267,7 +1269,8 @@
               //   this.linkmanList[key].tels[keys].type = 0;
               // if (keys == 0)
               //   this.linkmanList[key].tels[0].type = 0;
-              this.customerList();
+              this.customerList()
+              this.dialogFormVisibleReaTel = false
             }
           });
       },
