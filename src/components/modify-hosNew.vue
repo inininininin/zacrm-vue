@@ -87,12 +87,12 @@
             <div class="detailLine detailLineModify">
               <div>
                 <span>医院名：</span>
-                <el-input class="hospitalName" v-model="hospitalDetail.name" type="text" placeholder='请输入'></el-input>
+                <el-input class="hospitalName" v-model="modifyhospitalDetail.name" type="text" placeholder='请输入'></el-input>
               </div>
               <div>
                 <span>电话：</span>
-                <el-input class="hospitalPhone" type="text" maxlength=20 @input="hospitalDetail.tel=hospitalDetail.tel.replace(/[^\d\-\d]/g,'')"
-                  v-model="hospitalDetail.tel " placeholder='请输入'></el-input>
+                <el-input class="hospitalPhone" type="text" maxlength=20 @input="modifyhospitalDetail.tel=modifyhospitalDetail.tel.replace(/[^\d\-\d]/g,'')"
+                  v-model="modifyhospitalDetail.tel " placeholder='请输入'></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
@@ -102,7 +102,7 @@
               <div style="margin-right: 0px;">
                 <span style="float: left;width: 80px;">其他号码：</span>
                 <div style="width: 850px;float: left;">
-                  <p class="modifyTel" style="width:350px" v-for="(item, ids) in hospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
+                  <p class="modifyTel" style="width:350px" v-for="(item, ids) in modifyhospitalDetail.telList" :key=ids @click="modifyThisTel(item.telName,item.tel,item.name)">
                     <span>{{item.name}}：</span><span>{{item.tel}}</span>
                     <!-- <img src="../assets/img/zuoji.svg" alt="">
                       <img src="../assets/img/shouji.svg" alt=""> -->
@@ -116,7 +116,7 @@
               <div class="toRevisitTime">
                 <span>回访时间：</span>
                 <!-- <span>{{hospitalDetail.toRevisitTime}}</span> -->
-                <el-date-picker v-model="hospitalDetail.toRevisitTime" type="date" placeholder="" format="yyyy 年 MM 月 dd 日"
+                <el-date-picker v-model="modifyhospitalDetail.toRevisitTime" type="date" placeholder="" format="yyyy 年 MM 月 dd 日"
                   value-format="timestamp">
                 </el-date-picker>
               </div>
@@ -125,12 +125,12 @@
             <div class="detailLine detailLineModify">
               <div>
                 <span>地址：</span>
-                <el-cascader ref="cascader" class="hospitalAddress" :options="options" v-model="hospitalDetail.dili" clearable @change="handleChange"></el-cascader>
+                <el-cascader ref="cascader" class="hospitalAddress" :options="options" v-model="modifyhospitalDetail.dili" clearable @change="handleChange"></el-cascader>
               </div>
               <div>
                 <span>性质：</span>
                 <!-- hospitalNatureValue -->
-                <el-select @change="selectChanged" class="hospitalNature" v-model="hospitalDetail.nature" placeholder="请选择">
+                <el-select @change="selectChanged" class="hospitalNature" v-model="modifyhospitalDetail.nature" placeholder="请选择">
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
                   </el-option>
                 </el-select>
@@ -142,7 +142,7 @@
             <div>
               <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
+                placeholder="暂时禁用编辑医院简介" v-model="modifyhospitalDetail.brief">
               </el-input>
             </div>
           </div>
@@ -353,6 +353,7 @@
         customerId: '',
         show: true,
         detail: {},
+        modifyhospitalDetail:{},
         hospitalDetail: {
           name: '',
           tel: '',
@@ -937,47 +938,50 @@
       },
       modify () {
         this.show = !this.show;
-        this.detail.hospitalName = this.hospitalDetail.name;
-        this.detail.hospitalPhone = this.hospitalDetail.tel;
-        this.detail.dili = this.hospitalDetail.dili;
-        this.detail.diliNow = this.hospitalDetail.diliNow;
-        this.detail.telList = this.hospitalDetail.telList;
-        this.detail.hospitalNatureValue = this.hospitalDetail.hospitalNatureValue;
-        this.detail.hospitalLabel = this.hospitalDetail.hospitalLabel;
+        debugger
+        if(Object.keys(this.modifyhospitalDetail).length == 0)
+          this.modifyhospitalDetail = Object.assign({}, this.hospitalDetail);
+        // this.detail.hospitalName = this.hospitalDetail.name;
+        // this.detail.hospitalPhone = this.hospitalDetail.tel;
+        // this.detail.dili = this.hospitalDetail.dili;
+        // this.detail.diliNow = this.hospitalDetail.diliNow;
+        // this.detail.telList = this.hospitalDetail.telList;
+        // this.detail.hospitalNatureValue = this.hospitalDetail.hospitalNatureValue;
+        // this.detail.hospitalLabel = this.hospitalDetail.hospitalLabel;
       },
       refuse () {
         this.modifyThisTelValue = '';
         this.show = !this.show;
-        this.hospitalName = this.detail.hospitalName;
-        this.hospitalPhone = this.detail.hospitalPhone;
-        this.dili = this.detail.dili;
-        this.diliNow = this.detail.diliNow;
-        this.telList = this.detail.telList;
-        this.hospitalNatureValue = this.detail.hospitalNatureValue;
-        this.hospitalLabel = this.detail.hospitalLabel;
+        // this.hospitalName = this.detail.hospitalName;
+        // this.hospitalPhone = this.detail.hospitalPhone;
+        // this.dili = this.detail.dili;
+        // this.diliNow = this.detail.diliNow;
+        // this.telList = this.detail.telList;
+        // this.hospitalNatureValue = this.detail.hospitalNatureValue;
+        // this.hospitalLabel = this.detail.hospitalLabel;
       },
       // 修改保存
       saveIs () {
-        // var keshiList=hospitalDetail.telList
-        console.log('this.hospitalDetail.tel' + this.hospitalDetail.tel)
+        // var keshiList=modifyhospitalDetail.telList
+        console.log('this.modifyhospitalDetail.tel' + this.modifyhospitalDetail.tel)
         var keshiList = '';
-        for (var i in this.hospitalDetail.telList) {
-          keshiList = keshiList + '&tel' + (parseInt(i) + 1) + '=' + this.hospitalDetail.telList[i].tel + '&tel' + (
-            parseInt(i) + 1) + 'Remark=' + this.hospitalDetail.telList[i].name;
+        for (var i in this.modifyhospitalDetail.telList) {
+          keshiList = keshiList + '&tel' + (parseInt(i) + 1) + '=' + this.modifyhospitalDetail.telList[i].tel + '&tel' + (
+            parseInt(i) + 1) + 'Remark=' + this.modifyhospitalDetail.telList[i].name;
         }
         keshiList = keshiList.slice(1, keshiList.length);
         this.$axios.post('/my-customer/update-customer?' + keshiList + '&' + qs.stringify({
-            name: this.hospitalDetail.name,
-            tel: this.hospitalDetail.tel,
-            nature: this.hospitalDetail.nature,
-            area1Id: this.hospitalDetail.area1Id,
-            area2Id: this.hospitalDetail.area2Id,
-            area3Id: this.hospitalDetail.area3Id,
-            area1Name: this.hospitalDetail.area1Name,
-            area2Name: this.hospitalDetail.area2Name,
-            area3Name: this.hospitalDetail.area3Name,
-            toRevisitTime: this.hospitalDetail.toRevisitTime,
-            brief: this.hospitalDetail.brief,
+            name: this.modifyhospitalDetail.name,
+            tel: this.modifyhospitalDetail.tel,
+            nature: this.modifyhospitalDetail.nature,
+            area1Id: this.modifyhospitalDetail.area1Id,
+            area2Id: this.modifyhospitalDetail.area2Id,
+            area3Id: this.modifyhospitalDetail.area3Id,
+            area1Name: this.modifyhospitalDetail.area1Name,
+            area2Name: this.modifyhospitalDetail.area2Name,
+            area3Name: this.modifyhospitalDetail.area3Name,
+            toRevisitTime: this.modifyhospitalDetail.toRevisitTime,
+            brief: this.modifyhospitalDetail.brief,
             customerId: this.customerId
           }))
           .then(res => {
@@ -992,6 +996,7 @@
                 type: 'success',
                 message: '修改成功！'
               });
+              this.hospitalDetail = Object.assign({}, this.modifyhospitalDetail);
               this.customer();
               this.show = !this.show;
             }
