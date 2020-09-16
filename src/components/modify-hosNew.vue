@@ -815,6 +815,28 @@
             }
           });
       },
+      async getPaiBanCustomerWorkerId () {
+        let thisValue = this;
+        await thisValue.$axios.get('/my-customer/customer?customerId=' + thisValue.customerId)
+          .then(res => {
+            if (res.data.codeMsg) {
+              thisValue.$message({
+                type: 'info',
+                message: res.data.codeMsg,
+                onClose: function () {
+                  thisValue.$router.push({
+                    path: '/login'
+                  });
+                }
+              });
+            }
+            if (res.data.code === 0) {
+              thisValue.hospitalDetail.paiBanCustomerWorkerId = res.data.data.paiBanCustomerWorkerId;
+              this.customerList();
+              this.traceList('', 1, '');
+            }
+          });
+      },
       // 修改拍板人等信息
       modifyRealtion (customerWorkerId, str, key, names, keys) {
         if (customerWorkerId === '') {
@@ -842,8 +864,9 @@
                       });
                     }
                     if (res.data.code === 0) {
-                      this.customer();
-                      this.customerList();
+                      // this.customer();
+                      // this.customerList();
+                      this.getPaiBanCustomerWorkerId()
                     }
                   });
               }

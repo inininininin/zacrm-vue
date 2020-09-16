@@ -21,7 +21,7 @@
               </div>
               <div>
                 <span>电话：</span>
-                <el-input class="hospitalPhone" v-model="hospitalDetail.tel" type="text" placeholder='请输入'></el-input>
+                <el-input class="hospitalPhone" v-model="hospitalDetail.tel" type="text" placeholder='请输入' @input="hospitalDetail.tel=hospitalDetail.tel.replace(/[^\d\-\d]/g,'')"></el-input>
                 <!-- <span>52281078</span>
                   <img src="../assets/img/zuoji.svg" alt="">
                   <img src="../assets/img/shouji.svg" alt=""> -->
