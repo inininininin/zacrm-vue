@@ -273,7 +273,7 @@
                         // })
                       } else {
                         _this.$router.replace({
-                          path: '/index',
+                          path: '/index-new',
                           query: {
                             time: new Date().getTime()
                           }
