@@ -439,41 +439,41 @@ export default {
             })
                 })
            $('#index .zhuRenCustomerWorkerHas').change(function() {
-           thisValue.zhuRenCustomerWorkerHas = $(this).val()
-           thisValue.lastPageNo()
-           // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-           $('#index #box').paging({
-           	initPageNo: 1, // 初始页码
-           	totalPages: thisValue.totalNum, //总页数
-           	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-           	slideSpeed: 600, // 缓动速度。单位毫秒
-           	jump: true, //是否支持跳转
-           	callback: function(page) { // 回调函数
-           		// memberList1(1,page);
-           		var nature = $('.nature').val()
-           		thisValue.pn = page
-           		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-           	}
-           })
-               })
-           $('#index .zhuRenCustomerWorkerPhoneHas').change(function() {
-				// thisValue.zhuRenCustomerWorkerPhoneHas = $(this).val()
-				// thisValue.lastPageNo()
-				console.log(thisValue.totalNum)
+			thisValue.zhuRenCustomerWorkerHas = $(this).val()
+				thisValue.lastPageNo()
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				// $('#index #box').paging({
-				// 	initPageNo: 1, // 初始页码
-				// 	totalPages: thisValue.totalNum, //总页数
-				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-				// 	slideSpeed: 600, // 缓动速度。单位毫秒
-				// 	jump: true, //是否支持跳转
-				// 	callback: function(page) { // 回调函数
-				// 		// memberList1(1,page);
-				// 		var nature = $('.nature').val()
-				// 		thisValue.pn = page
-				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-				// 	}
-				// })
+				$('#index #box').paging({
+					initPageNo: 1, // 初始页码
+					totalPages: thisValue.totalNum, //总页数
+					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+					slideSpeed: 600, // 缓动速度。单位毫秒
+					jump: true, //是否支持跳转
+					callback: function(page) { // 回调函数
+						// memberList1(1,page);
+						var nature = $('.nature').val()
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+					}
+				})
+            })
+           	$('#index .zhuRenCustomerWorkerPhoneHas').change(function() {
+				thisValue.zhuRenCustomerWorkerPhoneHas = $(this).val()
+				thisValue.lastPageNo()
+				// console.log(thisValue.totalNum)
+				// thisValue.lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
+				$('#index #box').paging({
+					initPageNo: 1, // 初始页码
+					totalPages: thisValue.totalNum, //总页数
+					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+					slideSpeed: 600, // 缓动速度。单位毫秒
+					jump: true, //是否支持跳转
+					callback: function(page) { // 回调函数
+						// memberList1(1,page);
+						var nature = $('.nature').val()
+						thisValue.pn = page
+						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+					}
+				})
             })
 
         // 省市区三级联动
