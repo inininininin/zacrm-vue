@@ -5,7 +5,7 @@
 		<span class="record2" hidden=""></span>
 		<span class="record3" hidden=""></span>
 		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
-		<a href="../assets/call/index.html" target="_blank">话机页面</a>
+		<a href="../assets/call/index.html"  style="display:none" target="_blank">话机页面</a>
 		<router-link :to="{path:'index',query:{time:new Date().getTime()}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link>
 		<input type="" name="" id="inp_send"  hidden="">
 		<button id="btn_conn" hidden="">发送</button>

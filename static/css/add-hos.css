@@ -494,7 +494,8 @@ button[disabled]{
 }
 #add-hos .shoujiDiv,#add-hos .shoujiDiv1,#add-hos .shoujiDiv2{
 	display: inline;
-    margin-left: 8px;
+	margin-left: 8px;
+	display: none;
 }
 #add-hos .shoujiDiv>div,#add-hos .shoujiDiv1>div,#add-hos .shoujiDiv2>div{
 	display: inline-block;

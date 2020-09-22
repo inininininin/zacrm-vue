@@ -3,7 +3,7 @@
 
     <div class="addIndexBox">
       <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
-      <a href="../assets/call/index.html" target="_blank">话机页面</a>
+      <a href="../assets/call/index.html" style="display:none" target="_blank">话机页面</a>
       <!-- <router-link :to="{path:'add-hos',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link> -->
       <div>
         <div class="addIndexBoxTitle">
@@ -1508,6 +1508,7 @@
     float: right;
     margin-top: 9px;
     margin-left: 3px;
+    display: none;
     
   }
     .detailLine>div img:last-child{
@@ -1664,6 +1665,7 @@
   .withBox>img {
     float: right;
     margin-top: 5px;
+    display: none;
   }
 
   .linkmanTitle {
