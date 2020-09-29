@@ -22,7 +22,7 @@
               <div>
                 <span>电话：</span>
                 <span style="margin-right:10px">{{hospitalDetail.tel}}</span>
-                <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt="">
+                <!-- <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt=""> -->
                 <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt="">
               </div>
             </div>
@@ -33,7 +33,7 @@
                   <p v-for="(item, i) in hospitalDetail.telList" :key=i style="width:385px">
                     <span>{{item.name}}：</span>
                     <span>{{item.tel}}</span>
-                    <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt="">
+                    <!-- <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt=""> -->
                     <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt="">
                   </p>
                 </div>
@@ -196,8 +196,8 @@
                   <p class="withBox" @click="dblTel(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)">
                     <el-input @blur="dblTelEnd(paibanrenDetail.customerWorkerId,itemed.tel,'key',keysIf,paibanrenDetail.tels,$event)"
                        placeholder='单击输入电话' type="text" @input="itemed.tel=itemed.tel.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
-                    <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
-                      alt="">
+                    <!-- <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
+                      alt=""> -->
                     <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg"
                       alt="">
                   </p>
@@ -246,8 +246,8 @@
                   <p class="withBox " @click="dblTel(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)">
                     <el-input   @blur="dblTelEnd(item.customerWorkerId,itemed.tel,key,keys,item.tels,$event)" 
                       placeholder='单击输入电话' type="text" @input="itemed.tel=itemed.tel.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
-                    <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
-                      alt="">
+                    <!-- <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
+                      alt=""> -->
                     <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="">
                   </p>
                 </div>
@@ -440,12 +440,15 @@
         telName: 0,
         linkmanTraceList: '',
         showAll: true,
-        linkmanTraceId: ''
+        linkmanTraceId: '',
+        query:""
       };
     },
     activated () {
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
+        this.query = JSON.stringify(this.$route.query)
+        this.$common.loginRefresh();
         document.title = '忠安客户漏斗管理系统'
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
@@ -1005,40 +1008,43 @@
       },
       // 座机拨号
       zuojiTel (name, tel) {
-        $('#inp_send').val(tel);
-        $('.phoneNumber').html(name);
-        // console.log($('#inp_send').val())
-        let telNow = ''
-        if($('#inp_send').val().split('-').length>1){
-          telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
-        }else{
-          telNow = $('#inp_send').val()
-        }
-        localStorage.setItem('tel', telNow);
-        $('#btn_conn').click();
-        this.$store.state.telTimeMIntenSeconds = 0;
-        $('.phoneEnd_num').html(this.$store.state.telTimeMIntenSeconds + ' s');
+        this.$message('正在拨号中!')
+        this.$callService.callFn(tel)
+        // $('#inp_send').val(tel);
+        // $('.phoneNumber').html(name);
+        // // console.log($('#inp_send').val())
+        // let telNow = ''
+        // if($('#inp_send').val().split('-').length>1){
+        //   telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
+        // }else{
+        //   telNow = $('#inp_send').val()
+        // }
+        // localStorage.setItem('tel', telNow);
+        // $('#btn_conn').click();
+        // this.$store.state.telTimeMIntenSeconds = 0;
+        // $('.phoneEnd_num').html(this.$store.state.telTimeMIntenSeconds + ' s');
+
       },
-      shoujiTel (name, tel) {
-        let telNow = ''
-        if(tel.split('-').length>1){
-          telNow = tel.split('-')[0]+tel.split('-')[1]
-        }else{
-          telNow = tel
-        }
-        this.$axios.post('/push-call', qs.stringify({
-            tel: telNow,
-            name: name
-          }))
-          .then(res => {
-            if (res.data.codeMsg) {
-              this.$message(res.data.codeMsg);
-            }
-            if (res.data.code === 0) {
-              this.$message('已发推送到手机中');
-            }
-          });
-      },
+      // shoujiTel (name, tel) {
+      //   let telNow = ''
+      //   if(tel.split('-').length>1){
+      //     telNow = tel.split('-')[0]+tel.split('-')[1]
+      //   }else{
+      //     telNow = tel
+      //   }
+      //   this.$axios.post('/push-call', qs.stringify({
+      //       tel: telNow,
+      //       name: name
+      //     }))
+      //     .then(res => {
+      //       if (res.data.codeMsg) {
+      //         this.$message(res.data.codeMsg);
+      //       }
+      //       if (res.data.code === 0) {
+      //         this.$message('已发推送到手机中');
+      //       }
+      //     });
+      // },
       selectChanged (value) {
         for (var i in this.hospitalNature) {
           if (value === this.hospitalNature[i].hospitalNatureValue) {
@@ -1508,7 +1514,7 @@
     float: right;
     margin-top: 9px;
     margin-left: 3px;
-    display: none;
+    /* display: none; */
     
   }
     .detailLine>div img:last-child{
@@ -1665,7 +1671,7 @@
   .withBox>img {
     float: right;
     margin-top: 5px;
-    display: none;
+    /* display: none; */
   }
 
   .linkmanTitle {

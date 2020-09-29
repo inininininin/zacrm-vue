@@ -58,6 +58,7 @@ export default {
 	methods:{
 		resertFn(){
 			Object.assign(this.$data, this.$options.data());
+			this.$common.loginRefresh();
 			this.startFn()
 		},
 		searchFn(_value){

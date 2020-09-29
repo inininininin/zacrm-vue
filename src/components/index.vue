@@ -277,6 +277,7 @@ export default {
 						localStorage.setItem('nickname',res.data.nickname)
 						$('#index .peoname').html(res.data.nickname)
 						$('#index #userName').val(res.data.nickname)
+						this.$store.state.loginRefresh = res.data
 						//         window.location.href='index.html'
 					} else {
 

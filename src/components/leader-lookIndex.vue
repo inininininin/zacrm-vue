@@ -288,17 +288,19 @@
       },
       nowTime : '',
       nowDayTime : '',
+      query:'',
   	}
   },
   activated() {
 
       let thisValue = this
+      Object.assign(this.$data, this.$options.data());
+      this.$common.loginRefresh();
       if (localStorage.getItem('id')) {
         this.cookie = 'loginId=' + localStorage.getItem('id')
         console.log(this.cookie, localStorage.getItem('id'))
       }
 
-      Object.assign(this.$data, this.$options.data());
       // this.getData()
       this.getDataNumber()
       this.getDataNumberHos()

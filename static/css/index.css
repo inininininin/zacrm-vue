@@ -131,7 +131,7 @@
 #index .shoujiDiv,#index .shoujiDiv1{
 	display: inline;
 	margin-left: 8px;
-	display: none;
+	/* display: none; */
 }
 #index .shoujiDiv>div,#index .shoujiDiv1>div{
 	display: inline-block;

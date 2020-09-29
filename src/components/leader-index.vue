@@ -312,6 +312,7 @@
 
           }
           if (res.data.code == 0) {
+            this.$store.state.loginRefresh = res.data.data
             thisValue.nickname = res.data.data.nickname
           }
         })

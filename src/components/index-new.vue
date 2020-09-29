@@ -290,11 +290,14 @@ export default {
 						localStorage.setItem('nickname',res.data.nickname)
 						$('#index .peoname').html(res.data.nickname)
 						$('#index #userName').val(res.data.nickname)
+						debugger
+						thisValue.$store.state.loginRefresh = res.data
 						//         window.location.href='index.html'
 					} else {
 
 						setTimeout(function() {
-                            thisValue.$router.push({path:'/login'})
+							thisValue.$router.push({path:'/login'})
+							
                             // location.href='/#/login'
                             // location.href=location.pathname
 							// location.href = 'login.html'
@@ -706,46 +709,46 @@ export default {
 				})
 			})
 			$('#index .tbody').off('click', '.shoujiDiv1 div:first-child img').on('click','.shoujiDiv1 div:first-child img',function(){
-				console.log('s')
-				console.log($(this).parent().parent().parent().attr('linkName'))
+				// console.log($(this).parent().parent().parent().attr('linkName'))
 				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
 					}else{
-						
-						$('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
-						$('.phoneNumber').html($(this).html())
-						// console.log($('#inp_send').val())
-						let telNow = ''
-						if($('#inp_send').val().split('-').length>1){
-							telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
-						}else{
-							telNow = $('#inp_send').val()
-						}
-						localStorage.setItem('tel' , telNow);
-						$('#btn_conn').click()
-						thisValue.$store.state.telTimeMIntenSeconds = 0
-						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
+						thisValue.$message('正在拨号中!')
+						thisValue.$callService.callFn($(this).parent().parent().parent().attr('tel'))
+						// $('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
+						// $('.phoneNumber').html($(this).html())
+						// // console.log($('#inp_send').val())
+						// let telNow = ''
+						// if($('#inp_send').val().split('-').length>1){
+						// 	telNow = $('#inp_send').val().split('-')[0]+$('#inp_send').val().split('-')[1]
+						// }else{
+						// 	telNow = $('#inp_send').val()
+						// }
+						// localStorage.setItem('tel' , telNow);
+						// $('#btn_conn').click()
+						// thisValue.$store.state.telTimeMIntenSeconds = 0
+						// $('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			$('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
-				let telNow = ''
-				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
-					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
-				}else{
-					telNow = $(this).parent().parent().parent().attr('tel')
-				}
-				thisValue.$axios.post('/push-call',qs.stringify({
-					tel:telNow,
-					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
-				}))
-				.then(res=>{
-					if (res.data.codeMsg) {
-						thisValue.$message(res.data.codeMsg)
-					}
-					if(res.data.code == 0){
-						thisValue.$message('已发推送到手机中')
-					}
-				})
-			})
+			// $('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
+			// 	let telNow = ''
+			// 	if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+			// 		telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+			// 	}else{
+			// 		telNow = $(this).parent().parent().parent().attr('tel')
+			// 	}
+			// 	thisValue.$axios.post('/push-call',qs.stringify({
+			// 		tel:telNow,
+			// 		name:$(this).parent().parent().parent().parent().children().eq(3).html(),
+			// 	}))
+			// 	.then(res=>{
+			// 		if (res.data.codeMsg) {
+			// 			thisValue.$message(res.data.codeMsg)
+			// 		}
+			// 		if(res.data.code == 0){
+			// 			thisValue.$message('已发推送到手机中')
+			// 		}
+			// 	})
+			// })
     //   $('#index table').on('click','tr td:nth-child(5)',function(){
     //   	debugger
     //   	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
@@ -870,10 +873,6 @@ export default {
 														'<img src="'+zuoji+'" alt="">'+
 														'<span class="telCall">座机</span>'+
 													'</div>'+
-													'<div>'+
-														'<img src="'+shouji+'" alt="">'+
-														'<span class="telCall">手机</span>'+
-													'</div>'+
 												'</div>' + 
 											'</td>'+
 											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
@@ -883,10 +882,6 @@ export default {
 													'<div class="shoujiDiv">'+
 														'<div><img src="'+zuoji+'" alt="">'+
 															'<span class="telCall">座机</span>'+
-														'</div>'+
-														'<div>'+
-														'<img src="'+shouji+'" alt="">'+
-															'<span class="telCall">手机</span>'+
 														'</div>'+
 													'</div>':''
 												)+
