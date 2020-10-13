@@ -814,7 +814,7 @@ export default {
 											'</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
 												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
-												'<div class="shoujiDiv1">'+
+												'<div class="shoujiDiv1" style="display:none">'+
 													'<div>'+
 														'<img src="'+zuoji+'" alt="">'+
 														'<span class="telCall">座机</span>'+
@@ -829,7 +829,7 @@ export default {
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerPhone1 || "")+'">' + 
 												'<div style="display:inline-block;width: 100px;" Title="'+res.data.itemList[i].paiBanCustomerWorkerPhone1+'">'+(tel || "")+'</div>' + 
 												(tel? 
-													'<div class="shoujiDiv">'+
+													'<div class="shoujiDiv" style="display:none">'+
 														'<div><img src="'+zuoji+'" alt="">'+
 															'<span class="telCall">座机</span>'+
 														'</div>'+
