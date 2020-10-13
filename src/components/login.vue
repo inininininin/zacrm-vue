@@ -123,6 +123,7 @@
         async: true,
         success: function(res) {
           if (res.code == 0) {
+            _this.$store.state.loginRefresh = res.data
             $('#login .password').val('')
             if (res.data.branchIs == 1) {
               _this.dialogTableVisible = true
@@ -134,7 +135,7 @@
               // })
             } else {
               _this.$router.replace({
-                path: '/index',
+                path: '/index-new',
                 query: {
                   time: new Date().getTime()
                 }
@@ -261,7 +262,8 @@
                   success: function(res) {
                     if (res.code == 0) {
                       $('#login .password').val('')
-                      
+                      debugger
+                      _this.$store.state.loginRefresh = res.data
                         console.log(res.data.branchIs)
                       if (res.data.branchIs) {
                         _this.dialogTableVisible = true

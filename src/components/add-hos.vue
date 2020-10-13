@@ -318,14 +318,14 @@ export default {
 	},
 	activated(){
 		debugger
-    localStorage.setItem('ifPaiban','')
-
+    	localStorage.setItem('ifPaiban','')
 		let thisValue = this
 		let a = JSON.stringify(this.$route.query)
 		debugger
         if(this.query != a){
 			Object.assign(this.$data, this.$options.data());
-			this.query = JSON.stringify(this.$route.query);
+			this.query = JSON.stringify(this.$route.query)
+			this.$common.loginRefresh();
 			console.log(this.query)
 			$('.closeAdd div input').val('')
 			$('.hosname').val('')

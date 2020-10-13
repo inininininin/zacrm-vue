@@ -13,6 +13,9 @@ import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';
+import callService from './assets/call'
+import common from './assets/common'
+
 
 import store from './store'
 import moment from 'moment'
@@ -32,6 +35,10 @@ Vue.config.productionTip = false
 Vue.prototype.moment = moment;
 Vue.prototype.$store = store
 Vue.prototype.$axios = axios
+Vue.prototype.$callService = callService;
+Vue.prototype.$common = common;
+
+
 // Vue.prototype.$laydate = laydate
 
 Vue.use(ElementUI);

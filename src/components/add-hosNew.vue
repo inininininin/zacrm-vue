@@ -133,12 +133,15 @@
         dialogFormVisible: false,
         formLabelWidth: '120px',
         linkmanList: [],
-        modifyThisTelValue: '' // 是否修改医院的备注号码''否，其他是
+        modifyThisTelValue: '', // 是否修改医院的备注号码''否，其他是
+        query:''
       };
     },
     activated () {
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
+        this.query = JSON.stringify(this.$route.query);
+        this.$common.loginRefresh();
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         this.hospitalDetail.dili = []
