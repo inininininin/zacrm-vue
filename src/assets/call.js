@@ -4,43 +4,43 @@ import store from '../store'
 import qs from 'qs'
 let vue = new Vue();
 
-var token = '';
 function callFn(_callee){
     if(!_callee){
         vue.$message('号码不能为空')
         return '';
     }
-    callSevice(_callee);
+    callLogin(_callee);
 }
-async function callLogin(){
-    await axios.post('/login-pbx')
+function callLogin(_callee){
+    axios.post('/pbx/api/v2-0-0/login')
     .then(res=>{
         console.log(res)
-        if(res.data.data.token){
-            token = res.data.data.token
-            console.log(token)
+        if(res.data.codeMsg){
+            vue.$message('拨打失败')
+        }
+        if(res.data.code == 0){
+            callSevice(_callee);
         }
     })
 }
-async function callSevice(_callee){
-
-    if(!store.state.callToken){
-        await callLogin();
-    }
+function callSevice(_callee){
     console.log(store.state.loginRefresh)
     if(store.state.loginRefresh&&_callee){
         if(store.state.loginRefresh.extTel){
-            await axios.post('http://192.168.2.101/api/v2.0.0/call/dial?token='+token,JSON.stringify({
+            axios.post('/pbx/api/v2-0-0/call/dial?',qs.stringify({
                 caller: store.state.loginRefresh.extTel,
-                callee: _callee,
-                dialpermission:_callee,
-                autoanswer:'yes',
+                callee: _callee
             }))
             .then(res=>{
                 debugger
-                if(res.data.status == 'Failed'){
-                    vue.$message('拨打失败')
+                if(res.data.data.status == 'Failed'){
+                    vue.$message(_callee+'拨号失败，请重试')
+                }else{
+                    vue.$message(_callee+'正在拨号中')
                 }
+            }).catch(err=>{
+                debugger
+                console.log(erro);
             })
         }else{
             vue.$message('拨打失败')

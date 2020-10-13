@@ -4,15 +4,16 @@
 		<span class="record1" hidden=""></span>
 		<span class="record2" hidden=""></span>
 		<span class="record3" hidden=""></span>
-		<a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a>
-		<a href="../assets/call/index.html"  style="display:none" target="_blank">话机页面</a>
+		<!-- <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a> -->
+		<!-- <a href="../assets/call/index.html"  style="display:none" target="_blank">话机页面</a> -->
 		<router-link :to="{path:'index',query:{time:new Date().getTime()}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link>
 		<input type="" name="" id="inp_send"  hidden="">
 		<button id="btn_conn" hidden="">发送</button>
 		<div class="mainbox">
 			<div class="topselect">
 				<div style="width: 100%;height: auto;">
-					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
+					<h2 class="peoname" title="账号"></h2>
+					<span style="font-size: 17px;margin-left: 7px;" title="分机号">({{$store.state.loginRefresh.extTel}})</span>
                     <router-link :to="{path:'/add-hosNew',query:{time:new Date().getTime()}}" class="addHos" >
 						新增医院
 					</router-link>
@@ -94,7 +95,7 @@
 
 				</div>
 			</div>
-
+			<div class="shuju"></div>
 			<div class="tableBox">
 				<table>
 					<thead>
@@ -712,7 +713,7 @@ export default {
 				// console.log($(this).parent().parent().parent().attr('linkName'))
 				if($(this).parent().parent().parent().attr('tel')==''||$(this).parent().parent().parent().attr('tel')==null||$(this).parent().parent().parent().attr('tel')==undefined){
 					}else{
-						thisValue.$message('正在拨号中!')
+						// thisValue.$message('正在拨号中!')
 						thisValue.$callService.callFn($(this).parent().parent().parent().attr('tel'))
 						// $('#inp_send').val($(this).parent().parent().parent().attr('tel')).attr('linkName',$(this).parent().parent().parent().attr('linkName')) 
 						// $('.phoneNumber').html($(this).html())
@@ -912,7 +913,7 @@ export default {
 					success: function(res) {
 						if (res.code == 0) {
 							thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
-							$('#index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
+							$('#index .shuju').html('汇总：' + res.data.itemCount + ' 条')
 							console.log(thisValue.totalNum)
 							$('#index #box').paging({
 								initPageNo: 1, // 初始页码
@@ -998,5 +999,11 @@ export default {
 
 table thead{
     background: #8dc5ff;
+}
+.shuju{
+	height: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 30px;
 }
 </style>
