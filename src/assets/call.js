@@ -36,7 +36,7 @@ function callSevice(_callee){
                 if(res.data.data.status == 'Failed'){
                     vue.$message(_callee+'拨号失败，请重试')
                 }else{
-                    vue.$message(_callee+'以拨号，请等待话机响铃')
+                    vue.$message(_callee+'已拨号，请等待响铃')
                 }
             }).catch(err=>{
                 debugger
