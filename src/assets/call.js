@@ -9,7 +9,7 @@ function callFn(_callee){
         vue.$message('号码不能为空')
         return '';
     }
-    if(store.state.loginRefresh.extTel){
+    if(!store.state.loginRefresh.extTel){
         vue.$message('暂未绑定分机号,请联系研发部')
         return
     }

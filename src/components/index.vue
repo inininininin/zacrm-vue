@@ -672,26 +672,26 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			$('#index .tbody').off('click', '.shoujiDiv div:last-child img').on('click','.shoujiDiv div:last-child img',function(){
-				let telNow = ''
-				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
-					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
-				}else{
-					telNow = $(this).parent().parent().parent().attr('tel')
-				}
-				thisValue.$axios.post('/push-call',qs.stringify({
-					tel:telNow,
-					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
-				}))
-				.then(res=>{
-					if (res.data.codeMsg) {
-						thisValue.$message(res.data.codeMsg)
-					}
-					if(res.data.code == 0){
-						thisValue.$message('已发推送到手机中')
-					}
-				})
-			})
+			// $('#index .tbody').off('click', '.shoujiDiv div:last-child img').on('click','.shoujiDiv div:last-child img',function(){
+			// 	let telNow = ''
+			// 	if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+			// 		telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+			// 	}else{
+			// 		telNow = $(this).parent().parent().parent().attr('tel')
+			// 	}
+			// 	thisValue.$axios.post('/push-call',qs.stringify({
+			// 		tel:telNow,
+			// 		name:$(this).parent().parent().parent().parent().children().eq(3).html(),
+			// 	}))
+			// 	.then(res=>{
+			// 		if (res.data.codeMsg) {
+			// 			thisValue.$message(res.data.codeMsg)
+			// 		}
+			// 		if(res.data.code == 0){
+			// 			thisValue.$message('已发推送到手机中')
+			// 		}
+			// 	})
+			// })
 			$('#index .tbody').off('click', '.shoujiDiv1 div:first-child img').on('click','.shoujiDiv1 div:first-child img',function(){
 				console.log('s')
 				console.log($(this).parent().parent().parent().attr('linkName'))
@@ -713,26 +713,26 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			$('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
-				let telNow = ''
-				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
-					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
-				}else{
-					telNow = $(this).parent().parent().parent().attr('tel')
-				}
-				thisValue.$axios.post('/push-call',qs.stringify({
-					tel:telNow,
-					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
-				}))
-				.then(res=>{
-					if (res.data.codeMsg) {
-						thisValue.$message(res.data.codeMsg)
-					}
-					if(res.data.code == 0){
-						thisValue.$message('已发推送到手机中')
-					}
-				})
-			})
+			// $('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
+			// 	let telNow = ''
+			// 	if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+			// 		telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+			// 	}else{
+			// 		telNow = $(this).parent().parent().parent().attr('tel')
+			// 	}
+			// 	thisValue.$axios.post('/push-call',qs.stringify({
+			// 		tel:telNow,
+			// 		name:$(this).parent().parent().parent().parent().children().eq(3).html(),
+			// 	}))
+			// 	.then(res=>{
+			// 		if (res.data.codeMsg) {
+			// 			thisValue.$message(res.data.codeMsg)
+			// 		}
+			// 		if(res.data.code == 0){
+			// 			thisValue.$message('已发推送到手机中')
+			// 		}
+			// 	})
+			// })
     //   $('#index table').on('click','tr td:nth-child(5)',function(){
     //   	debugger
     //   	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){

@@ -1461,11 +1461,11 @@ export default {
 		
 		})
 		$('#add-hos .selectOption').off('click', '.shoujiDiv div:nth-child(2) img').on('click','.shoujiDiv div:nth-child(2) img',function(){
-			let name = $(this).parent().parent().parent().children().eq(1).val();
-			let num = $(this).parent().parent().parent().children().eq(3).attr('hostelnum')
-			thisValue.mobilePhoneFn(name,num)
-			console.log(name)
-			console.log(num)
+			// let name = $(this).parent().parent().parent().children().eq(1).val();
+			// let num = $(this).parent().parent().parent().children().eq(3).attr('hostelnum')
+			// thisValue.mobilePhoneFn(name,num)
+			// console.log(name)
+			// console.log(num)
 			// thisValue.fixedTelephoneFn($(this).parent().parent().parent().children().eq(1).html())
 		
 		})
@@ -1481,11 +1481,11 @@ export default {
 		
 		})
 		$('#add-hos .linePhoneList').off('click', 'div .shoujiDiv1 div:nth-child(2) img').on('click','div .shoujiDiv1 div:nth-child(2) img',function(){
-			let name = $(this).parent().parent().parent().children().eq(0).html().substring(0,$(this).parent().parent().parent().children().eq(0).html().length-1)
-			let num = $(this).parent().parent().parent().children().eq(1).attr('telvaluenew')
-			thisValue.mobilePhoneFn(name,num)
-			console.log(name)
-			console.log(num)
+			// let name = $(this).parent().parent().parent().children().eq(0).html().substring(0,$(this).parent().parent().parent().children().eq(0).html().length-1)
+			// let num = $(this).parent().parent().parent().children().eq(1).attr('telvaluenew')
+			// thisValue.mobilePhoneFn(name,num)
+			// console.log(name)
+			// console.log(num)
 			// thisValue.mobilePhoneFn($(this).parent().parent().parent().children().eq(0).html(),$(this).parent().parent().parent().children().eq(1).html())
 		})
 		//相关人员电话拨打方法绑定
@@ -1499,11 +1499,11 @@ export default {
 		
 		})
 		$('#add-hos .addphoeShow').off('click', 'div .shoujiDiv2 div:nth-child(2) img').on('click','div .shoujiDiv2 div:nth-child(2) img',function(){
-			let name = $(this).parent().parent().parent().children().eq(1).attr('phonepname')
-			let num = $(this).parent().parent().parent().children().eq(1).attr('phonep')
-			thisValue.mobilePhoneFn(name,num)
-			console.log(name)
-			console.log(num)
+			// let name = $(this).parent().parent().parent().children().eq(1).attr('phonepname')
+			// let num = $(this).parent().parent().parent().children().eq(1).attr('phonep')
+			// thisValue.mobilePhoneFn(name,num)
+			// console.log(name)
+			// console.log(num)
 			// console.log($(this).parent().parent().parent().children().eq(0).html().substring(0,$(this).parent().parent().parent().children().eq(0).html().length-1))
 			// console.log($(this).parent().parent().parent().children().eq(1).attr('telvaluenew'))
 			// thisValue.fixedTelephoneFn($(this).parent().parent().parent().children().eq(1).html())
@@ -2297,27 +2297,27 @@ export default {
 			}
 		},
 		mobilePhoneFn(name,num){
-			console.log(name+num)
-			if(name != '' && num != ''){
-				let telNow = ''
-				if(num.split('-').length>1){
-					telNow = num.split('-')[0]+num.split('-')[1]
-				}else{
-					telNow = num
-				}
-				this.$axios.post('/push-call',qs.stringify({
-					tel:telNow,
-					name:name,
-				}))
-				.then(res=>{
-					if (res.data.codeMsg) {
-						this.$message(res.data.codeMsg)
-					}
-					if(res.data.code == 0){
-						this.$message('已发推送到手机中')
-					}
-				})
-			}
+			// console.log(name+num)
+			// if(name != '' && num != ''){
+			// 	let telNow = ''
+			// 	if(num.split('-').length>1){
+			// 		telNow = num.split('-')[0]+num.split('-')[1]
+			// 	}else{
+			// 		telNow = num
+			// 	}
+			// 	this.$axios.post('/push-call',qs.stringify({
+			// 		tel:telNow,
+			// 		name:name,
+			// 	}))
+			// 	.then(res=>{
+			// 		if (res.data.codeMsg) {
+			// 			this.$message(res.data.codeMsg)
+			// 		}
+			// 		if(res.data.code == 0){
+			// 			this.$message('已发推送到手机中')
+			// 		}
+			// 	})
+			// }
 				
 		}
     },
