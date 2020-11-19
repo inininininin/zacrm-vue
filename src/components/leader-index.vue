@@ -299,7 +299,7 @@
       let thisValue = this
       // Object.assign(thisValue.$data, thisValue.$options.data());
 
-      thisValue.$axios.post(this.$Interface+'/login-refresh')
+      thisValue.$axios.post(thisValue.$Interface+'/login-refresh')
         .then(res => {
           if (res.data.codeMsg) {
             thisValue.$message({
@@ -619,7 +619,7 @@ lookrecordlist(){
         })
         let thisValue = this
         $.ajax({
-          url: this.$Interface+'/ling-dao/customer/customer-list',
+          url: thisValue.$Interface+'/ling-dao/customer/customer-list',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
@@ -675,7 +675,7 @@ lookrecordlist(){
         })
         let thisValue = this
         $.ajax({
-          url: this.$Interface+'/ling-dao/customer/customer-list-sum',
+          url: thisValue.$Interface+'/ling-dao/customer/customer-list-sum',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +

@@ -459,7 +459,7 @@ export default {
 						$('#add-hos .jsModify').attr('tel1',(phones1||"")).attr('tel2',(phones2||"")).attr('tel3',(phones3||""))
 					}
 					$.ajax({
-						url: this.$Interface+'/my-customer-worker/update-customer-worker',
+						url: thisVue.$Interface+'/my-customer-worker/update-customer-worker',
 						type: 'post',
 						data: 'customerWorkerId=' + id + params,
 						async: true,
@@ -513,7 +513,7 @@ export default {
 				//执行延时
 				thisVue.time = setTimeout(function() {
 					$.ajax({
-						url: this.$Interface+'/my-customer-worker-snapshot-list',
+						url: thisVue.$Interface+'/my-customer-worker-snapshot-list',
 						type: 'GET',
 						data: 'customerWorkerId=' + thisVue.customerWorkerIdLs,
 						async: true,
@@ -611,7 +611,7 @@ export default {
 					var _this = $(this)
 					var show = "show('" + _this.val() + "')"
 					$.ajax({
-						url: this.$Interface+'/my-customer-worker/create-customer-worker',
+						url: thisVue.$Interface+'/my-customer-worker/create-customer-worker',
 						type: 'post',
 						data: 'customerId=' + thisVue.customerId + param,
 						async: true,
@@ -620,7 +620,7 @@ export default {
 								thisVue.paiBanCustomerWorkerId = res.data.customerWorkerId
 								_this.parent().parent().attr('relId', thisVue.paiBanCustomerWorkerId)
 								$.ajax({
-									url: this.$Interface+'/my-customer/update-customer',
+									url: thisVue.$Interface+'/my-customer/update-customer',
 									type: 'post',
 									data: 'customerId=' + thisVue.customerId + '&paiBanCustomerWorkerId=' + thisVue.paiBanCustomerWorkerId,
 									async: true,
@@ -654,7 +654,7 @@ export default {
 					var show = "show('" + $(this).val() + "')"
 					var _this = $(this)
 					$.ajax({
-						url: this.$Interface+'/my-customer-worker/update-customer-worker',
+						url: thisVue.$Interface+'/my-customer-worker/update-customer-worker',
 						type: 'post',
 						data: 'customerWorkerId=' + customerWorkerId + param,
 						async: true,
@@ -737,7 +737,7 @@ export default {
 				var show = "show('" + $(this).val() + "')"
 				var _this = $(this)
 				$.ajax({
-					url: this.$Interface+'/my-customer-worker/update-customer-worker',
+					url: thisVue.$Interface+'/my-customer-worker/update-customer-worker',
 					type: 'post',
 					data: 'customerWorkerId=' + customerWorkerId + param,
 					async: true,
@@ -798,7 +798,7 @@ export default {
 						$('#add-hos .supplyNewRel button').attr('disabled', false)
 					} else {
 						$.ajax({
-							url: this.$Interface+'/my-customer-worker/create-customer-worker',
+							url: thisVue.$Interface+'/my-customer-worker/create-customer-worker',
 							type: 'post',
 							data: 'name=' + name + '&tel1=' + tel1+ '&tel2=' + tel2+ '&tel3=' + tel3 + '&post=' + post + '&paiBan=' + paiBan + '&verifyWay=' + verifyWay +
 								'&phone1=' + phone1 +'&phone2=' + phone2 +'&phone3=' + phone3 + '&customerId=' + thisVue.customerId,
@@ -873,7 +873,7 @@ export default {
 					layer.msg('请选择感兴趣程度')
 				} else {
 					$.ajax({
-						url: this.$Interface+'/my-customer/update-customer',
+						url: thisVue.$Interface+'/my-customer/update-customer',
 						type: 'post',
 						data: 'customerId=' + thisVue.customerId + '&urgent=' + quickIs,
 						async: true,
@@ -887,7 +887,7 @@ export default {
 					})
 
 					$.ajax({
-						url: this.$Interface+'/my-customer-worker-trace/create-customer-worker-trace',
+						url: thisVue.$Interface+'/my-customer-worker-trace/create-customer-worker-trace',
 						type: 'post',
 						data: 'customerWorkerId=' + thisVue.customerWorkerIdZz + '&content=' + content + '&level=' + interst,
 						async: true,
@@ -1094,7 +1094,7 @@ export default {
 				var param=telNameTitle+'='+telName+'&'+telValueTitle+'='+ telValue
 				console.log(param)
 				$.ajax({
-					url: this.$Interface+'/my-customer/update-customer',
+					url: thisVue.$Interface+'/my-customer/update-customer',
 					type: 'post',
 					data: param+ '&customerId=' + thisVue.customerId,
 					async: true,
@@ -1173,7 +1173,7 @@ export default {
 					$('#add-hos .modifyHos').attr('disabled', false);
 				} else {
 					$.ajax({
-						url: this.$Interface+'/my-customer/update-customer',
+						url: thisVue.$Interface+'/my-customer/update-customer',
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
@@ -1215,7 +1215,7 @@ export default {
 					// 	layer.msg('请填写医院名和固话')
 				} else {
 					$.ajax({
-						url: this.$Interface+'/my-customer/create-customer',
+						url: thisVue.$Interface+'/my-customer/create-customer',
 						type: 'post',
 						data: 'name=' + name + '&tel=' + tel + '&nature=' + nature + '&area1Id=' + area1Id + '&area2Id=' + area2Id +
 							'&area3Id=' + area3Id + '&area1Name=' + area1Name + '&area2Name=' + area2Name + '&area3Name=' + area3Name +
@@ -1240,7 +1240,7 @@ export default {
         hosDetail(customerId) {
             let thisVue=this
 				$.ajax({
-					url: this.$Interface+'/my-customer/customer',
+					url: thisVue.$Interface+'/my-customer/customer',
 					type: 'GET',
 					data: 'customerId=' + customerId,
 					async: false,
@@ -1416,7 +1416,7 @@ export default {
 			relList(customerId) {
                 let thisVue=this
 				$.ajax({
-					url: this.$Interface+'/my-customer-worker/customer-worker-list',
+					url: thisVue.$Interface+'/my-customer-worker/customer-worker-list',
 					type: 'GET',
 					data: 'customerId=' + customerId,
 					async: true,
@@ -1520,7 +1520,7 @@ export default {
 					$('#add-hos .lookAllTrack').hide()
 				}
 				$.ajax({
-					url: this.$Interface+'/my-customer-worker-trace/customer-worker-trace-list',
+					url: thisVue.$Interface+'/my-customer-worker-trace/customer-worker-trace-list',
 					type: 'GET',
 					data: 'customerId=' + customerId + '&customerWorkerId=' + customerWorkerId + '&pn=' + pn + '&ps=15',
 					async: true,

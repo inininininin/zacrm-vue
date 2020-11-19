@@ -509,7 +509,7 @@
       // 医院信息
       async customer () {
         let thisValue = this;
-        await thisValue.$axios.get(this.$Interface+'/my-customer/customer?customerId=' + thisValue.customerId)
+        await thisValue.$axios.get(thisValue.$Interface+'/my-customer/customer?customerId=' + thisValue.customerId)
           .then(res => {
             if (res.data.codeMsg) {
               thisValue.$message({
@@ -627,7 +627,7 @@
       // 相关人等列表
       async customerList () {
         let thisValue = this;
-        await thisValue.$axios.get(this.$Interface+'/my-customer-worker/customer-worker-list?customerId=' + this.customerId +
+        await thisValue.$axios.get(thisValue.$Interface+'/my-customer-worker/customer-worker-list?customerId=' + this.customerId +
             '&sort=createTime&order=asc')
           .then(res => {
             var number = '';
@@ -763,7 +763,7 @@
           thisValue.linkmanTraceList = '';
           thisValue.linkmanTraceId = customerWorkerId;
         }
-        await thisValue.$axios.get(this.$Interface+'/my-customer-worker-trace/customer-worker-trace-list?' + // +'&customerWorkerId='+customerWorkerId+'&sort=createTime&order=asc'
+        await thisValue.$axios.get(thisValue.$Interface+'/my-customer-worker-trace/customer-worker-trace-list?' + // +'&customerWorkerId='+customerWorkerId+'&sort=createTime&order=asc'
             qs.stringify({
               customerId: this.customerId,
               customerWorkerId: customerWorkerId,
@@ -838,7 +838,7 @@
       },
       async getPaiBanCustomerWorkerId () {
         let thisValue = this;
-        await thisValue.$axios.get(this.$Interface+'/my-customer/customer?customerId=' + thisValue.customerId)
+        await thisValue.$axios.get(thisValue.$Interface+'/my-customer/customer?customerId=' + thisValue.customerId)
           .then(res => {
             if (res.data.codeMsg) {
               thisValue.$message({
@@ -1354,7 +1354,7 @@
           });
           return;
         }
-        thisValue.$axios.post(this.$Interface+'/my-customer-worker/create-customer-worker?name=' + thisValue.relation.name +
+        thisValue.$axios.post(thisValue.$Interface+'/my-customer-worker/create-customer-worker?name=' + thisValue.relation.name +
             '&customerId=' + this.customerId)
           .then(res => {
             if (res.data.codeMsg) {

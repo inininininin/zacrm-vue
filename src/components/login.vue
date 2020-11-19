@@ -118,7 +118,7 @@
       Object.assign(this.$data, this.$options.data());
       let _this = this
       $.ajax({
-        url: this.$Interface+'/login-refresh',
+        url: _this.$Interface+'/login-refresh',
         type: 'POST',
         async: true,
         success: function(res) {
@@ -246,7 +246,7 @@
           layer.msg('请先填写用户名和密码')
         } else {
           $.ajax({
-            url: this.$Interface+'/login',
+            url: _this.$Interface+'/login',
             type: 'post',
             data: {
               name: name,
@@ -256,7 +256,7 @@
             success: function(res) {
               if (res.code == 0) {
                 $.ajax({
-                  url: this.$Interface+'/login-refresh',
+                  url: _this.$Interface+'/login-refresh',
                   type: 'POST',
                   async: true,
                   success: function(res) {

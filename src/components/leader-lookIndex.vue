@@ -447,7 +447,7 @@
             'totalNum': thisValue.totalNum
           }
           $.ajax({
-            url: this.$Interface+'/cache/set',
+            url: thisValue.$Interface+'/cache/set',
             type: 'post',
             data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
             async: true,
@@ -918,7 +918,7 @@
         let _pai
         this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
           _paiBanCustomerWorkerPhoneHas
-        await thisValue.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum?' + qs.stringify({
+        await thisValue.$axios.get(thisValue.$Interface+'/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -969,7 +969,7 @@
         let _pai
         // this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
           // _paiBanCustomerWorkerPhoneHas
-        await thisValue.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
+        await thisValue.$axios.get(thisValue.$Interface+'/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -1061,7 +1061,7 @@
       },
        async getInTheDayData(_time) {
         let thisValue = this;
-        await thisValue.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum-by-day?' + qs.stringify({
+        await thisValue.$axios.get(thisValue.$Interface+'/ling-dao/customer/customer-list-sum-by-day?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -1281,7 +1281,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: this.$Interface+'/ling-dao/customer/customer-list',
+          url: thisValue.$Interface+'/ling-dao/customer/customer-list',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
@@ -1339,7 +1339,7 @@
         })
         let thisValue = this
         $.ajax({
-          url:this.$Interface+ '/ling-dao/customer/customer-list-sum',
+          url:thisValue.$Interface+ '/ling-dao/customer/customer-list-sum',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
