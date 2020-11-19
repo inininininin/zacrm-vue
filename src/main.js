@@ -6,6 +6,7 @@ import Vue from 'vue';
 Vue.prototype.$version = '20.10.13.2';
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.';
 Vue.prototype.$Interface = '/yd-crm';
+Vue.prototype.$titleName = '依德客户漏斗管理系统';
 import App from './App';
 import router from './router/index.js';
 import ElementUI from 'element-ui';

@@ -1,7 +1,7 @@
 <template>
   <div id='leader_index'>
     <div class="leader_top">
-      <span class="leader_top_title">忠安客户漏斗管理系统</span>
+      <span class="leader_top_title">{{$titleName}}</span>
       <span class="loginout" @click="loginout()">退出登录</span>
     </div>
     <div class="leader_name">
