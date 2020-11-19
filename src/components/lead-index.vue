@@ -2,7 +2,7 @@
   <div id='lead_index'>
     <el-row class="tac" style="min-width: 1200px;">
       <el-col :span="3" style="height: 100vh;">
-        <h3>忠安客户漏斗管理系统</h3>
+        <h3>{{$titleName}}</h3>
         <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
           <el-submenu index="1">
             <template slot="title">

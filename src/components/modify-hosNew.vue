@@ -463,7 +463,7 @@
         Object.assign(this.$data, this.$options.data());
         this.query = JSON.stringify(this.$route.query)
         this.$common.loginRefresh();
-        document.title = '忠安客户漏斗管理系统'
+        document.title = this.$titleName
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         this.options = area;
@@ -522,7 +522,7 @@
                 }
               });
             } else if (res.data.code === 0) {
-              document.title = '忠安客户漏斗管理系统'
+              document.title = this.$titleName
               document.title = res.data.data.name + " - " + document.title
               res.data.data.telList = [];
               res.data.data.dili = [res.data.data.area1Id, res.data.data.area2Id, res.data.data.area3Id];
