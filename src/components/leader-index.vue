@@ -299,7 +299,7 @@
       let thisValue = this
       // Object.assign(thisValue.$data, thisValue.$options.data());
 
-      thisValue.$axios.post('/login-refresh')
+      thisValue.$axios.post(this.$Interface+'/login-refresh')
         .then(res => {
           if (res.data.codeMsg) {
             thisValue.$message({
@@ -374,7 +374,7 @@
         debugger
         let listInx = this.urgentLevel.findIndex((n)=>n.userId == _value.userId)
         if(listInx){
-          this.$axios.post('/zong-jing-li/update-user',qs.stringify({
+          this.$axios.post(this.$Interface+'/zong-jing-li/update-user',qs.stringify({
             userId : _value.userId,
             orderNo : this.orderNo-1
           }))
@@ -619,7 +619,7 @@ lookrecordlist(){
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/customer/customer-list',
+          url: this.$Interface+'/ling-dao/customer/customer-list',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
@@ -675,7 +675,7 @@ lookrecordlist(){
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/customer/customer-list-sum',
+          url: this.$Interface+'/ling-dao/customer/customer-list-sum',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
@@ -756,7 +756,7 @@ lookrecordlist(){
             type: 'success',
             message: '退出成功!'
           });
-          this.$axios.post('/logout')
+          this.$axios.post(this.$Interface+'/logout')
             .then(res => {
               if (res.data.codeMsg) {
                 this.$message({
@@ -791,7 +791,7 @@ lookrecordlist(){
       },
 
       getData() {
-        this.$axios.get('/ling-dao/user-list?' + qs.stringify({
+        this.$axios.get(this.$Interface+'/ling-dao/user-list?' + qs.stringify({
             pn: this.customerPage,
             // ps: 10,
             order: 'asc',
@@ -822,7 +822,7 @@ lookrecordlist(){
           })
       },
       getDataNumber() {
-        this.$axios.get('/ling-dao/user-list-sum')
+        this.$axios.get(this.$Interface+'/ling-dao/user-list-sum')
           .then(res => {
             if (res.data.codeMsg) {
               this.$message({
@@ -840,7 +840,7 @@ lookrecordlist(){
         debugger
         let _pai = this.paiBanCustomerWorkerPhoneHas ? this.paiBanCustomerWorkerPhoneHas :
           _paiBanCustomerWorkerPhoneHas
-        await this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+        await this.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
@@ -869,7 +869,7 @@ lookrecordlist(){
         console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
         let _pai
         console.log('_pai' + _pai)
-        await this.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
+        await this.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
             paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
@@ -925,7 +925,7 @@ lookrecordlist(){
           })
       },
       async getCustomerWorkerTrace(_time){
-        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+        await this.$axios.get(this.$Interface+'/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
           createTimeByMonth : _time
         }))
         .then(res => {
@@ -1001,7 +1001,7 @@ lookrecordlist(){
         // this.$echarts.init(document.getElementById('main')).restore()
       },
       getDataNumberHos(nature) {
-            this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+            this.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum?' + qs.stringify({
                 nature: nature
               }))
               .then(res => {
@@ -1024,7 +1024,7 @@ lookrecordlist(){
               })
           },
           traceNumber() {
-            this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum')
+            this.$axios.get(this.$Interface+'/ling-dao/customer-worker-trace/customer-worker-trace-list-sum')
               .then(res => {
                 if (res.data.codeMsg) {
                   this.$message({

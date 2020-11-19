@@ -193,7 +193,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/call-record-list',
+          url: this.$Interface+'/ling-dao/call-record-list',
           type: 'GET',
           data: 'ps=15&pn=' + pn + param,
           async: true,
@@ -287,7 +287,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/call-record-list-sum',
+          url: this.$Interface+'/ling-dao/call-record-list-sum',
           type: 'GET',
           data: param,
           async: true,

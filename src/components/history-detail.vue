@@ -85,7 +85,7 @@ export default {
 			debugger
 			let _this = this
             $.ajax({
-				url: '/my-customer-worker-trace/customer-worker-trace-list-sum',
+				url: this.$Interface+'/my-customer-worker-trace/customer-worker-trace-list-sum',
 				type: 'GET',
 				data: 'createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo,
 				async: false,
@@ -113,7 +113,7 @@ export default {
         trackrelList(customerId,customerWorkerId,pn) {
             let _this = this
 			   	$.ajax({
-			   		url: '/my-customer-worker-trace/customer-worker-trace-list',
+			   		url: this.$Interface+'/my-customer-worker-trace/customer-worker-trace-list',
 			   		type: 'GET',
 			   		data: 'customerId=' + customerId+'&customerWorkerId='+customerWorkerId+'&pn='+pn+'&ps=20'+'&createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo,
 			   		async: true,
