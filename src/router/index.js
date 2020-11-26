@@ -78,6 +78,11 @@ const mainRoutes = [
     component: _import( 'modify-hosNew')
   },
   {
+    path: '/modify-hosNew-leader',
+    name: '/modify-hosNew-leader',
+    component: _import( 'modify-hosNew-leader')
+  },
+  {
     path: '/lead-index',
     name: '/lead-index',
     component: ()=>import( '@/components/lead-index')

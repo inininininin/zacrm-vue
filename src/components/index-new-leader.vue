@@ -871,7 +871,7 @@ export default {
 										'<tr id=' + res.data.itemList[i].customerId +'>' +
 											'<td>'+(parseInt(i)+1+((pn-1)*15))+'</td>' +
 											'<td class="enterHos">' +
-												'<a href="#/modify-hosNew?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
+												'<a href="#/modify-hosNew-leader?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
 											'</td>'+
 											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
 												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 

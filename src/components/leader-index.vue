@@ -287,7 +287,7 @@
           <el-table-column type="index" label="序号" width="50">
           </el-table-column>
           <el-table-column prop="name" label="医院名称" width="200">
-            <template slot-scope="scope"><a :href="'./#/modify-hosNew?id='+scope.row.customerId">{{scope.row.name}}</a></template>
+            <template slot-scope="scope"><a :href="'./#/modify-hosNew-leader?id='+scope.row.customerId">{{scope.row.name}}</a></template>
           </el-table-column>
           <el-table-column prop="userNickname" label="业务员" width="130">
           </el-table-column>
@@ -723,6 +723,7 @@ export default {
         thisValue.nickname = res.data.data.nickname;
         thisValue.upperUserId = res.data.data.userId;
         thisValue.onlysubordinateNum();
+        thisValue.urgentLevel=[]
         thisValue.getData(
           thisValue.upperUserId,
           thisValue.memberorder,
