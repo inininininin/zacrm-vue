@@ -42,6 +42,12 @@ const mainRoutes = [
     // _import( 'index')
   },
   {
+    path: '/index-new-leader',
+    name: '/index-new-leader',
+    component: _import("index-new-leader")
+    // _import( 'index')
+  },
+  {
     path: '/history-detail',
     name: '/history-detail',
     component: _import( 'history-detail')

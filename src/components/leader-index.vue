@@ -6,8 +6,8 @@
     </div>
     <div class="leader_name">
       <span>{{ nickname }}</span>
-      <span>直属下级：{{ totalCount }}人</span>
-      <span style="margin-right: 30px">所有下级：{{ totalCount }}人</span>
+      <!-- <span>直属下级：{{ totalCount }}人</span>
+      <span style="margin-right: 30px">所有下级：{{ totalCount }}人</span> -->
       <!-- <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span> -->
 
       <!-- <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button> -->
@@ -53,7 +53,7 @@
         >
         <el-button @click="restart()" type="primary">重置</el-button>
         <el-button @click="selectFilterFn()" type="primary">图表</el-button>
-        <span style="">时间选择：</span>
+        <span style="">图表月份时间选择：</span>
         <i class='el-icon-date'></i>
       <input
         type="text"
@@ -287,6 +287,7 @@
           <el-table-column type="index" label="序号" width="50">
           </el-table-column>
           <el-table-column prop="name" label="医院名称" width="200">
+            <template slot-scope="scope"><a :href="'./#/modify-hosNew?id='+scope.row.customerId">{{scope.row.name}}</a></template>
           </el-table-column>
           <el-table-column prop="userNickname" label="业务员" width="130">
           </el-table-column>
@@ -392,7 +393,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <!-- <div>
       <p
         style="
           font-size: 16px;
@@ -404,7 +405,7 @@
       >
         合计：总数 {{ totalCountHosSelect }}
       </p>
-    </div>
+    </div> -->
 
     <div class="teammemberList">
       <el-table
@@ -415,16 +416,26 @@
       >
         <el-table-column type="index" label="序号" width="50">
         </el-table-column>
-        <el-table-column prop="nickname" label="姓名"> </el-table-column>
+        <el-table-column prop="nickname" label="姓名"> 
+          <template slot-scope="scope"><a :href="'./#/index-new-leader?id='+scope.row.userId+'&nickname='+encodeURIComponent(encodeURIComponent(scope.row.nickname))">{{scope.row.nickname}}</a></template>
+        </el-table-column>
         <el-table-column prop="name" label="账号"> </el-table-column>
         <el-table-column prop="customerCount" label="客户量" sortable>
         </el-table-column>
         <el-table-column
-          prop="todayCustomerTraceCount"
-          label="今日追踪量"
+          prop="yesterdayTraceCount"
+          label="昨日追踪"
           sortable
         >
         </el-table-column>
+        <el-table-column
+          prop="yesterdayNewCustomerCount"
+          label="昨日新客户"
+          sortable
+        >
+        </el-table-column>
+        
+
         <el-table-column label="操作">
           <template slot-scope="scope">
             <!-- <el-button
@@ -1275,6 +1286,7 @@ export default {
               thisValue.tableData = res.data.itemList;
               loading.close();
             }
+            loading.close();
           }
         },
       });

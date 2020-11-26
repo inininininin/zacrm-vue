@@ -462,7 +462,7 @@
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
         this.query = JSON.stringify(this.$route.query)
-        this.$common.loginRefresh();
+        // this.$common.loginRefresh();
         document.title = '忠安客户漏斗管理系统'
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
