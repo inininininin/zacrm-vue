@@ -83,7 +83,7 @@
     </div>
     <el-dialog title="端口选择" :visible.sync="dialogTableVisible" width='500px' top="20%">
       <div style="height: 50px;box-sizing: border-box;width: 100%;">
-          <router-link :to="{path:'/index',query:'time: new Date().getTime()'}" replace>
+          <router-link :to="{path:'/index-new',query:'time: new Date().getTime()'}" replace>
         <div class="typeDialogClass" @click="dialogTableVisible= false"> 
             用户端
         </div>
