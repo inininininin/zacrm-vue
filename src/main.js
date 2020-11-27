@@ -11,6 +11,7 @@ Vue.prototype.$titleName = '伊德客户漏斗管理系统';
 import App from './App';
 import router from './router/index.js';
 import ElementUI from 'element-ui';
+import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/component/tooltip';

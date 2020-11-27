@@ -83,7 +83,7 @@
     </div>
     <el-dialog title="端口选择" :visible.sync="dialogTableVisible" width='500px' top="20%">
       <div style="height: 50px;box-sizing: border-box;width: 100%;">
-          <router-link :to="{path:'/index',query:'time: new Date().getTime()'}" replace>
+          <router-link :to="{path:'/index-new',query:'time: new Date().getTime()'}" replace>
         <div class="typeDialogClass" @click="dialogTableVisible= false"> 
             用户端
         </div>
@@ -125,7 +125,7 @@
           if (res.code == 0) {
             _this.$store.state.loginRefresh = res.data
             $('#login .password').val('')
-            if (res.data.branchIs == 1) {
+            if (res.data.level >= 2) {
               _this.dialogTableVisible = true
               // _this.$router.replace({
               //   path: '/leader-index',
@@ -265,7 +265,7 @@
                       debugger
                       _this.$store.state.loginRefresh = res.data
                         console.log(res.data.branchIs)
-                      if (res.data.branchIs) {
+                      if (res.data.level>=2) {
                         _this.dialogTableVisible = true
                         // _this.$router.replace({
                         //   path: '/leader-index',
