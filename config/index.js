@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-   target:'https://ypt.njshangka.com' ,//'http://192.168.2.100',//设置你调用的接口域名和端口号 别忘了加http
+   target:'http://127.0.0.1' ,//'http://192.168.2.100',//设置你调用的接口域名和端口号 别忘了加http
    changeOrigin: true,
    secure: false,
    pathRewrite: {

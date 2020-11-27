@@ -624,7 +624,7 @@ export default {
         $('#index .loginout').unbind("click").click(function(){
 			$.ajax({
 				type:"post",
-				url:this.$Interface+"/logout",
+				url:thisValue.$Interface+"/logout",
 
 				data:"",
 				success:function (data){
