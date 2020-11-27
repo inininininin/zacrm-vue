@@ -373,11 +373,11 @@
     <div
       class="popBgWindow"
       @click.self="echartsShowData=false"
-      v-if="echartsShowData"
+      v-show="echartsShowData"
     >
       <div
         style="min-width: 1230px; height: 400px; margin: 150px auto 0px"
-        v-if="echartsShowData"
+        v-show="echartsShowData"
       >
         <div
           id="main"
