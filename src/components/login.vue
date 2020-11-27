@@ -125,7 +125,7 @@
           if (res.code == 0) {
             _this.$store.state.loginRefresh = res.data
             $('#login .password').val('')
-            if (res.data.branchIs == 1) {
+            if (res.data.level >= 2) {
               _this.dialogTableVisible = true
               // _this.$router.replace({
               //   path: '/leader-index',
@@ -265,7 +265,7 @@
                       debugger
                       _this.$store.state.loginRefresh = res.data
                         console.log(res.data.branchIs)
-                      if (res.data.branchIs) {
+                      if (res.data.level>=2) {
                         _this.dialogTableVisible = true
                         // _this.$router.replace({
                         //   path: '/leader-index',

@@ -54,16 +54,16 @@
         <el-button @click="restart()" type="primary">重置</el-button>
         <el-button @click="selectFilterFn()" type="primary">图表</el-button>
         <span style="">图表月份时间选择：</span>
-        <i class='el-icon-date'></i>
-      <input
-        type="text"
-        id="layDateMonth"
-        v-model="layuiData"
-        class="layui-input"
-        readonly
-        style="cursor: pointer; display: inline"
-      />
-      
+        <i class="el-icon-date"></i>
+        <input
+          type="text"
+          id="layDateMonth"
+          v-model="layuiData"
+          class="layui-input"
+          readonly
+          style="cursor: pointer; display: inline"
+        />
+
         <el-button
           @click="lookrecordlist()"
           type="primary"
@@ -287,7 +287,12 @@
           <el-table-column type="index" label="序号" width="50">
           </el-table-column>
           <el-table-column prop="name" label="医院名称" width="200">
-            <template slot-scope="scope"><a :href="'./#/modify-hosNew-leader?id='+scope.row.customerId">{{scope.row.name}}</a></template>
+            <template slot-scope="scope"
+              ><a
+                :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
+                >{{ scope.row.name }}</a
+              ></template
+            >
           </el-table-column>
           <el-table-column prop="userNickname" label="业务员" width="130">
           </el-table-column>
@@ -351,7 +356,7 @@
       </div>
     </div>
 
-    <div class="time" v-if='false' style="display: block">
+    <div class="time" v-if="false" style="display: block">
       <span>时间选择：</span>
       <input
         type="text"
@@ -366,13 +371,19 @@
       >
     </div>
     <div
-      style="min-width: 1230px; height: 400px; margin: 30px auto 0px"
+      class="popBgWindow"
+      @click.self="echartsShowData=false"
       v-if="echartsShowData"
     >
       <div
-        id="main"
-        style="min-width: 1200px; height: 400px; margin-left: 0px auto"
-      ></div>
+        style="min-width: 1230px; height: 400px; margin: 150px auto 0px"
+        v-if="echartsShowData"
+      >
+        <div
+          id="main"
+          style="min-width: 1200px; height: 400px; margin-left: 0px auto"
+        ></div>
+      </div>
     </div>
     <div class="teammembers" style="margin-top: 24px">
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
@@ -416,17 +427,23 @@
       >
         <el-table-column type="index" label="序号" width="50">
         </el-table-column>
-        <el-table-column prop="nickname" label="姓名"> 
-          <template slot-scope="scope"><a :href="'./#/index-new-leader?id='+scope.row.userId+'&nickname='+encodeURIComponent(encodeURIComponent(scope.row.nickname))">{{scope.row.nickname}}</a></template>
+        <el-table-column prop="nickname" label="姓名">
+          <template slot-scope="scope"
+            ><a
+              :href="
+                './#/index-new-leader?id=' +
+                scope.row.userId +
+                '&nickname=' +
+                encodeURIComponent(encodeURIComponent(scope.row.nickname))
+              "
+              >{{ scope.row.nickname }}</a
+            ></template
+          >
         </el-table-column>
         <el-table-column prop="name" label="账号"> </el-table-column>
         <el-table-column prop="customerCount" label="客户量" sortable>
         </el-table-column>
-        <el-table-column
-          prop="yesterdayTraceCount"
-          label="昨日追踪"
-          sortable
-        >
+        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable>
         </el-table-column>
         <el-table-column
           prop="yesterdayNewCustomerCount"
@@ -434,7 +451,6 @@
           sortable
         >
         </el-table-column>
-        
 
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -523,6 +539,7 @@ const cityOptions = ["院长", "主任"];
 export default {
   data() {
     return {
+      showEcharts: false,
       upperUserId: "",
       onlysubordinate: "",
       allsubordinate: "",
@@ -723,7 +740,7 @@ export default {
         thisValue.nickname = res.data.data.nickname;
         thisValue.upperUserId = res.data.data.userId;
         thisValue.onlysubordinateNum();
-        thisValue.urgentLevel=[]
+        thisValue.urgentLevel = [];
         thisValue.getData(
           thisValue.upperUserId,
           thisValue.memberorder,
@@ -786,6 +803,8 @@ export default {
   // },
   methods: {
     // 从头来
+
+
     // 遮罩层loading
     searchMember() {
       this.urgentLevel = [];
@@ -847,7 +866,7 @@ export default {
         this.hospitalOrder = "";
         this.hospitalSort = "";
       }
-      console.log(this.hospitalOrder,this.hospitalSort);
+      console.log(this.hospitalOrder, this.hospitalSort);
       this.currentPage1 = 1;
       this.tableData = [];
       this.lastPage(1);
@@ -1586,6 +1605,7 @@ export default {
         });
     },
     async getDataNumberHosSelect(_time) {
+      console.log(222)
       let thisValue = this;
       // console.log(thisValue.moment(_time).format("YYYY-MM-DD"));
       let _pai;
@@ -1620,8 +1640,8 @@ export default {
                 this.zhuRenCustomerWorkerLevel == 0
                   ? ""
                   : this.zhuRenCustomerWorkerLevel,
-                  createTimeFrom:this.createTimeFrom,
-                  createTimeTo:this.createTimeTo,
+              createTimeFrom: this.createTimeFrom,
+              createTimeTo: this.createTimeTo,
               whatTime: this.createTimeState,
               nature: this.nature,
               kw: this.searchKeys,
@@ -1681,12 +1701,13 @@ export default {
         });
     },
     async getCustomerWorkerTrace(_time) {
+      console.log(111)
       await this.$axios
         .get(
           "/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?" +
             qs.stringify({
-              createTimeFrom:this.createTimeFrom,
-                  createTimeTo:this.createTimeTo,
+              createTimeFrom: this.createTimeFrom,
+              createTimeTo: this.createTimeTo,
               createTimeByMonth: _time,
             })
         )
@@ -1727,14 +1748,25 @@ export default {
 
     async statisticalAllFn() {
       // this.getNumberHosSelect()
-      let nowData = new Date().getDate();
-      let nowMOunth = new Date().getMonth() + 1;
-      let nowYear = new Date().getFullYear();
+      const loading = this.$loading({
+        lock: true, //lock的修改符--默认是false
+        text: "Loading", //显示在加载图标下方的加载文案
+        spinner: "el-icon-loading", //自定义加载图标类名
+        background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
+        target: document.querySelector(".popBgWindow"), //loading覆盖的dom元素节点
+      });
       if (this.lineData.xAxis.data.length != 0) {
         this.lineData.xAxis.data = [];
         this.chartsFn();
       }
+      console.log(1230)
+      let nowData = new Date().getDate();
+      let nowMOunth = new Date().getMonth() + 1;
+      let nowYear = new Date().getFullYear();
+         console.log(this.nowTime)
+      
       // this.barData.xAxis.data = [];
+   
       if (this.nowTime) {
         // console.log(this.nowTime);
         nowYear = this.nowTime.year;
@@ -1745,14 +1777,17 @@ export default {
       let _nowTime = new Date(
         nowYear + "-" + nowMOunth + "-" + 1 + " " + "00:00:00"
       ).getTime();
+      console.log(_nowTime)
       await this.getDataNumberHosSelect(_nowTime);
       await this.getCustomerWorkerTrace(_nowTime);
       this.$echarts
         .init(document.getElementById("main"))
         .setOption(this.lineData, true);
+      loading.close();
       // await this.getDataNumberHosSelect(_nowTime, 1)
     },
     chartsFn() {
+      console.log('chartsFn()')
       this.lineData.series[0].data = [];
       this.lineData.series[1].data = [];
       // this.lineData.series[1].data = []
@@ -2348,5 +2383,18 @@ input::-webkit-inner-spin-button {
 >>> .el-pagination .btn-prev,
 >>> .el-pagination .btn-next {
   background-color: #fff;
+}
+.popBgWindow {
+  position: fixed;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.45);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.popBgWindow > div {
+  background: #fff;
+  /* width:90%;  */
 }
 </style>
