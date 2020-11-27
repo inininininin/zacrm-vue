@@ -735,44 +735,6 @@ export default {
           },
         });
       }
-<<<<<<< HEAD
-    },
-    activated() {
-      let thisValue = this
-      // Object.assign(thisValue.$data, thisValue.$options.data());
-
-      thisValue.$axios.post(thisValue.$Interface+'/login-refresh')
-        .then(res => {
-          if (res.data.codeMsg) {
-            thisValue.$message({
-              type: 'info',
-              message: res.data.codeMsg,
-              onClose:function(){
-                thisValue.$router.push({path:'/login'})
-              }
-            })
-
-          }
-          if (res.data.code == 0) {
-            this.$store.state.loginRefresh = res.data.data
-            thisValue.nickname = res.data.data.nickname
-          }
-        })
-
-      thisValue.getData()
-      thisValue.getDataNumber()
-      // thisValue.statisticalAllFn()
-      thisValue.getDataNumberHos()
-      thisValue.getDataNumberHos(1)
-      thisValue.getDataNumberHos(2)
-      thisValue.traceNumber()
-      debugger
-      // thisValue.getDataNumberHosSelect('','','',1)
-      let nowYear = new Date().getFullYear();
-      let nowMOunth = new Date().getMonth() + 1;
-      if (nowMOunth < 10) {
-        nowMOunth = '0' + nowMOunth
-=======
       if (res.data.code == 0) {
         this.$store.state.loginRefresh = res.data.data;
         thisValue.nickname = res.data.data.nickname;
@@ -784,7 +746,6 @@ export default {
           thisValue.memberorder,
           thisValue.membersort
         );
->>>>>>> xuxk
       }
     });
 
@@ -855,31 +816,6 @@ export default {
         this.getData("", this.memberorder, this.membersort);
       }
     },
-<<<<<<< HEAD
-    // watch:{
-    //   $route(to,from){
-    //     console.log(to.path);
-    //     console.log(from.path);
-    //     if(to.path == '/index' && from.path == '/leader-index'){
-    //       this.$router.push({path:'/login'})
-    //     }
-    //   }
-    // },
-    methods: {
-      placedAtTheTopFn(_value){
-        console.dir(_value)
-        debugger
-        let listInx = this.urgentLevel.findIndex((n)=>n.userId == _value.userId)
-        if(listInx){
-          this.$axios.post(this.$Interface+'/zong-jing-li/update-user',qs.stringify({
-            userId : _value.userId,
-            orderNo : this.orderNo-1
-          }))
-          .then(res =>{
-            if(res.data.codeMsg){
-              thisValue.$message({
-                type: 'info',
-=======
     restartmember() {
       this.memberKeyword = "";
       this.memberorder = "";
@@ -983,7 +919,6 @@ export default {
             if (res.data.codeMsg) {
               this.$message({
                 type: "info",
->>>>>>> xuxk
                 message: res.data.codeMsg,
               });
             }
@@ -1168,100 +1103,6 @@ export default {
       // this.statisticalAllFn()
     },
 
-<<<<<<< HEAD
-      selectFilterFn() {
-        this.echartsShowData = true
-        this.statisticalAllFn()
-      },
-      selectHospiatlNumFilterFn() {
-        this.getNumberHosSelect()
-        this.lastPageNo()
-        this.lastPage(1)
-      },
-lookrecordlist(){
-   localStorage.setItem('id', '')
-   // localStorage.setItem('nickname', name)
-   this.$router.push({
-     path: '/record-list',
-     query: {
-       // name: encodeURIComponent(name),
-       time: new Date().getTime()
-     }
-   });
-},
-      // create() {
-      //   this.$axios.post('/ling-dao/create-user', qs.stringify({
-      //       name: 'xuxiukun',
-      //       phone: 15077822798,
-      //       nickname: 'xuxk',
-      //       upperUserId: '10000000000000000000000000000000', //20200611182803879562472539181121
-      //       upperUser1Id: '10000000000000000000000000000000',
-      //       upperUser2Id: '10000000000000000000000000000000',
-      //       upperUser3Id: '10000000000000000000000000000000',
-      //       password: 123456,
-      //       type: 0,
-      //     }))
-      //     .then(res => {
-      //       if (res.data.codeMsg) {
-      //         this.$message({
-      //           type: 'info',
-      //           message: res.data.codeMsg
-      //         })
-      //       }
-      //     })
-      // },
-
-
-      lastPage(pn) {
-        var param = qs.stringify({
-          paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-          paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
-          paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
-          paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
-          zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
-          zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
-          zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
-          zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
-          nature: this.nature,
-          // userId: localStorage.getItem('id'),
-        })
-        let thisValue = this
-        $.ajax({
-          url: thisValue.$Interface+'/ling-dao/customer/customer-list',
-          type: 'GET',
-
-          data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
-            '&ps=15&pn=' + pn,
-          async: true,
-          success: function(res) {
-            console.dir(res)
-            if (res.code == 0) {
-              $('#leader_index .tbody').html('')
-              $('.tableBox').css('display', 'block')
-              if (res.data.itemList && res.data.itemList.length > 0) {
-                for (var i in res.data.itemList) {
-                  var tel = ''
-                  if(res.data.itemList[i].paiBanCustomerWorkerPhone1){
-                  	tel=res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(0, 3) + "****"+res.data.itemList[i].paiBanCustomerWorkerPhone1.substring(8,res.data.itemList[i].paiBanCustomerWorkerPhone1.length)
-                  }
-                  // tel = res.data.itemList[i].paiBanCustomerWorkerPhone1 // = res.data.itemList[i].tel
-                  let toRevisitTime = '';
-                  if (res.data.itemList[i].toRevisitTime) {
-                    toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD');
-                  } else {
-                    toRevisitTime = ''
-                  }
-                  $('#leader_index .tbody').append('<tr id=' + res.data.itemList[i].customerId + '><td>' + (
-                      parseInt(i) + 1 + ((pn - 1) * 15)) +
-                    '</td><td>' + res.data.itemList[i].userNickname +
-                    '</td><td class="enterHos"><a href="#/history-detail-lindao-eve?id=' + res.data.itemList[i]
-                    .customerId + '">' +
-                    (res.data.itemList[i].name || "") + '</a></td><td>' + (res.data.itemList[i].paiBanCustomerWorkerName ||
-                      "") + '</td><td  linkName="' + (res.data.itemList[i].name || "") + '" tel="' + (res.data.itemList[
-                      i].tel || "") + '">' + (tel || "") + '</td><td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay ||
-                      "") + '</td><td>' + thisValue.getDateDiff(res.data.itemList[i].updateTime) +
-                    '</td></tr>')
-=======
     selectFilterFn() {
       this.echartsShowData = true;
       this.statisticalAllFn();
@@ -1305,7 +1146,6 @@ lookrecordlist(){
     //       }
     //     })
     // },
->>>>>>> xuxk
 
     lastPage(pn) {
       var param = qs.stringify({
@@ -1378,47 +1218,6 @@ lookrecordlist(){
             });
             loading.close();
           }
-<<<<<<< HEAD
-        })
-      },
-      lastPageNo(pn) {
-        var param = qs.stringify({
-          paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-          paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
-          paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
-          paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
-          zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
-          zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
-          zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
-          zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
-          nature: this.nature,
-          // userId: localStorage.getItem('id'),
-        })
-        let thisValue = this
-        $.ajax({
-          url: thisValue.$Interface+'/ling-dao/customer/customer-list-sum',
-          type: 'GET',
-
-          data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
-            '&ps=15&pn=' + pn,
-          async: true,
-          success: function(res) {
-            if (res.code == 0) {
-              thisValue.totalNum = Math.ceil(res.data.itemCount / 15)
-              console.log(thisValue.totalNum)
-              $('#leader_index .shuju').html('( 共' + res.data.itemCount + '条数据 )')
-              $('#leader_index #box').paging({
-                initPageNo: 1, // 初始页码
-                totalPages: thisValue.totalNum, //总页数
-                //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-                slideSpeed: 600, // 缓动速度。单位毫秒
-                jump: true, //是否支持跳转
-                callback: function(page) { // 回调函数
-                  // memberList1(1,page);
-                  // var nature = $('#index .nature').val()
-                  thisValue.pn = page
-                  thisValue.lastPage(page)
-=======
           if (res.code == 0) {
             $("#leader_index .tbody").html("");
             $(".tableBox").css("display", "block");
@@ -1436,7 +1235,6 @@ lookrecordlist(){
                       8,
                       res.data.itemList[i].paiBanCustomerWorkerPhone1.length
                     );
->>>>>>> xuxk
                 }
                 if (res.data.itemList[i].lastTraceTime) {
                   res.data.itemList[i].lastTraceTime = thisValue
@@ -1622,35 +1420,6 @@ lookrecordlist(){
       return result;
     },
 
-<<<<<<< HEAD
-      loginout() {
-        this.$confirm('请确认是否退出登录, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '退出成功!'
-          });
-          this.$axios.post(this.$Interface+'/logout')
-            .then(res => {
-              if (res.data.codeMsg) {
-                this.$message({
-                  type: 'info',
-                  message: res.data.codeMsg
-                })
-              }
-              if (res.data.code == 0) {
-                location.href = location.pathname
-                // this.$router.replace({path: '/login'});
-                // location.reload();
-              }
-            })
-          // location.href=location.pathname
-        }).catch(() => {
-=======
     loginout() {
       this.$confirm("请确认是否退出登录, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -1659,38 +1428,11 @@ lookrecordlist(){
         center: true,
       })
         .then(() => {
->>>>>>> xuxk
           this.$message({
             type: "success",
             message: "退出成功!",
           });
-<<<<<<< HEAD
-        });
-      },
-      memberDetail(id, name) {
-        localStorage.setItem('id', id)
-        localStorage.setItem('nickname', name)
-        this.$router.push({
-          path: '/leader-lookIndex',
-          query: {
-            // name: encodeURIComponent(name),
-            time: new Date().getTime()
-          }
-        });
-      },
-
-      getData() {
-        this.$axios.get(this.$Interface+'/ling-dao/user-list?' + qs.stringify({
-            pn: this.customerPage,
-            // ps: 10,
-            order: 'asc',
-            sort: 'orderNo'
-          }))
-          .then(res => {
-            // console.log(res)
-=======
           this.$axios.post("/logout").then((res) => {
->>>>>>> xuxk
             if (res.data.codeMsg) {
               this.$message({
                 type: "info",
@@ -1916,100 +1658,16 @@ lookrecordlist(){
             });
           }
 
-<<<<<<< HEAD
-          })
-      },
-      getDataNumber() {
-        this.$axios.get(this.$Interface+'/ling-dao/user-list-sum')
-          .then(res => {
-            if (res.data.codeMsg) {
-              this.$message({
-                type: 'info',
-                message: res.data.codeMsg
-              })
-            }
-            if (res.data.code == 0) {
-              this.totalCount = res.data.data.itemCount
-            }
-          })
-      },
-      async getNumberHosSelect(_paiBanCustomerWorkerPhoneHas) {
-        let thisValue = this
-        debugger
-        let _pai = this.paiBanCustomerWorkerPhoneHas ? this.paiBanCustomerWorkerPhoneHas :
-          _paiBanCustomerWorkerPhoneHas
-        await this.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum?' + qs.stringify({
-            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: _pai,
-            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
-            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
-            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
-            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
-            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
-            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
-            nature: this.nature,
-            // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
-          }))
-          .then(res => {
-            if (res.data.codeMsg) {
-              this.$message({
-                type: 'info',
-                message: res.data.codeMsg
-              })
-=======
           if (res.data.code == 0) {
             let nowYear = new Date().getFullYear();
             let nowMOunth = new Date().getMonth() + 1;
             let nowData = new Date().getDate();
             if (nowMOunth < 10) {
               nowMOunth = "0" + nowMOunth;
->>>>>>> xuxk
             }
             if (nowData < 10) {
               nowData = "0" + nowData;
             }
-<<<<<<< HEAD
-          })
-      },
-      async getDataNumberHosSelect(_time) {
-        let thisValue = this
-        console.log(thisValue.moment(_time).format('YYYY-MM-DD'))
-        let _pai
-        console.log('_pai' + _pai)
-        await this.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
-            paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
-            paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
-            paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
-            paiBanCustomerWorkerLevel: this.paiBanCustomerWorkerLevel,
-            zhuRenCustomerWorkerHas: this.zhuRenCustomerWorkerHas,
-            zhuRenCustomerWorkerPhoneHas: this.zhuRenCustomerWorkerPhoneHas,
-            zhuRenCustomerWorkerUrgent: this.zhuRenCustomerWorkerUrgent,
-            zhuRenCustomerWorkerLevel: this.zhuRenCustomerWorkerLevel,
-            whatTime: this.createTimeState,
-            nature: this.nature,
-            // createTimeFrom : _time,
-            // createTimeTo : _nextTime? _nextTime-1:'',
-            createTimeByMonth: _time,
-
-          }))
-          .then(res => {
-            if (res.data.codeMsg) {
-              this.$message({
-                type: 'info',
-                message: res.data.codeMsg
-              })
-            }
-
-            if (res.data.code == 0) {
-              let nowYear = new Date().getFullYear();
-              let nowMOunth = new Date().getMonth() + 1;
-              let nowData = new Date().getDate();
-              if (nowMOunth < 10) {
-                nowMOunth = '0' + nowMOunth
-              }
-              if (nowData < 10) {
-                nowData = '0' + nowData
-=======
             let nowTime =
               nowYear.toString() + nowMOunth.toString() + nowData.toString();
             for (let i in res.data.data.sum) {
@@ -2028,7 +1686,6 @@ lookrecordlist(){
                 this.lineData.xAxis.data.push(
                   res.data.data.sum[i].date.split("-")[2].split(" ")[0]
                 );
->>>>>>> xuxk
               }
               debugger;
               if (resData <= nowTime) {
@@ -2040,20 +1697,6 @@ lookrecordlist(){
               // console.log(res.data.data.sum[i].date.split('-')[2].split(' ')[0].replace(0, '') + '号' +
               // '客户量当前值为' + res.data.data.sum[i].sum.itemCount)
             }
-<<<<<<< HEAD
-          })
-      },
-      async getCustomerWorkerTrace(_time){
-        await this.$axios.get(this.$Interface+'/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
-          createTimeByMonth : _time
-        }))
-        .then(res => {
-           if (res.data.codeMsg) {
-              this.$message({
-                type: 'info',
-                message: res.data.codeMsg
-              })
-=======
           }
         });
     },
@@ -2081,7 +1724,6 @@ lookrecordlist(){
             let nowData = new Date().getDate();
             if (nowMOunth < 10) {
               nowMOunth = "0" + nowMOunth;
->>>>>>> xuxk
             }
             if (nowData < 10) {
               nowData = "0" + nowData;
@@ -2099,94 +1741,10 @@ lookrecordlist(){
                 );
               }
             }
-<<<<<<< HEAD
-        })
-      },
-
-      async statisticalAllFn() {
-        // this.getNumberHosSelect()
-        let nowData = new Date().getDate();
-        let nowMOunth = new Date().getMonth() + 1;
-        let nowYear = new Date().getFullYear();
-        if (this.lineData.xAxis.data.length != 0) {
-          this.lineData.xAxis.data = [];
-          this.chartsFn()
-        }
-        // this.barData.xAxis.data = [];
-        if (this.nowTime) {
-          console.log(this.nowTime)
-          nowYear = this.nowTime.year;
-          nowMOunth = this.nowTime.month;
-          nowData = new Date(nowYear, nowMOunth, 0).getDate()
-          // console.log('当前月份有：' + nowData)
-        }
-        let _nowTime = new Date(nowYear + '-' + nowMOunth + '-' + 1 + ' ' + '00:00:00').getTime();
-        await this.getDataNumberHosSelect(_nowTime)
-        await this.getCustomerWorkerTrace(_nowTime)
-        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-        // await this.getDataNumberHosSelect(_nowTime, 1)
-      },
-      chartsFn() {
-        this.lineData.series[0].data = []
-        this.lineData.series[1].data = []
-        // this.lineData.series[1].data = []
-        // this.barData.series[0].data = []
-        // this.barData.series[1].data = []
-        this.$echarts.init(document.getElementById('main')).setOption(this.lineData, true);
-        // this.$echarts.init(document.getElementById('main2')).setOption(this.barData, true);
-        this.$echarts.init(document.getElementById('main')).clear()
-        // this.$echarts.init(document.getElementById('main2')).clear()
-        // console.log('s')
-        // 清空绘画内容，清空后实例可用，因为并非释放示例的资源，释放资源我们需要dispose()
-        // this.$echarts.init(document.getElementById('main')).clear()
-        // 释放图表实例，释放后实例不再可用。
-        // this.$echarts.init(document.getElementById('main2')).dispose()
-        // 还原图表，各种状态均被清除，还原为最初展现时的状态。
-        // this.$echarts.init(document.getElementById('main')).restore()
-      },
-      getDataNumberHos(nature) {
-            this.$axios.get(this.$Interface+'/ling-dao/customer/customer-list-sum?' + qs.stringify({
-                nature: nature
-              }))
-              .then(res => {
-                if (res.data.codeMsg) {
-                  this.$message({
-                    type: 'info',
-                    message: res.data.codeMsg
-                  })
-                }
-                if (res.data.code == 0) {
-                  if (nature == 1) {
-                    this.totalCountHos1 = res.data.data.itemCount
-                  } else if (nature == 2) {
-                    this.totalCountHos2 = res.data.data.itemCount
-                  } else {
-                    this.totalCountHos = res.data.data.itemCount
-                    this.totalCountHosSelect=res.data.data.itemCount
-                  }
-                }
-              })
-          },
-          traceNumber() {
-            this.$axios.get(this.$Interface+'/ling-dao/customer-worker-trace/customer-worker-trace-list-sum')
-              .then(res => {
-                if (res.data.codeMsg) {
-                  this.$message({
-                    type: 'info',
-                    message: res.data.codeMsg
-                  })
-                }
-                if (res.data.code == 0) {
-                  this.traceTotalNumber = res.data.data.itemCount
-                }
-              })
-          },
-=======
             // console.log(this.lineData.series[1].data);
           }
         });
     },
->>>>>>> xuxk
 
     async statisticalAllFn() {
       // this.getNumberHosSelect()
