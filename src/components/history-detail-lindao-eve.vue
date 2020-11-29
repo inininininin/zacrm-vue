@@ -101,7 +101,7 @@ export default {
           console.log(111)
             let _this = this
 			   	$.ajax({
-			   		url: _'/ling-dao/customer-worker-trace/customer-worker-trace-list',
+			   		url: '/ling-dao/customer-worker-trace/customer-worker-trace-list',
 			   		type: 'GET',
 			   		data: 'customerId=' + customerId+'&customerWorkerId='+customerWorkerId+'&pn='+pn+'&ps=20'+
             '&createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo+'&userId='+localStorage.getItem('id'),
