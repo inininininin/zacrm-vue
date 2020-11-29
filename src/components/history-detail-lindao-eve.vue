@@ -72,7 +72,7 @@ export default {
 			debugger
 			let _this = this
             $.ajax({
-				url: _this.$Interface+'/ling-dao/customer-worker-trace/customer-worker-trace-list-sum',
+				url: '/ling-dao/customer-worker-trace/customer-worker-trace-list-sum',
 				type: 'GET',
 				data: 'customerId=' + _this.customerId+'&createTimeFrom='+_this.createTimeFrom+'&createTimeTo='+_this.createTimeTo+'&userId='+localStorage.getItem('id'),
 				async: false,
@@ -101,7 +101,7 @@ export default {
           console.log(111)
             let _this = this
 			   	$.ajax({
-			   		url: _this.$Interface+'/ling-dao/customer-worker-trace/customer-worker-trace-list',
+			   		url: _'/ling-dao/customer-worker-trace/customer-worker-trace-list',
 			   		type: 'GET',
 			   		data: 'customerId=' + customerId+'&customerWorkerId='+customerWorkerId+'&pn='+pn+'&ps=20'+
             '&createTimeFrom='+this.createTimeFrom+'&createTimeTo='+this.createTimeTo+'&userId='+localStorage.getItem('id'),
