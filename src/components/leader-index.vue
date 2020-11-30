@@ -60,7 +60,7 @@
           id="layDateMonth"
           v-model="layuiData"
           class="layui-input"
-          @input = "changeDate($event)"
+          @change = "changeDate($event)"
           readonly
           style="cursor: pointer; display: inline"
         />
@@ -289,7 +289,7 @@
           </el-table-column>
           <el-table-column prop="name" label="医院名称" width="200">
             <template slot-scope="scope"
-              ><a
+              ><a target="_blank" 
                 :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
                 >{{ scope.row.name }}</a
               ></template
@@ -306,9 +306,10 @@
             width="130"
           >
           </el-table-column>
+           <!-- show-overflow-tooltip="true" -->
           <el-table-column
             prop="lastTraceContent"
-            show-overflow-tooltip="true"
+           show-overflow-tooltip
             label="追踪内容"
           >
           </el-table-column>
@@ -430,7 +431,7 @@
         </el-table-column>
         <el-table-column prop="nickname" label="姓名">
           <template slot-scope="scope"
-            ><a
+            ><a target="_blank" 
               :href="
                 './#/index-new-leader?id=' +
                 scope.row.userId +
@@ -777,9 +778,9 @@ export default {
           type: "month",
           // value:nowYear + '-' + nowMOunth,
           change: function (value, date, endDate) {
-            console.log(value); //得到日期生成的值，如：2017-08-18
-            console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-            console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            // console.log(value); //得到日期生成的值，如：2017-08-18
+            // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
             thisValue.nowTime = date;
             // thisValue.chartsFn()
             // thisValue.statisticalAllFn()
