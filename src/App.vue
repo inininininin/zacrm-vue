@@ -14,7 +14,7 @@
       debugger;
       let thisVue = this;
       let telTimeMIntenSecondsInterval;
-      $.get(this.$Interface+'/config', function (res) {
+      $.get('/config', function (res) {
         thisVue.$store.state.serVersion = res.data.version;
       });
       $('.phoneEnd_num').click(function () {

@@ -60,6 +60,7 @@
           id="layDateMonth"
           v-model="layuiData"
           class="layui-input"
+          @input = "changeDate($event)"
           readonly
           style="cursor: pointer; display: inline"
         />
@@ -776,9 +777,9 @@ export default {
           type: "month",
           // value:nowYear + '-' + nowMOunth,
           change: function (value, date, endDate) {
-            // console.log(value); //得到日期生成的值，如：2017-08-18
-            // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-            // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            console.log(value); //得到日期生成的值，如：2017-08-18
+            console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
             thisValue.nowTime = date;
             // thisValue.chartsFn()
             // thisValue.statisticalAllFn()
@@ -786,6 +787,7 @@ export default {
               date.month = "0" + date.month;
             }
             thisValue.layuiData = date.year + "-" + date.month;
+            console.log( thisValue.layuiData )
             $(".layui-laydate").remove();
           },
         });
@@ -803,7 +805,10 @@ export default {
   // },
   methods: {
     // 从头来
-
+    // 图表时间是否重置
+    changeDate(e){
+      console.log(e.target.value)
+    },
 
     // 遮罩层loading
     searchMember() {
@@ -1763,7 +1768,7 @@ export default {
       let nowData = new Date().getDate();
       let nowMOunth = new Date().getMonth() + 1;
       let nowYear = new Date().getFullYear();
-         console.log(this.nowTime)
+         console.log(this.nowTime,this.layuiData)
       
       // this.barData.xAxis.data = [];
    
