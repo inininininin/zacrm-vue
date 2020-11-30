@@ -354,7 +354,7 @@
           </thead>
           <tbody class="tbody" style="background: #ffffff"></tbody>
         </table> -->
-        <div class="box rt" id="box"></div>
+        <!-- <div class="box rt" id="box"></div> -->
       </div>
     </div>
 
@@ -424,8 +424,62 @@
       <el-table
         :data="urgentLevel"
         border
+        v-if="tableShowPeople"
         :default-sort="{ prop: 'date', order: 'descending' }"
-        style="width: 100%"
+        style="width: 100%;max-height:589px;overflow-y:scroll"
+      >
+        <el-table-column type="index" label="序号" width="50">
+        </el-table-column>
+        <el-table-column prop="nickname" label="姓名">
+          <template slot-scope="scope"
+            ><a target="_blank" 
+              :href="
+                './#/index-new-leader?id=' +
+                scope.row.userId +
+                '&nickname=' +
+                encodeURIComponent(encodeURIComponent(scope.row.nickname))
+              "
+              >{{ scope.row.nickname }}</a
+            ></template
+          >
+        </el-table-column>
+        <el-table-column prop="name" label="账号"> </el-table-column>
+        <el-table-column prop="customerCount" label="客户量" sortable>
+        </el-table-column>
+        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable>
+        </el-table-column>
+        <el-table-column
+          prop="yesterdayNewCustomerCount"
+          label="昨日新客户"
+          sortable
+        >
+        </el-table-column>
+
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <!-- <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)"
+              >删除</el-button
+            > -->
+            <el-button
+              style="color: #1890ff"
+              size="mini"
+              @click="placedAtTheTopFn(scope.row)"
+              >置顶</el-button
+            >
+            <!-- @click="handleEdit(scope.$index, scope.row)" -->
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-table
+      v-if="!tableShowPeople"
+        :data="urgentLevel1"
+        border
+        :default-sort="{ prop: 'date', order: 'descending' }"
+        style="width: 100%;max-height:589px;overflow-y:scroll"
       >
         <el-table-column type="index" label="序号" width="50">
         </el-table-column>
@@ -541,6 +595,7 @@ const cityOptions = ["院长", "主任"];
 export default {
   data() {
     return {
+      tableShowPeople:true,
       showEcharts: false,
       upperUserId: "",
       onlysubordinate: "",
@@ -627,6 +682,7 @@ export default {
       paiBanCustomerWorkerLevelname: "",
       zhuRenCustomerWorkerLevelname: "",
       urgentLevel: [],
+      urgentLevel1:[],
       customerPage: 1,
       echartsShowData: false,
       lineData: {
@@ -743,6 +799,7 @@ export default {
         thisValue.upperUserId = res.data.data.userId;
         thisValue.onlysubordinateNum();
         thisValue.urgentLevel = [];
+        thisValue.urgentLevel1 = [];
         thisValue.getData(
           thisValue.upperUserId,
           thisValue.memberorder,
@@ -811,15 +868,16 @@ export default {
       console.log(e.target.value)
     },
 
-    // 遮罩层loading
+    // 筛选下级
     searchMember() {
       this.urgentLevel = [];
+      this.urgentLevel1= [];
       this.onlysubordinateNum();
       this.allsubordinateNum();
       if (this.activeName == "first") {
         this.getData(this.upperUserId, this.memberorder, this.membersort);
       } else {
-        this.getData("", this.memberorder, this.membersort);
+        this.getData1("", this.memberorder, this.membersort);
       }
     },
     restartmember() {
@@ -838,12 +896,25 @@ export default {
     // tabber点击
     handleTabClick(tab, event) {
       console.log(tab, event);
-      this.urgentLevel = [];
-      if (tab.name == "first") {
-        this.getData(this.upperUserId, this.memberorder, this.membersort);
-      } else {
-        this.getData("", this.memberorder, this.membersort);
+      console.log(this.activeName)
+      if(tab.name == "first"){
+        this.tableShowPeople=true
+         if(this.urgentLevel.length==0){
+          this.getData(this.upperUserId, this.memberorder, this.membersort);
+        }
+      }else{
+        this.tableShowPeople=false
+        if(this.urgentLevel1.length==0){
+          this.getData1("", this.memberorder, this.membersort);
+        }
+        
       }
+      // this.urgentLevel = [];
+      // if (tab.name == "first") {
+      //   this.getData(this.upperUserId, this.memberorder, this.membersort);
+      // } else {
+      //   this.getData("", this.memberorder, this.membersort);
+      // }
     },
     // 模块一
     daterange(e) {
@@ -1123,13 +1194,15 @@ export default {
     lookrecordlist() {
       localStorage.setItem("id", "");
       // localStorage.setItem('nickname', name)
-      this.$router.push({
-        path: "/record-list",
-        query: {
-          // name: encodeURIComponent(name),
-          time: new Date().getTime(),
-        },
-      });
+      // this.$router.push({
+      //   path: "/record-list",
+      //   query: {
+      //     // name: encodeURIComponent(name),
+      //     time: new Date().getTime(),
+      //   },
+      // });
+       let routeData = this.$router.resolve({ path: '/record-list', query: {    time: new Date().getTime(), } });
+window.open(routeData.href, '_blank');
     },
     // create() {
     //   this.$axios.post('/ling-dao/create-user', qs.stringify({
@@ -1507,9 +1580,55 @@ export default {
           if (res.data.code == 0) {
             if (res.data.data.itemList[0])
               this.orderNo = res.data.data.itemList[0].orderNo;
+              console.log(this.activeName)
             if (res.data.data.itemList.length > 0) {
               for (let i in res.data.data.itemList) {
                 this.urgentLevel.push(res.data.data.itemList[i]);
+              }
+            }
+            loading.close();
+          }
+        });
+    },
+    getData1(upperUserId, order, sort) {
+      console.log(upperUserId, order, sort);
+      const loading = this.$loading({
+        lock: true, //lock的修改符--默认是false
+        text: "Loading", //显示在加载图标下方的加载文案
+        spinner: "el-icon-loading", //自定义加载图标类名
+        background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
+        target: document.querySelector(".teammemberList"), //loading覆盖的dom元素节点
+      });
+      //成功回调函数停止加载
+
+      this.$axios
+        .get(
+          "/ling-dao/user-list?" +
+            qs.stringify({
+              kw: this.memberKeyword,
+              pn: this.customerPage,
+              // upperUserId: upperUserId,
+              order: order, //"asc",
+              sort: sort, //"orderNo",
+            })
+        )
+        .then((res) => {
+          // console.log(res)
+          if (res.data.codeMsg) {
+            // console.log(res.data.codeMsg)
+            this.$message({
+              type: "info",
+              message: res.data.codeMsg,
+            });
+            loading.close();
+          }
+          if (res.data.code == 0) {
+            if (res.data.data.itemList[0])
+              this.orderNo = res.data.data.itemList[0].orderNo;
+              console.log(this.activeName)
+            if (res.data.data.itemList.length > 0) {
+              for (let i in res.data.data.itemList) {
+                this.urgentLevel1.push(res.data.data.itemList[i]);
               }
             }
             loading.close();
@@ -2381,7 +2500,7 @@ input::-webkit-inner-spin-button {
   /* text-align: center; */
   margin-right: 30px;
   margin-top: 20px;
-  margin-bottom: 130px;
+  /* margin-bottom: 130px; */
 }
 >>> .el-pagination .el-pager li {
   background-color: #fff;
