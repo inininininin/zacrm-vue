@@ -1355,18 +1355,19 @@ window.open(routeData.href, '_blank');
                 }
                 // console.log( res.data.itemList[i].createTime)
                 let level = res.data.itemList[i].level;
+                    
                 if (level == 1) {
-                  level = "暂不感兴趣";
+                  res.data.itemList[i].level = "无兴趣";
                 } else if (level == 2) {
-                  level = "初步感兴趣";
+                  res.data.itemList[i].level = "低兴趣";
                 } else if (level == 3) {
-                  level = "非常感兴趣";
+                  res.data.itemList[i].level = "高兴趣";
                 } else if (level == 4) {
-                  level = "近期可考察";
+                  res.data.itemList[i].level = "可考察";
                 } else if (level == 5) {
-                  level = "线上可签单";
+                  res.data.itemList[i].level = "可签单";
                 } else {
-                  level = "";
+                  res.data.itemList[i].level = "";
                 }
                 // let content = "";
                 // if (res.data.itemList[i].lastCustomerWorkerTrace) {
