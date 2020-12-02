@@ -60,7 +60,6 @@
           id="layDateMonth"
           v-model="layuiData"
           class="layui-input"
-          @change = "changeDate($event)"
           readonly
           style="cursor: pointer; display: inline"
         />
@@ -280,6 +279,7 @@
       </div>
       <div class="table1">
         <el-table
+          ref='tableHos'
           :data="tableData"
           style="width: 100%"
           border
@@ -303,6 +303,7 @@
             prop="customerWorkerCount"
             label="相关人员"
             sortable="custom"
+            :sort-orders="['descending', 'ascending']"
             width="130"
           >
           </el-table-column>
@@ -317,9 +318,10 @@
             prop="lastTraceTime"
             label="追踪时间"
             sortable="custom"
+            :sort-orders="['descending', 'ascending']"
           >
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" sortable="custom">
+          <el-table-column prop="createTime" label="创建时间" sortable="custom" :sort-orders="['descending', 'ascending']">
           </el-table-column>
         </el-table>
       </div>
@@ -422,6 +424,7 @@
 
     <div class="teammemberList">
       <el-table
+      ref='tableMember1'
         :data="urgentLevel"
         border
         v-if="tableShowPeople"
@@ -444,14 +447,15 @@
           >
         </el-table-column>
         <el-table-column prop="name" label="账号"> </el-table-column>
-        <el-table-column prop="customerCount" label="客户量" sortable>
+        <el-table-column prop="customerCount" label="客户量" sortable :sort-orders="['descending', 'ascending']">
         </el-table-column>
-        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable>
+        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable :sort-orders="['descending', 'ascending']">
         </el-table-column>
         <el-table-column
           prop="yesterdayNewCustomerCount"
           label="昨日新客户"
           sortable
+          :sort-orders="['descending', 'ascending']"
         >
         </el-table-column>
 
@@ -475,6 +479,7 @@
       </el-table>
 
       <el-table
+      ref='tableMember2'
       v-if="!tableShowPeople"
         :data="urgentLevel1"
         border
@@ -497,14 +502,15 @@
           >
         </el-table-column>
         <el-table-column prop="name" label="账号"> </el-table-column>
-        <el-table-column prop="customerCount" label="客户量" sortable>
+        <el-table-column prop="customerCount" label="客户量" sortable :sort-orders="['descending', 'ascending']">
         </el-table-column>
-        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable>
+        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable :sort-orders="['descending', 'ascending']">
         </el-table-column>
         <el-table-column
           prop="yesterdayNewCustomerCount"
           label="昨日新客户"
           sortable
+          :sort-orders="['descending', 'ascending']"
         >
         </el-table-column>
 
@@ -777,6 +783,7 @@ export default {
       hospitalPageSize: 15,
       hospitalPageNo: 1,
       currentPage1: 1,
+      changeEcharts:true,
     };
   },
   activated() {
@@ -835,9 +842,18 @@ export default {
           type: "month",
           // value:nowYear + '-' + nowMOunth,
           change: function (value, date, endDate) {
-            // console.log(value); //得到日期生成的值，如：2017-08-18
-            // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-            // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+             console.log( thisValue.layuiData )
+             if(thisValue.layuiData==value){
+               $(".layui-laydate").remove();
+               thisValue.changeEcharts=false
+               console.log(thisValue.changeEcharts)
+               return 
+             }
+            thisValue.changeEcharts=true
+            console.log(thisValue.changeEcharts)
+            console.log(value); //得到日期生成的值，如：2017-08-18
+            console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
             thisValue.nowTime = date;
             // thisValue.chartsFn()
             // thisValue.statisticalAllFn()
@@ -845,7 +861,7 @@ export default {
               date.month = "0" + date.month;
             }
             thisValue.layuiData = date.year + "-" + date.month;
-            console.log( thisValue.layuiData )
+           
             $(".layui-laydate").remove();
           },
         });
@@ -863,10 +879,6 @@ export default {
   // },
   methods: {
     // 从头来
-    // 图表时间是否重置
-    changeDate(e){
-      console.log(e.target.value)
-    },
 
     // 筛选下级
     searchMember() {
@@ -884,6 +896,12 @@ export default {
       this.memberKeyword = "";
       this.memberorder = "";
       this.membersort = "";
+    //  this.hospitalSort= "",
+    //   this.hospitalOrder= "",
+    if(this.$refs.tableMember1)
+      this.$refs.tableMember1.clearSort()
+      if(this.$refs.tableMember2)
+      this.$refs.tableMember2.clearSort()
     },
     // 模块二
     handleClick(tab, event) {
@@ -897,6 +915,8 @@ export default {
     handleTabClick(tab, event) {
       console.log(tab, event);
       console.log(this.activeName)
+      // this.$refs.tableMember1.clearSort()
+      // this.$refs.tableMember2.clearSort()
       if(tab.name == "first"){
         this.tableShowPeople=true
          if(this.urgentLevel.length==0){
@@ -959,6 +979,10 @@ export default {
       this.zhuRenCustomerWorkerPhoneHas = "";
       this.zhuRenCustomerWorkerUrgent = "";
       this.zhuRenCustomerWorkerLevel = "";
+       this.currentPage1 = 1;
+       this.hospitalSort= "",
+      this.hospitalOrder= "",
+      this.$refs.tableHos.clearSort()
     },
     yuanzhangIf(e) {
       if (e == true) {
@@ -1866,13 +1890,18 @@ window.open(routeData.href, '_blank');
                 );
               }
             }
-            // console.log(this.lineData.series[1].data);
+            console.log(this.lineData.series[1].data);
           }
         });
     },
 
     async statisticalAllFn() {
       // this.getNumberHosSelect()
+      console.log(this.changeEcharts);
+      if(!this.changeEcharts){
+        if(this.lineData.series[1].data.length)
+          return;
+      }
       const loading = this.$loading({
         lock: true, //lock的修改符--默认是false
         text: "Loading", //显示在加载图标下方的加载文案
@@ -1909,6 +1938,7 @@ window.open(routeData.href, '_blank');
         .init(document.getElementById("main"))
         .setOption(this.lineData, true);
       loading.close();
+      this.changeEcharts=false
       // await this.getDataNumberHosSelect(_nowTime, 1)
     },
     chartsFn() {
