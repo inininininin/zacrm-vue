@@ -2057,7 +2057,7 @@ window.open(routeData.href, '_blank');
   height: 100%;
   min-height: 100%;
   background: rgba(240, 242, 245, 1);
-  overflow: scroll;
+  /* overflow-y: scroll; */
 }
 
 .leader_top {
