@@ -2052,16 +2052,18 @@ window.open(routeData.href, '_blank');
 <style scoped>
 #leader_index {
   width: 100%;
-  min-width: 1440px;
+  /* min-width: 1440px; */
   /* height: auto; */
   height: 100%;
   min-height: 100%;
   background: rgba(240, 242, 245, 1);
   /* overflow-y: scroll; */
+  overflow:scroll;
 }
 
 .leader_top {
   width: 100%;
+
   height: 64px;
   background: rgba(0, 33, 64, 1);
   box-shadow: 2px 0px 6px 0px rgba(0, 21, 41, 0.35);
@@ -2473,6 +2475,7 @@ input::-webkit-inner-spin-button {
   display: block;
   height: 64px;
   background-color: #fff;
+    min-width: 1440px;
 }
 >>> .searchResults > div input {
   width: 207px;
@@ -2510,6 +2513,7 @@ input::-webkit-inner-spin-button {
 }
 .screen {
   width: 100%;
+    min-width: 1440px;
   height: 48px;
   background-color: #fff;
 }
