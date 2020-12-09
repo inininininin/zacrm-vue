@@ -1,16 +1,11 @@
 <template>
   <div id="leader_index">
     <div class="leader_top">
-      <span class="leader_top_title">{{$titleName}}</span>
+      <span class="leader_top_title">{{$titleName}} —— {{nickname}}</span>
       <span class="loginout" @click="loginout()">退出登录</span>
     </div>
-    <div class="leader_name">
+    <!-- <div class="leader_name">
       <span>{{ nickname }}</span>
-      <!-- <span>直属下级：{{ totalCount }}人</span>
-      <span style="margin-right: 30px">所有下级：{{ totalCount }}人</span> -->
-      <!-- <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span> -->
-
-      <!-- <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button> -->
       <el-button
         style="margin-right: 20px"
         nature="1"
@@ -20,7 +15,7 @@
       <el-button nature="2" @click="selectHos($event, 2)"
         >公立医院：{{ totalCountHos2 }}个</el-button
       >
-    </div>
+    </div> -->
     <!-- <div class="selectOption" style="width: 100%;height: auto;margin-left: 34px;">
       <button class="searchThis">搜索</button>
       <select class="nature" v-model="peopleType" @change="selectNature($event)">
@@ -52,8 +47,18 @@
           >搜索</el-button
         >
         <el-button @click="restart()" type="primary">重置</el-button>
+        <input
+          type="text"
+          id="layDateMonth"
+          v-model="layuiData"
+          class="layui-input"
+          readonly
+          style="cursor: pointer; display: inline"
+          placeholder="图表月份时间选择"
+        />
         <el-button @click="selectFilterFn()" type="primary">图表</el-button>
-        <span style="">图表月份时间选择：</span>
+
+        <!-- <span style="">图表月份时间选择：</span>
         <i class="el-icon-date"></i>
         <input
           type="text"
@@ -62,8 +67,36 @@
           class="layui-input"
           readonly
           style="cursor: pointer; display: inline"
-        />
-
+        /> -->
+<div class="screenRow">
+          <el-date-picker
+            @change="daterange($event)"
+            v-model="timeInterval"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            value-format="timestamp"
+            :default-time="['00:00:00', '23:59:59']"
+          >
+          </el-date-picker>
+        </div>
+        <el-select
+          class="typeName"
+            v-model="nature"
+            placeholder="医院类型"
+          >
+            <el-option
+              v-for="item in yztype"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         <el-button
           @click="lookrecordlist()"
           type="primary"
@@ -73,7 +106,7 @@
       </div>
     </div>
     <div class="screen">
-      <div><span>筛选条件：</span></div>
+      <!-- <div><span>筛选条件：</span></div> -->
       <div>
         <div class="screenRow">
           <el-checkbox v-model="checked1" @change="yuanzhangIf($event)"
@@ -158,7 +191,7 @@
             </el-option>
           </el-select>
         </div>
-        <div class="screenRow">
+        <!-- <div class="screenRow">
           <el-date-picker
             @change="daterange($event)"
             v-model="timeInterval"
@@ -173,7 +206,7 @@
             :default-time="['00:00:00', '23:59:59']"
           >
           </el-date-picker>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="selectRoleAll" v-if="false">
@@ -271,7 +304,7 @@
             font-size: 16px;
             color: #333333;
             line-height: 40px;
-            margin: 20px 0;
+            margin:  0;
           "
         >
           合计：总数 {{ totalCountHosSelect }}
@@ -287,7 +320,7 @@
         >
           <el-table-column type="index" label="序号" width="50">
           </el-table-column>
-          <el-table-column prop="name" label="医院名称" width="200">
+          <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="200">
             <template slot-scope="scope"
               ><a target="_blank" 
                 :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
@@ -644,6 +677,12 @@ export default {
       },
       timeInterval: "",
       searchKeys: "",
+      yztype:[
+         { value: "", label: "全部" },
+        { value: "1", label: "民营医院" },
+        { value: "2", label: "公立医院" },
+      ],
+      nature:"",
       yztel: [
         { value: "", label: "全部" },
         { value: "1", label: "有号码" },
@@ -676,7 +715,7 @@ export default {
         { value: "", label: "全部" },
         { value: "1", label: "加急" },
       ],
-      nature: "",
+      // nature: "",
       paiBanCustomerWorkerHas: "",
       paiBanCustomerWorkerPhoneHas: "",
       paiBanCustomerWorkerUrgent: "",
@@ -982,6 +1021,7 @@ export default {
        this.currentPage1 = 1;
        this.hospitalSort= "",
       this.hospitalOrder= "",
+      this.nature= "",
       this.$refs.tableHos.clearSort()
     },
     yuanzhangIf(e) {
@@ -2012,7 +2052,7 @@ window.open(routeData.href, '_blank');
 <style scoped>
 #leader_index {
   width: 100%;
-  min-width: 1200px;
+  min-width: 1440px;
   /* height: auto; */
   height: 100%;
   min-height: 100%;
@@ -2028,7 +2068,7 @@ window.open(routeData.href, '_blank');
 }
 
 .leader_top_title {
-  width: 240px;
+  /* width: 240px; */
   height: 32px;
   font-size: 24px;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -2443,6 +2483,11 @@ input::-webkit-inner-spin-button {
   border-bottom-right-radius: 0;
   /* border-right: 0; */
 }
+>>> .searchResults > div .typeName input{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-left: 10px;
+}
 .searchResults .el-input {
   float: left;
   width: 207px;
@@ -2450,7 +2495,7 @@ input::-webkit-inner-spin-button {
 }
 >>> .searchResults > div button {
   float: left;
-  margin-right: 24px;
+  /* margin-right: 24px; */
   height: 32px;
   width: 80px;
   margin-top: 16px;
@@ -2465,7 +2510,7 @@ input::-webkit-inner-spin-button {
 }
 .screen {
   width: 100%;
-  height: auto;
+  height: 48px;
   background-color: #fff;
 }
 .screen > div {
@@ -2486,12 +2531,13 @@ input::-webkit-inner-spin-button {
   line-height: 22px;
 }
 .screenRow {
-  margin: 0 0 16px 0;
+  margin: 0 0 16px 24px;
+  float: left;
 }
 >>> .screen .el-select {
   width: 190px;
   height: 32px;
-  margin-left: 24px;
+  margin-left: 8px;
 }
 >>> .screen .el-select .el-input__inner {
   height: 32px;
@@ -2552,5 +2598,30 @@ input::-webkit-inner-spin-button {
 .popBgWindow > div {
   background: #fff;
   /* width:90%;  */
+}
+
+>>>.el-table td, >>>.el-table th{
+  padding: 8px 0;
+}
+#layDateMonth{
+  float:left;
+  margin-left: 10px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+>>> .searchResults > div button:nth-child(5) {
+  width: 65px;
+  height: 32px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+>>>.screenRow .el-date-editor{
+  margin: 16px 0 0 10px;
+}
+>>>.screenRow .el-date-editor .el-range-input{
+  height: 30px;
+  line-height:32px;
 }
 </style>
