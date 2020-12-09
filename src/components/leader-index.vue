@@ -86,7 +86,7 @@
         </div>
         <el-select
           class="typeName"
-            v-model="typeName"
+            v-model="nature"
             placeholder="医院类型"
           >
             <el-option
@@ -679,10 +679,10 @@ export default {
       searchKeys: "",
       yztype:[
          { value: "", label: "全部" },
-        { value: "1", label: "私立医院" },
+        { value: "1", label: "民营医院" },
         { value: "2", label: "公立医院" },
       ],
-      typeName:"",
+      nature:"",
       yztel: [
         { value: "", label: "全部" },
         { value: "1", label: "有号码" },
@@ -715,7 +715,7 @@ export default {
         { value: "", label: "全部" },
         { value: "1", label: "加急" },
       ],
-      nature: "",
+      // nature: "",
       paiBanCustomerWorkerHas: "",
       paiBanCustomerWorkerPhoneHas: "",
       paiBanCustomerWorkerUrgent: "",
@@ -1021,6 +1021,7 @@ export default {
        this.currentPage1 = 1;
        this.hospitalSort= "",
       this.hospitalOrder= "",
+      this.nature= "",
       this.$refs.tableHos.clearSort()
     },
     yuanzhangIf(e) {
