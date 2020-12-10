@@ -13,7 +13,7 @@ import router from './router/index.js';
 import ElementUI from 'element-ui';
 import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import * as echarts from 'echarts/lib/echarts';
+// import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';
