@@ -941,6 +941,15 @@ export default {
       this.$refs.tableMember1.clearSort()
       if(this.$refs.tableMember2)
       this.$refs.tableMember2.clearSort()
+      this.urgentLevel = [];
+      this.urgentLevel1= [];
+      this.onlysubordinateNum();
+      this.allsubordinateNum();
+      if (this.activeName == "first") {
+        this.getData(this.upperUserId, this.memberorder, this.membersort);
+      } else {
+        this.getData1("", this.memberorder, this.membersort);
+      }
     },
     // 模块二
     handleClick(tab, event) {
@@ -1023,6 +1032,10 @@ export default {
       this.hospitalOrder= "",
       this.nature= "",
       this.$refs.tableHos.clearSort()
+        this.tableData = [];
+      this.getNumberHosSelect();
+      // this.lastPageNo();
+      this.lastPage(1);
     },
     yuanzhangIf(e) {
       if (e == true) {
@@ -1043,7 +1056,13 @@ export default {
       console.dir(_value);
       console.log(_value);
       debugger;
-      let listInx = this.urgentLevel.findIndex(
+      //  if (this.activeName == "first") {
+      //   this.getData(this.upperUserId, this.memberorder, this.membersort);
+      // } else {
+      //   this.getData1("", this.memberorder, this.membersort);
+      // }
+      if(this.activeName == "first"){
+let listInx = this.urgentLevel.findIndex(
         (n) => n.userId == _value.userId
       );
       console.log(listInx);
@@ -1065,18 +1084,61 @@ export default {
             }
             if (res.data.code == 0) {
               this.orderNo--;
-
+              console.log(123123)
+              console.log(this.urgentLevel)
+              // if()
               let insertValue = this.urgentLevel[listInx];
               this.urgentLevel.splice(listInx, 1);
               this.urgentLevel.splice(0, 0, insertValue);
+              console.log(this.urgentLevel)
             } else {
               this.$message({
                 type: "info",
-                message: "请稍后重试",
+                message: res.data.codeMsg,
               });
             }
           });
       }
+      }else{
+let listInx = this.urgentLevel1.findIndex(
+        (n) => n.userId == _value.userId
+      );
+      console.log(listInx);
+      if (listInx) {
+        this.$axios
+          .post(
+            "/zong-jing-li/update-user",
+            qs.stringify({
+              userId: _value.userId,
+              orderNo: this.orderNo - 1,
+            })
+          )
+          .then((res) => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: "info",
+                message: res.data.codeMsg,
+              });
+            }
+            if (res.data.code == 0) {
+              this.orderNo--;
+              console.log(123123)
+              console.log(this.urgentLevel1)
+              // if()
+              let insertValue = this.urgentLevel1[listInx];
+              this.urgentLevel1.splice(listInx, 1);
+              this.urgentLevel1.splice(0, 0, insertValue);
+              console.log(this.urgentLevel1)
+            } else {
+              this.$message({
+                type: "info",
+                message: res.data.codeMsg,
+              });
+            }
+          });
+      }
+      }
+      
     },
     yuanzhang(e) {
       if (e == true) {
