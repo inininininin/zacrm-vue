@@ -108,10 +108,13 @@
           </el-table-column>
           <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
             <template slot-scope="scope"
-              ><a target="_blank" 
+              >
+			  <a @click='jumbDetail(scope.row.customerId)' href="javascript:">{{ scope.row.name }}</a>
+			  <!-- <a target="_blank" 
                 :href="'./#/modify-hosNew?id=' + scope.row.customerId"
                 >{{ scope.row.name }}</a
-              ></template
+              > -->
+			  </template
             >
           </el-table-column>
 		  <el-table-column prop="tel" label="医院号码" width="">
@@ -858,6 +861,13 @@ export default {
 		}
     },
     methods:{
+		jumbDetail(id){
+			console.log(id)
+			 let routeUrl = this.$router.resolve({
+          path: "/modify-hosNew",
+          query: {id:id}
+	 });
+		},
 		callPhone(tel){
 	console.log(tel)
 	let thisValue = this
