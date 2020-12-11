@@ -324,7 +324,7 @@
   .logo img {
     /*width: 0.41rem;*/
     /*height: 0.33rem;*/
-    width: 41px;
+    width: 33px;
     height: 33px;
     display: inline-block;
     float: left;
