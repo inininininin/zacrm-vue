@@ -108,10 +108,9 @@
           </el-table-column>
           <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
             <template slot-scope="scope"
-              ><a target="_blank" 
-                :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
-                >{{ scope.row.name }}</a
-              ></template
+              ><router-link :to="{path:'/modify-hosNew-leader',query: {id: scope.row.customerId}}"></router-link>
+			  <!-- <a target="_blank" :href="'#/modify-hosNew-leader?id=' + scope.row.customerId" >{{ scope.row.name }}</a> -->
+              </template
             >
           </el-table-column>
 		  <el-table-column prop="tel" label="医院号码" width="">

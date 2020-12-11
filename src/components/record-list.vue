@@ -388,6 +388,6 @@ this.screeningFn()
     width: 100%;
   }
   >>>#index .selectOption button{
-    line-height: auto !important;
+    line-height: 0 !important;
   }
 </style>
