@@ -302,7 +302,7 @@ export default {
 			this.query = JSON.stringify(this.$route.query);
             $('#index .lastHis').unbind("click").click(function() {
 				$.ajax({
-					url: '/cache/get',
+					url: '/crm/cache/get',
 					type: 'get',
 					data: 'name=' + $('.peoname').html(),
 					async: true,
@@ -353,7 +353,7 @@ export default {
 				})
 			})
         $.ajax({
-				url: '/login-refresh',
+				url: '/crm/login-refresh',
 
 				type: 'POST',
 				async: true,
@@ -397,7 +397,7 @@ export default {
           'zhuRenCustomerWorkerPhoneHas':thisValue.zhuRenCustomerWorkerPhoneHas,
 				}
 				$.ajax({
-					url: '/cache/set',
+					url: '/crm/cache/set',
 					type: 'post',
 
 					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
@@ -729,7 +729,7 @@ export default {
         $('#index .loginout').unbind("click").click(function(){
 			$.ajax({
 				type:"post",
-				url:"/logout",
+				url:"/crm/logout",
 
 				data:"",
 				success:function (data){
@@ -784,7 +784,7 @@ export default {
 				}else{
 					telNow = $(this).parent().parent().parent().attr('tel')
 				}
-				thisValue.$axios.post('/push-call',qs.stringify({
+				thisValue.$axios.post('/crm/push-call',qs.stringify({
 					tel:telNow,
 					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
 				}))
@@ -1034,7 +1034,7 @@ thisValue.$callService.callFn(tel)
         target: document.querySelector(".table1"), //loading覆盖的dom元素节点
       });
 				$.ajax({
-					url: '/my-customer/customer-list',
+					url: '/crm/my-customer/customer-list',
 					type: 'GET',
 
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
@@ -1091,7 +1091,7 @@ res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.item
         lastPageNo() {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list-sum',
+					url: '/crm/my-customer/customer-list-sum',
 					type: 'GET',
 
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id 
