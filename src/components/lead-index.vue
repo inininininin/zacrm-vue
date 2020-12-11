@@ -109,10 +109,13 @@
           label: '-性质-'
         }, {
           value1: '1',
-          label: '民营客户'
+          label: '民营医院'
         }, {
           value1: '2',
-          label: '公立客户'
+          label: '公立医院'
+        }, {
+          value1: '3',
+          label: '月子会所'
         }],
         tableData: [{
           hosname:'某某客户',

@@ -37,8 +37,8 @@
 					</select>
 					<select class="nature">
 						<option value="" selected>-性质-</option>
-						<option value="1">民营客户</option>
-						<option value="2">公立客户</option>
+						<option value="1">民营医院</option>
+						<option value="2">公立医院</option>
 					</select>
 					<button class="searchThis refresh">重置</button>
 				</div>

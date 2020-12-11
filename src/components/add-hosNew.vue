@@ -50,7 +50,7 @@
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
                   </el-option>
                 </el-select>
-                <!-- <span>民营客户</span> -->
+                <!-- <span>民营医院</span> -->
               </div>
             </div>
           </div>
@@ -118,13 +118,16 @@
         options: [],
         hospitalNature: [{
           hospitalNatureValue: 1,
-          label: '民营客户'
+          label: '民营医院'
         }, {
           hospitalNatureValue: 2,
-          label: '公立客户'
+          label: '公立医院'
+        }, {
+          hospitalNatureValue: 3,
+          label: '月子会所'
         }],
         hospitalNatureValue: '1',
-        hospitalLabel: '民营客户',
+        hospitalLabel: '民营医院',
         form: {
           name: '',
           tel: ''

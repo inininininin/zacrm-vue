@@ -47,8 +47,9 @@
 					</select>
 					<select class="nature">
 						<option value="" selected>-性质-</option>
-						<option value="1">民营客户</option>
-						<option value="2">公立客户</option>
+						<option value="1">民营医院</option>
+						<option value="2">公立医院</option>
+						<option value="3">月子会所</option>
 					</select>
 					<select class="paiBanCustomerWorkerHas">
 						<option value="" selected>-是否有拍板人-</option>

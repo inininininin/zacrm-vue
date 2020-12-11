@@ -72,7 +72,10 @@
               </div>
               <div>
                 <span>性质：</span>
-                <span>{{hospitalDetail.nature==1?'民营客户':'公立客户'}}</span>
+                <!-- <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span> -->
+                <span v-if='hospitalDetail.nature==1'>民营医院</span>
+                <span v-if='hospitalDetail.nature==2'>公立医院</span>
+                <span v-if='hospitalDetail.nature==3'>月子会所</span>
               </div>
             </div>
           </div>
@@ -142,7 +145,7 @@
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
                   </el-option>
                 </el-select>
-                <!-- <span>民营客户</span> -->
+                <!-- <span>民营医院</span> -->
               </div>
             </div>
           </div>
@@ -421,13 +424,16 @@
         ],
         hospitalNature: [{
           hospitalNatureValue: 1,
-          label: '民营客户'
+          label: '民营医院'
         }, {
           hospitalNatureValue: 2,
-          label: '公立客户'
+          label: '公立医院'
+        }, {
+          hospitalNatureValue: 3,
+          label: '月子会所'
         }],
         hospitalNatureValue: '1',
-        hospitalLabel: '民营客户',
+        hospitalLabel: '民营医院',
         form: {
           name: '',
           tel: '',
@@ -617,7 +623,7 @@
               } else {
                 res.data.data.toRevisitTimeThis = '';
               }
-
+              
               thisValue.hospitalDetail = res.data.data;
               this.customerList();
               this.traceList('', 1, '');

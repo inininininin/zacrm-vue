@@ -26,15 +26,16 @@
           <span>昵称：{{nicknameThis}}</span>
           <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
           <el-button nature='0' @click='selectHos($event,"")'>所有客户：{{totalCountHos}}个</el-button>
-          <el-button nature='1' @click='selectHos($event,1)'>民营客户：{{totalCountHos1}}个</el-button>
-          <el-button nature='2' @click='selectHos($event,2)'>公立客户：{{totalCountHos2}}个</el-button>
+          <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
+          <el-button nature='2' @click='selectHos($event,2)'>公立医院：{{totalCountHos2}}个</el-button>
         </div>
       </div>
       <div class="selectRoleAll">
         <p>筛选条件：
           <span v-if='nature==0'>所有客户</span>
-          <span v-if='nature==1'>民营客户</span>
-          <span v-if='nature==2'>公立客户</span>
+          <span v-if='nature==1'>民营医院</span>
+          <span v-if='nature==2'>公立医院</span>
+           <span v-if='nature==3'>月子会所</span>
           <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
           <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
           <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>

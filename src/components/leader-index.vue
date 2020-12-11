@@ -10,10 +10,10 @@
         style="margin-right: 20px"
         nature="1"
         @click="selectHos($event, 1)"
-        >民营客户：{{ totalCountHos1 }}个</el-button
+        >民营医院：{{ totalCountHos1 }}个</el-button
       >
       <el-button nature="2" @click="selectHos($event, 2)"
-        >公立客户：{{ totalCountHos2 }}个</el-button
+        >公立医院：{{ totalCountHos2 }}个</el-button
       >
     </div> -->
     <!-- <div class="selectOption" style="width: 100%;height: auto;margin-left: 34px;">
@@ -212,8 +212,9 @@
     <div class="selectRoleAll" v-if="false">
       <p>
         筛选条件：<span v-if="nature == 0">所有客户</span
-        ><span v-if="nature == 1">民营客户</span
-        ><span v-if="nature == 2">公立客户</span>
+        ><span v-if="nature == 1">民营医院</span
+        ><span v-if="nature == 2">公立医院</span>
+        <span v-if="nature == 3">月子会所</span>
         <span v-if="paiBanCustomerWorkerHas == 1" style="color: #333"
           >- 院长</span
         >
@@ -679,8 +680,9 @@ export default {
       searchKeys: "",
       yztype:[
          { value: "", label: "全部" },
-        { value: "1", label: "民营客户" },
-        { value: "2", label: "公立客户" },
+        { value: "1", label: "民营医院" },
+        { value: "2", label: "公立医院" },
+        { value: "3", label: "月子会所" },
       ],
       nature:"",
       yztel: [

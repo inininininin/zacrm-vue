@@ -34,8 +34,8 @@
 					</select>
 					<span>性质 : </span>
 					<select class="hosnature">
-						<option value="1" selected>民营客户</option>
-						<option value="2">公立客户</option>
+						<option value="1" selected>民营医院</option>
+						<option value="2">公立医院</option>
 					</select>
 					<button class="addNewTel">新增电话</button>
 					<div class="linePhoneList">
