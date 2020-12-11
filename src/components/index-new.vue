@@ -109,7 +109,7 @@
           <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
             <template slot-scope="scope"
               ><a target="_blank" 
-                :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
+                :href="'./#/modify-hosNew?id=' + scope.row.customerId"
                 >{{ scope.row.name }}</a
               ></template
             >
