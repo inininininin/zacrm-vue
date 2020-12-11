@@ -143,13 +143,13 @@
           >
           </el-table-column> -->
           <el-table-column
-            prop="lastCustomerWorkerTrace"
+            prop="lastTraceTime"
             label="近期跟踪时间"
             sortable="custom"
             :sort-orders="['descending', 'ascending']"
           >
           </el-table-column>
-          <el-table-column prop="lastTraceTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
+          <el-table-column prop="toRevisitTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
           </el-table-column>
         </el-table>
 
@@ -1056,15 +1056,16 @@ thisValue.$callService.callFn(tel)
 				// }
 				if(res.data.itemList[i].lastCustomerWorkerTrace){
 res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) 
+									res.data.itemList[i].lastTraceTime=res.data.itemList[i].lastCustomerWorkerTrace
 									}
-									console.log(res.data.itemList[i].lastCustomerWorkerTrace)
-                if (res.data.itemList[i].lastTraceTime) {
-                  res.data.itemList[i].lastTraceTime = thisValue
-                    .moment(res.data.itemList[i].lastTraceTime)
-                    .format("YYYY-MM-DD");
-                } else {
-                  res.data.itemList[i].lastTraceTime = "";
-                }
+				// 					console.log(res.data.itemList[i].lastCustomerWorkerTrace)
+                // if (res.data.itemList[i].lastTraceTime) {
+                //   res.data.itemList[i].lastTraceTime = thisValue
+                //     .moment(res.data.itemList[i].lastTraceTime)
+                //     .format("YYYY-MM-DD");
+                // } else {
+                //   res.data.itemList[i].lastTraceTime = "";
+                // }
                 if (res.data.itemList[i].toRevisitTime) {
                   res.data.itemList[i].toRevisitTime = thisValue
                     .moment(res.data.itemList[i].toRevisitTime)
