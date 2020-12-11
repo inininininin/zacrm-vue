@@ -5,7 +5,7 @@ import qs from 'qs'
 import router from '../router/index.js'
 let vue = new Vue();
 function loginRefresh(){
-    axios.post('/login-refresh')
+    axios.post('/crm/login-refresh')
     .then(res=>{
         if(res.data.codeMsg){
             vue.$message(res.data.codeMsg);
