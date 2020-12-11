@@ -509,7 +509,7 @@
       // 医院信息
       async customer () {
         let thisValue = this;
-        await thisValue.$axios.get('/ling-dao/customer/customer?customerId=' + thisValue.customerId)
+        await thisValue.$axios.get('/crm/ling-dao/customer/customer?customerId=' + thisValue.customerId)
           .then(res => {
             if (res.data.codeMsg) {
               thisValue.$message({
@@ -627,7 +627,7 @@
       // 相关人等列表
       async customerList () {
         let thisValue = this;
-        await thisValue.$axios.get('/ling-dao/customer-worker/customer-worker-list?customerId=' + this.customerId +
+        await thisValue.$axios.get('/crm/ling-dao/customer-worker/customer-worker-list?customerId=' + this.customerId +
             '&sort=createTime&order=asc')
           .then(res => {
             var number = '';
@@ -763,7 +763,7 @@
           thisValue.linkmanTraceList = '';
           thisValue.linkmanTraceId = customerWorkerId;
         }
-        await thisValue.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list?' + // +'&customerWorkerId='+customerWorkerId+'&sort=createTime&order=asc'
+        await thisValue.$axios.get('/crm/ling-dao/customer-worker-trace/customer-worker-trace-list?' + // +'&customerWorkerId='+customerWorkerId+'&sort=createTime&order=asc'
             qs.stringify({
               customerId: this.customerId,
               customerWorkerId: customerWorkerId,
@@ -813,7 +813,7 @@
           });
           return;
         }
-        this.$axios.post('/ling-dao/customer-worker-trace/create-customer-worker-trace?' +
+        this.$axios.post('/crm/ling-dao/customer-worker-trace/create-customer-worker-trace?' +
             qs.stringify({
               content: this.linkmanTracecontent,
               customerWorkerId: this.linkmanTraceId
@@ -838,7 +838,7 @@
       },
       async getPaiBanCustomerWorkerId () {
         let thisValue = this;
-        await thisValue.$axios.get('/ling-dao/customer/customer?customerId=' + thisValue.customerId)
+        await thisValue.$axios.get('/crm/ling-dao/customer/customer?customerId=' + thisValue.customerId)
           .then(res => {
             if (res.data.codeMsg) {
               thisValue.$message({
@@ -861,7 +861,7 @@
       // 修改拍板人等信息
       modifyRealtion (customerWorkerId, str, key, names, keys) {
         if (customerWorkerId === '') {
-          this.$axios.post('/ling-dao/customer-worker/create-customer-worker?' + str + '&' + qs.stringify({
+          this.$axios.post('/crm/ling-dao/customer-worker/create-customer-worker?' + str + '&' + qs.stringify({
               customerId: this.customerId
             }))
             .then(res => {
@@ -873,7 +873,7 @@
               }
               if (res.data.code === 0) {
                 // debugger;
-                this.$axios.post('/my-customer/update-customer?' + qs.stringify({
+                this.$axios.post('/crm/my-customer/update-customer?' + qs.stringify({
                     customerId: this.customerId,
                     paiBanCustomerWorkerId: res.data.data.customerWorkerId
                   }))
@@ -893,7 +893,7 @@
               }
             });
         } else {
-          this.$axios.post('/ling-dao/customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
+          this.$axios.post('/crm/ling-dao/customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
               customerWorkerId: customerWorkerId
             }))
             .then(res => {
@@ -988,7 +988,7 @@
             parseInt(i) + 1) + 'Remark=' + this.modifyhospitalDetail.telList[i].name;
         }
         keshiList = keshiList.slice(1, keshiList.length);
-        this.$axios.post('/ling-dao/customer/update-customer?' + keshiList + '&' + qs.stringify({
+        this.$axios.post('/crm/ling-dao/customer/update-customer?' + keshiList + '&' + qs.stringify({
             name: this.modifyhospitalDetail.name,
             tel: this.modifyhospitalDetail.tel,
             nature: this.modifyhospitalDetail.nature,
@@ -1313,7 +1313,7 @@
           });
           return;
         }
-         this.$axios.post('/ling-dao/customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
+         this.$axios.post('/crm/ling-dao/customer-worker/update-customer-worker?' + str + '&' + qs.stringify({
             customerWorkerId: this.addNewTelDetail.id
           }))
           .then(res => {
@@ -1354,7 +1354,7 @@
           });
           return;
         }
-        thisValue.$axios.post('/ling-dao/customer-worker/create-customer-worker?name=' + thisValue.relation.name +
+        thisValue.$axios.post('/crm/ling-dao/customer-worker/create-customer-worker?name=' + thisValue.relation.name +
             '&customerId=' + this.customerId)
           .then(res => {
             if (res.data.codeMsg) {

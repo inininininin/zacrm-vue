@@ -829,7 +829,7 @@ export default {
     let thisValue = this;
     // Object.assign(thisValue.$data, thisValue.$options.data());
 
-    thisValue.$axios.post("/login-refresh").then((res) => {
+    thisValue.$axios.post("/crm/login-refresh").then((res) => {
       if (res.data.codeMsg) {
         thisValue.$message({
           type: "info",
@@ -941,6 +941,15 @@ export default {
       this.$refs.tableMember1.clearSort()
       if(this.$refs.tableMember2)
       this.$refs.tableMember2.clearSort()
+      this.urgentLevel = [];
+      this.urgentLevel1= [];
+      this.onlysubordinateNum();
+      this.allsubordinateNum();
+      if (this.activeName == "first") {
+        this.getData(this.upperUserId, this.memberorder, this.membersort);
+      } else {
+        this.getData1("", this.memberorder, this.membersort);
+      }
     },
     // 模块二
     handleClick(tab, event) {
@@ -1023,6 +1032,10 @@ export default {
       this.hospitalOrder= "",
       this.nature= "",
       this.$refs.tableHos.clearSort()
+        this.tableData = [];
+      this.getNumberHosSelect();
+      // this.lastPageNo();
+      this.lastPage(1);
     },
     yuanzhangIf(e) {
       if (e == true) {
@@ -1043,14 +1056,20 @@ export default {
       console.dir(_value);
       console.log(_value);
       debugger;
-      let listInx = this.urgentLevel.findIndex(
+      //  if (this.activeName == "first") {
+      //   this.getData(this.upperUserId, this.memberorder, this.membersort);
+      // } else {
+      //   this.getData1("", this.memberorder, this.membersort);
+      // }
+      if(this.activeName == "first"){
+let listInx = this.urgentLevel.findIndex(
         (n) => n.userId == _value.userId
       );
       console.log(listInx);
       if (listInx) {
         this.$axios
           .post(
-            "/zong-jing-li/update-user",
+            "/crm/zong-jing-li/update-user",
             qs.stringify({
               userId: _value.userId,
               orderNo: this.orderNo - 1,
@@ -1065,18 +1084,61 @@ export default {
             }
             if (res.data.code == 0) {
               this.orderNo--;
-
+              console.log(123123)
+              console.log(this.urgentLevel)
+              // if()
               let insertValue = this.urgentLevel[listInx];
               this.urgentLevel.splice(listInx, 1);
               this.urgentLevel.splice(0, 0, insertValue);
+              console.log(this.urgentLevel)
             } else {
               this.$message({
                 type: "info",
-                message: "请稍后重试",
+                message: res.data.codeMsg,
               });
             }
           });
       }
+      }else{
+let listInx = this.urgentLevel1.findIndex(
+        (n) => n.userId == _value.userId
+      );
+      console.log(listInx);
+      if (listInx) {
+        this.$axios
+          .post(
+            "/crm/zong-jing-li/update-user",
+            qs.stringify({
+              userId: _value.userId,
+              orderNo: this.orderNo - 1,
+            })
+          )
+          .then((res) => {
+            if (res.data.codeMsg) {
+              this.$message({
+                type: "info",
+                message: res.data.codeMsg,
+              });
+            }
+            if (res.data.code == 0) {
+              this.orderNo--;
+              console.log(123123)
+              console.log(this.urgentLevel1)
+              // if()
+              let insertValue = this.urgentLevel1[listInx];
+              this.urgentLevel1.splice(listInx, 1);
+              this.urgentLevel1.splice(0, 0, insertValue);
+              console.log(this.urgentLevel1)
+            } else {
+              this.$message({
+                type: "info",
+                message: res.data.codeMsg,
+              });
+            }
+          });
+      }
+      }
+      
     },
     yuanzhang(e) {
       if (e == true) {
@@ -1337,7 +1399,7 @@ window.open(routeData.href, '_blank');
       //   pn: this.hospitalPageNo,
       //         ps:this.hospitalPageSize,
       $.ajax({
-        url: "/ling-dao/customer/customer-list",
+        url: "/crm/ling-dao/customer/customer-list",
         type: "GET",
 
         data:
@@ -1489,7 +1551,7 @@ window.open(routeData.href, '_blank');
       });
       let thisValue = this;
       $.ajax({
-        url: "/ling-dao/customer/customer-list-sum",
+        url: "/crm/ling-dao/customer/customer-list-sum",
         type: "GET",
 
         data:
@@ -1576,7 +1638,7 @@ window.open(routeData.href, '_blank');
             type: "success",
             message: "退出成功!",
           });
-          this.$axios.post("/logout").then((res) => {
+          this.$axios.post("/crm/logout").then((res) => {
             if (res.data.codeMsg) {
               this.$message({
                 type: "info",
@@ -1623,7 +1685,7 @@ window.open(routeData.href, '_blank');
 
       this.$axios
         .get(
-          "/ling-dao/user-list?" +
+          "/crm/ling-dao/user-list?" +
             qs.stringify({
               kw: this.memberKeyword,
               pn: this.customerPage,
@@ -1668,7 +1730,7 @@ window.open(routeData.href, '_blank');
 
       this.$axios
         .get(
-          "/ling-dao/user-list?" +
+          "/crm/ling-dao/user-list?" +
             qs.stringify({
               kw: this.memberKeyword,
               pn: this.customerPage,
@@ -1705,7 +1767,7 @@ window.open(routeData.href, '_blank');
       console.log(thisValue.upperUserId);
       thisValue.$axios
         .get(
-          "/ling-dao/user-list-sum?" +
+          "/crm/ling-dao/user-list-sum?" +
             qs.stringify({
               upperUserId: thisValue.upperUserId,
               kw: thisValue.memberKeyword,
@@ -1727,7 +1789,7 @@ window.open(routeData.href, '_blank');
       let thisValue = this;
       thisValue.$axios
         .get(
-          "/ling-dao/user-list-sum?" +
+          "/crm/ling-dao/user-list-sum?" +
             qs.stringify({
               kw: thisValue.memberKeyword,
             })
@@ -1745,7 +1807,7 @@ window.open(routeData.href, '_blank');
         });
     },
     getDataNumber() {
-      this.$axios.get("/ling-dao/user-list-sum").then((res) => {
+      this.$axios.get("/crm/ling-dao/user-list-sum").then((res) => {
         if (res.data.codeMsg) {
           this.$message({
             type: "info",
@@ -1765,7 +1827,7 @@ window.open(routeData.href, '_blank');
         : _paiBanCustomerWorkerPhoneHas;
       await this.$axios
         .get(
-          "/ling-dao/customer/customer-list-sum?" +
+          "/crm/ling-dao/customer/customer-list-sum?" +
             qs.stringify({
               paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
               paiBanCustomerWorkerPhoneHas: _pai,
@@ -1802,7 +1864,7 @@ window.open(routeData.href, '_blank');
       // console.log("_pai" + _pai);
       await this.$axios
         .get(
-          "/ling-dao/customer/customer-list-sum-by-month?" +
+          "/crm/ling-dao/customer/customer-list-sum-by-month?" +
             qs.stringify({
               paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
               paiBanCustomerWorkerPhoneHas:
@@ -1894,7 +1956,7 @@ window.open(routeData.href, '_blank');
       console.log(111)
       await this.$axios
         .get(
-          "/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?" +
+          "/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?" +
             qs.stringify({
               createTimeFrom: this.createTimeFrom,
               createTimeTo: this.createTimeTo,
@@ -2006,7 +2068,7 @@ window.open(routeData.href, '_blank');
     getDataNumberHos(nature) {
       this.$axios
         .get(
-          "/ling-dao/customer/customer-list-sum?" +
+          "/crm/ling-dao/customer/customer-list-sum?" +
             qs.stringify({
               nature: nature,
             })
@@ -2032,7 +2094,7 @@ window.open(routeData.href, '_blank');
     },
     traceNumber() {
       this.$axios
-        .get("/ling-dao/customer-worker-trace/customer-worker-trace-list-sum")
+        .get("/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum")
         .then((res) => {
           if (res.data.codeMsg) {
             this.$message({
@@ -2058,7 +2120,7 @@ window.open(routeData.href, '_blank');
   min-height: 100%;
   background: rgba(240, 242, 245, 1);
   /* overflow-y: scroll; */
-  overflow:scroll;
+  overflow:auto;
 }
 
 .leader_top {
@@ -2448,6 +2510,7 @@ input::-webkit-inner-spin-button {
 .selectAllThis,
 .teammemberList {
   width: 100%;
+  margin: 20px auto;
   padding: 0 34px;
   box-sizing: border-box;
   font-size: 18px !important;

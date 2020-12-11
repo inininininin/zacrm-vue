@@ -96,7 +96,77 @@
 				</div>
 			</div>
 			<div class="shuju"></div>
-			<div class="tableBox">
+			<div class="tableBox tableBox_link">
+<el-table
+          ref='tableHos'
+          :data="tableData"
+          style="width: 100%"
+          border
+          @sort-change="sortChange"
+        >
+          <el-table-column type="index" label="序号" width='80px'>
+          </el-table-column>
+          <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
+            <template slot-scope="scope"
+              ><a target="_blank" 
+                :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
+                >{{ scope.row.name }}</a
+              ></template
+            >
+          </el-table-column>
+		  <el-table-column prop="tel" label="医院号码" width="">
+			  <template slot-scope="scope">
+				  <span>{{scope.row.tel||scope.row.tel1}}</span>
+				  <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+			  </template>
+          </el-table-column>
+          <el-table-column prop="paiBanCustomerWorkerName" label="拍板人" width="">
+          </el-table-column>
+          <el-table-column prop="paiBanCustomerWorkerPhone" label="拍板人号码" width="">
+			   <template slot-scope="scope">
+				  <span>{{scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1}}</span>
+				  <img @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+			  </template>
+          </el-table-column>
+          <!-- <el-table-column
+            prop="customerWorkerCount"
+            label="相关人员"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+            width="130"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="lastTraceContent"
+           show-overflow-tooltip
+            label="追踪内容"
+          >
+          </el-table-column> -->
+          <el-table-column
+            prop="lastCustomerWorkerTrace"
+            label="近期跟踪时间"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+          >
+          </el-table-column>
+          <el-table-column prop="lastTraceTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
+          </el-table-column>
+        </el-table>
+
+		<el-pagination
+          style="float: right"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPage1"
+          :page-sizes="[15, 30, 50, 100]"
+          :page-size="15"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCountHosSelect"
+        >
+        </el-pagination>
+			</div>
+			<!-- <div class="tableBox">
 				<table>
 					<thead>
 						<tr>
@@ -117,16 +187,10 @@
 						</tr>
 					</thead>
 					<tbody class="tbody">
-						<!--<td></td>
-						<td></td>
-						<td></td>
-						<td tel='15077822798'>15077822798</td
-						<td></td>
-						<td></td>-->
 					</tbody>
 				</table>
 				<div class="box rt" id="box"></div>
-			</div>
+			</div> -->
 		</div>
 		<div class="seccion">ver : {{$version}}  ser : {{$store.state.serVersion}}</div>
     </div>
@@ -142,6 +206,13 @@ export default {
 	name: 'index',
 	data () {
 		return {
+			hospitalSort: "",
+      hospitalOrder: "",
+			currentPage1:1,
+			totalCountHosSelect:0,
+			zuoji:require('../assets/img/zuoji.svg'),
+			shouji:require('../assets/img/shouji.svg'),
+			tableData:[],
 			sorts:'toRevisitTime',
 			orders:'desc',
 			sortingObj:{
@@ -231,7 +302,7 @@ export default {
 			this.query = JSON.stringify(this.$route.query);
             $('#index .lastHis').unbind("click").click(function() {
 				$.ajax({
-					url: '/cache/get',
+					url: '/crm/cache/get',
 					type: 'get',
 					data: 'name=' + $('.peoname').html(),
 					async: true,
@@ -282,7 +353,7 @@ export default {
 				})
 			})
         $.ajax({
-				url: '/login-refresh',
+				url: '/crm/login-refresh',
 
 				type: 'POST',
 				async: true,
@@ -306,7 +377,8 @@ export default {
 					}
 				}
             })
-        thisValue.lastPageNo()
+		thisValue.lastPageNo()
+		  thisValue.lastPage(1, thisValue.ps, thisValue.kw, '', thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
         $('#index table').on('click', 'tr .enterHos', function() {
 				$(this).parent().parent().find('.a29905').addClass('a29902').removeClass('a29905')
 				$(this).parent().addClass('a29905').removeClass('a29902')
@@ -325,7 +397,7 @@ export default {
           'zhuRenCustomerWorkerPhoneHas':thisValue.zhuRenCustomerWorkerPhoneHas,
 				}
 				$.ajax({
-					url: '/cache/set',
+					url: '/crm/cache/set',
 					type: 'post',
 
 					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
@@ -348,18 +420,20 @@ export default {
 			$('#index .searchThis').unbind("click").click(function() {
 				thisValue.kw = $('#index .keyword').val()
 				thisValue.lastPageNo()
+				thisValue.lastPage(1, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+					
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
 			})
 			
         $('#index .urgentLevel').change(function() {
@@ -375,109 +449,115 @@ export default {
 				}
 
 				thisValue.lastPageNo()
+				thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
             })
         $('#index .nature').change(function() {
 				thisValue.nature = $(this).val()
 				thisValue.lastPageNo()
+				thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('.nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('.nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
             })
             $('#index .paiBanCustomerWorkerHas').change(function() {
             thisValue.paiBanCustomerWorkerHas = $(this).val()
-            thisValue.lastPageNo()
+			thisValue.lastPageNo()
+				thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
             // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-            $('#index #box').paging({
-            	initPageNo: 1, // 初始页码
-            	totalPages: thisValue.totalNum, //总页数
-            	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-            	slideSpeed: 600, // 缓动速度。单位毫秒
-            	jump: true, //是否支持跳转
-            	callback: function(page) { // 回调函数
-            		// memberList1(1,page);
-            		var nature = $('.nature').val()
-            		thisValue.pn = page
-            		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-            	}
-            })
+            // $('#index #box').paging({
+            // 	initPageNo: 1, // 初始页码
+            // 	totalPages: thisValue.totalNum, //总页数
+            // 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            // 	slideSpeed: 600, // 缓动速度。单位毫秒
+            // 	jump: true, //是否支持跳转
+            // 	callback: function(page) { // 回调函数
+            // 		// memberList1(1,page);
+            // 		var nature = $('.nature').val()
+            // 		thisValue.pn = page
+            // 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+            // 	}
+            // })
                 })
             $('#index .paiBanCustomerWorkerPhoneHas').change(function() {
             thisValue.paiBanCustomerWorkerPhoneHas = $(this).val()
-            thisValue.lastPageNo()
+			thisValue.lastPageNo()
+				thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
             // lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-            $('#index #box').paging({
-            	initPageNo: 1, // 初始页码
-            	totalPages: thisValue.totalNum, //总页数
-            	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-            	slideSpeed: 600, // 缓动速度。单位毫秒
-            	jump: true, //是否支持跳转
-            	callback: function(page) { // 回调函数
-            		// memberList1(1,page);
-            		var nature = $('.nature').val()
-            		thisValue.pn = page
-            		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-            	}
-            })
+            // $('#index #box').paging({
+            // 	initPageNo: 1, // 初始页码
+            // 	totalPages: thisValue.totalNum, //总页数
+            // 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+            // 	slideSpeed: 600, // 缓动速度。单位毫秒
+            // 	jump: true, //是否支持跳转
+            // 	callback: function(page) { // 回调函数
+            // 		// memberList1(1,page);
+            // 		var nature = $('.nature').val()
+            // 		thisValue.pn = page
+            // 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+            // 	}
+            // })
                 })
            $('#index .zhuRenCustomerWorkerHas').change(function() {
 			thisValue.zhuRenCustomerWorkerHas = $(this).val()
 				thisValue.lastPageNo()
+					thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('.nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('.nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
             })
            	$('#index .zhuRenCustomerWorkerPhoneHas').change(function() {
 				thisValue.zhuRenCustomerWorkerPhoneHas = $(this).val()
 				thisValue.lastPageNo()
+					thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// console.log(thisValue.totalNum)
 				// thisValue.lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('.nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('.nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
             })
 
         // 省市区三级联动
@@ -507,20 +587,21 @@ export default {
 				thisValue.area2Id = ''
 				thisValue.area3Id = ''
 				thisValue.lastPageNo()
+					thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('#index .nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
         })
         $('#index .city').change(function() {
 				let cityText = $(this).val();
@@ -536,38 +617,40 @@ export default {
 				})
 				thisValue.area2Id = $(this).val()
 				thisValue.lastPageNo()
+					thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('#index .nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
             })
         $('#index .town').change(function(){
 
 			thisValue.area3Id = $(this).val()
 			thisValue.lastPageNo()
-			$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+			// $('#index #box').paging({
+			// 		initPageNo: 1, // 初始页码
+			// 		totalPages: thisValue.totalNum, //总页数
+			// 		//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+			// 		slideSpeed: 600, // 缓动速度。单位毫秒
+			// 		jump: true, //是否支持跳转
+			// 		callback: function(page) { // 回调函数
+			// 			// memberList1(1,page);
+			// 			var nature = $('#index .nature').val()
+			// 			thisValue.pn = page
+			// 			thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+			// 		}
+			// 	})
 		})
 		$('#index').on('click','.tbody .xiugaiTimeFn',function(e){
 
@@ -590,6 +673,9 @@ export default {
 				$('#index .paiBanCustomerWorkerPhoneHas').val('')
 				$('#index .zhuRenCustomerWorkerHas').val('')
 				$('#index .zhuRenCustomerWorkerPhoneHas').val('')
+				thisValue.$refs.tableHos.clearSort()
+				thisValue.hospitalSort=''
+      			thisValue.hospitalOrder=''
 				thisValue.kw = ''
 				thisValue.nature = ''
 				thisValue.area1Id = ''
@@ -605,20 +691,22 @@ export default {
 				thisValue.zhuRenCustomerWorkerPhoneHas = ''
 				thisValue.dataValue = ''
 				thisValue.lastPageNo()
+				var nature = $('#index .nature').val()
+				thisValue.lastPage(1, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 				// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-				$('#index #box').paging({
-					initPageNo: 1, // 初始页码
-					totalPages: thisValue.totalNum, //总页数
-					//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-					slideSpeed: 600, // 缓动速度。单位毫秒
-					jump: true, //是否支持跳转
-					callback: function(page) { // 回调函数
-						// memberList1(1,page);
-						var nature = $('#index .nature').val()
-						thisValue.pn = page
-						thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-					}
-				})
+				// $('#index #box').paging({
+				// 	initPageNo: 1, // 初始页码
+				// 	totalPages: thisValue.totalNum, //总页数
+				// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+				// 	slideSpeed: 600, // 缓动速度。单位毫秒
+				// 	jump: true, //是否支持跳转
+				// 	callback: function(page) { // 回调函数
+				// 		// memberList1(1,page);
+				// 		var nature = $('#index .nature').val()
+				// 		thisValue.pn = page
+				// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+				// 	}
+				// })
             })
         // window.onbeforeunload = function()
 		// {
@@ -641,7 +729,7 @@ export default {
         $('#index .loginout').unbind("click").click(function(){
 			$.ajax({
 				type:"post",
-				url:"/logout",
+				url:"/crm/logout",
 
 				data:"",
 				success:function (data){
@@ -696,7 +784,7 @@ export default {
 				}else{
 					telNow = $(this).parent().parent().parent().attr('tel')
 				}
-				thisValue.$axios.post('/push-call',qs.stringify({
+				thisValue.$axios.post('/crm/push-call',qs.stringify({
 					tel:telNow,
 					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
 				}))
@@ -770,22 +858,59 @@ export default {
 		}
     },
     methods:{
+		callPhone(tel){
+	console.log(tel)
+	let thisValue = this
+thisValue.$callService.callFn(tel)
+},
+		 handleSizeChange(val) {
+			 let thisValue=this
+      thisValue.hospitalPageSize = val;
+      thisValue.lastPage(thisValue.hospitalPageNo, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+    },
+    handleCurrentChange(val) {
+		 let thisValue=this
+      thisValue.hospitalPageNo = val;
+      thisValue.lastPage(thisValue.hospitalPageNo, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+	},
+	
+	// 排序
+    sortChange(column) {
+	  console.log(column);
+	   let thisValue=this
+      thisValue.hospitalSort = column.prop;
+      if (column.order) {
+        if (column.order == "ascending") {
+          thisValue.hospitalOrder = "asc";
+        } else if (column.order == "descending") {
+          thisValue.hospitalOrder = "desc";
+        }
+      } else {
+        thisValue.hospitalOrder = "";
+        thisValue.hospitalSort = "";
+      }
+      console.log(thisValue.hospitalOrder, thisValue.hospitalSort);
+      thisValue.currentPage1 = 1;
+      thisValue.tableData = [];
+	   thisValue.lastPage(1, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+    },
 		kwSearchFn(){
 			let thisValue = this;
 			thisValue.kw = $('#index .keyword').val()
 			thisValue.lastPageNo()
+				thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 			// lastPage(1,ps,kw,nature,area1Id,area2Id,area3Id)
-			$('#index #box').paging({
-				initPageNo: 1, // 初始页码
-				totalPages: thisValue.totalNum, //总页数
-				//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-				slideSpeed: 600, // 缓动速度。单位毫秒
-				jump: true, //是否支持跳转
-				callback: function(page) { // 回调函数
-					thisValue.pn = page
-					thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-				}
-			})
+			// $('#index #box').paging({
+			// 	initPageNo: 1, // 初始页码
+			// 	totalPages: thisValue.totalNum, //总页数
+			// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+			// 	slideSpeed: 600, // 缓动速度。单位毫秒
+			// 	jump: true, //是否支持跳转
+			// 	callback: function(page) { // 回调函数
+			// 		thisValue.pn = page
+			// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+			// 	}
+			// })
 		},
 		sortingFn(_value){
 			switch(_value){
@@ -828,73 +953,137 @@ export default {
 				this.toRevisitTimeTo = '';
 			}
 			this.lastPageNo()
+			thisValue.lastPage(1, thisValue.ps,thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
 		},
-        lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
-            let thisValue = this
+        // lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
+        //     let thisValue = this
+		// 		$.ajax({
+		// 			url: '/my-customer/customer-list',
+		// 			type: 'GET',
+
+		// 			data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
+		// 				'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+
+        //     '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+
+        //     '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+'&order=' + thisValue.orders + '&sort=' + thisValue.sorts+
+        //      '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
+		// 			async: true,
+		// 			success: function(res) {
+		// 				console.dir(res)
+		// 				if (res.code == 0) {
+		// 					$('#index .tbody').html('')
+		// 					if (res.data.itemList && res.data.itemList.length > 0) {
+		// 						for (var i in res.data.itemList) {
+		// 							var tel='',tel1=''
+		// 							if(res.data.itemList[i].paiBanCustomerWorkerTel){
+		// 								tel=res.data.itemList[i].paiBanCustomerWorkerTel.substring(0, 4) + "***"+res.data.itemList[i].paiBanCustomerWorkerTel.substring(8,res.data.itemList[i].paiBanCustomerWorkerTel.length)
+		// 							}
+		// 							if(res.data.itemList[i].tel){
+		// 								tel1=res.data.itemList[i].tel.substring(0, 4) + "***"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
+		// 							}
+		// 							let toRevisitTime = '';
+		// 							if(res.data.itemList[i].toRevisitTime){
+		// 								toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
+		// 							}else{
+		// 								toRevisitTime = ''
+		// 							}
+        //                             $('#index .tbody').append(
+		// 								'<tr id=' + res.data.itemList[i].customerId +'>' +
+		// 									'<td>'+(parseInt(i)+1+((pn-1)*15))+'</td>' +
+		// 									'<td class="enterHos">' +
+		// 										'<a href="#/modify-hosNew?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
+		// 									'</td>'+
+		// 									'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
+		// 										'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
+		// 										'<div class="shoujiDiv1">'+
+		// 											'<div>'+
+		// 												'<img src="'+zuoji+'" alt="">'+
+		// 												'<span class="telCall">座机</span>'+
+		// 											'</div>'+
+		// 										'</div>' + 
+		// 									'</td>'+
+		// 									'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
+		// 									'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerTel || "")+'">' + 
+		// 										'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].paiBanCustomerWorkerTel+'">'+(tel || "")+'</div>' + 
+		// 										(tel? 
+		// 											'<div class="shoujiDiv">'+
+		// 												'<div><img src="'+zuoji+'" alt="">'+
+		// 													'<span class="telCall">座机</span>'+
+		// 												'</div>'+
+		// 											'</div>':''
+		// 										)+
+		// 									'</td>'+
+		// 									'<td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay || "") + '</td>'+
+		// 									'<td>' + thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) + '</td>'+
+		// 									'<td class="xiugaiTimeFn">' + toRevisitTime + '</td>'+
+		// 								'</tr>'
+		// 							)
+
+        //                         }
+		// 					}
+		// 				}
+		// 			}
+		// 		})
+		// },
+		lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
+            let thisValue = this;
+      const loading = this.$loading({
+        lock: true, //lock的修改符--默认是false
+        text: "Loading", //显示在加载图标下方的加载文案
+        spinner: "el-icon-loading", //自定义加载图标类名
+        background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
+        target: document.querySelector(".table1"), //loading覆盖的dom元素节点
+      });
 				$.ajax({
-					url: '/my-customer/customer-list',
+					url: '/crm/my-customer/customer-list',
 					type: 'GET',
 
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
 						'&area2Id=' + area2Id + '&area3Id=' + area3Id + '&urgent=' + urgent+ '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+
             '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo+ '&paiBanCustomerWorkerHas=' + thisValue.paiBanCustomerWorkerHas+
-            '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+'&order=' + thisValue.orders + '&sort=' + thisValue.sorts+
-             '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas,
+            '&paiBanCustomerWorkerPhoneHas=' + thisValue.paiBanCustomerWorkerPhoneHas+
+             '&zhuRenCustomerWorkerHas=' + thisValue.zhuRenCustomerWorkerHas+ '&zhuRenCustomerWorkerPhoneHas=' + thisValue.zhuRenCustomerWorkerPhoneHas
+             +'&order=' + thisValue.hospitalOrder + '&sort=' + thisValue.hospitalSort,
 					async: true,
 					success: function(res) {
 						console.dir(res)
+						if (res.codeMsg) {
+            // console.log(res.data.codeMsg)
+            thisValue.$message({
+              type: "info",
+              message: res.codeMsg,
+            });
+            loading.close();
+          }
 						if (res.code == 0) {
 							$('#index .tbody').html('')
-							if (res.data.itemList && res.data.itemList.length > 0) {
+							if (res.data.itemList ) {
 								for (var i in res.data.itemList) {
-									var tel='',tel1=''
-									if(res.data.itemList[i].paiBanCustomerWorkerTel){
-										tel=res.data.itemList[i].paiBanCustomerWorkerTel.substring(0, 4) + "***"+res.data.itemList[i].paiBanCustomerWorkerTel.substring(8,res.data.itemList[i].paiBanCustomerWorkerTel.length)
+									if(res.data.itemList[i].lastCustomerWorkerTrace){
+res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) 
 									}
-									if(res.data.itemList[i].tel){
-										tel1=res.data.itemList[i].tel.substring(0, 4) + "***"+res.data.itemList[i].tel.substring(8,res.data.itemList[i].tel.length)
-									}
-									// tel=res.data.itemList[i].paiBanCustomerWorkerPhone1 //= res.data.itemList[i].tel
-									let toRevisitTime = '';
-									if(res.data.itemList[i].toRevisitTime){
-										toRevisitTime = thisValue.moment(res.data.itemList[i].toRevisitTime).format('YYYY-MM-DD')	;
-									}else{
-										toRevisitTime = ''
-									}
-                                    $('#index .tbody').append(
-										'<tr id=' + res.data.itemList[i].customerId +'>' +
-											'<td>'+(parseInt(i)+1+((pn-1)*15))+'</td>' +
-											'<td class="enterHos">' +
-												'<a href="#/modify-hosNew?id=' + res.data.itemList[i].customerId +'">'+ (res.data.itemList[i].name || "") + '</a>' +
-											'</td>'+
-											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].tel || "")+'">' + 
-												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].tel+'">'+ (tel1 || "") + '</div>' + 
-												'<div class="shoujiDiv1">'+
-													'<div>'+
-														'<img src="'+zuoji+'" alt="">'+
-														'<span class="telCall">座机</span>'+
-													'</div>'+
-												'</div>' + 
-											'</td>'+
-											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerName || "") + '</td>'+
-											'<td  linkName="'+(res.data.itemList[i].name || "") +'" tel="'+(res.data.itemList[i].paiBanCustomerWorkerTel || "")+'">' + 
-												'<div style="height: 40px;line-height: 40px;display:inline-block;width: 130px;float:left;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;word-break: break-all;word-wrap: break-word;" Title="'+res.data.itemList[i].paiBanCustomerWorkerTel+'">'+(tel || "")+'</div>' + 
-												(tel? 
-													'<div class="shoujiDiv">'+
-														'<div><img src="'+zuoji+'" alt="">'+
-															'<span class="telCall">座机</span>'+
-														'</div>'+
-													'</div>':''
-												)+
-											'</td>'+
-											'<td>' + (res.data.itemList[i].paiBanCustomerWorkerVerifyWay || "") + '</td>'+
-											'<td>' + thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) + '</td>'+
-											'<td class="xiugaiTimeFn">' + toRevisitTime + '</td>'+
-										'</tr>'
-									)
 
-                                }
-							}
+
+                if (res.data.itemList[i].lastTraceTime) {
+                  res.data.itemList[i].lastTraceTime = thisValue
+                    .moment(res.data.itemList[i].lastTraceTime)
+                    .format("YYYY-MM-DD");
+                } else {
+                  res.data.itemList[i].lastTraceTime = "";
+                }
+                if (res.data.itemList[i].toRevisitTime) {
+                  res.data.itemList[i].toRevisitTime = thisValue
+                    .moment(res.data.itemList[i].toRevisitTime)
+                    .format("YYYY-MM-DD");
+                } else {
+                  res.data.itemList[i].toRevisitTime = "";
+                }
+                    
+              
+				}
+				 thisValue.tableData = res.data.itemList;
+              loading.close();
+            }
+            loading.close();
 						}
 					}
 				})
@@ -902,7 +1091,7 @@ export default {
         lastPageNo() {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list-sum',
+					url: '/crm/my-customer/customer-list-sum',
 					type: 'GET',
 
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id 
@@ -912,22 +1101,23 @@ export default {
 					async: true,
 					success: function(res) {
 						if (res.code == 0) {
-							thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
-							$('#index .shuju').html('汇总：' + res.data.itemCount + ' 条')
-							console.log(thisValue.totalNum)
-							$('#index #box').paging({
-								initPageNo: 1, // 初始页码
-								totalPages: thisValue.totalNum, //总页数
-								//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
-								slideSpeed: 600, // 缓动速度。单位毫秒
-								jump: true, //是否支持跳转
-								callback: function(page) { // 回调函数
-									// memberList1(1,page);
-									var nature = $('#index .nature').val()
-									thisValue.pn = page
-									thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-								}
-							})
+							thisValue.totalCountHosSelect = res.data.itemCount;
+							// thisValue.totalNum = Math.ceil(res.data.itemCount / thisValue.ps)
+							// $('#index .shuju').html('汇总：' + res.data.itemCount + ' 条')
+							// console.log(thisValue.totalNum)
+							// $('#index #box').paging({
+							// 	initPageNo: 1, // 初始页码
+							// 	totalPages: thisValue.totalNum, //总页数
+							// 	//                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
+							// 	slideSpeed: 600, // 缓动速度。单位毫秒
+							// 	jump: true, //是否支持跳转
+							// 	callback: function(page) { // 回调函数
+							// 		// memberList1(1,page);
+							// 		var nature = $('#index .nature').val()
+							// 		thisValue.pn = page
+							// 		thisValue.lastPage(page, thisValue.ps, thisValue.kw, nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+							// 	}
+							// })
 
 						}
 					}

@@ -22,7 +22,7 @@
         </el-date-picker>
         <el-date-picker v-model="tiaojian.callTimeTo"  default-time="23:59:59" type="datetime" placeholder="选择结束通话时间To" align="right" @change="elmentDataEndFn">
         </el-date-picker>
-
+         <el-button @click="restart()" type="primary">重置</el-button>
         <!-- <select class="lineEve">
           <option value="" selected>-是否接通-</option>
           <option value="1">接通</option>
@@ -121,6 +121,16 @@
     },
 
     methods: {
+      restart(){
+this.tiaojian.secondFrom=""
+this.tiaojian.secondTo=""
+this.tiaojian.telephoneFrom=""
+this.tiaojian.telephoneTo=""
+this.tiaojian.callTimeFrom=""
+this.tiaojian.callTimeTo=""
+this.tiaojian.kw=""
+this.screeningFn()
+      },
       screeningFn(){
         console.log('s')
          this.lastPageNo()
@@ -193,7 +203,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/call-record-list',
+          url: '/crm/ling-dao/call-record-list',
           type: 'GET',
           data: 'ps=15&pn=' + pn + param,
           async: true,
@@ -287,7 +297,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/call-record-list-sum',
+          url: '/crm/ling-dao/call-record-list-sum',
           type: 'GET',
           data: param,
           async: true,
@@ -376,5 +386,8 @@
     margin: 0;
     height: 35px;
     width: 100%;
+  }
+  >>>#index .selectOption button{
+    line-height: auto !important;
   }
 </style>
