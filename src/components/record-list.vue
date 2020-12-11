@@ -22,7 +22,7 @@
         </el-date-picker>
         <el-date-picker v-model="tiaojian.callTimeTo"  default-time="23:59:59" type="datetime" placeholder="选择结束通话时间To" align="right" @change="elmentDataEndFn">
         </el-date-picker>
-         <el-button @click="restart()" type="primary">重置</el-button>
+        <el-button @click="restart()" type="primary">重置</el-button>
         <!-- <select class="lineEve">
           <option value="" selected>-是否接通-</option>
           <option value="1">接通</option>
@@ -387,7 +387,7 @@ this.screeningFn()
     height: 35px;
     width: 100%;
   }
-  >>>#index .selectOption button{
-    line-height: auto !important;
+  >>>#index .selectOption>button{
+    line-height: 0 !important;
   }
 </style>

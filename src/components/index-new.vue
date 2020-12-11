@@ -867,6 +867,7 @@ export default {
           path: "/modify-hosNew",
           query: {id:id}
 	 });
+	   window.open(routeUrl .href, '_blank');
 		},
 		callPhone(tel){
 	console.log(tel)
