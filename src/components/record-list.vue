@@ -387,7 +387,7 @@ this.screeningFn()
     height: 35px;
     width: 100%;
   }
-  >>>#index .selectOption button{
+  >>>#index .selectOption>button{
     line-height: 0 !important;
   }
 </style>
