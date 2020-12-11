@@ -12,9 +12,9 @@
         <div style="width: 100%;height: auto;">
           <!-- <h2 class="peoname">{{nickname}}</h2><span class="shuju" style="margin: 0 10px;"></span> -->
           <!--  <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
-						新增医院
+						新增客户
 					</router-link> -->
-          <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
+          <!-- <a class="addHos" href="addHos.html"target="_blank">新增客户</a>  -->
           <a href="javascript:;" class="loginout" style="float: right;line-height: 80px;margin-left: 20px;">退出登录</a>
           <router-link :to="{path:'/history-detail-lindao'}" class="lookBefore">
             查看昨日工作记录
@@ -25,16 +25,16 @@
         <div class="leader_name">
           <span>昵称：{{nicknameThis}}</span>
           <span style="margin-right: 20px;">跟踪总量：{{traceTotalNumber}}</span>
-          <el-button nature='0' @click='selectHos($event,"")'>所有医院：{{totalCountHos}}个</el-button>
-          <el-button nature='1' @click='selectHos($event,1)'>民营医院：{{totalCountHos1}}个</el-button>
-          <el-button nature='2' @click='selectHos($event,2)'>公立医院：{{totalCountHos2}}个</el-button>
+          <el-button nature='0' @click='selectHos($event,"")'>所有客户：{{totalCountHos}}个</el-button>
+          <el-button nature='1' @click='selectHos($event,1)'>民营客户：{{totalCountHos1}}个</el-button>
+          <el-button nature='2' @click='selectHos($event,2)'>公立客户：{{totalCountHos2}}个</el-button>
         </div>
       </div>
       <div class="selectRoleAll">
         <p>筛选条件：
-          <span v-if='nature==0'>所有医院</span>
-          <span v-if='nature==1'>民营医院</span>
-          <span v-if='nature==2'>公立医院</span>
+          <span v-if='nature==0'>所有客户</span>
+          <span v-if='nature==1'>民营客户</span>
+          <span v-if='nature==2'>公立客户</span>
           <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
           <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
           <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>
@@ -105,7 +105,7 @@
         </div>
       </div>
       <div>
-        <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0;">搜索结果：{{totalCountHosSelect}}家医院</p>
+        <p style="font-size: 20px;color: #333333;line-height: 40px;margin:0;">搜索结果：{{totalCountHosSelect}}家客户</p>
       </div>
 
       <div class="tableBox" style="display: none;">
@@ -114,11 +114,11 @@
             <tr>
               <th>序号</th>
               <th>所属人姓名</th>
-              <th>医院名称</th>
+              <th>客户名称</th>
               <th>拍板人</th>
               <th>拍板人手机号码</th>
               <th>拍板人验证</th>
-              <th>医院信息更新时间</th>
+              <th>客户信息更新时间</th>
             </tr>
           </thead>
           <tbody class="tbody">

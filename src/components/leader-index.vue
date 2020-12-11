@@ -10,10 +10,10 @@
         style="margin-right: 20px"
         nature="1"
         @click="selectHos($event, 1)"
-        >民营医院：{{ totalCountHos1 }}个</el-button
+        >民营客户：{{ totalCountHos1 }}个</el-button
       >
       <el-button nature="2" @click="selectHos($event, 2)"
-        >公立医院：{{ totalCountHos2 }}个</el-button
+        >公立客户：{{ totalCountHos2 }}个</el-button
       >
     </div> -->
     <!-- <div class="selectOption" style="width: 100%;height: auto;margin-left: 34px;">
@@ -87,7 +87,7 @@
         <el-select
           class="typeName"
             v-model="nature"
-            placeholder="医院类型"
+            placeholder="客户类型"
           >
             <el-option
               v-for="item in yztype"
@@ -211,9 +211,9 @@
     </div>
     <div class="selectRoleAll" v-if="false">
       <p>
-        筛选条件：<span v-if="nature == 0">所有医院</span
-        ><span v-if="nature == 1">民营医院</span
-        ><span v-if="nature == 2">公立医院</span>
+        筛选条件：<span v-if="nature == 0">所有客户</span
+        ><span v-if="nature == 1">民营客户</span
+        ><span v-if="nature == 2">公立客户</span>
         <span v-if="paiBanCustomerWorkerHas == 1" style="color: #333"
           >- 院长</span
         >
@@ -320,7 +320,7 @@
         >
           <el-table-column type="index" label="序号" width="50">
           </el-table-column>
-          <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="200">
+          <el-table-column prop="name"   show-overflow-tooltip label="客户名称" width="200">
             <template slot-scope="scope"
               ><a target="_blank" 
                 :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
@@ -376,7 +376,7 @@
             <tr>
              
               <th>序号</th>
-              <th>医院名称</th>
+              <th>客户名称</th>
               <th>业务员</th>
               <th>级别</th>
               <th>
@@ -588,7 +588,7 @@
 
         <div class="leader_ul">
           <ul>
-            <li>医院数</li>
+            <li>客户数</li>
             <li>
               {{
                 item.customerCount > 9999
@@ -679,8 +679,8 @@ export default {
       searchKeys: "",
       yztype:[
          { value: "", label: "全部" },
-        { value: "1", label: "民营医院" },
-        { value: "2", label: "公立医院" },
+        { value: "1", label: "民营客户" },
+        { value: "2", label: "公立客户" },
       ],
       nature:"",
       yztel: [

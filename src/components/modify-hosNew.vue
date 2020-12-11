@@ -11,12 +11,12 @@
           <el-button v-show="!show" @click='saveIs()' class="saveIs" type="primary">保存</el-button>
           <el-button v-show="!show" @click='refuse()' class="refuse" plain>取消</el-button>
         </div>
-        <!-- 医院信息主体 -->
+        <!-- 客户信息主体 -->
         <div v-show="show">
           <div class="addmainBox">
             <div class="detailLine">
               <div>
-                <span>医院名：</span>
+                <span>客户名：</span>
                 <span>{{hospitalDetail.name}}</span>
               </div>
               <div>
@@ -72,7 +72,7 @@
               </div>
               <div>
                 <span>性质：</span>
-                <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
+                <span>{{hospitalDetail.nature==1?'民营客户':'公立客户'}}</span>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
             <div>
               <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
+                placeholder="暂时禁用编辑客户简介" v-model="hospitalDetail.brief">
               </el-input>
 
               <!-- <span>
@@ -94,7 +94,7 @@
           <div class="addmainBox">
             <div class="detailLine detailLineModify">
               <div>
-                <span>医院名：</span>
+                <span>客户名：</span>
                 <el-input class="hospitalName" v-model="modifyhospitalDetail.name" type="text" placeholder='请输入'></el-input>
               </div>
               <div>
@@ -142,7 +142,7 @@
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
                   </el-option>
                 </el-select>
-                <!-- <span>民营医院</span> -->
+                <!-- <span>民营客户</span> -->
               </div>
             </div>
           </div>
@@ -150,14 +150,14 @@
             <div>
               <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="暂时禁用编辑医院简介" v-model="modifyhospitalDetail.brief">
+                placeholder="暂时禁用编辑客户简介" v-model="modifyhospitalDetail.brief">
               </el-input>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- 医院信息下半部分 -->
+    <!-- 客户信息下半部分 -->
     <div style="background: #f0f2f5;">
       <div class="detailBottom">
         <!-- style="float: left;margin: 0 auto;" -->
@@ -405,8 +405,8 @@
         checked: true,
         radio: 3,
         linkmanTracecontent: '',
-        hospitalContent: '医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介,医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介医院简介',
-        hospitalName: '大厂医院',
+        hospitalContent: '客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介,客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介客户简介',
+        hospitalName: '大厂客户',
         hospitalPhone: '15077822798',
         options: [],
         telList: [
@@ -421,13 +421,13 @@
         ],
         hospitalNature: [{
           hospitalNatureValue: 1,
-          label: '民营医院'
+          label: '民营客户'
         }, {
           hospitalNatureValue: 2,
-          label: '公立医院'
+          label: '公立客户'
         }],
         hospitalNatureValue: '1',
-        hospitalLabel: '民营医院',
+        hospitalLabel: '民营客户',
         form: {
           name: '',
           tel: '',
@@ -450,7 +450,7 @@
         formLabelWidth: '120px',
         linkmanList: [],
         traceDetailList: [],
-        modifyThisTelValue: '', // 是否修改医院的备注号码''否，其他是
+        modifyThisTelValue: '', // 是否修改客户的备注号码''否，其他是
         telName: 0,
         linkmanTraceList: '',
         showAll: true,
@@ -463,7 +463,7 @@
         Object.assign(this.$data, this.$options.data());
         this.query = JSON.stringify(this.$route.query)
         // this.$common.loginRefresh();
-        document.title = '依德客户漏斗管理系统'
+        document.title = '伊德客户漏斗管理系统'
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         this.options = area;
@@ -506,7 +506,7 @@
           }
         })
       },
-      // 医院信息
+      // 客户信息
       async customer () {
         let thisValue = this;
         await thisValue.$axios.get('/crm/my-customer/customer?customerId=' + thisValue.customerId)

@@ -15,9 +15,9 @@
 					<h2 class="peoname" title="账号"></h2>
 					<span style="font-size: 17px;margin-left: 7px;" title="分机号">({{$store.state.loginRefresh.extTel}})</span>
                     <!-- <router-link :to="{path:'/add-hosNew',query:{time:new Date().getTime()}}" class="addHos" >
-						新增医院
+						新增客户
 					</router-link> -->
-                    <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
+                    <!-- <a class="addHos" href="addHos.html"target="_blank">新增客户</a>  -->
 					 <!-- <a href="javascript:;" class="loginout" style="float: right;line-height: 70px;margin-left: 20px;">退出登录</a> -->
 					 <router-link :to="{path:'/history-detail'}"  class="lookBefore">
 						查看昨日工作记录
@@ -47,8 +47,8 @@
 					</select>
 					<select class="nature">
 						<option value="" selected>-性质-</option>
-						<option value="1">民营医院</option>
-						<option value="2">公立医院</option>
+						<option value="1">民营客户</option>
+						<option value="2">公立客户</option>
 					</select>
 					<select class="paiBanCustomerWorkerHas">
 						<option value="" selected>-是否有拍板人-</option>
@@ -106,7 +106,7 @@
         >
           <el-table-column type="index" label="序号" width='80px'>
           </el-table-column>
-          <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
+          <el-table-column prop="name"   show-overflow-tooltip label="客户名称" width="">
             <template slot-scope="scope"
               ><a target="_blank" 
                 :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
@@ -114,7 +114,7 @@
               ></template
             >
           </el-table-column>
-		  <el-table-column prop="tel" label="医院号码" width="">
+		  <el-table-column prop="tel" label="客户号码" width="">
 			  <template slot-scope="scope">
 				  <span>{{scope.row.tel||scope.row.tel1}}</span>
 				  <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
@@ -171,8 +171,8 @@
 					<thead>
 						<tr>
 							<th>序号</th>
-							<th>医院名称</th>
-              <th>医院号码</th>
+							<th>客户名称</th>
+              <th>客户号码</th>
 							<th>拍板人</th>
 							<th>拍板人手机号码</th>
 							<th>拍板人验证</th>

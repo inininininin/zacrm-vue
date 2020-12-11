@@ -14,9 +14,9 @@
 				<div style="width: 100%;height: auto;">
 					<h2 class="peoname"></h2><span class="shuju" style="margin: 0 10px;"></span>
                     <router-link :to="{path:'/add-hos',query:{time:new Date().getTime()}}" class="addHos" >
-						新增医院
+						新增客户
 					</router-link>
-                    <!-- <a class="addHos" href="addHos.html"target="_blank">新增医院</a>  -->
+                    <!-- <a class="addHos" href="addHos.html"target="_blank">新增客户</a>  -->
 					 <a href="javascript:;" class="loginout" style="float: right;line-height: 70px;margin-left: 20px;">退出登录</a>
 					 <router-link :to="{path:'/history-detail'}"  class="lookBefore">
 						查看昨日工作记录
@@ -46,8 +46,8 @@
 					</select>
 					<select class="nature">
 						<option value="" selected>-性质-</option>
-						<option value="1">民营医院</option>
-						<option value="2">公立医院</option>
+						<option value="1">民营客户</option>
+						<option value="2">公立客户</option>
 					</select>
 					<select class="paiBanCustomerWorkerHas">
 						<option value="" selected>-是否有拍板人-</option>
@@ -100,8 +100,8 @@
 					<thead>
 						<tr>
 							<th>序号</th>
-							<th>医院名称</th>
-              <th>医院号码</th>
+							<th>客户名称</th>
+              <th>客户号码</th>
 							<th>拍板人</th>
 							<th>拍板人手机号码</th>
 							<th>拍板人验证</th>

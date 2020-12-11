@@ -16,10 +16,10 @@
 		</div>
 		<div class="mainbox">
 			<div class="topselect">
-				<h2 class="title">医院基本信息</h2> <button class="addHos" href="javascript:;">确认新增</button><button style="display: none;"
+				<h2 class="title">客户基本信息</h2> <button class="addHos" href="javascript:;">确认新增</button><button style="display: none;"
 				 class="modifyHos" href="javascript:;">确认修改</button>
 				<div class="selectOption">
-					<span>医院名称 : </span>
+					<span>客户名称 : </span>
 					<input class="hosname" type="text" placeholder="" />
 					<!-- onkeyup="value=value.replace(/[^\d]/g,'') "onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" -->
 					<span>固定电话 : </span>
@@ -36,7 +36,7 @@
 							<span class="telCall">手机</span>
 						</div>
 					</div>
-					<!-- <span class="linkHos" style="margin-right: 20px;font-size: 14px;color: #337ab7;cursor: pointer;">联系医院</span> -->
+					<!-- <span class="linkHos" style="margin-right: 20px;font-size: 14px;color: #337ab7;cursor: pointer;">联系客户</span> -->
 					<span>区域 : </span>
 					<select class="address province">
 						<option value="">-省-</option>
@@ -49,8 +49,8 @@
 					</select>
 					<span>性质 : </span>
 					<select class="hosnature">
-						<option value="1" selected>民营医院</option>
-						<option value="2">公立医院</option>
+						<option value="1" selected>民营客户</option>
+						<option value="2">公立客户</option>
 					</select>
 					<button class="addNewTel">新增电话</button>
 					<div class="linePhoneList">
@@ -134,23 +134,23 @@
 					<div class="trackDetail muti">
 						<!-- <ul>
 							<li><span>感兴趣</span><span>2020-4-20 15：23</span></li>
-							<li>这个医院的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。</li>
+							<li>这个客户的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。</li>
 						</ul>
 						<ul>
 							<li><span>感兴趣</span><span>2020-4-20 15：23</span></li>
-							<li>这个医院的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。。</li>
+							<li>这个客户的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。。</li>
 						</ul>
 						<ul>
 							<li><span>感兴趣</span><span>2020-4-20 15：23</span></li>
-							<li>这个医院的人都很热情，很感兴趣。这的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。</li>
+							<li>这个客户的人都很热情，很感兴趣。这的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。</li>
 						</ul>
 						<ul>
 							<li><span>感兴趣</span><span>2020-4-20 15：23</span></li>
-							<li>这个医院的人都很热情，很感兴趣。这的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。</li>
+							<li>这个客户的人都很热情，很感兴趣。这的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。</li>
 						</ul>
 						<ul>
 							<li><span>感兴趣</span><span>2020-4-20 15：23</span></li>
-							<li>这个医院的人都很热情，很感兴趣。这的人都很热情，很感兴趣。这个医院的人都很热情，很感兴趣。</li>
+							<li>这个客户的人都很热情，很感兴趣。这的人都很热情，很感兴趣。这个客户的人都很热情，很感兴趣。</li>
 						</ul> -->
 					</div>
 					<textarea class="talkShow" rows="" cols="" placeholder="请输入追踪记录"></textarea>
@@ -476,7 +476,7 @@ export default {
             })
             thisValue.nickname=localStorage.getItem('nickname');
             $('#add-hos #userName').val(thisValue.nickname)
-            // 新增医院电话
+            // 新增客户电话
 			$('#add-hos .addNewTel').unbind("click").click(function(){
 				$('#add-hos .addNewTelBox').css('display','block')
             })
@@ -1081,7 +1081,7 @@ export default {
 					$('#add-hos .supplyNewRel button').attr('disabled', false)
 				} else {
 					if (thisValue.customerId == '' || thisValue.customerId == null || thisValue.customerId == undefined) {
-						layer.msg('请先点击医院提交信息按钮')
+						layer.msg('请先点击客户提交信息按钮')
 						$('#add-hos .supplyNewRel button').attr('disabled', false)
 					} else {
 						$.ajax({
@@ -1195,13 +1195,13 @@ export default {
 					})
 				}
             })
-            // 修改医院
+            // 修改客户
 
 			$('#add-hos .modifyHos').unbind("click").click(function() {
 				$('#add-hos .modifyHos').attr('disabled',true);
 				thisValue.modifyNewHos()
             })
-            // TODO 新增医院
+            // TODO 新增客户
 			// /my-customer/create-customer
 			$('#add-hos .addHos').unbind("click").click(function() {
 				$('#add-hos .addHos').attr('disabled', true);
@@ -1450,7 +1450,7 @@ export default {
 				$('.trackName').html('所有人的跟踪记录')
 				thisValue.trackrelList(thisValue.customerId, '', 1)
 			})
-		//医院基本信息固定电话方法绑定
+		//客户基本信息固定电话方法绑定
 		$('#add-hos .selectOption').off('click', '.shoujiDiv div:first-child img').on('click','.shoujiDiv div:first-child img',function(){
 			let name = $(this).parent().parent().parent().children().eq(1).val();
 			let num = $(this).parent().parent().parent().children().eq(3).attr('hostelnum');
@@ -1639,9 +1639,9 @@ export default {
 				var area3Name = $('#add-hos .town option:selected').text()
 				let toRevisitTime = this.toRevisitTime
 				// if (area1Id == '' || area2Id == '' || area3Id == '') {
-				// 	layer.msg('请选择医院所在地区')
+				// 	layer.msg('请选择客户所在地区')
 				// } else if (nature == '') {
-				// 	layer.msg('请选择医院性质')
+				// 	layer.msg('请选择客户性质')
 				// } else
         if(area1Name=='-省-'||area1Name=='-请选择-'){
           area1Name=''
@@ -1653,7 +1653,7 @@ export default {
             area3Name=''
             }
 				if (name == '') {
-					layer.msg('请填写医院名')
+					layer.msg('请填写客户名')
 					$('#add-hos .modifyHos').attr('disabled', false);
 				} else {
 					$.ajax({
@@ -1701,15 +1701,15 @@ export default {
 				console.log(toRevisitTime)
 				if (name == '') {
 
-					layer.msg('请填写医院名')
+					layer.msg('请填写客户名')
 					$('#add-hos .addHos').attr('disabled', false);
 					// }
 					// if (area1Id == '' || area2Id == '' || area3Id == '') {
-					// 	layer.msg('请选择医院所在地区')
+					// 	layer.msg('请选择客户所在地区')
 					// } else if (nature == '') {
-					// 	layer.msg('请选择医院性质')
+					// 	layer.msg('请选择客户性质')
 					// } else if (name == '' || tel == '') {
-					// 	layer.msg('请填写医院名和固话')
+					// 	layer.msg('请填写客户名和固话')
 				} else {
 					$.ajax({
 						url: '/crm/my-customer/create-customer',
@@ -1739,7 +1739,7 @@ export default {
 			// TODO 查询追踪记录
 			// TODO 修改相关人员信息
 
-			// 新增医院方法
+			// 新增客户方法
 			// addHos(){
 			// 	$.ajax({
 			// 		url:'/my-customer/create-customer',
@@ -1754,7 +1754,7 @@ export default {
 			// 		}
 			// 	})
             // },
-        // 医院详情列表
+        // 客户详情列表
 		hosDetail(customerId) {
             let thisValue = this
 				$.ajax({

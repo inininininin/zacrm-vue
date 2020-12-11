@@ -6,8 +6,8 @@ import Vue from 'vue';
 Vue.prototype.$version = '1.2.5';
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.';
 Vue.prototype.$Interface = '';
-// 依德客户漏斗管理系统
-Vue.prototype.$titleName = '依德客户漏斗管理系统';
+// 伊德客户漏斗管理系统
+Vue.prototype.$titleName = '伊德客户漏斗管理系统';
 import App from './App';
 import router from './router/index.js';
 import ElementUI from 'element-ui';

@@ -10,13 +10,13 @@
           <el-button @click='saveIs()' class="saveIs" type="primary">保存</el-button>
           <el-button @click='refuse()' class="refuse" plain>取消</el-button>
         </div>
-        <!-- 医院信息主体 -->
+        <!-- 客户信息主体 -->
 
         <div>
           <div class="addmainBox">
             <div class="detailLine detailLineModify">
               <div>
-                <span>医院名：</span>
+                <span>客户名：</span>
                 <el-input class="hospitalName" v-model="hospitalDetail.name" type="text" placeholder='请输入'></el-input>
               </div>
               <div>
@@ -50,7 +50,7 @@
                   <el-option v-for="item in hospitalNature" :key="item.hospitalNatureValue" :label="item.label" :value="item.hospitalNatureValue">
                   </el-option>
                 </el-select>
-                <!-- <span>民营医院</span> -->
+                <!-- <span>民营客户</span> -->
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
             <div>
               <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
+                placeholder="暂时禁用编辑客户简介" v-model="hospitalDetail.brief">
               </el-input>
             </div>
           </div>
@@ -118,13 +118,13 @@
         options: [],
         hospitalNature: [{
           hospitalNatureValue: 1,
-          label: '民营医院'
+          label: '民营客户'
         }, {
           hospitalNatureValue: 2,
-          label: '公立医院'
+          label: '公立客户'
         }],
         hospitalNatureValue: '1',
-        hospitalLabel: '民营医院',
+        hospitalLabel: '民营客户',
         form: {
           name: '',
           tel: ''
@@ -133,7 +133,7 @@
         dialogFormVisible: false,
         formLabelWidth: '120px',
         linkmanList: [],
-        modifyThisTelValue: '', // 是否修改医院的备注号码''否，其他是
+        modifyThisTelValue: '', // 是否修改客户的备注号码''否，其他是
         query:''
       };
     },
@@ -208,7 +208,7 @@
         if (!this.hospitalDetail.nature) {
           this.$message({
             type: 'info',
-            message: '请选择医院性质'
+            message: '请选择客户性质'
           });
           return;
         }
