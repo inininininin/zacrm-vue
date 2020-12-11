@@ -108,10 +108,13 @@
           </el-table-column>
           <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
             <template slot-scope="scope"
-              ><a target="_blank" 
+              >
+			  <a @click='jumbDetail(scope.row.customerId)' href="javascript:">{{ scope.row.name }}</a>
+			  <!-- <a target="_blank" 
                 :href="'./#/modify-hosNew?id=' + scope.row.customerId"
                 >{{ scope.row.name }}</a
-              ></template
+              > -->
+			  </template
             >
           </el-table-column>
 		  <el-table-column prop="tel" label="医院号码" width="">
@@ -143,13 +146,13 @@
           >
           </el-table-column> -->
           <el-table-column
-            prop="lastCustomerWorkerTrace"
+            prop="lastTraceTime"
             label="近期跟踪时间"
             sortable="custom"
             :sort-orders="['descending', 'ascending']"
           >
           </el-table-column>
-          <el-table-column prop="lastTraceTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
+          <el-table-column prop="toRevisitTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
           </el-table-column>
         </el-table>
 
@@ -858,6 +861,14 @@ export default {
 		}
     },
     methods:{
+		jumbDetail(id){
+			console.log(id)
+			 let routeUrl = this.$router.resolve({
+          path: "/modify-hosNew",
+          query: {id:id}
+	 });
+	   window.open(routeUrl .href, '_blank');
+		},
 		callPhone(tel){
 	console.log(tel)
 	let thisValue = this
@@ -1060,16 +1071,18 @@ thisValue.$callService.callFn(tel)
 								for (var i in res.data.itemList) {
 									if(res.data.itemList[i].lastCustomerWorkerTrace){
 res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.itemList[i].lastCustomerWorkerTrace) 
+						res.data.itemList[i].lastTraceTime=	res.data.itemList[i].lastCustomerWorkerTrace		
+									
 									}
 
 
-                if (res.data.itemList[i].lastTraceTime) {
-                  res.data.itemList[i].lastTraceTime = thisValue
-                    .moment(res.data.itemList[i].lastTraceTime)
-                    .format("YYYY-MM-DD");
-                } else {
-                  res.data.itemList[i].lastTraceTime = "";
-                }
+                // if (res.data.itemList[i].lastTraceTime) {
+                //   res.data.itemList[i].lastTraceTime = thisValue
+                //     .moment(res.data.itemList[i].lastTraceTime)
+                //     .format("YYYY-MM-DD");
+                // } else {
+                //   res.data.itemList[i].lastTraceTime = "";
+                // }
                 if (res.data.itemList[i].toRevisitTime) {
                   res.data.itemList[i].toRevisitTime = thisValue
                     .moment(res.data.itemList[i].toRevisitTime)
