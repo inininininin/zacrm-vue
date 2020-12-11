@@ -107,9 +107,10 @@
           <el-table-column type="index" label="序号" width='80px'>
           </el-table-column>
           <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="">
-            <template slot-scope="scope"
-              ><router-link :to="{path:'/modify-hosNew-leader',query: {id: scope.row.customerId}}"></router-link>
-			  <!-- <a target="_blank" :href="'#/modify-hosNew-leader?id=' + scope.row.customerId" >{{ scope.row.name }}</a> -->
+            <template slot-scope="scope">
+              <!-- <router-link :to="{path:'/modify-hosNew-leader',query: {id: scope.row.customerId}}"></router-link> -->
+			  <a @click='jumbDetail(scope.row.customerId)' href="javascript:">{{ scope.row.name }}</a>
+			  <!-- :href="'#/modify-hosNew-leader?id=' + scope.row.customerId"  -->
               </template
             >
           </el-table-column>
@@ -857,6 +858,10 @@ export default {
 		}
     },
     methods:{
+
+		jumbDetail(e){
+			console.log(e)
+		},
 		callPhone(tel){
 	console.log(tel)
 	let thisValue = this
