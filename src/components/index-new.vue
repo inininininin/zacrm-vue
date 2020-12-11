@@ -859,8 +859,12 @@ export default {
     },
     methods:{
 
-		jumbDetail(e){
-			console.log(e)
+		jumbDetail(id){
+			 let routeUrl = this.$router.resolve({
+          path: "/modify-hosNew",
+          query: {id}
+     });
+     window.open(routeUrl .href, '_blank');
 		},
 		callPhone(tel){
 	console.log(tel)
