@@ -95,7 +95,7 @@
 
 				</div>
 			</div>
-			<div class="shuju"></div>
+			<!-- <div class="shuju"></div> -->
 			<div class="tableBox tableBox_link">
 <el-table
           ref='tableHos'
@@ -1195,7 +1195,7 @@ res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.item
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
-	margin-top: 90px;
+	margin-top: 70px;
 	color: #a9a0a0;
 
 }
@@ -1208,5 +1208,24 @@ table thead{
     font-size: 15px;
     font-weight: 600;
     line-height: 30px;
+}
+>>>.el-table td, >>>.el-table th{
+  padding: 8px 0;
+}
+>>> .el-pagination {
+  /* text-align: center; */
+  margin-right: 30px;
+  margin-top: 20px;
+  /* margin-bottom: 130px; */
+}
+>>> .el-pagination .el-pager li {
+  /* background-color: #fff; */
+}
+>>> .el-pagination .btn-prev,
+>>> .el-pagination .btn-next {
+  /* background-color: #fff; */
+}
+>>>.el-table td, >>>.el-table th{
+	padding:0;
 }
 </style>
