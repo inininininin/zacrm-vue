@@ -24,7 +24,7 @@ function callLogin(_callee){
     })
 }
 function callSevice(_callee){
-    console.log(store.state.loginRefresh)
+    console.log(store.state.loginRefresh,_callee)
     if(store.state.loginRefresh&&_callee){
         if(store.state.loginRefresh.extTel){
             axios.post('/crm/pbx/api/v2-0-0/call/dial?',qs.stringify({
