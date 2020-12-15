@@ -1183,7 +1183,7 @@ res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.item
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
-	margin-top: 90px;
+	margin-top: 70px;
 	color: #a9a0a0;
 
 }
@@ -1212,5 +1212,8 @@ table thead{
 >>> .el-pagination .btn-prev,
 >>> .el-pagination .btn-next {
   /* background-color: #fff; */
+}
+>>>.el-table td, >>>.el-table th{
+	padding:0;
 }
 </style>
