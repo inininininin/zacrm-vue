@@ -95,7 +95,7 @@
 
 				</div>
 			</div>
-			<div class="shuju"></div>
+			<!-- <div class="shuju"></div> -->
 			<div class="tableBox tableBox_link">
 <el-table
           ref='tableHos'
@@ -1211,5 +1211,8 @@ table thead{
 >>> .el-pagination .btn-prev,
 >>> .el-pagination .btn-next {
   /* background-color: #fff; */
+}
+>>>.el-table td, >>>.el-table th{
+	padding:0;
 }
 </style>
