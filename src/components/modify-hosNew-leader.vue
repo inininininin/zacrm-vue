@@ -1023,7 +1023,28 @@
       // 座机拨号
       zuojiTel (name, tel) {
         // this.$message(tel+'正在拨号中!')
-        this.$callService.callFn(tel)
+        let thisValue = this;
+        // thisValue.$common.loginRefresh();
+        if(!thisValue.$store.state.loginRefresh){
+          console.log(1)
+           $.ajax({
+        url: '/crm/login-refresh',
+        type: 'POST',
+        async: true,
+        success: function(res) {
+          if (res.code == 0) {
+            thisValue.$store.state.loginRefresh = res.data
+            $('#login .password').val('')
+               thisValue.$callService.callFn(tel)
+          } else {
+            // layer.msg(res.codeMsg)
+          }
+        }
+      })
+        }else{
+          console.log(2)
+             thisValue.$callService.callFn(tel)
+        }
         // $('#inp_send').val(tel);
         // $('.phoneNumber').html(name);
         // // console.log($('#inp_send').val())
