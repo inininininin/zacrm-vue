@@ -2,14 +2,18 @@
 /* eslint-disable import/first */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
-Vue.prototype.$version = '20.10.13.2';
+import Vue from 'vue'; 
+Vue.prototype.$version = '1.3.4';
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.';
+Vue.prototype.$Interface = '';
+// 忠安客户漏斗管理系统
+Vue.prototype.$titleName = '忠安客户漏斗管理系统';
 import App from './App';
 import router from './router/index.js';
 import ElementUI from 'element-ui';
+// import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import * as echarts from 'echarts/lib/echarts';
+// import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';

@@ -367,7 +367,7 @@
         this.query = JSON.stringify(this.$route.query);
         $('#index .lastHis').unbind("click").click(function() {
           $.ajax({
-            url: '/cache/get',
+            url: '/crm/cache/get',
             type: 'get',
             data: 'name=' + $('.peoname').html(),
             async: true,
@@ -447,7 +447,7 @@
             'totalNum': thisValue.totalNum
           }
           $.ajax({
-            url: '/cache/set',
+            url: '/crm/cache/set',
             type: 'post',
             data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
             async: true,
@@ -682,7 +682,7 @@
         $('#index .loginout').unbind("click").click(function() {
           $.ajax({
             type: "post",
-            url: "/logout",
+            url: "/crm/logout",
 
             data: "",
             success: function(data) {
@@ -872,7 +872,7 @@
          });
       },
       getData() {
-        this.$axios.get('/ling-dao/user-list?' + qs.stringify({
+        this.$axios.get('/crm/ling-dao/user-list?' + qs.stringify({
             pn: this.customerPage,
             // ps: 10,
             order: 'asc',
@@ -898,7 +898,7 @@
           })
       },
       getDataNumber() {
-        this.$axios.get('/ling-dao/user-list-sum?' + qs.stringify({
+        this.$axios.get('/crm/ling-dao/user-list-sum?' + qs.stringify({
             userId: localStorage.getItem('id'),
           }))
           .then(res => {
@@ -918,7 +918,7 @@
         let _pai
         this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
           _paiBanCustomerWorkerPhoneHas
-        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+        await thisValue.$axios.get('/crm/ling-dao/customer/customer-list-sum?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: _pai,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -944,7 +944,7 @@
           })
       },
       async getCustomerWorkerTrace(_time){
-        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+        await this.$axios.get('/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
           createTimeByMonth : _time,
           userId: localStorage.getItem('id'),
         }))
@@ -969,7 +969,7 @@
         let _pai
         // this.paiBanCustomerWorkerPhoneHas ? _pai = this.paiBanCustomerWorkerPhoneHas : _pai =
           // _paiBanCustomerWorkerPhoneHas
-        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
+        await thisValue.$axios.get('/crm/ling-dao/customer/customer-list-sum-by-month?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -1025,7 +1025,7 @@
           })
       },
       async getCustomerWorkerTrace(_time){
-        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
+        await this.$axios.get('/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?' + qs.stringify({
           createTimeByMonth : _time,
           userId: localStorage.getItem('id'),
         }))
@@ -1061,7 +1061,7 @@
       },
        async getInTheDayData(_time) {
         let thisValue = this;
-        await thisValue.$axios.get('/ling-dao/customer/customer-list-sum-by-day?' + qs.stringify({
+        await thisValue.$axios.get('/crm/ling-dao/customer/customer-list-sum-by-day?' + qs.stringify({
             paiBanCustomerWorkerHas: thisValue.paiBanCustomerWorkerHas,
             paiBanCustomerWorkerPhoneHas: this.paiBanCustomerWorkerPhoneHas,
             paiBanCustomerWorkerUrgent: thisValue.paiBanCustomerWorkerUrgent,
@@ -1118,7 +1118,7 @@
           })
       },
       async getCustomerWorkerTraceDay(_time){
-        await this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-day?' + qs.stringify({
+        await this.$axios.get('/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-day?' + qs.stringify({
           dayTime : _time,
           userId: localStorage.getItem('id'),
         }))
@@ -1225,7 +1225,7 @@
 
 
       getDataNumberHos(nature) {
-        this.$axios.get('/ling-dao/customer/customer-list-sum?' + qs.stringify({
+        this.$axios.get('/crm/ling-dao/customer/customer-list-sum?' + qs.stringify({
             nature: nature,
             userId: localStorage.getItem('id'),
           }))
@@ -1249,7 +1249,7 @@
           })
       },
       traceNumber() {
-        this.$axios.get('/ling-dao/customer-worker-trace/customer-worker-trace-list-sum?' + qs.stringify({
+        this.$axios.get('/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum?' + qs.stringify({
             userId: localStorage.getItem('id'),
           }))
           .then(res => {
@@ -1281,7 +1281,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/customer/customer-list',
+          url: '/crm/ling-dao/customer/customer-list',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +
@@ -1339,7 +1339,7 @@
         })
         let thisValue = this
         $.ajax({
-          url: '/ling-dao/customer/customer-list-sum',
+          url: '/crm/ling-dao/customer/customer-list-sum',
           type: 'GET',
 
           data: param + '&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom + '&toRevisitTimeTo=' + thisValue.toRevisitTimeTo +

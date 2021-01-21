@@ -61,8 +61,8 @@
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
     width: 100%;
-    overflow: hidden;
-    overflow-x: scroll;
+    /* overflow: hidden; */
+    /* overflow-x: scroll; */
     /* overflow: scroll; */
   }
   /* #routerViewId{} */

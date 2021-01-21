@@ -42,6 +42,12 @@ const mainRoutes = [
     // _import( 'index')
   },
   {
+    path: '/index-new-leader',
+    name: '/index-new-leader',
+    component: _import("index-new-leader")
+    // _import( 'index')
+  },
+  {
     path: '/history-detail',
     name: '/history-detail',
     component: _import( 'history-detail')
@@ -70,6 +76,11 @@ const mainRoutes = [
     path: '/modify-hosNew',
     name: '/modify-hosNew',
     component: _import( 'modify-hosNew')
+  },
+  {
+    path: '/modify-hosNew-leader',
+    name: '/modify-hosNew-leader',
+    component: _import( 'modify-hosNew-leader')
   },
   {
     path: '/lead-index',

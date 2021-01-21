@@ -16,7 +16,7 @@ function callFn(_callee){
     callLogin(_callee);
 }
 function callLogin(_callee){
-    axios.post('/pbx/api/v2-0-0/login')
+    axios.post('/crm/pbx/api/v2-0-0/login')
     .then(res=>{
         console.log(res)
         if(res.data.codeMsg){
@@ -31,7 +31,7 @@ function callSevice(_callee){
     console.log(store.state.loginRefresh)
     if(store.state.loginRefresh&&_callee){
         if(store.state.loginRefresh.extTel){
-            axios.post('/pbx/api/v2-0-0/call/dial?',qs.stringify({
+            axios.post('/crm/pbx/api/v2-0-0/call/dial?',qs.stringify({
                 caller: store.state.loginRefresh.extTel,
                 callee: _callee
             }))

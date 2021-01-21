@@ -212,7 +212,7 @@
           });
           return;
         }
-        this.$axios.post('/my-customer/create-customer?' + qs.stringify({
+        this.$axios.post('/crm/my-customer/create-customer?' + qs.stringify({
             name: this.hospitalDetail.name,
             tel: this.hospitalDetail.tel,
             nature: this.hospitalDetail.nature,

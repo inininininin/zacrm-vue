@@ -498,7 +498,7 @@ function loginout(){
 					 // debugger
 					$.ajax({
 						type:"post",
-						url:"/logout",
+						url:"/crm/logout",
 						data:"",
 						success:function (data){
 									// debugger
@@ -518,7 +518,7 @@ function loginout(){
 function addpaibanPhone(customerId,phone1,phone2,phone3){
   	localStorage.setItem('ifPaiban',1)
 	$.ajax({
-		url: '/my-customer-worker/create-customer-worker',
+		url: '/crm/my-customer-worker/create-customer-worker',
 		type: 'post',
 		data: 'customerId=' + customerId+'&phone1='+phone1+'&phone2='+phone2+'&phone3='+phone3,
 		async: true,
@@ -528,7 +528,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 				$('.paibanren').attr('relId',res.data.customerWorkerId)
 				// _this.parent().parent().attr('relId',paiBanCustomerWorkerId)
 				$.ajax({
-					url: '/my-customer/update-customer',
+					url: '/crm/my-customer/update-customer',
 					type: 'post',
 					data: 'customerId=' + customerId+'&paiBanCustomerWorkerId='+id,
 					async: true,
@@ -549,7 +549,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 	function addpaibanTel(customerId,tel1,tel2,tel3){
     	localStorage.setItem('ifPaiban',1)
 		$.ajax({
-			url: '/my-customer-worker/create-customer-worker',
+			url: '/crm/my-customer-worker/create-customer-worker',
 			type: 'post',
 			data: 'customerId=' + customerId+'&tel1='+tel1+'&tel2='+tel2+'&tel3='+tel3,
 			async: true,
@@ -559,7 +559,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 					$('.paibanren').attr('relId',res.data.customerWorkerId)
 					// _this.parent().parent().attr('relId',paiBanCustomerWorkerId)
 					$.ajax({
-						url: '/my-customer/update-customer',
+						url: '/crm/my-customer/update-customer',
 						type: 'post',
 						data: 'customerId=' + customerId+'&paiBanCustomerWorkerId='+id,
 						async: true,
@@ -580,7 +580,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 
 	function addRelPhone(customerId,phone1,phone2,phone3){
 		$.ajax({
-			url: '/my-customer-worker/create-customer-worker',
+			url: '/crm/my-customer-worker/create-customer-worker',
 			type: 'post',
 			data: 'customerId=' + customerId+'&phone1='+phone1+'&phone2='+phone2+'&phone3='+phone3,
 			async: true,
@@ -598,7 +598,7 @@ function addpaibanPhone(customerId,phone1,phone2,phone3){
 		}
 		function addRelTel(customerId,tel1,tel2,tel3){
 			$.ajax({
-				url: '/my-customer-worker/create-customer-worker',
+				url: '/crm/my-customer-worker/create-customer-worker',
 				type: 'post',
 				data: 'customerId=' + customerId+'&tel1='+tel1+'&tel2='+tel2+'&tel3='+tel3,
 				async: true,

@@ -217,7 +217,7 @@ export default {
 			this.query = JSON.stringify(this.$route.query);
             $('#index .lastHis').unbind("click").click(function() {
 				$.ajax({
-					url: '/cache/get',
+					url: '/crm/cache/get',
 					type: 'get',
 					data: 'name=' + $('.peoname').html(),
 					async: true,
@@ -268,7 +268,7 @@ export default {
 				})
             })
         $.ajax({
-				url: '/login-refresh',
+			url: '/crm/login-refresh',
 
 				type: 'POST',
 				async: true,
@@ -309,7 +309,7 @@ export default {
 					'zhuRenCustomerWorkerPhoneHas':thisValue.zhuRenCustomerWorkerPhoneHas,
 				}
 				$.ajax({
-					url: '/cache/set',
+					url: '/crm/cache/set',
 					type: 'post',
 
 					data: 'name=' + $('.peoname').html() + '&value=' + JSON.stringify(param),
@@ -624,7 +624,7 @@ export default {
         $('#index .loginout').unbind("click").click(function(){
 			$.ajax({
 				type:"post",
-				url:"/logout",
+				url:"/crm/logout",
 
 				data:"",
 				success:function (data){
@@ -672,26 +672,26 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			// $('#index .tbody').off('click', '.shoujiDiv div:last-child img').on('click','.shoujiDiv div:last-child img',function(){
-			// 	let telNow = ''
-			// 	if($(this).parent().parent().parent().attr('tel').split('-').length>1){
-			// 		telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
-			// 	}else{
-			// 		telNow = $(this).parent().parent().parent().attr('tel')
-			// 	}
-			// 	thisValue.$axios.post('/push-call',qs.stringify({
-			// 		tel:telNow,
-			// 		name:$(this).parent().parent().parent().parent().children().eq(3).html(),
-			// 	}))
-			// 	.then(res=>{
-			// 		if (res.data.codeMsg) {
-			// 			thisValue.$message(res.data.codeMsg)
-			// 		}
-			// 		if(res.data.code == 0){
-			// 			thisValue.$message('已发推送到手机中')
-			// 		}
-			// 	})
-			// })
+			$('#index .tbody').off('click', '.shoujiDiv div:last-child img').on('click','.shoujiDiv div:last-child img',function(){
+				let telNow = ''
+				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+				}else{
+					telNow = $(this).parent().parent().parent().attr('tel')
+				}
+				thisValue.$axios.post('/crm/push-call',qs.stringify({
+					tel:telNow,
+					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
+				}))
+				.then(res=>{
+					if (res.data.codeMsg) {
+						thisValue.$message(res.data.codeMsg)
+					}
+					if(res.data.code == 0){
+						thisValue.$message('已发推送到手机中')
+					}
+				})
+			})
 			$('#index .tbody').off('click', '.shoujiDiv1 div:first-child img').on('click','.shoujiDiv1 div:first-child img',function(){
 				console.log('s')
 				console.log($(this).parent().parent().parent().attr('linkName'))
@@ -713,26 +713,26 @@ export default {
 						$('.phoneEnd_num').html(thisValue.$store.state.telTimeMIntenSeconds+' s')
 					}
 			})
-			// $('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
-			// 	let telNow = ''
-			// 	if($(this).parent().parent().parent().attr('tel').split('-').length>1){
-			// 		telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
-			// 	}else{
-			// 		telNow = $(this).parent().parent().parent().attr('tel')
-			// 	}
-			// 	thisValue.$axios.post('/push-call',qs.stringify({
-			// 		tel:telNow,
-			// 		name:$(this).parent().parent().parent().parent().children().eq(3).html(),
-			// 	}))
-			// 	.then(res=>{
-			// 		if (res.data.codeMsg) {
-			// 			thisValue.$message(res.data.codeMsg)
-			// 		}
-			// 		if(res.data.code == 0){
-			// 			thisValue.$message('已发推送到手机中')
-			// 		}
-			// 	})
-			// })
+			$('#index .tbody').off('click', '.shoujiDiv1 div:last-child img').on('click','.shoujiDiv1 div:last-child img',function(){
+				let telNow = ''
+				if($(this).parent().parent().parent().attr('tel').split('-').length>1){
+					telNow = $(this).parent().parent().parent().attr('tel').split('-')[0]+$(this).parent().parent().parent().attr('tel').split('-')[1]
+				}else{
+					telNow = $(this).parent().parent().parent().attr('tel')
+				}
+				thisValue.$axios.post('/crm/push-call',qs.stringify({
+					tel:telNow,
+					name:$(this).parent().parent().parent().parent().children().eq(3).html(),
+				}))
+				.then(res=>{
+					if (res.data.codeMsg) {
+						thisValue.$message(res.data.codeMsg)
+					}
+					if(res.data.code == 0){
+						thisValue.$message('已发推送到手机中')
+					}
+				})
+			})
     //   $('#index table').on('click','tr td:nth-child(5)',function(){
     //   	debugger
     //   	if($(this).attr('tel')==''||$(this).attr('tel')==null||$(this).attr('tel')==undefined){
@@ -777,7 +777,7 @@ export default {
         lastPage(pn, ps, kw, nature, area1Id, area2Id, area3Id, urgent, level) {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list',
+					url: '/crm/my-customer/customer-list',
 					type: 'GET',
 
 					data: 'kw=' + kw + '&level=' + level + '&pn=' + pn + '&ps=' + ps + '&nature=' + nature + '&area1Id=' + area1Id +
@@ -855,7 +855,7 @@ export default {
         lastPageNo() {
             let thisValue = this
 				$.ajax({
-					url: '/my-customer/customer-list-sum',
+					url: '/crm/my-customer/customer-list-sum',
 					type: 'GET',
 					data: 'kw=' + thisValue.kw + '&level=' + thisValue.level + '&nature=' + thisValue.nature + '&area1Id=' + thisValue.area1Id + '&area2Id=' + thisValue.area2Id
 					+'&toRevisitTimeFrom=' + thisValue.toRevisitTimeFrom+'&toRevisitTimeTo='+thisValue.toRevisitTimeTo+

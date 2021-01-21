@@ -2,7 +2,7 @@
   <div id="login" class="login">
     <div class="logo smargin">
       <img src="../assets/img/logo.png" alt="" />
-      <h2>忠安客户漏斗管理系统</h2>
+      <h2>{{$titleName}}</h2>
     </div>
 
 
@@ -83,7 +83,7 @@
     </div>
     <el-dialog title="端口选择" :visible.sync="dialogTableVisible" width='500px' top="20%">
       <div style="height: 50px;box-sizing: border-box;width: 100%;">
-          <router-link :to="{path:'/index',query:'time: new Date().getTime()'}" replace>
+          <router-link :to="{path:'/index-new',query:'time: new Date().getTime()'}" replace>
         <div class="typeDialogClass" @click="dialogTableVisible= false"> 
             用户端
         </div>
@@ -118,14 +118,14 @@
       Object.assign(this.$data, this.$options.data());
       let _this = this
       $.ajax({
-        url: '/login-refresh',
+        url: '/crm/login-refresh',
         type: 'POST',
         async: true,
         success: function(res) {
           if (res.code == 0) {
             _this.$store.state.loginRefresh = res.data
             $('#login .password').val('')
-            if (res.data.branchIs == 1) {
+            if (res.data.level >= 2) {
               _this.dialogTableVisible = true
               // _this.$router.replace({
               //   path: '/leader-index',
@@ -153,7 +153,7 @@
         var oldPassword = $('#login .passwords').val()
         var newPassword = $('#login .passwords1').val()
         $.ajax({
-          url: '/alter-password-by-name-old-password',
+          url: '/crm/alter-password-by-name-old-password',
           type: 'post',
           data: {
             name: name,
@@ -246,7 +246,7 @@
           layer.msg('请先填写用户名和密码')
         } else {
           $.ajax({
-            url: '/login',
+            url: '/crm/login',
             type: 'post',
             data: {
               name: name,
@@ -256,7 +256,7 @@
             success: function(res) {
               if (res.code == 0) {
                 $.ajax({
-                  url: '/login-refresh',
+                  url: '/crm/login-refresh',
                   type: 'POST',
                   async: true,
                   success: function(res) {
@@ -265,7 +265,7 @@
                       debugger
                       _this.$store.state.loginRefresh = res.data
                         console.log(res.data.branchIs)
-                      if (res.data.branchIs) {
+                      if (res.data.level>=2) {
                         _this.dialogTableVisible = true
                         // _this.$router.replace({
                         //   path: '/leader-index',
