@@ -166,7 +166,7 @@
               </div>
               <div>
                 <span>注册资金：</span>
-                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="number" placeholder='请输入' ></el-input>
+                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="number" onkeypress="return (/[\.\d]/.test(String.fromCharCode(event.keyCode)))" placeholder='请输入' ></el-input>
                 <span>万元</span>
               </div>
             <!-- </div> -->
@@ -1006,6 +1006,8 @@
             parseInt(i) + 1) + 'Remark=' + this.modifyhospitalDetail.telList[i].name;
         }
         keshiList = keshiList.slice(1, keshiList.length);
+        debugger
+        console.log(this.modifyhospitalDetail)
         this.$axios.post('/crm/my-customer/update-customer?' + keshiList + '&' + qs.stringify({
             name: this.modifyhospitalDetail.name,
             tel: this.modifyhospitalDetail.tel,
