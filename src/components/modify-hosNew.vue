@@ -166,7 +166,7 @@
               </div>
               <div>
                 <span>注册资金：</span>
-                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="text" placeholder='请输入' ></el-input>
+                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="number" placeholder='请输入' ></el-input>
                 <span>万元</span>
               </div>
             <!-- </div> -->
