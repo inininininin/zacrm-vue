@@ -6,7 +6,7 @@
 		<span class="record3" hidden=""></span>
 		<!-- <a class="aClose" href="Webshell://hello" style="padding: 10px 20px;">重启话机</a> -->
 		<!-- <a href="../assets/call/index.html"  style="display:none" target="_blank">话机页面</a> -->
-		<!-- <router-link :to="{path:'index',query:{time:new Date().getTime()}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link> -->
+		<router-link :to="{path:'index',query:{time:new Date().getTime()}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link>
 		<input type="" name="" id="inp_send"  hidden="">
 		<button id="btn_conn" hidden="">发送</button>
 		<div class="mainbox">
@@ -119,16 +119,27 @@
           </el-table-column>
 		  <el-table-column prop="tel" label="医院号码" width="">
 			  <template slot-scope="scope">
-				  <span>{{scope.row.tel||scope.row.tel1}}</span>
-				  <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+				  <div style="display: flex;justify-content: space-between;">
+					<span>{{scope.row.tel||scope.row.tel1}}</span>
+					<div>
+						<img title="座机" @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+						<img title="手机" @click='$callService.mobilePhoneFn(scope.row.name,scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="shouji" alt="" style="width:20px;height:20px;cursor:pointer">
+					</div>
+				  </div>
+				  
 			  </template>
           </el-table-column>
           <el-table-column prop="paiBanCustomerWorkerName" label="拍板人" width="">
           </el-table-column>
           <el-table-column prop="paiBanCustomerWorkerPhone" label="拍板人号码" width="">
 			   <template slot-scope="scope">
-				  <span>{{scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1}}</span>
-				  <img @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+				   <div style="display: flex;justify-content: space-between;">
+						<span>{{scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1}}</span>
+						<div>
+							<img title="座机" @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+							<img title="手机" @click='$callService.mobilePhoneFn(scope.row.name,scope.row.tel||scope.row.tel1)' v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="shouji" alt="" style="width:20px;height:20px;cursor:pointer">
+						</div>
+				   </div>
 			  </template>
           </el-table-column>
           <!-- <el-table-column
@@ -892,6 +903,7 @@ export default {
 		}
     },
     methods:{
+		
 		jumbDetail(id){
 			console.log(id)
 			 let routeUrl = this.$router.resolve({
@@ -901,15 +913,15 @@ export default {
 	   window.open(routeUrl .href, '_blank');
 		},
 		callPhone(tel){
-	console.log(tel)
-	let thisValue = this
-thisValue.$callService.callFn(tel)
-},
+			console.log(tel)
+			let thisValue = this
+		thisValue.$callService.callFn(tel)
+		},
 		 handleSizeChange(val) {
-			 let thisValue=this
-      thisValue.hospitalPageSize = val;
-      thisValue.lastPage(thisValue.hospitalPageNo, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
-    },
+			let thisValue=this
+			thisValue.hospitalPageSize = val;
+			thisValue.lastPage(thisValue.hospitalPageNo, thisValue.ps, thisValue.kw, thisValue.nature, thisValue.area1Id, thisValue.area2Id, thisValue.area3Id, thisValue.urgent, thisValue.level)
+		},
     handleCurrentChange(val) {
 		 let thisValue=this
       thisValue.hospitalPageNo = val;
