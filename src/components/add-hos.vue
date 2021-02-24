@@ -52,6 +52,7 @@
 						<option value="1" selected>民营医院</option>
 						<option value="2">公立医院</option>
 						<option value="3">月子会所</option>
+						<option value="4">经销商</option>
 					</select>
 					<button class="addNewTel">新增电话</button>
 					<div class="linePhoneList">

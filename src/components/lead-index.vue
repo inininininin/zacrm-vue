@@ -116,6 +116,9 @@
         }, {
           value1: '3',
           label: '月子会所'
+        }, {
+          value1: '4',
+          label: '经销商'
         }],
         tableData: [{
           hosname:'某某客户',

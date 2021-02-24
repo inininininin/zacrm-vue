@@ -36,6 +36,7 @@
           <span v-if='nature==1'>民营医院</span>
           <span v-if='nature==2'>公立医院</span>
            <span v-if='nature==3'>月子会所</span>
+           <span v-if='nature==4'>经销商</span>
           <span v-if='paiBanCustomerWorkerHas==1' style="color: #333;">- 院长</span>
           <span v-if='paiBanCustomerWorkerPhoneHas==1'>- 有号码</span>
           <span v-if='paiBanCustomerWorkerLevelname!=0'>- {{paiBanCustomerWorkerLevelname}}</span>

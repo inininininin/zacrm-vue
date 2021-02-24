@@ -125,6 +125,9 @@
         }, {
           hospitalNatureValue: 3,
           label: '月子会所'
+        }, {
+          hospitalNatureValue: 4,
+          label: '经销商'
         }],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',

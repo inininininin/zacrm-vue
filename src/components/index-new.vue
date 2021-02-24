@@ -50,6 +50,7 @@
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
 						<option value="3">月子会所</option>
+						<option value="4">经销商</option>
 					</select>
 					<select class="paiBanCustomerWorkerHas">
 						<option value="" selected>-是否有拍板人-</option>

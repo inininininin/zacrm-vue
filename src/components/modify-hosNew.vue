@@ -76,6 +76,7 @@
                 <span v-if='hospitalDetail.nature==1'>民营医院</span>
                 <span v-if='hospitalDetail.nature==2'>公立医院</span>
                 <span v-if='hospitalDetail.nature==3'>月子会所</span>
+                 <span v-if='hospitalDetail.nature==4'>经销商</span>
               </div>
             </div>
           </div>
@@ -431,6 +432,9 @@
         }, {
           hospitalNatureValue: 3,
           label: '月子会所'
+        }, {
+          hospitalNatureValue: 4,
+          label: '经销商'
         }],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',

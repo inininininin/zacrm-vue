@@ -215,6 +215,7 @@
         ><span v-if="nature == 1">民营医院</span
         ><span v-if="nature == 2">公立医院</span>
         <span v-if="nature == 3">月子会所</span>
+         <span v-if="nature == 4">经销商</span>
         <span v-if="paiBanCustomerWorkerHas == 1" style="color: #333"
           >- 院长</span
         >
@@ -683,6 +684,7 @@ export default {
         { value: "1", label: "民营医院" },
         { value: "2", label: "公立医院" },
         { value: "3", label: "月子会所" },
+        { value: "4", label: "经销商" },
       ],
       nature:"",
       yztel: [
