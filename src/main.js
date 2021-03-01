@@ -3,7 +3,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';  
-Vue.prototype.$version = '1.4.1';
+Vue.prototype.$version = '1.4.2';
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.';
 Vue.prototype.$Interface = '';
 // 忠安客户漏斗管理系统
