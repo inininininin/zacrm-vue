@@ -25,8 +25,8 @@
                 <!-- <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt=""> -->
                 <!-- <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt=""> -->
                 <span class="shoujiDiv" style="float: right;position: relative;">
-                  <img @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                  <span class="telCall">座机</span>
+                  <img title="座机" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                  <img title="手机" @click="$callService.mobilePhoneFn(hospitalDetail.name,hospitalDetail.tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
                 </span>
               </div>
             </div>
@@ -40,8 +40,9 @@
                     <!-- <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt=""> -->
                     <!-- <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt=""> -->
                     <span class="shoujiDiv" style="float: right;position: relative;">
-                      <img @click="zuojiTel(item.name,item.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                      <span class="telCall">座机</span>
+                      <img title="座机" @click="zuojiTel(item.name,item.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                      <img title="手机" @click="$callService.mobilePhoneFn(item.name,item .tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
+                      <!-- <span class="telCall">座机</span> -->
                     </span>
                   </p>
                 </div>
@@ -166,7 +167,7 @@
               </div>
               <div>
                 <span>注册资金：</span>
-                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="number" placeholder='请输入' ></el-input>
+                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="number" onkeypress="return (/[\.\d]/.test(String.fromCharCode(event.keyCode)))" placeholder='请输入' ></el-input>
                 <span>万元</span>
               </div>
             <!-- </div> -->
@@ -225,15 +226,16 @@
                     <!-- <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt=""> -->
                     <span class="shoujiDiv" style="float: right;position: relative;">
-                        <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                        <span class="telCall">座机</span>
+                        <img title="座机" @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                        <img title="手机" @click="$callService.mobilePhoneFn(paibanrenDetail.name.name,itemed .tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
+                        <!-- <span class="telCall">座机</span> -->
                     </span>
                   </p>
                 </div>
                 <div class="addPhoneTel" @click="addPhoneTel(paibanrenDetail.customerWorkerId,paibanrenDetail.tels,'key')"><img
                     src="../assets/img/jia.svg" alt=""><span>添加电话</span></div>
               </div>
-            </div>
+            </div> 
           </div>
           <!-- 相关人 -->
           <div class="linkmanBox" v-for="( item, key ) in linkmanList " :key=key>
@@ -278,8 +280,9 @@
                       alt=""> -->
                     <!-- <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt=""> -->
                     <span class="shoujiDiv" style="float: right;position: relative;">
-                        <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                        <span class="telCall">座机</span>
+                        <img title="座机" @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                        <img title="手机" @click="$callService.mobilePhoneFn(item.name.name,itemed .tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
+                        <!-- <span class="telCall">座机</span> -->
                     </span>
                   </p>
                 </div>
@@ -1006,6 +1009,8 @@
             parseInt(i) + 1) + 'Remark=' + this.modifyhospitalDetail.telList[i].name;
         }
         keshiList = keshiList.slice(1, keshiList.length);
+        debugger
+        console.log(this.modifyhospitalDetail)
         this.$axios.post('/crm/my-customer/update-customer?' + keshiList + '&' + qs.stringify({
             name: this.modifyhospitalDetail.name,
             tel: this.modifyhospitalDetail.tel,
@@ -1567,7 +1572,7 @@
     height: 24px;
     /* margin-left: 10px; */
     cursor: pointer;
-    float: right;
+    /* float: right; */
     margin-top: 9px;
     margin-left: 3px;
     /* display: none; */
@@ -1711,7 +1716,7 @@
   }
 
   >>>.telinput .el-input {
-    width: 130px;
+    width: 118px;
   }
 
   >>>.telinput .el-input__inner {

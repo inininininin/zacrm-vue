@@ -56,6 +56,30 @@ function callSevice(_callee){
         vue.$common.loginRefresh()
     }    
 }
+function mobilePhoneFn(name,num){
+    // console.log(name+num)
+    if(name != '' && num != ''){
+        let telNow = ''
+        if(num.split('-').length>1){
+            telNow = num.split('-')[0]+num.split('-')[1]
+        }else{
+            telNow = num
+        }
+        axios.post('/crm/push-call',qs.stringify({
+            tel:telNow,
+            name:name,
+        }))
+        .then(res=>{
+            if (res.data.codeMsg) {
+                vue.$message(res.data.codeMsg)
+            }
+            if(res.data.code == 0){
+                vue.$message('已发推送到手机中')
+            }
+        })
+    }
+}
 export default {
-	callFn
+	callFn,
+    mobilePhoneFn,
 };
