@@ -153,6 +153,14 @@
           </el-table-column>
           <el-table-column prop="toRevisitTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
           </el-table-column>
+		  <el-table-column
+            prop="updateTime"
+            label="最后更新时间"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+          >
+          </el-table-column>
+		  
         </el-table>
 
 		<el-pagination
@@ -1074,13 +1082,13 @@ res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.item
 									}
 
 
-                // if (res.data.itemList[i].lastTraceTime) {
-                //   res.data.itemList[i].lastTraceTime = thisValue
-                //     .moment(res.data.itemList[i].lastTraceTime)
-                //     .format("YYYY-MM-DD");
-                // } else {
-                //   res.data.itemList[i].lastTraceTime = "";
-                // }
+                if (res.data.itemList[i].updateTime) {
+                  res.data.itemList[i].updateTime = thisValue
+                    .moment(res.data.itemList[i].updateTime)
+                    .format("YYYY-MM-DD");
+                } else {
+                  res.data.itemList[i].updateTime = "";
+                }
                 if (res.data.itemList[i].toRevisitTime) {
                   res.data.itemList[i].toRevisitTime = thisValue
                     .moment(res.data.itemList[i].toRevisitTime)
