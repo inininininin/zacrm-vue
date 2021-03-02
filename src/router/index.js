@@ -105,7 +105,12 @@ const mainRoutes = [
     component: ()=>import( '@/components/record-list')
 
   },
+  {
+    path: '/record-statisticalList',
+    name: '/record-statisticalList',
+    component: ()=>import( '@/components/record-statisticalList')
 
+  },
   {
     path: '/leader-lookIndex',
     name: '/leader-lookIndex',

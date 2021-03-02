@@ -117,7 +117,7 @@
 		  <el-table-column prop="tel" label="医院号码" width="">
 			  <template slot-scope="scope">
 				  <span>{{scope.row.tel||scope.row.tel1}}</span>
-				  <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+				  <!-- <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer"> -->
 			  </template>
           </el-table-column>
           <el-table-column prop="paiBanCustomerWorkerName" label="拍板人" width="">
@@ -125,7 +125,7 @@
           <el-table-column prop="paiBanCustomerWorkerPhone" label="拍板人号码" width="">
 			   <template slot-scope="scope">
 				  <span>{{scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1}}</span>
-				  <img @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+				  <!-- <img @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer"> -->
 			  </template>
           </el-table-column>
           <!-- <el-table-column
@@ -1221,5 +1221,8 @@ table thead{
 }
 >>>.el-table td, >>>.el-table th{
 	padding:0;
+}
+>>>.el-table__row td{
+  padding:0 !important;
 }
 </style>

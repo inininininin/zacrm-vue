@@ -6,13 +6,13 @@
       <!-- <a href="../assets/call/index.html" style="display:none" target="_blank">话机页面</a> -->
       <!-- <router-link :to="{path:'add-hos',query:{id:$route.query.id}}" style="padding: 10px 20px;" title="欢迎体验">旧版本页面</router-link> -->
       <div>
-        <div class="addIndexBoxTitle">
+        <div class="addIndexBoxTitle" style="margin-top: 10px;">
           <el-button v-show="show" @click='modify()' class="modify" type="primary">修改</el-button>
           <el-button v-show="!show" @click='saveIs()' class="saveIs" type="primary">保存</el-button>
           <el-button v-show="!show" @click='refuse()' class="refuse" plain>取消</el-button>
         </div>
         <!-- 医院信息主体 -->
-        <div v-show="show">
+        <div v-show="show" style="margin-top: -20px;">
           <div class="addmainBox">
             <div class="detailLine">
               <div>
@@ -25,8 +25,8 @@
                 <!-- <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt=""> -->
                 <!-- <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt=""> -->
                 <span class="shoujiDiv" style="float: right;position: relative;">
-                  <img @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                  <span class="telCall">座机</span>
+                  <img title="座机" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                  <img title="手机" @click="$callService.mobilePhoneFn(hospitalDetail.name,hospitalDetail.tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
                 </span>
               </div>
             </div>
@@ -40,8 +40,9 @@
                     <!-- <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt=""> -->
                     <!-- <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt=""> -->
                     <span class="shoujiDiv" style="float: right;position: relative;">
-                      <img @click="zuojiTel(item.name,item.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                      <span class="telCall">座机</span>
+                      <img title="座机" @click="zuojiTel(item.name,item.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                      <img title="手机" @click="$callService.mobilePhoneFn(item.name,item .tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
+                      <!-- <span class="telCall">座机</span> -->
                     </span>
                   </p>
                 </div>
@@ -74,23 +75,31 @@
                 <span>性质：</span>
                 <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
               </div>
+              <div>
+                <span>法人：</span>
+                <span>{{hospitalDetail.faRen}}</span>
+              </div>
+              <div>
+                <span>注册时间：</span>
+                <span>{{hospitalDetail.zhuCeShiJian? moment(hospitalDetail.zhuCeShiJian).format('YYYY-MM-DD'):''}}</span>
+              </div>
+              <div>
+                <span>注册资金：</span>
+                <span>{{hospitalDetail.zhuCeZiJin||0}} 万元</span>
+              </div>
             </div>
           </div>
           <div class="addContent">
-            <div>
+            <!-- <div>
               <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
-
-              <!-- <span>
-
-              </span> -->
-            </div>
+            </div> -->
           </div>
 
         </div>
-        <div v-show="!show">
+        <div v-show="!show"  style="margin-top: -20px;">
           <div class="addmainBox">
             <div class="detailLine detailLineModify">
               <div>
@@ -144,14 +153,24 @@
                 </el-select>
                 <!-- <span>民营医院</span> -->
               </div>
-            </div>
-          </div>
-          <div class="addContent">
-            <div>
-              <span>简介：</span>
-              <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="暂时禁用编辑医院简介" v-model="modifyhospitalDetail.brief">
-              </el-input>
+              <div>
+                <span>法人：</span>
+                <el-input class="hospitalName" v-model="modifyhospitalDetail.faRen" type="text" placeholder='请输入'></el-input>
+              </div>
+              <!-- <div class=" detailLine detailLineModify"> -->
+              <div class="toRevisitTime">
+                <span>注册时间：</span>
+                <!-- <span>{{hospitalDetail.toRevisitTime}}</span> -->
+                <el-date-picker v-model="modifyhospitalDetail.zhuCeShiJian" size="small" type="date" placeholder="" format="yyyy 年 MM 月 dd 日"
+                  value-format="timestamp">
+                </el-date-picker>
+              </div>
+              <div>
+                <span>注册资金：</span>
+                <el-input class="hospitalName inputclass" style="width:100px" v-model="modifyhospitalDetail.zhuCeZiJin" type="number" onkeypress="return (/[\.\d]/.test(String.fromCharCode(event.keyCode)))" placeholder='请输入' ></el-input>
+                <span>万元</span>
+              </div>
+            <!-- </div> -->
             </div>
           </div>
         </div>
@@ -207,15 +226,16 @@
                     <!-- <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt=""> -->
                     <span class="shoujiDiv" style="float: right;position: relative;">
-                        <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                        <span class="telCall">座机</span>
+                        <img title="座机" @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                        <img title="手机" @click="$callService.mobilePhoneFn(paibanrenDetail.name.name,itemed .tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
+                        <!-- <span class="telCall">座机</span> -->
                     </span>
                   </p>
                 </div>
                 <div class="addPhoneTel" @click="addPhoneTel(paibanrenDetail.customerWorkerId,paibanrenDetail.tels,'key')"><img
                     src="../assets/img/jia.svg" alt=""><span>添加电话</span></div>
               </div>
-            </div>
+            </div> 
           </div>
           <!-- 相关人 -->
           <div class="linkmanBox" v-for="( item, key ) in linkmanList " :key=key>
@@ -260,8 +280,9 @@
                       alt=""> -->
                     <!-- <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt=""> -->
                     <span class="shoujiDiv" style="float: right;position: relative;">
-                        <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
-                        <span class="telCall">座机</span>
+                        <img title="座机" @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
+                        <img title="手机" @click="$callService.mobilePhoneFn(item.name.name,itemed .tel)" class="shouji" src="../assets/img/shouji.svg" alt="" />
+                        <!-- <span class="telCall">座机</span> -->
                     </span>
                   </p>
                 </div>
@@ -988,6 +1009,8 @@
             parseInt(i) + 1) + 'Remark=' + this.modifyhospitalDetail.telList[i].name;
         }
         keshiList = keshiList.slice(1, keshiList.length);
+        debugger
+        console.log(this.modifyhospitalDetail)
         this.$axios.post('/crm/my-customer/update-customer?' + keshiList + '&' + qs.stringify({
             name: this.modifyhospitalDetail.name,
             tel: this.modifyhospitalDetail.tel,
@@ -1000,7 +1023,10 @@
             area3Name: this.modifyhospitalDetail.area3Name,
             toRevisitTime: this.modifyhospitalDetail.toRevisitTime,
             brief: this.modifyhospitalDetail.brief,
-            customerId: this.customerId
+            customerId: this.customerId,
+            faRen : this.modifyhospitalDetail.faRen,
+            zhuCeShiJian : this.modifyhospitalDetail.zhuCeShiJian,
+            zhuCeZiJin : this.modifyhospitalDetail.zhuCeZiJin,
           }))
           .then(res => {
             if (res.data.codeMsg) {
@@ -1478,8 +1504,8 @@
   }
 
   .addmainBox {
-    width: 1026px;
-    float: left;
+    width: 100%;
+    /* float: left; */
     /* display: inline-block; */
     box-sizing: border-box;
     padding: 0 36px;
@@ -1523,7 +1549,7 @@
 
   .detailLine>div {
     display: inline-block;
-    margin-right: 115px;
+    margin-right: 100px;
     line-height: 40px;
   }
 
@@ -1546,7 +1572,7 @@
     height: 24px;
     /* margin-left: 10px; */
     cursor: pointer;
-    float: right;
+    /* float: right; */
     margin-top: 9px;
     margin-left: 3px;
     /* display: none; */
@@ -1556,7 +1582,7 @@
       margin-right: 5px;
     }
 
-  .detailLine>div>span:nth-child(1) {
+  .detailLine>div>span:nth-child(2) {
     font-family: PingFangSC, PingFangSC-Medium;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.85);
@@ -1690,7 +1716,7 @@
   }
 
   >>>.telinput .el-input {
-    width: 130px;
+    width: 118px;
   }
 
   >>>.telinput .el-input__inner {
@@ -1974,7 +2000,7 @@
   }
 
   .detailLineModify>div {
-    margin-right: 20px !important;
+    margin-right: 19px !important;
   }
 
   .modifyTel {
@@ -2098,4 +2124,7 @@
    margin: 0;
   }
   >>>input[type="number"]{-moz-appearance:textfield;}
+  >>>.inputclass input{
+    width: 100px!important;
+  }
 </style>

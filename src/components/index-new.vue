@@ -147,17 +147,17 @@
               > -->
             </template>
           </el-table-column>
-          <el-table-column prop="tel" label="医院号码" width="">
-            <template slot-scope="scope">
-              <span>{{ scope.row.tel || scope.row.tel1 }}</span>
-              <img
-                @click="callPhone(scope.row.tel || scope.row.tel1)"
-                v-show="scope.row.tel || scope.row.tel1"
-                :src="zuoji"
-                alt=""
-                style="width:20px;height:20px;cursor:pointer"
-              />
-            </template>
+		  <el-table-column prop="tel" label="医院号码" width="">
+			  <template slot-scope="scope" >
+				  <div style="display: flex;justify-content: space-between;">
+					<span>{{scope.row.tel||scope.row.tel1}}</span>
+					<div>
+						<img title="座机" @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+						<img title="手机" @click='$callService.mobilePhoneFn(scope.row.name,scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="shouji" alt="" style="width:20px;height:20px;cursor:pointer">
+					</div>
+				  </div>
+				  
+			  </template>
           </el-table-column>
           <el-table-column
             prop="paiBanCustomerWorkerName"
@@ -165,32 +165,16 @@
             width=""
           >
           </el-table-column>
-          <el-table-column
-            prop="paiBanCustomerWorkerPhone"
-            label="拍板人号码"
-            width=""
-          >
-            <template slot-scope="scope">
-              <span>{{
-                scope.row.paiBanCustomerWorkerPhone ||
-                  scope.row.paiBanCustomerWorkerPhone1
-              }}</span>
-              <img
-                @click="
-                  callPhone(
-                    scope.row.paiBanCustomerWorkerPhone ||
-                      scope.row.paiBanCustomerWorkerPhone1
-                  )
-                "
-                v-show="
-                  scope.row.paiBanCustomerWorkerPhone ||
-                    scope.row.paiBanCustomerWorkerPhone1
-                "
-                :src="zuoji"
-                alt=""
-                style="width:20px;height:20px;cursor:pointer"
-              />
-            </template>
+          <el-table-column prop="paiBanCustomerWorkerPhone" label="拍板人号码" width="">
+			   <template slot-scope="scope">
+				   <div style="display: flex;justify-content: space-between;">
+						<span>{{scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1}}</span>
+						<div>
+							<img title="座机" @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+							<img title="手机" @click='$callService.mobilePhoneFn(scope.row.name,scope.row.tel||scope.row.tel1)' v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="shouji" alt="" style="width:20px;height:20px;cursor:pointer">
+						</div>
+				   </div>
+			  </template>
           </el-table-column>
           <!-- <el-table-column
             prop="customerWorkerCount"
@@ -281,123 +265,94 @@ import shouji from "../assets/img/shouji.svg";
 import zuoji from "../assets/img/zuoji.svg";
 import qs from "qs";
 export default {
-  name: "index",
-  data() {
-    return {
-      hospitalSort: "",
-      hospitalOrder: "",
-      currentPage1: 1,
-      totalCountHosSelect: 0,
-      zuoji: require("../assets/img/zuoji.svg"),
-      shouji: require("../assets/img/shouji.svg"),
-      tableData: [],
-      sorts: "toRevisitTime",
-      orders: "desc",
-      sortingObj: {
-        toRevisitTimeData: true
-      },
-      kw: "",
-      level: "",
-      nature: "",
-      area1Id: "",
-      area2Id: "",
-      area3Id: "",
-      ps: 15,
-      urgent: "",
-      paiBanCustomerWorkerHas: "",
-      paiBanCustomerWorkerPhoneHas: "",
-      zhuRenCustomerWorkerHas: "",
-      zhuRenCustomerWorkerPhoneHas: "",
-      pn: 1,
-      totalNum: "",
-      provinceList: undefined,
-      cityList: undefined,
-      townList: undefined,
-      cityItem: undefined,
-      townItem: undefined,
-      query: "",
-      toRevisitTimeFrom: "",
-      toRevisitTimeTo: "",
-      cookie: "",
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              nowThis.nowTimeData = true;
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "近三天",
-            onClick(picker) {
-              console.log(Vue);
-              const date = new Date();
-              nowThis.nowTimeData = true;
-              debugger;
-              console.log(nowThis.nowTimeData);
-              // console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate())
-              // console.log(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime())
-              date.setTime(
-                new Date(
-                  date.getFullYear() +
-                    "-" +
-                    (date.getMonth() + 1) +
-                    "-" +
-                    date.getDate() +
-                    " 00:00:00"
-                ).getTime() +
-                  3600 * 1000 * 24 * 3
-              );
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "近一周",
-            onClick(picker) {
-              nowThis.nowTimeData = true;
-              const date = new Date();
-              date.setTime(
-                new Date(
-                  date.getFullYear() +
-                    "-" +
-                    (date.getMonth() + 1) +
-                    "-" +
-                    date.getDate() +
-                    " 00:00:00"
-                ).getTime() +
-                  3600 * 1000 * 24 * 7
-              );
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "近一个月",
-            onClick(picker) {
-              nowThis.nowTimeData = true;
-              const date = new Date();
-              date.setTime(
-                new Date(
-                  date.getFullYear() +
-                    "-" +
-                    (date.getMonth() + 2) +
-                    "-" +
-                    date.getDate() +
-                    " 00:00:00"
-                ).getTime()
-              );
-              picker.$emit("pick", date);
-            }
-          }
-        ]
-      },
-      dataValue: ""
-    };
-  },
-  activated() {
-    let thisValue = this;
-    if (localStorage.getItem("id")) {
-      debugger;
+	name: 'index',
+	data () {
+		return {
+			hospitalSort: "toRevisitTime",
+      		hospitalOrder: "desc",
+			currentPage1:1,
+			totalCountHosSelect:0,
+			zuoji:require('../assets/img/zuoji.svg'),
+			shouji:require('../assets/img/shouji.svg'),
+			tableData:[],
+			sorts:'toRevisitTime',
+			orders:'desc',
+			sortingObj:{
+				toRevisitTimeData:true,
+			},
+			kw : '',
+			level : '',
+			nature : '',
+			area1Id : '',
+			area2Id : '',
+			area3Id : '',
+			ps : 15,
+			urgent : '',
+			paiBanCustomerWorkerHas:'',
+			paiBanCustomerWorkerPhoneHas:'',
+			zhuRenCustomerWorkerHas:'',
+			zhuRenCustomerWorkerPhoneHas:'',
+			pn : 1,
+            totalNum : '',
+            provinceList : undefined,
+            cityList : undefined,
+            townList : undefined,
+            cityItem : undefined,
+            townItem : undefined,
+			query:'',
+			toRevisitTimeFrom:'',
+			toRevisitTimeTo:'',
+			cookie:'',
+			pickerOptions: {
+				shortcuts: [{
+					text: '今天',
+					onClick(picker) {
+						nowThis.nowTimeData = true;
+						picker.$emit('pick', new Date());
+					}
+				},
+				{
+					text: '近三天',
+					onClick(picker) {
+						console.log(Vue)
+						const date = new Date();
+						nowThis.nowTimeData = true;
+						debugger
+						console.log(nowThis.nowTimeData)
+						// console.log(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate())
+						// console.log(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime())
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 3);
+						picker.$emit('pick', date);
+					}
+				},
+				{
+					text: '近一周',
+					onClick(picker) {
+						nowThis.nowTimeData = true;
+						const date = new Date();
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' 00:00:00').getTime() + 3600 * 1000 * 24 * 7);
+						picker.$emit('pick', date);
+					}
+				},
+				{
+					text: '近一个月',
+					onClick(picker) {
+						nowThis.nowTimeData = true;
+						const date = new Date();
+						date.setTime(new Date(date.getFullYear()+'-'+(date.getMonth()+2)+'-'+date.getDate()+' 00:00:00').getTime());
+						picker.$emit('pick', date);
+					}
+				}
+				]
+			},
+			dataValue:''
+		}
+	},
+	activated(){
+
+		let thisValue = this
+		if(localStorage.getItem('id')){
+      debugger
       // document.cookie = "loginId=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       // document.cookie="loginId="+localStorage.getItem('id');
       this.cookie = "loginId=" + localStorage.getItem("id");
@@ -1714,5 +1669,9 @@ table thead {
 >>> .el-table td,
 >>> .el-table th {
   padding: 0;
+}
+
+>>>.el-table__row td{
+  padding:0 !important;
 }
 </style>
