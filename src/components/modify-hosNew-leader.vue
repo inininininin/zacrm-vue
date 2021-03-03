@@ -24,10 +24,10 @@
                 <span style="margin-right:10px">{{hospitalDetail.tel}}</span>
                 <!-- <img v-show="hospitalDetail.tel" @click="shoujiTel(hospitalDetail.name,hospitalDetail.tel)" src="../assets/img/shouji.svg" alt=""> -->
                 <!-- <img v-show="hospitalDetail.tel" @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)"  src="../assets/img/zuoji.svg" alt=""> -->
-                <span class="shoujiDiv" style="float: right;position: relative;">
+                <!-- <span class="shoujiDiv" style="float: right;position: relative;">
                   <img @click="zuojiTel(hospitalDetail.name,hospitalDetail.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
                   <span class="telCall">座机</span>
-                </span>
+                </span> -->
               </div>
             </div>
             <div class="detailLine">
@@ -39,10 +39,10 @@
                     <span>{{item.tel}}</span>
                     <!-- <img @click="shoujiTel(item.name,item.tel)" src="../assets/img/shouji.svg" alt=""> -->
                     <!-- <img @click="zuojiTel(item.name,item.tel)" src="../assets/img/zuoji.svg" alt=""> -->
-                    <span class="shoujiDiv" style="float: right;position: relative;">
+                    <!-- <span class="shoujiDiv" style="float: right;position: relative;">
                       <img @click="zuojiTel(item.name,item.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
                       <span class="telCall">座机</span>
-                    </span>
+                    </span> -->
                   </p>
                 </div>
                 
@@ -206,10 +206,10 @@
                        placeholder='单击输入电话' type="text" @input="itemed.tel=itemed.tel.replace(/[^\d\-\d]/g,'')" v-model="itemed.tel" maxlength="20" autocomplete='off'></el-input>
                     <!-- <img @click="shoujiTel(paibanrenDetail.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt=""> -->
-                    <span class="shoujiDiv" style="float: right;position: relative;">
+                    <!-- <span class="shoujiDiv" style="float: right;position: relative;">
                         <img @click="zuojiTel(paibanrenDetail.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
                         <span class="telCall">座机</span>
-                    </span>
+                    </span> -->
                   </p>
                 </div>
                 <div class="addPhoneTel" @click="addPhoneTel(paibanrenDetail.customerWorkerId,paibanrenDetail.tels,'key')"><img
@@ -259,10 +259,10 @@
                     <!-- <img @click="shoujiTel(item.name.name,itemed.tel)" class="shouji" src="../assets/img/shouji.svg"
                       alt=""> -->
                     <!-- <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt=""> -->
-                    <span class="shoujiDiv" style="float: right;position: relative;">
+                    <!-- <span class="shoujiDiv" style="float: right;position: relative;">
                         <img @click="zuojiTel(item.name.name,itemed.tel)" class="zuoji" src="../assets/img/zuoji.svg" alt="" />
                         <span class="telCall">座机</span>
-                    </span>
+                    </span> -->
                   </p>
                 </div>
                 <div class="addPhoneTel" @click="addPhoneTel(item.customerWorkerId,item.tels,key)"><img src="../assets/img/jia.svg"
