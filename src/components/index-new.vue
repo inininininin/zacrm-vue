@@ -1234,4 +1234,7 @@ table thead{
 >>>.el-table td, >>>.el-table th{
 	padding:0;
 }
+>>>.el-table__row td{
+  padding:0;
+}
 </style>
