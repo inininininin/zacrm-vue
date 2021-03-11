@@ -209,6 +209,53 @@
         </div> -->
       </div>
     </div>
+     <div class="screen">
+      <div class="screenRow" style="margin-left:16">
+        <!-- 省市区 -->
+        <el-select
+          class="index_location index_province "
+          @change="selProvince"
+          v-model="provinceId"
+          placeholder="请选择省"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          class="index_location index_city"
+          v-model="cityId"
+          @change="selCity"
+          placeholder="请选择市"
+        >
+          <el-option
+            v-for="item in provinces"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          class="index_location index_town"
+          v-model="areaId"
+          @change="selArea"
+          placeholder="请选择区"
+        >
+          <el-option
+            v-for="item in citys"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+    </div>
     <div class="selectRoleAll" v-if="false">
       <p>
         筛选条件：<span v-if="nature == 0">所有客户</span
@@ -633,6 +680,8 @@
 <script>
 import qs from "qs";
 const cityOptions = ["院长", "主任"];
+import area from "@/assets/area.json";
+
 export default {
   data() {
     return {
@@ -827,10 +876,19 @@ export default {
       hospitalPageNo: 1,
       currentPage1: 1,
       changeEcharts:true,
+       options: [],
+      provinceName: "",
+      provinceId: "",
+      cityName: "",
+      cityId: "",
+      areaName: "",
+      areaId: ""
     };
   },
   activated() {
     let thisValue = this;
+    thisValue.options = area;
+
     // Object.assign(thisValue.$data, thisValue.$options.data());
 
     thisValue.$axios.post("/crm/login-refresh").then((res) => {
@@ -920,9 +978,62 @@ export default {
   //     }
   //   }
   // },
+    mounted() {
+    this.options = area;
+  },
   methods: {
     // 从头来
-
+  selProvince(e) {
+      console.log(e);
+      this.provinces = [];
+      this.citys = [];
+      this.cityId = "";
+      this.areaId = "";
+      this.provinceId = e;
+      for (var i in this.options) {
+        if (e == this.options[i].value) {
+          this.provinces = this.options[i].children;
+          this.provinceName = this.options[i].label;
+        }
+      }
+      console.log(this.provinces);
+      console.log(this.provinceName, this.provinceId);
+    },
+    selCity(e) {
+      console.log(e);
+      this.citys = [];
+      this.areaId = "";
+      this.cityId = e;
+      for (var i in this.provinces) {
+        if (e == this.provinces[i].value) {
+          this.citys = this.provinces[i].children;
+          this.cityName = this.provinces[i].label;
+        }
+      }
+      console.log(
+        this.provinceName,
+        this.provinceId,
+        this.cityName,
+        this.cityId
+      );
+    },
+    selArea(e) {
+      console.log(e);
+      this.areaId = e;
+      for (var i in this.citys) {
+        if (e == this.citys[i].value) {
+          this.areaName = this.citys[i].label;
+        }
+      }
+      console.log(
+        this.provinceName,
+        this.provinceId,
+        this.cityName,
+        this.cityId,
+        this.areaName,
+        this.areaId
+      );
+    },
     // 筛选下级
     searchMember() {
       this.urgentLevel = [];
@@ -1031,6 +1142,12 @@ export default {
       this.zhuRenCustomerWorkerPhoneHas = "";
       this.zhuRenCustomerWorkerUrgent = "";
       this.zhuRenCustomerWorkerLevel = "";
+         this.provinceId = "";
+      this.provinceName = "";
+      this.cityId = "";
+      this.cityName = "";
+      this.areaId = "";
+      this.areaName = "";
        this.currentPage1 = 1;
        this.hospitalSort= "",
       this.hospitalOrder= "",
@@ -1358,6 +1475,9 @@ window.open(routeData.href, '_blank');
 
     lastPage(pn) {
       var param = qs.stringify({
+        area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
         paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
         paiBanCustomerWorkerPhoneHas:
           this.paiBanCustomerWorkerPhoneHas == 0
@@ -1523,6 +1643,9 @@ window.open(routeData.href, '_blank');
     },
     lastPageNo(pn) {
       var param = qs.stringify({
+        area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
         paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
         paiBanCustomerWorkerPhoneHas:
           this.paiBanCustomerWorkerPhoneHas == 0
@@ -1833,6 +1956,9 @@ window.open(routeData.href, '_blank');
         .get(
           "/crm/ling-dao/customer/customer-list-sum?" +
             qs.stringify({
+              area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
               paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
               paiBanCustomerWorkerPhoneHas: _pai,
               paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
@@ -1870,6 +1996,9 @@ window.open(routeData.href, '_blank');
         .get(
           "/crm/ling-dao/customer/customer-list-sum-by-month?" +
             qs.stringify({
+              area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
               paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
               paiBanCustomerWorkerPhoneHas:
                 this.paiBanCustomerWorkerPhoneHas == 0
