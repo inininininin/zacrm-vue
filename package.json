@@ -5,10 +5,15 @@
   "author": "BlockHead",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
-    "lint": "eslint --ext .js,.vue src",
-    "build": "cross-env NODE_ENV=production node build/build.js"
+    "crm": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config crmbuild/webpack.dev.conf.js",
+    "crmstart": "npm run dev",
+    "crmlint": "eslint --ext .js,.vue src",
+    "crmbuild": "cross-env NODE_ENV=production node crmbuild/build.js",
+    
+    "yide": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config yidebuild/webpack.dev.conf.js",
+    "yidestart": "npm run dev",
+    "yidelint": "eslint --ext .js,.vue src",
+    "yidebuild": "cross-env NODE_ENV=production node yidebuild/build.js"
   },
   "dependencies": {
     "axios": "^0.19.2",

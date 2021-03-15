@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+  <head> 
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+		<!-- 让 Bootstrap 兼容 IE 兼容模型 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 让 Bootstrap 兼容 国产浏览器的高速模型 -->
+		<meta name="renderer" content="webkit">
+		<!-- 实现响应式的设置 -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
+		<title>医德客户漏斗管理系统</title>
+		<!-- <script src="./layui-src/dist/layui.js"></script> -->
+		<link rel="stylesheet" href="./assets/css/index.css"/>
+		<link rel="stylesheet" href="./assets/css/add-hos.css"/>
+		<link rel="stylesheet" href="./assets/css/bootstrap.min.css"/>
+    <script src="./assets/phoneJS/adapter.js"></script>
+    <!-- <script src="./assets/phoneJS/jquery.min.js"></script> -->
+    <script src="./assets/phoneJS/MD5Tools.js"></script>
+		<script src="./assets/js/jquery-1.11.1.min.js"></script>
+		<script src="./assets/js/public.js"></script>
+		<script src="./assets/js/rem.js"></script>
+		<script src="./assets/layui/layui.js"></script>
+		<link rel="stylesheet" href="./assets/layui/css/layui.css">
+		<link rel="stylesheet" href="./assets/page/paging.css"/>
+
+		<link rel="stylesheet" href="./assets/css/all.css"/>
+		<script src="./assets/js/image-file-visible.js"></script>
+		<script src="./assets/js/laydate.js"></script>
+		<script></script>
+  </head>
+  <script>
+			var layer;
+			layui.use('layer', function() {
+				layer = layui.layer;
+			});
+			window.$=$
+			console.log('开始移动')
+
+  </script>
+  <body>
+	  <!-- <div class="">
+
+	  </div> -->
+		<input type="" name="" id="inp_send" hidden="">
+		<button id="btn_conn"  hidden="">发送</button>
+		<div id="phoneNow" class="phoneNow">
+			<div></div>
+			<div class="functionImg">
+				<img class="dialogMin" src="./assets/img/small.png" alt="">
+				<img class="dialogMagnify" src="./assets/img/fangda.png" alt="" style="display: none;">
+				<img class="suoxiao" src="./assets/img/huanyuan.png" alt="" style="display: none;">
+				<img class='quanping' src="./assets/img/big.png" alt="">
+				<img class="btn_close" src="./assets/img/close.png" alt="">
+			</div>
+			<p>正在通话中. . .</p>
+			<div class="phoneEnd btn_close" id="btn_close">
+				<img src="./assets/img/phoneEnd.png" alt="">
+				<span>挂断电话</span>
+				<span class="phoneEnd_num">59 s</span>
+			</div>
+			
+		</div>
+
+		<script>
+      var secret=''
+      function initFuc(){
+      	 $.ajax({
+      		url : "http://127.0.0.1:8008/api/action/getUserInfo",
+      		dataType : 'json',
+      		type : 'post',
+      		data:{
+      			secret: 'www.union400.com',
+      		},
+      		success: function(data){
+      			res = data.data[0];
+      			if (res['result']==1) {
+      				user =  res['username'];
+      				extension = res['extension'];
+      				secret = res['extension'].MD5(32);
+      				console.log(user+" "+extension+" "+secret);
+            initEvent()
+      			 }
+      			},
+      		error:function(data){
+      			//alert("error"+data.error);
+      			// alert("请启动PC软电话后,刷新页面!");
+      			},
+      		});
+      }
+       initFuc();
+      function sendAjax(url,params,cb){
+      	/*
+      	if(Object.keys(data).length  ==0){
+      		data = {
+      			secret: extension.MD5(32),
+      		}
+      	}
+      	*/
+        	$.ajax({
+      		url : "http://127.0.0.1:8008/api/action/"+url,
+      		dataType : 'json',
+      		type : 'post',
+      		data:params,
+      		success: function(data){
+      			res = data.data[0]
+      			  cb(res)
+      			},
+      		error:function(data){
+              cb(data)
+      				// alert("error"+data.error);
+      			},
+      		});
+      }
+
+      $('#btn_conn').click(function(){
+        //   var data={
+        //             callUri:$('#inp_send').val(),
+        //             secret :secret
+        //           }
+                //   sendAjax("makeCall",data,function(e){
+                //      if (e["result"]==1) {
+
+                //      }else{
+                //         // alert("呼叫失败")
+                //      }
+                //   })
+                })
+
+			var _left =''
+			var _top = ''
+			
+			$('.suoxiao').click(function(){
+				$('#phoneNow').css({'height':'30%','width':'30%'})
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+				$('.phoneEnd').css({'height':'30px','width':'125px','font-size':'20px','line-height':'30px','top':'55%'})
+				$('#phoneNow p').css({'top':'20%'})
+				$('.quanping').css('display','inline')
+				$('.suoxiao').css('display','none')
+			})
+			$('.quanping').click(function(){
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+				$('#phoneNow').css({'height':'100%','width':'100%'})
+				$('.phoneEnd').css({'height':'60px','width':'250px','font-size':'20px','line-height':'60px','top':'42%'})
+				$('#phoneNow p').css({'top':'33%'})
+				$('.dialogMagnify').css('display','none')
+				$('.dialogMin').css('display','inline')
+				$('#phoneNow p').css('display','inline')
+				$('.phoneEnd').css('display','inline')
+				$('.quanping').css('display','none')
+				$('.suoxiao').css('display','inline')
+			})
+			$('.dialogMagnify').click(function(){
+				$('#phoneNow').css({'height':'30%','width':'30%'})
+				$('#phoneNow p').css('display','inline')
+				$('.phoneEnd').css('display','inline')
+				$('.dialogMagnify').css('display','none')
+				$('.dialogMin').css('display','inline')
+			})
+			$('.dialogMin').click(function(){
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+				$('.phoneEnd').css({'height':'30px','width':'125px','font-size':'20px','line-height':'30px','top':'55%'})
+				$('.suoxiao').css('display','none')
+				$('.quanping').css('display','inline')
+				$('#phoneNow').css({'height':'40px','width':'30%'})
+				$('#phoneNow p').css('display','none')
+				$('.phoneEnd').css('display','none')
+				$('.dialogMin').css('display','none')
+				$('.dialogMagnify').css('display','inline')
+				$('#phoneNow').css({"bottom":"0px",'left':'0px','top':'auto'});
+			})
+			$('.btn_close').click(function(){
+				debugger
+				localStorage.setItem('stop' , 1)
+				$('#phoneNow').css({'height':'30%','width':'30%'});
+				$('.phoneEnd').css({'height':'30px','width':'125px','font-size':'20px','line-height':'30px','top':'55%'})
+				$('#phoneNow p').css({'top':'20%'})
+				$('.quanping').css('display','inline')
+				$('.suoxiao').css('display','none')
+				$('#phoneNow p').css('display','inline')
+				$('.phoneEnd').css('display','inline')
+				$('.dialogMagnify').css('display','none')
+				$('.dialogMin').css('display','inline')
+				if(localStorage.getItem('phone'))
+					localStorage.removeItem('phone')
+				if(localStorage.removeItem('phoneData'))
+					localStorage.removeItem('phoneData')
+				// $('#phoneNow p').html("正在通话中. . .")
+				
+			})
+			var moveStata = true;
+			$('#phoneNow').mousedown(function(ev){
+				let _this = this
+				_this.moveStata = true;
+				// console.log('开始移动')
+				var dx = ev.clientX||ev.pageX;
+				var dy = ev.clientY||ev.pageY;
+				var dialogleft = $('#phoneNow').offset().left;
+				var dialogtop = $('#phoneNow').offset().top;
+				console.log(dialogtop)
+				$('#phoneNow').css('cursor', 'move')
+				$(document).mousemove(function(e){
+					if(_this.moveStata){
+						var bodyWidth = $("body").width() - _this.offsetWidth;
+						var bodyHeight = $("body").height() - _this.offsetHeight;
+						var mx = e.clientX||e.pageX;
+						var my = e.clientY||e.pageY;
+						_this._left = mx-dx+dialogleft;
+						_this._top = my-dy+dialogtop;
+						// if(_this._top>)
+						if(_this._top>bodyHeight){
+							_this._top = bodyHeight
+						}
+						if(_this._top<0){
+							_this._top = 0
+						}
+						if(_this._left<0){
+							_this._left = 0
+						}
+						if(_this._left>bodyWidth){
+							_this._left = bodyWidth
+						}
+						// console.log(_this._left)
+						// console.log(bodyWidth)
+						$('#phoneNow').css({"left":_this._left+"px","top":_this._top+"px"});
+					}
+				}).mouseup(function(){
+
+					console.log('结束移动')
+					_this.moveStata = false;
+					$('#phoneNow').css('cursor', 'auto')
+				})
+			})
+		</script>
+<style>
+
+		#phoneNow{
+			width: 30%;
+			height: 30%;
+			position: fixed;
+			/* top: 0; */
+			top:35%;
+			left:35%;
+			z-index: 9;
+			display: none;
+			/* background: rgba(0,0,0,0.2); */
+			/* background: #000000; */
+			/* opacity: 0.2; */
+		}
+		#phoneNow>div:nth-child(1){
+			width: 100%;
+			height: 100%;
+			background: rgba(0,0,0,0.6);
+		}
+		#phoneNow p{
+			position: absolute;
+			z-index: 10;
+			width: 100%;
+			font-size: 18px;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			text-align: center;
+			top: 20%;
+			color: #fff;
+		}
+		.functionImg{
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: 30px;
+			width: 80px;
+			text-align: center;
+			line-height: 30px;
+			z-index: 99;
+		}
+		.functionImg>img{
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		}
+		.dialogMagnify{
+			width: 13px!important;
+		}
+		/* .dialogMin{
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		}
+		.functionImg>img:nth-child(3){
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		}
+		.functionImg>img:last-child{
+			cursor: pointer;
+			width: 17px;
+			z-index: 99;
+		} */
+		#phoneNow .phoneEnd{
+			position: absolute;
+			display: inline;
+			width: 125px;
+			height: 30px;
+			background: #ffffff;
+			border-radius: 5px;
+			color: #bd0000;
+			font-size: 20px;
+			z-index: 10;
+			top: 55%;
+			left: 0;
+			right: 0;
+			margin: 0px auto ;
+			/* margin-left: -125px; */
+			text-align: center;
+			cursor: pointer;
+			line-height: 30px;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		}
+		#phoneNow .phoneEnd img{
+			width: 12px;
+			height: 12px;
+		}
+		#phoneNow .phoneEnd span{
+			color: #E2403F;
+			margin-left:5px;
+			font-size: 16px;
+			line-height: 20px;
+			cursor: pointer;
+			display: inline-block;
+			width: 70px;
+			height: 20px;
+			border: 1px solid #fff;
+			border-radius: 5px;
+			background: #ffffff;
+		}
+		.phoneEnd_num{
+			position: absolute!important;
+			right: -51px!important;
+			width: 50px!important;
+			height: 30px!important;
+			line-height: 29px!important;
+			background: transparent!important;
+			border: none!important;
+			color: #FFF!important;
+			z-index: 999!important;
+		}
+		</style>
+
+		<!-- <link href="./assets/plugin-ok/res.js" rel="stylesheet"/>
+		<script src="./assets/plugin-ok/base.js"></script>
+		<script src="./assets/plugin-ok/websocket.js"></script> -->
+		<script src="./assets/page/paging.js"></script>
+
+		<div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

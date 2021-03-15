@@ -1,7 +1,7 @@
 'use strict'
 const utils = require('./utils')
 const webpack = require('webpack')
-const config = require('../config')
+const config = require('../yideconfig')
 const merge = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
@@ -25,7 +25,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
-        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
+        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'yide.html') },
       ],
     },
     hot: true,
@@ -59,8 +59,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
+      filename: 'yide.html',
+      template: 'yide.html',
       inject: true
     }),
     // copy custom static assets

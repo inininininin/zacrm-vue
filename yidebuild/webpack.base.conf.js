@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const utils = require('./utils')
-const config = require('../config')
+const config = require('../yideconfig')
 const vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve (dir) {
@@ -22,7 +22,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    app: './src/yidemain.js'
   },
   output: {
     path: config.build.assetsRoot,
