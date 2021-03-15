@@ -488,7 +488,22 @@
             }
           ]
         }else if(this.$config.config.status == 'yide'){
-
+          this.hospitalNature = [
+            {
+              hospitalNatureValue: 1,
+              label: '民营医院'
+            }, {
+              hospitalNatureValue: 2,
+              label: '公立医院'
+            }, {
+              hospitalNatureValue: 3,
+              label: '月子会所'
+            }, {
+              hospitalNatureValue: 4,
+              label: '经销商'
+            }
+          ]
+          
         }
         // this.$common.loginRefresh();
         document.title = '忠安客户漏斗管理系统'
