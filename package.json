@@ -6,12 +6,12 @@
   "private": true,
   "scripts": {
     "crm": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config crmbuild/webpack.dev.conf.js",
-    "crmstart": "npm run dev",
+    "crmstart": "npm run crm",
     "crmlint": "eslint --ext .js,.vue src",
     "crmbuild": "cross-env NODE_ENV=production node crmbuild/build.js",
     
     "yide": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config yidebuild/webpack.dev.conf.js",
-    "yidestart": "npm run dev",
+    "yidestart": "npm run yide",
     "yidelint": "eslint --ext .js,.vue src",
     "yidebuild": "cross-env NODE_ENV=production node yidebuild/build.js"
   },

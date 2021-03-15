@@ -23,6 +23,9 @@ import store from './store';
 import moment from 'moment';
 import axios from 'axios';
 
+import yide from './crm.js'
+Vue.prototype.$config = yide
+
 axios.interceptors.request.use(
   config => {
     config.cancelToken = new axios.CancelToken(function (cancel) {

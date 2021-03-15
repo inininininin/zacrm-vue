@@ -440,13 +440,7 @@
           //   tel: '17854552255'
           // }
         ],
-        hospitalNature: [{
-          hospitalNatureValue: 1,
-          label: '民营医院'
-        }, {
-          hospitalNatureValue: 2,
-          label: '公立医院'
-        }],
+        hospitalNature: [],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',
         form: {
@@ -483,6 +477,19 @@
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
         this.query = JSON.stringify(this.$route.query)
+        if(this.$config.config.status == 'crm'){
+          this.hospitalNature = [
+            {
+              hospitalNatureValue: 1,
+              label: '民营医院'
+            }, {
+              hospitalNatureValue: 2,
+              label: '公立医院'
+            }
+          ]
+        }else if(this.$config.config.status == 'yide'){
+
+        }
         // this.$common.loginRefresh();
         document.title = '忠安客户漏斗管理系统'
         this.$refs.cascader.$refs.panel.activePath = []

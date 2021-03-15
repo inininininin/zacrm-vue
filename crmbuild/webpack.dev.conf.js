@@ -59,7 +59,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'crm.html',
+      filename: 'index.html',
       template: 'crm.html',
       inject: true
     }),

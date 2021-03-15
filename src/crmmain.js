@@ -22,6 +22,9 @@ import common from './assets/common';
 import store from './store';
 import moment from 'moment';
 import axios from 'axios';
+import crm from './crm.js'
+Vue.prototype.$config = crm
+
 
 axios.interceptors.request.use(
   config => {

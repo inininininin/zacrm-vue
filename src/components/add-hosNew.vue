@@ -116,13 +116,7 @@
 
         },
         options: [],
-        hospitalNature: [{
-          hospitalNatureValue: 1,
-          label: '民营医院'
-        }, {
-          hospitalNatureValue: 2,
-          label: '公立医院'
-        }],
+        hospitalNature: [],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',
         form: {
@@ -141,6 +135,18 @@
       if (this.query != JSON.stringify(this.$route.query)) {
         Object.assign(this.$data, this.$options.data());
         this.query = JSON.stringify(this.$route.query);
+        debugger
+        if(this.$config.config.status == 'crm'){
+          this.hospitalNature = [
+            {
+              hospitalNatureValue: 1,
+              label: '民营医院'
+            }, {
+              hospitalNatureValue: 2,
+              label: '公立医院'
+            }
+          ]
+        }
         this.$common.loginRefresh();
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
