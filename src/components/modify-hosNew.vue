@@ -71,10 +71,18 @@
                   <span>{{hospitalDetail.diliNow.qu.name}}</span>
                 </span>
               </div>
-              <div>
+              <div v-if="this.$config.config.status == 'crm'">
                 <span>性质：</span>
                 <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
               </div>
+              <div v-if="this.$config.config.status == 'yide'">
+                <span>性质：</span>
+                <span v-if='hospitalDetail.nature==1'>民营医院</span>
+                <span v-if='hospitalDetail.nature==2'>公立医院</span>
+                <span v-if='hospitalDetail.nature==3'>月子会所</span>
+                 <span v-if='hospitalDetail.nature==4'>经销商</span>
+              </div>
+               
               <div>
                 <span>法人：</span>
                 <span>{{hospitalDetail.faRen}}</span>

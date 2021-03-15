@@ -1,7 +1,7 @@
 <template>
   <div id="login" class="login">
     <div class="logo smargin">
-      <img src="../assets/img/logo.png" alt="" />
+      <img :src="$config.config.logo" alt="" :style="{'height': $config.config.status=='yide'? '41px':'33px'}"/>
       <h2>{{$titleName}}</h2>
     </div>
 

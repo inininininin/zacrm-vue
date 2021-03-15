@@ -70,9 +70,16 @@
                   <span>{{hospitalDetail.diliNow.qu.name}}</span>
                 </span>
               </div>
-              <div>
+              <div v-if="this.$config.config.status == 'crm'">
                 <span>性质：</span>
                 <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
+              </div>
+              <div v-if="this.$config.config.status == 'yide'">
+                <span>性质：</span>
+                <span v-if='hospitalDetail.nature==1'>民营医院</span>
+                <span v-if='hospitalDetail.nature==2'>公立医院</span>
+                <span v-if='hospitalDetail.nature==3'>月子会所</span>
+                 <span v-if='hospitalDetail.nature==4'>经销商</span>
               </div>
             </div>
           </div>
@@ -419,13 +426,7 @@
           //   tel: '17854552255'
           // }
         ],
-        hospitalNature: [{
-          hospitalNatureValue: 1,
-          label: '民营医院'
-        }, {
-          hospitalNatureValue: 2,
-          label: '公立医院'
-        }],
+        hospitalNature: [],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',
         form: {
@@ -464,6 +465,35 @@
         this.query = JSON.stringify(this.$route.query)
         // this.$common.loginRefresh();
         document.title = '忠安客户漏斗管理系统'
+        if(this.$config.config.status == 'crm'){
+          this.hospitalNature = [
+            {
+              hospitalNatureValue: 1,
+              label: '民营医院'
+            }, {
+              hospitalNatureValue: 2,
+              label: '公立医院'
+            }
+          ]
+        }else if(this.$config.config.status == 'yide'){
+          this.hospitalNature = [
+            {
+              hospitalNatureValue: 1,
+              label: '民营医院'
+            }, {
+              hospitalNatureValue: 2,
+              label: '公立医院'
+            }, {
+              hospitalNatureValue: 3,
+              label: '月子会所'
+            }, {
+              hospitalNatureValue: 4,
+              label: '经销商'
+            }
+          ]
+          
+        }
+        
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         this.options = area;

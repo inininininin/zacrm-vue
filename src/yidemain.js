@@ -23,7 +23,7 @@ import store from './store';
 import moment from 'moment';
 import axios from 'axios';
 
-import yide from './crm.js'
+import yide from './yide.js'
 Vue.prototype.$config = yide
 
 axios.interceptors.request.use(

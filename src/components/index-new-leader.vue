@@ -45,10 +45,17 @@
 					<select class="address town">
 						<option value="">-区-</option>
 					</select>
-					<select class="nature">
+					<select class="nature" v-if="this.$config.config.status == 'crm'">
 						<option value="" selected>-性质-</option>
 						<option value="1">民营医院</option>
 						<option value="2">公立医院</option>
+					</select>
+						<select class="nature" v-if="this.$config.config.status == 'yide'">
+						<option value="" selected>-性质-</option>
+						<option value="1">民营医院</option>
+						<option value="2">公立医院</option>
+						<option value="3">月子会所</option>
+						<option value="4">经销商</option>
 					</select>
 					<select class="paiBanCustomerWorkerHas">
 						<option value="" selected>-是否有拍板人-</option>
