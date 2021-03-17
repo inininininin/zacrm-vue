@@ -440,13 +440,7 @@
           //   tel: '17854552255'
           // }
         ],
-        hospitalNature: [{
-          hospitalNatureValue: 1,
-          label: '民营医院'
-        }, {
-          hospitalNatureValue: 2,
-          label: '公立医院'
-        }],
+        hospitalNature: [],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',
         form: {
@@ -484,6 +478,7 @@
         Object.assign(this.$data, this.$options.data());
         this.query = JSON.stringify(this.$route.query)
         // this.$common.loginRefresh();
+        this.hospitalNature = this.$verConfig.customerType
         document.title = '忠安客户漏斗管理系统'
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()

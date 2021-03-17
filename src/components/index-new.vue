@@ -72,8 +72,9 @@
           </select>
           <select class="nature">
             <option value="" selected>-性质-</option>
-            <option value="1">民营医院</option>
-            <option value="2">公立医院</option>
+            <option :value="item.hospitalNatureValue" v-for="(item,inx) in $verConfig.customerType" :key="inx">{{item.label}}</option>
+            <!-- <option value="1">民营医院</option>
+            <option value="2">公立医院</option> -->
           </select>
           <select class="paiBanCustomerWorkerHas">
             <option value="" selected>-是否有拍板人-</option>

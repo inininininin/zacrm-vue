@@ -6,7 +6,7 @@ Vue.use(Router)
 // const _import = require('./_import_' + process.env.NODE_ENV + '.js')
 // 开发环境不使用懒加载, 因为懒加载页面太多的话会造成webpack热更新太慢, 所以只有生产环境使用懒加载
 const _import = require("./_import_" + process.env.NODE_ENV+ '.js');
-console.log(process.env.NODE_ENV)
+
 //登录及其全局页面
 const globalRoutes = [
   {

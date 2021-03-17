@@ -2,6 +2,7 @@
 /* eslint-disable import/first */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+
 import Vue from 'vue';  
 Vue.prototype.$version = '1.4.4';
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.';
@@ -23,6 +24,11 @@ import store from './store';
 import moment from 'moment';
 import axios from 'axios';
 
+// let config =require(`./${process.env.env.ver}.js`);
+Vue.prototype.$verConfig = process.env.env; 
+debugger
+console.log(process.env.env)
+// console.log(index)
 axios.interceptors.request.use(
   config => {
     config.cancelToken = new axios.CancelToken(function (cancel) {

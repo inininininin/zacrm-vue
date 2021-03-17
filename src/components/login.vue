@@ -1,11 +1,9 @@
 <template>
   <div id="login" class="login">
     <div class="logo smargin">
-      <img src="../assets/img/logo.png" alt="" />
-      <h2>{{$titleName}}</h2>
+      <img :src="require('@/assets/img/'+$verConfig.ver+'.png')" alt="" />
+      <h2>{{$verConfig.title}}</h2>
     </div>
-
-
     <div class="number phone">
       <input class="name" type="text" @keyup.enter="submitFn" />
       <div>
@@ -94,9 +92,13 @@
         </router-link>
       </div>
     </el-dialog>
+      <div>{{$verConfig.cc}}</div>
     <div class="seccion">ver : {{$version}}  ser : {{$store.state.serVersion}}</div>
   </div>
+  
 </template>
+ 
+
 <script>
   // import layui from '../assets/layui/layui.js'
   export default {
@@ -109,10 +111,11 @@
         // newPassword:''
         dialogTableVisible:false,
         admin:false,
-        statistician:false
+        statistician:false,
       }
     },
     activated() {
+      
       // setTimeout(()=>{
       //     alert('layer.open '+window.layer.open)
       // },2000)
@@ -320,6 +323,8 @@
     text-align: center;
     padding-top: 1.67rem;
     margin-bottom: 0.91rem;
+    display: flex;
+    justify-content: center;
   }
 
   .logo img {
@@ -328,7 +333,8 @@
     width: 41px;
     height: 33px;
     display: inline-block;
-    float: left;
+    margin-right: 6px;
+    /* float: left; */
   }
 
   .logo h2 {
@@ -339,7 +345,7 @@
     color: rgba(0, 0, 0, 0.85);
     display: inline-block;
     margin: 0;
-    float: right;
+    /* float: right; */
   }
 
   .number {
