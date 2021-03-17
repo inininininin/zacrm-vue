@@ -72,7 +72,10 @@
               </div>
               <div>
                 <span>性质：</span>
-                <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
+                <!-- <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span> -->
+                <span v-for="(item,num) in $verConfig.customerType" :key="num" v-show="hospitalDetail.nature==item.hospitalNatureValue">
+                  {{item.label}}
+                </span>
               </div>
             </div>
           </div>
@@ -419,13 +422,7 @@
           //   tel: '17854552255'
           // }
         ],
-        hospitalNature: [{
-          hospitalNatureValue: 1,
-          label: '民营医院'
-        }, {
-          hospitalNatureValue: 2,
-          label: '公立医院'
-        }],
+        hospitalNature: [],
         hospitalNatureValue: '1',
         hospitalLabel: '民营医院',
         form: {
@@ -464,6 +461,7 @@
         this.query = JSON.stringify(this.$route.query)
         // this.$common.loginRefresh();
         document.title = '忠安客户漏斗管理系统'
+        this.hospitalNature = this.$verConfig.customerType
         this.$refs.cascader.$refs.panel.activePath = []
         this.$refs.cascader.$refs.panel.calculateCheckedNodePaths()
         this.options = area;

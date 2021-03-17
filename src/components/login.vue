@@ -1,7 +1,7 @@
 <template>
   <div id="login" class="login">
     <div class="logo smargin">
-      <img :src="require('@/assets/img/'+$verConfig.ver+'.png')" alt="" />
+      <img :src="require('@/assets/img/'+$verConfig.ver+'.png')" alt=""  :style="{height:$verConfig.ver=='yide'? '41px':'33px'}"/>
       <h2>{{$verConfig.title}}</h2>
     </div>
     <div class="number phone">
@@ -335,6 +335,7 @@
     display: inline-block;
     margin-right: 6px;
     /* float: left; */
+    object-fit: cover;
   }
 
   .logo h2 {

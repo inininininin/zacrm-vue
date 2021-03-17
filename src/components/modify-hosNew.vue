@@ -73,8 +73,22 @@
               </div>
               <div>
                 <span>性质：</span>
-                <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
+                <span v-for="(item,num) in $verConfig.customerType" :key="num" v-show="hospitalDetail.nature==item.hospitalNatureValue">
+                  {{item.label}}
+                </span>
               </div>
+              <!-- <div v-if="$verConfig.customerType == 'crm'">
+                <span>性质：</span>
+                <span>{{hospitalDetail.nature==1?'民营医院':'公立医院'}}</span>
+               
+              </div> -->
+              <!-- <div v-if="$verConfig.customerType == 'yide'">
+                <span>性质：</span>
+                <span v-if='hospitalDetail.nature==1'>民营医院</span>
+                <span v-if='hospitalDetail.nature==2'>公立医院</span>
+                <span v-if='hospitalDetail.nature==3'>月子会所</span>
+                <span v-if='hospitalDetail.nature==4'>经销商</span>
+              </div> -->
               <div>
                 <span>法人：</span>
                 <span>{{hospitalDetail.faRen}}</span>
