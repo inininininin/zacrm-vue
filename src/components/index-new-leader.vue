@@ -152,7 +152,7 @@
           <el-table-column prop="toRevisitTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
           </el-table-column>
 		  <el-table-column
-            prop="updateTime"
+            prop="matterUpdateTime"
             label="最后更新时间"
             sortable="custom"
             :sort-orders="['descending', 'ascending']"

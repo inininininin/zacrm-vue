@@ -205,7 +205,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="updateTime"
+            prop="matterUpdateTime"
             label="最后更新时间"
             sortable="custom"
             :sort-orders="['descending', 'ascending']"
