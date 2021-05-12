@@ -1496,12 +1496,12 @@ export default {
                     res.data.itemList[i].lastCustomerWorkerTrace;
                 }
 
-                if (res.data.itemList[i].updateTime) {
-                  res.data.itemList[i].updateTime = thisValue
-                    .moment(res.data.itemList[i].updateTime)
+                if (res.data.itemList[i].matterUpdateTime) {
+                  res.data.itemList[i].matterUpdateTime = thisValue
+                    .moment(res.data.itemList[i].matterUpdateTime)
                     .format("YYYY-MM-DD");
                 } else {
-                  res.data.itemList[i].updateTime = "";
+                  res.data.itemList[i].matterUpdateTime = "";
                 }
                 if (res.data.itemList[i].toRevisitTime) {
                   res.data.itemList[i].toRevisitTime = thisValue

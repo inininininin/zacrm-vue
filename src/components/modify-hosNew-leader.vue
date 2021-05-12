@@ -149,8 +149,8 @@
           <div class="addContent">
             <div>
               <span>简介：</span>
-              <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
-                placeholder="暂时禁用编辑医院简介" v-model="modifyhospitalDetail.brief">
+              <el-input  resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
+                placeholder="编辑医院简介" v-model="modifyhospitalDetail.brief">
               </el-input>
             </div>
           </div>
