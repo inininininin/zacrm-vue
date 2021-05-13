@@ -355,6 +355,13 @@
             :sort-orders="['descending', 'ascending']"
           >
           </el-table-column>
+          <el-table-column
+            prop="matterUpdateTime"
+            label="关键创建时间"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+          >
+          </el-table-column>
         </el-table>
       </div>
       <div class="tableBox" style="display: none; padding-bottom: 50px">
@@ -1550,6 +1557,13 @@ export default {
                     .format("YYYY-MM-DD");
                 } else {
                   res.data.itemList[i].createTime = "";
+                }
+                 if (res.data.itemList[i].matterUpdateTime) {
+                  res.data.itemList[i].matterUpdateTime = thisValue
+                    .moment(res.data.itemList[i].matterUpdateTime)
+                    .format("YYYY-MM-DD");
+                } else {
+                  res.data.itemList[i].matterUpdateTime = "";
                 }
                 // console.log( res.data.itemList[i].createTime)
                 let level = res.data.itemList[i].level;

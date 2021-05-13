@@ -95,7 +95,7 @@
               <!-- <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input> -->
-              <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
+              <el-input disabled resize='none' :autosize="{ minRows: 3, maxRows: 3}" type="textarea" :rows="2"
                 placeholder="" v-model="hospitalDetail.brief">
               </el-input>
             </div>
@@ -181,7 +181,7 @@
               <!-- <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input> -->
-              <el-input  resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
+              <el-input  resize='none' :autosize="{ minRows: 3, maxRows: 3}" type="textarea" :rows="2"
                 placeholder="编辑医院简介" v-model="modifyhospitalDetail.brief">
               </el-input>
             </div>
@@ -1526,7 +1526,7 @@
   }
 
   .addContent {
-    width: 380px;
+    width: 880px;
     float: left;
     height: auto;
     /* display: inline-block; */
