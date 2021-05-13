@@ -357,7 +357,7 @@
           </el-table-column>
           <el-table-column
             prop="matterUpdateTime"
-            label="关键创建时间"
+            label="关键更新时间"
             sortable="custom"
             :sort-orders="['descending', 'ascending']"
           >
