@@ -206,10 +206,10 @@
           </el-table-column>
           <el-table-column
             prop="matterUpdateTime"
-            label="最后更新时间"
+            label="关键更新时间"
             sortable="custom"
             :sort-orders="['descending', 'ascending']"
-          >
+          > 
           </el-table-column>
         </el-table>
 
