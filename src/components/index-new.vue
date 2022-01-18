@@ -1188,7 +1188,7 @@ res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.item
 #index{
 	height: 100%;
 	width: 100%;
-	overflow: scroll;
+	overflow: auto;
 }
 .seccion{
 	width: 100%;
