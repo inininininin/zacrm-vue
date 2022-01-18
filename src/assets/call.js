@@ -57,6 +57,9 @@ function callSevice(_callee){
     }    
 }
 function mobilePhoneFn(name,num){
+    debugger
+    if(vue.$canKtTelephone)
+        vue.$components.app.$refs.ktTelephone.contentWindow.call(num);
     // console.log(name+num)
     if(name != '' && num != ''){
         let telNow = ''

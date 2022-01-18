@@ -32,6 +32,20 @@ axios.interceptors.request.use(
   }
 );
 
+
+$.ajax({
+    url: "/crm/login-refresh",
+    type: "POST",
+    async: false,
+    success: function(res) {
+        if (res.code == 0) {
+            store.state.loginRefresh = res.data;
+        }
+    }
+});
+
+Vue.prototype.$canKtTelephone = 1;
+Vue.prototype.$components = {};
 Vue.config.productionTip = false;
 Vue.prototype.moment = moment;
 Vue.prototype.$store = store;

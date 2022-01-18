@@ -27,22 +27,41 @@ function wsInit(val){
 			// 服务端ping客户端
 			case 'USB':
 				ws.send('{"cmd":"USB","connected":"true","success":"true","message":"成功"}');
+                setCallbackUrl(pid,userWid,callRecordUrl,recordFileUrl,heartBeatUrl)
 				break;
-			case 'CORG':
-				ws.send('{"cmd":"CORG","number":"10010","success":"true","message":"成功"}');
-                $('#call').hide()
-                $('#hangOff').show()
+            case 'ATD':
+                $('#call,#barCall').hide()
+                $('#hangOff,#barHangOff').show()
                 number=data['number']
                 callId=data['callId']
                 $('.number').text(number)
+                $('#barNumber').val(number)
+                callStatus='on'
+                break;
+			case 'CORG':
+				ws.send('{"cmd":"CORG","number":"10010","success":"true","message":"成功"}');
+                $('#call,#barCall').hide()
+                $('#hangOff,#barHangOff').show()
+                number=data['number']
+                callId=data['callId']
+                $('.number').text(number)
+                $('#barNumber').val(number)
                 callStatus='on'
 				break;
 			case 'CALLING':
 				ws.send('{"cmd":"CALLING","number":"10010","success":"true","message":"成功"}');
+                $('#call,#barCall').hide()
+                $('#hangOff,#barHangOff').show()
+                number=data['number']
+                callId=data['callId']
+                $('.number').text(number)
+                $('#barNumber').val(number)
+                callStatus='on'
 				break;
 			case 'CBEGIN':
 				ws.send('{"cmd":"CBEGIN","success":"true","message":"成功"}');
-                
+                $('#barHangOff').hide()
+                $('#barDuration').show()
                 if(timer)
                     clearInterval(timer)
                 timerFunction()
@@ -50,7 +69,7 @@ function wsInit(val){
                 function timerFunction(){
                     duration=duration||0
                     duration++;
-                    $('#duration').text(duration)
+                    $('#duration,#barDuration #seconds').text(duration)
                 }
 				break;
 			case 'ALERT':
@@ -58,16 +77,17 @@ function wsInit(val){
 				break;	
 			case 'CEND':
 				ws.send('{"cmd":"CEND","success":"true","message":"成功"}');
-                $('#call').show()
-                $('#hangOff').hide()
+                $('#call,#barCall').show()
+                $('#hangOff,#barHangOff,#barDuration').hide()
                 number='';
                 $('.number').text('')
+                $('#barNumber').val('')
                 canClear()
                 if(timer)
                     clearInterval(timer)
                 callStatus='off'
                 duration=0
-                $('#duration').text('')
+                $('#duration,#barDuration #seconds').text('')
 				break;	
 		}
       	

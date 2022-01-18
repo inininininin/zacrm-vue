@@ -4,17 +4,9 @@
       <router-view />
     </keep-alive>
 
-    <div v-if="telephoneWidgetStatus=='Pad'" style="height:540px;width:300px;border:1px solid #000000;position: absolute;bottom:0;right:0;z-index: 999999;background-color: #ffffff;
-        box-sizing: border-box">
-        <div @click="telephoneWidgetStatus='Bar'" style="height:40px;cursor: pointer;text-align: center;line-height: 40px;font-size: 22px;background-color: #b8b8b8;">∨</div>
-        <iframe style="border:none;resize: none;height:498px;width:100%;" 
-            src='./assets/kt-telephone/index.html'></iframe>
-    </div>
-    <div v-if="telephoneWidgetStatus=='Bar'" @click="telephoneWidgetStatus='Pad'"
-        style="height:40px;width:300px;border:1px solid #000000;position: absolute;bottom:0;right:0;z-index: 999999;background-color: #ffffff;
-            box-sizing: border-box;">
-        电话
-    </div>
+    <iframe v-show="$canKtTelephone"  ref="ktTelephone" 
+        style="border:none;resize: none;height:500px;width:300px;position: absolute;bottom:0;right:0;z-index: 999999999;" 
+        src='./assets/kt-telephone/index.html'></iframe>
   </div>
 </template>
 <script>
@@ -22,8 +14,17 @@
     name: 'App',
     data () {
 		return {
-            telephoneWidgetStatus:"Bar"
 		}
+    },
+    mounted(){
+        debugger
+        let ts = this;
+        ts.$components[ts.$el.id]=this
+        
+        ts.$refs.ktTelephone.contentWindow.userWid=ts.$store.state.loginRefresh.token
+        ts.$refs.ktTelephone.contentWindow.callRecordUrl='http://192.168.2.100/crm/kt-telephone/call-record'
+        ts.$refs.ktTelephone.contentWindow.recordFileUrl='http://192.168.2.100/crm/kt-telephone/record-file'
+        ts.$refs.ktTelephone.contentWindow.heartBeatUrl='http://192.168.2.100/crm/kt-telephone/heart-beat'
     },
     created () {
       debugger;

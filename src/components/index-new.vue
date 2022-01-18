@@ -438,7 +438,6 @@ export default {
         });
       $.ajax({
         url: "/crm/login-refresh",
-
         type: "POST",
         async: true,
         success: function(res) {
@@ -1079,6 +1078,7 @@ export default {
               .parent()
               .attr("tel");
           }
+          
           thisValue.$axios
             .post(
               "/crm/push-call",
@@ -1102,6 +1102,8 @@ export default {
                 thisValue.$message("已发推送到手机中");
               }
             });
+
+            
         });
       $("#index .tbody")
         .off("click", ".shoujiDiv1 div:first-child img")

@@ -118,37 +118,57 @@
       // },2000)
       Object.assign(this.$data, this.$options.data());
       let _this = this
-      $.ajax({
-        url: '/crm/login-refresh',
-        type: 'POST',
-        async: true,
-        success: function(res) {
-          if (res.code == 0) {
-            _this.$store.state.loginRefresh = res.data
-            $('#login .password').val('')
-            debugger
-            if (res.data.level >= 2) {
-              _this.dialogTableVisible = true
-              _this.admin = true;
-            }
-            if(res.data.statistician){
-              _this.dialogTableVisible = true
-              _this.statistician = true;
-            }
-            if(res.data.statisticia!=1 && res.data.level < 2){
-              _this.$router.replace({
-                path: '/index-new',
-                query: {
-                  time: new Date().getTime()
-                }
-              })
-            }
-              
-          } else {
-            // layer.msg(res.codeMsg)
-          }
+        if(_this.$store.state.loginRefresh){
+        $('#login .password').val('')
+        debugger
+        if (_this.$store.state.loginRefresh.level >= 2) {
+            _this.dialogTableVisible = true
+            _this.admin = true;
         }
-      })
+        if(_this.$store.state.loginRefresh.statistician){
+            _this.dialogTableVisible = true
+            _this.statistician = true;
+        }
+        if(_this.$store.state.loginRefresh.statisticia!=1 && _this.$store.state.loginRefresh.level < 2){
+            _this.$router.replace({
+            path: '/index-new',
+            query: {
+                time: new Date().getTime()
+            }
+            })
+        }
+    }
+    //   $.ajax({
+    //     url: '/crm/login-refresh',
+    //     type: 'POST',
+    //     async: true,
+    //     success: function(res) {
+    //       if (res.code == 0) {
+    //         _this.$store.state.loginRefresh = res.data
+    //         $('#login .password').val('')
+    //         debugger
+    //         if (res.data.level >= 2) {
+    //           _this.dialogTableVisible = true
+    //           _this.admin = true;
+    //         }
+    //         if(res.data.statistician){
+    //           _this.dialogTableVisible = true
+    //           _this.statistician = true;
+    //         }
+    //         if(res.data.statisticia!=1 && res.data.level < 2){
+    //           _this.$router.replace({
+    //             path: '/index-new',
+    //             query: {
+    //               time: new Date().getTime()
+    //             }
+    //           })
+    //         }
+              
+    //       } else {
+    //         // layer.msg(res.codeMsg)
+    //       }
+    //     }
+    //   })
     },
     methods: {
       changepwd() {
@@ -258,6 +278,8 @@
             async: true,
             success: function(res) {
               if (res.code == 0) {
+                location.href="/"
+                return;
                 $.ajax({
                   url: '/crm/login-refresh',
                   type: 'POST',

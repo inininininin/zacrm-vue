@@ -6,9 +6,29 @@
     
 </head>
 
-    <body>
-        <div class="app" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: #ffffff;">
-            <div class="" style="position:absolute;max-height:800px;max-width:500px;transform: translate(-50%,-50%);left:50%;top:50%;">
+    <body style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: #ffffff;">
+            <div id="bar" style="max-height:50px;max-width:500px;position:absolute;transform: translateX(-50%);left:50%;bottom:0;border:1px solid #c5c5c5;">
+                <input id="barNumber" placeholder="请输入号码" oninput="barNumberInput()" style="width:60%;font-size: 16px;border:none;" />
+                <span id="barCall" onclick='call(number)' class="clickable" style="width:20%;cursor: pointer;background-color: rgb(12, 193, 22);">
+                    <span style="height:initial;font-size: 16px;text-align: center;position:absolute;transform: translateY(-50%);top:50%;">
+                        拨号
+                    </span>
+                </span>
+                <span id="barHangOff" onclick="hangOff()" class="clickable" style="width:20%;cursor: pointer;display: none;background-color: rgb(193, 12, 12);color:#ffffff;">
+                    <span style="height:initial;font-size: 16px;text-align: center;position:absolute;transform: translateY(-50%);top:50%;">
+                        挂断
+                    </span>
+                </span>
+                <span id="barDuration" onclick="hangOff()" class="clickable" style="width:20%;cursor: pointer;display: none;background-color: rgb(193, 12, 12);color:#ffffff;">
+                    <span id="seconds" style="height:initial;font-size: 16px;text-align: center;position:absolute;transform: translateY(-50%);top:50%;"></span>
+                </span>
+                <span class="clickable" style="width:20%;cursor: pointer;" onclick="showPad()">
+                    <span style="height:initial;font-size: 22px;text-align: center;position:absolute;transform: translateY(-50%);top:50%;">
+                        ∧
+                    </span>
+                </span>
+            </div>
+            <div id="pad" style="position:absolute;max-width:500px;transform: translate(-50%,-50%);left:50%;top:50%;display:none;border:1px solid #c5c5c5;">
                 <div style='height:10%;'>
                     <div style="height:70%;">
                         <span class="number selectable unellipsis" 
@@ -19,10 +39,10 @@
                             style="font-size: 18px;height: initial;text-align: center;position: absolute;transform: translate(-50%,-50%);left:50%;top:50%;"></span>
                     </div>
                 </div>
-                <div style='height:30%;'>
+                <div style='height:35%;'>
 
                 </div>
-                <div style='height:50%;'>
+                <div style='height:40%;'>
                     <div style="height:25%;">
                         <span onclick="dial('1')" class="clickable" style="width:33.33333%;">
                             <span style="font-size: 22px;text-align: center;height:initial;position: absolute;top:50%;transform: translateY(-50%);">
@@ -98,12 +118,12 @@
                             ···
                         </span>
                     </span>
-                    <span id="call" onclick="call(number)" class="clickable" style='background-color: rgb(12 193 22 / 1);width:70%'>
+                    <span id="call" onclick="call(number)" class="clickable" style='background-color: rgb(12 193 22 / 1);width:70%;'>
                         <span style="font-size: 22px;height: initial;text-align: center;position: absolute;top:50%;transform: translateY(-50%);">
                             拨号
                         </span>
                     </span>
-                    <span id="hangOff" onclick="hangOff()" class="clickable" style='background-color: rgb(193, 12, 12);width:70%;display:none;'>
+                    <span id="hangOff" onclick="hangOff()" class="clickable" style='background-color: rgb(193, 12, 12);width:70%;display:none;color:#ffffff;'>
                         <span style="font-size: 22px;height: initial;text-align: center;position: absolute;top:50%;transform: translateY(-50%);">
                             挂断
                         </span>
@@ -120,10 +140,13 @@
                             </span>
                         </div>
                     </span>
-                    
+                </div>
+                <div onclick="showBar()" class="clickable" style='height:5%;'>
+                    <span style="font-size: 22px;height: initial;text-align: center;position: absolute;top:50%;transform: translateY(-50%);">
+                        ∨
+                    </span>
                 </div>
             </div>
-        </div>
     </body>
 
 </html>
@@ -150,9 +173,15 @@
         display: none;
     }
 
-    span {
+    span,input {
         display: inline-block;
     }
+    input {
+        border:1px solid #a3a3a3;
+        padding:0 3px;
+        outline:none;
+    }
+    
     .selectable {
         user-select:text;
     }
