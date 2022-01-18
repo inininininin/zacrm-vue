@@ -9,6 +9,10 @@ function callFn(_callee){
         vue.$message('号码不能为空')
         return '';
     }
+    if(!store.state.loginRefresh.extTel){
+        vue.$message('暂未绑定分机号,请联系研发部')
+        return
+    }
     callLogin(_callee);
 }
 function callLogin(_callee){
@@ -36,7 +40,7 @@ function callSevice(_callee){
                 if(res.data.data.status == 'Failed'){
                     vue.$message(_callee+'拨号失败，请重试')
                 }else{
-                    vue.$message(_callee+'以拨号，请等待话机响铃')
+                    vue.$message(_callee+'已拨号，请等待响铃')
                 }
             }).catch(err=>{
                 debugger
@@ -50,10 +54,32 @@ function callSevice(_callee){
     }else{
         vue.$message('拨打失败')
         vue.$common.loginRefresh()
+    }    
+}
+function mobilePhoneFn(name,num){
+    // console.log(name+num)
+    if(name != '' && num != ''){
+        let telNow = ''
+        if(num.split('-').length>1){
+            telNow = num.split('-')[0]+num.split('-')[1]
+        }else{
+            telNow = num
+        }
+        axios.post('/crm/push-call',qs.stringify({
+            tel:telNow,
+            name:name,
+        }))
+        .then(res=>{
+            if (res.data.codeMsg) {
+                vue.$message(res.data.codeMsg)
+            }
+            if(res.data.code == 0){
+                vue.$message('已发推送到手机中')
+            }
+        })
     }
-    
-   
 }
 export default {
-	callFn
+	callFn,
+    mobilePhoneFn,
 };

@@ -54,14 +54,14 @@
               </div>
             </div>
           </div>
-          <div class="addContent">
+          <!-- <div class="addContent">
             <div>
               <span>简介：</span>
               <el-input disabled resize='none' :autosize="{ minRows: 6, maxRows: 6}" type="textarea" :rows="2"
                 placeholder="暂时禁用编辑医院简介" v-model="hospitalDetail.brief">
               </el-input>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

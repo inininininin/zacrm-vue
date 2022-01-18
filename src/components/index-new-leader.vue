@@ -117,7 +117,7 @@
 		  <el-table-column prop="tel" label="医院号码" width="">
 			  <template slot-scope="scope">
 				  <span>{{scope.row.tel||scope.row.tel1}}</span>
-				  <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+				  <!-- <img @click='callPhone(scope.row.tel||scope.row.tel1)' v-show="scope.row.tel||scope.row.tel1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer"> -->
 			  </template>
           </el-table-column>
           <el-table-column prop="paiBanCustomerWorkerName" label="拍板人" width="">
@@ -125,7 +125,7 @@
           <el-table-column prop="paiBanCustomerWorkerPhone" label="拍板人号码" width="">
 			   <template slot-scope="scope">
 				  <span>{{scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1}}</span>
-				  <img @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer">
+				  <!-- <img @click='callPhone(scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1)'  v-show="scope.row.paiBanCustomerWorkerPhone||scope.row.paiBanCustomerWorkerPhone1" :src="zuoji" alt="" style="width:20px;height:20px;cursor:pointer"> -->
 			  </template>
           </el-table-column>
           <!-- <el-table-column
@@ -150,6 +150,13 @@
           >
           </el-table-column>
           <el-table-column prop="toRevisitTime" label="回访时间" sortable="custom" :sort-orders="['descending', 'ascending']">
+          </el-table-column>
+		  <el-table-column
+            prop="matterUpdateTime"
+            label="关键更新时间"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+          >
           </el-table-column>
         </el-table>
 
@@ -1059,13 +1066,13 @@ res.data.itemList[i].lastCustomerWorkerTrace=thisValue.getDateDiff(res.data.item
 									res.data.itemList[i].lastTraceTime=res.data.itemList[i].lastCustomerWorkerTrace
 									}
 									console.log(res.data.itemList[i].lastCustomerWorkerTrace)
-                // if (res.data.itemList[i].lastTraceTime) {
-                //   res.data.itemList[i].lastTraceTime = thisValue
-                //     .moment(res.data.itemList[i].lastTraceTime)
-                //     .format("YYYY-MM-DD");
-                // } else {
-                //   res.data.itemList[i].lastTraceTime = "";
-                // }
+                if (res.data.itemList[i].matterUpdateTime) {
+                  res.data.itemList[i].matterUpdateTime = thisValue
+                    .moment(res.data.itemList[i].matterUpdateTime)
+                    .format("YYYY-MM-DD");
+                } else {
+                  res.data.itemList[i].matterUpdateTime = "";
+                }
                 if (res.data.itemList[i].toRevisitTime) {
                   res.data.itemList[i].toRevisitTime = thisValue
                     .moment(res.data.itemList[i].toRevisitTime)
@@ -1214,5 +1221,8 @@ table thead{
 }
 >>>.el-table td, >>>.el-table th{
 	padding:0;
+}
+>>>.el-table__row td{
+  padding:0 !important;
 }
 </style>

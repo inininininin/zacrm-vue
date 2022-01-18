@@ -83,15 +83,14 @@
     </div>
     <el-dialog title="端口选择" :visible.sync="dialogTableVisible" width='500px' top="20%">
       <div style="height: 50px;box-sizing: border-box;width: 100%;">
-          <router-link :to="{path:'/index-new',query:'time: new Date().getTime()'}" replace>
-        <div class="typeDialogClass" @click="dialogTableVisible= false"> 
-            用户端
-        </div>
-          </router-link>
-          <router-link :to="{path:'/leader-index',query:'time: new Date().getTime()'}" replace>
-        <div class="typeDialogClass" @click="dialogTableVisible= false">
-            管理端
-          </div>
+        <router-link :to="{path:'/index-new',query:'time: new Date().getTime()'}" replace>
+          <div class="typeDialogClass" @click="dialogTableVisible= false" :style="{'width':(admin&&statistician)? '33.3%':'50%'}">用户端</div>
+        </router-link>
+        <router-link :to="{path:'/leader-index',query:'time: new Date().getTime()'}" replace v-if="admin">
+          <div class="typeDialogClass" @click="dialogTableVisible= false" :style="{'width':(admin&&statistician)? '33.3%':'50%'}">管理端</div>
+        </router-link>
+        <router-link :to="{path:'/record-statisticalList',query:'time: new Date().getTime()'}" replace v-if="statistician">
+          <div class="typeDialogClass" @click="dialogTableVisible= false" :style="{'width':(admin&&statistician)? '33.3%':'50%'}">统计端</div>
         </router-link>
       </div>
     </el-dialog>
@@ -109,6 +108,8 @@
         // password:'',
         // newPassword:''
         dialogTableVisible:false,
+        admin:false,
+        statistician:false
       }
     },
     activated() {
@@ -125,15 +126,16 @@
           if (res.code == 0) {
             _this.$store.state.loginRefresh = res.data
             $('#login .password').val('')
+            debugger
             if (res.data.level >= 2) {
               _this.dialogTableVisible = true
-              // _this.$router.replace({
-              //   path: '/leader-index',
-              //   query: {
-              //     time: new Date().getTime()
-              //   }
-              // })
-            } else {
+              _this.admin = true;
+            }
+            if(res.data.statistician){
+              _this.dialogTableVisible = true
+              _this.statistician = true;
+            }
+            if(res.data.statisticia!=1 && res.data.level < 2){
               _this.$router.replace({
                 path: '/index-new',
                 query: {
@@ -141,6 +143,7 @@
                 }
               })
             }
+              
           } else {
             // layer.msg(res.codeMsg)
           }
@@ -263,17 +266,15 @@
                     if (res.code == 0) {
                       $('#login .password').val('')
                       debugger
-                      _this.$store.state.loginRefresh = res.data
-                        console.log(res.data.branchIs)
-                      if (res.data.level>=2) {
+                      if (res.data.level >= 2) {
                         _this.dialogTableVisible = true
-                        // _this.$router.replace({
-                        //   path: '/leader-index',
-                        //   query: {
-                        //     time: new Date().getTime()
-                        //   }
-                        // })
-                      } else {
+                        _this.admin = true;
+                      }
+                      if(res.data.statistician){
+                        _this.dialogTableVisible = true
+                        _this.statistician = true;
+                      }
+                      if(res.data.statisticia!=1 && res.data.level < 2){
                         _this.$router.replace({
                           path: '/index-new',
                           query: {

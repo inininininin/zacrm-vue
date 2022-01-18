@@ -1,7 +1,7 @@
 <template>
   <div id="leader_index">
     <div class="leader_top">
-      <span class="leader_top_title">{{$titleName}} —— {{nickname}}</span>
+      <span class="leader_top_title">{{ $titleName }} —— {{ nickname }}</span>
       <span class="loginout" @click="loginout()">退出登录</span>
     </div>
     <!-- <div class="leader_name">
@@ -68,7 +68,7 @@
           readonly
           style="cursor: pointer; display: inline"
         /> -->
-<div class="screenRow">
+        <div class="screenRow">
           <el-date-picker
             @change="daterange($event)"
             v-model="timeInterval"
@@ -84,19 +84,15 @@
           >
           </el-date-picker>
         </div>
-        <el-select
-          class="typeName"
-            v-model="nature"
-            placeholder="医院类型"
+        <el-select class="typeName" v-model="nature" placeholder="医院类型">
+          <el-option
+            v-for="item in yztype"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           >
-            <el-option
-              v-for="item in yztype"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+          </el-option>
+        </el-select>
         <el-button
           @click="lookrecordlist()"
           type="primary"
@@ -209,6 +205,53 @@
         </div> -->
       </div>
     </div>
+    <div class="screen">
+      <div class="screenRow" style="margin-left:16">
+        <!-- 省市区 -->
+        <el-select
+          class="index_location index_province "
+          @change="selProvince"
+          v-model="provinceId"
+          placeholder="请选择省"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          class="index_location index_city"
+          v-model="cityId"
+          @change="selCity"
+          placeholder="请选择市"
+        >
+          <el-option
+            v-for="item in provinces"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          class="index_location index_town"
+          v-model="areaId"
+          @change="selArea"
+          placeholder="请选择区"
+        >
+          <el-option
+            v-for="item in citys"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </div>
+    </div>
     <div class="selectRoleAll" v-if="false">
       <p>
         筛选条件：<span v-if="nature == 0">所有医院</span
@@ -243,61 +286,6 @@
       </p>
     </div>
     <div class="selectAllThis">
-      <!-- <div class="lineOneThis">
-        <span>人员类型：</span>
-        <el-checkbox v-model="checked1" @change="yuanzhang">院长</el-checkbox>
-      </div>
-      <div class="lineOneThis" v-if="show1">
-        <span>院长是否有号码：</span>
-        <el-radio-group
-          v-model="PhoneHasyuanzhang"
-          @change="selectPhoneyuanzhang"
-        >
-          <el-radio :label="0">全部</el-radio>
-          <el-radio :label="1">有号码</el-radio>
-        </el-radio-group>
-      </div>
-      <div class="lineOneThis" v-if="show2">
-        <span>院长级别：</span>
-        <el-radio-group v-model="urgentyuanzhang" @change="yuanzhanglevel">
-          <el-radio :label="0">全部</el-radio>
-          <el-radio :label="1">暂不感兴趣</el-radio>
-          <el-radio :label="2">初步感兴趣</el-radio>
-          <el-radio :label="3">非常感兴趣</el-radio>
-          <el-radio :label="4">近期可考察</el-radio>
-          <el-radio :label="5">线上可签单</el-radio>
-        </el-radio-group>
-      </div>
-      <div class="lineOneThis" v-if="show2">
-        <span>院长是否加急：</span>
-        <el-checkbox v-model="checked3" @change="yuanzhangjj">加急</el-checkbox>
-      </div>
-      <div class="lineOneThis">
-        <span>人员类型：</span>
-        <el-checkbox v-model="checked2" @change="zhuren">主任</el-checkbox>
-      </div>
-      <div class="lineOneThis" v-if="show3">
-        <span>主任是否有号码：</span>
-        <el-radio-group v-model="PhoneHaszhuren" @change="selectPhonezhuren">
-          <el-radio :label="0">全部</el-radio>
-          <el-radio :label="1">有号码</el-radio>
-        </el-radio-group>
-      </div>
-      <div class="lineOneThis" v-if="show4">
-        <span>主任级别：</span>
-        <el-radio-group v-model="urgentzhuren" @change="zhurenlevel">
-          <el-radio :label="0">全部</el-radio>
-          <el-radio :label="1">暂不感兴趣</el-radio>
-          <el-radio :label="2">初步感兴趣</el-radio>
-          <el-radio :label="3">非常感兴趣</el-radio>
-          <el-radio :label="4">近期可考察</el-radio>
-          <el-radio :label="5">线上可签单</el-radio>
-        </el-radio-group>
-      </div>
-      <div class="lineOneThis" v-if="show4">
-        <span>主任是否加急：</span>
-        <el-checkbox v-model="checked4" @change="zhurenjj">加急</el-checkbox>
-      </div> -->
       <div>
         <p
           style="
@@ -312,7 +300,7 @@
       </div>
       <div class="table1">
         <el-table
-          ref='tableHos'
+          ref="tableHos"
           :data="tableData"
           style="width: 100%"
           border
@@ -320,9 +308,15 @@
         >
           <el-table-column type="index" label="序号" width="50">
           </el-table-column>
-          <el-table-column prop="name"   show-overflow-tooltip label="医院名称" width="200">
+          <el-table-column
+            prop="name"
+            show-overflow-tooltip
+            label="医院名称"
+            width="200"
+          >
             <template slot-scope="scope"
-              ><a target="_blank" 
+              ><a
+                target="_blank"
                 :href="'./#/modify-hosNew-leader?id=' + scope.row.customerId"
                 >{{ scope.row.name }}</a
               ></template
@@ -340,10 +334,10 @@
             width="130"
           >
           </el-table-column>
-           <!-- show-overflow-tooltip="true" -->
+          <!-- show-overflow-tooltip="true" -->
           <el-table-column
             prop="lastTraceContent"
-           show-overflow-tooltip
+            show-overflow-tooltip
             label="追踪内容"
           >
           </el-table-column>
@@ -354,7 +348,19 @@
             :sort-orders="['descending', 'ascending']"
           >
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" sortable="custom" :sort-orders="['descending', 'ascending']">
+          <el-table-column
+            prop="createTime"
+            label="创建时间"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="matterUpdateTime"
+            label="关键更新时间"
+            sortable="custom"
+            :sort-orders="['descending', 'ascending']"
+          >
           </el-table-column>
         </el-table>
       </div>
@@ -409,7 +415,7 @@
     </div>
     <div
       class="popBgWindow"
-      @click.self="echartsShowData=false"
+      @click.self="echartsShowData = false"
       v-show="echartsShowData"
     >
       <div
@@ -457,7 +463,7 @@
 
     <div class="teammemberList">
       <el-table
-      ref='tableMember1'
+        ref="tableMember1"
         :data="urgentLevel"
         border
         v-if="tableShowPeople"
@@ -468,21 +474,32 @@
         </el-table-column>
         <el-table-column prop="nickname" label="姓名">
           <template slot-scope="scope"
-            ><a target="_blank" 
+            ><a
+              target="_blank"
               :href="
                 './#/index-new-leader?id=' +
-                scope.row.userId +
-                '&nickname=' +
-                encodeURIComponent(encodeURIComponent(scope.row.nickname))
+                  scope.row.userId +
+                  '&nickname=' +
+                  encodeURIComponent(encodeURIComponent(scope.row.nickname))
               "
               >{{ scope.row.nickname }}</a
             ></template
           >
         </el-table-column>
         <el-table-column prop="name" label="账号"> </el-table-column>
-        <el-table-column prop="customerCount" label="客户量" sortable :sort-orders="['descending', 'ascending']">
+        <el-table-column
+          prop="customerCount"
+          label="客户量"
+          sortable
+          :sort-orders="['descending', 'ascending']"
+        >
         </el-table-column>
-        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable :sort-orders="['descending', 'ascending']">
+        <el-table-column
+          prop="yesterdayTraceCount"
+          label="昨日追踪"
+          sortable
+          :sort-orders="['descending', 'ascending']"
+        >
         </el-table-column>
         <el-table-column
           prop="yesterdayNewCustomerCount"
@@ -512,8 +529,8 @@
       </el-table>
 
       <el-table
-      ref='tableMember2'
-      v-if="!tableShowPeople"
+        ref="tableMember2"
+        v-if="!tableShowPeople"
         :data="urgentLevel1"
         border
         :default-sort="{ prop: 'date', order: 'descending' }"
@@ -523,21 +540,32 @@
         </el-table-column>
         <el-table-column prop="nickname" label="姓名">
           <template slot-scope="scope"
-            ><a target="_blank" 
+            ><a
+              target="_blank"
               :href="
                 './#/index-new-leader?id=' +
-                scope.row.userId +
-                '&nickname=' +
-                encodeURIComponent(encodeURIComponent(scope.row.nickname))
+                  scope.row.userId +
+                  '&nickname=' +
+                  encodeURIComponent(encodeURIComponent(scope.row.nickname))
               "
               >{{ scope.row.nickname }}</a
             ></template
           >
         </el-table-column>
         <el-table-column prop="name" label="账号"> </el-table-column>
-        <el-table-column prop="customerCount" label="客户量" sortable :sort-orders="['descending', 'ascending']">
+        <el-table-column
+          prop="customerCount"
+          label="客户量"
+          sortable
+          :sort-orders="['descending', 'ascending']"
+        >
         </el-table-column>
-        <el-table-column prop="yesterdayTraceCount" label="昨日追踪" sortable :sort-orders="['descending', 'ascending']">
+        <el-table-column
+          prop="yesterdayTraceCount"
+          label="昨日追踪"
+          sortable
+          :sort-orders="['descending', 'ascending']"
+        >
         </el-table-column>
         <el-table-column
           prop="yesterdayNewCustomerCount"
@@ -630,11 +658,15 @@
 
 <script>
 import qs from "qs";
+import area from "@/assets/area.json";
 const cityOptions = ["院长", "主任"];
 export default {
   data() {
     return {
-      tableShowPeople:true,
+      provinceId: "",
+      cityId: "",
+      areaId: "",
+      tableShowPeople: true,
       showEcharts: false,
       upperUserId: "",
       onlysubordinate: "",
@@ -653,7 +685,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "最近一个月",
@@ -662,7 +694,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "最近三个月",
@@ -671,21 +703,21 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       timeInterval: "",
       searchKeys: "",
-      yztype:[
-         { value: "", label: "全部" },
+      yztype: [
+        { value: "", label: "全部" },
         { value: "1", label: "民营医院" },
-        { value: "2", label: "公立医院" },
+        { value: "2", label: "公立医院" }
       ],
-      nature:"",
+      nature: "",
       yztel: [
         { value: "", label: "全部" },
-        { value: "1", label: "有号码" },
+        { value: "1", label: "有号码" }
       ],
       yzlevel: [
         { value: "", label: "全部" },
@@ -693,15 +725,15 @@ export default {
         { value: "2", label: "初步感兴趣" },
         { value: "3", label: "非常感兴趣" },
         { value: "4", label: "近期可考察" },
-        { value: "5", label: "线上可签单" },
+        { value: "5", label: "线上可签单" }
       ],
       yzjj: [
         { value: "", label: "全部" },
-        { value: "1", label: "加急" },
+        { value: "1", label: "加急" }
       ],
       zrtel: [
         { value: "", label: "全部" },
-        { value: "1", label: "有号码" },
+        { value: "1", label: "有号码" }
       ],
       zrlevel: [
         { value: "", label: "全部" },
@@ -709,11 +741,11 @@ export default {
         { value: "2", label: "初步感兴趣" },
         { value: "3", label: "非常感兴趣" },
         { value: "4", label: "近期可考察" },
-        { value: "5", label: "线上可签单" },
+        { value: "5", label: "线上可签单" }
       ],
       zrjj: [
         { value: "", label: "全部" },
-        { value: "1", label: "加急" },
+        { value: "1", label: "加急" }
       ],
       // nature: "",
       paiBanCustomerWorkerHas: "",
@@ -727,31 +759,31 @@ export default {
       paiBanCustomerWorkerLevelname: "",
       zhuRenCustomerWorkerLevelname: "",
       urgentLevel: [],
-      urgentLevel1:[],
+      urgentLevel1: [],
       customerPage: 1,
       echartsShowData: false,
       lineData: {
         title: {
-          text: "",
+          text: ""
         },
         text: "数据正在载入...",
         tooltip: {},
         legend: {
-          data: ["客户量", "追踪数"],
+          data: ["客户量", "追踪数"]
         },
         xAxis: {
           name: "时间：日",
           axisLabel: {
-            interval: 0, //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推
+            interval: 0 //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推
           },
           boundaryGap: false,
-          data: [],
+          data: []
         },
         yAxis: {
-          name: "单位：个",
+          name: "单位：个"
         },
         label: {
-          show: true,
+          show: true
           // 标签的文字。
           // formatter: ["1","2","3","4","5","6"]
         },
@@ -760,34 +792,34 @@ export default {
           feature: {
             dataView: {
               show: true,
-              readOnly: false,
+              readOnly: false
             },
             magicType: {
               show: true,
-              type: ["bar", "line", "pie"],
+              type: ["bar", "line", "pie"]
             },
             restore: {
-              show: false,
+              show: false
             },
             saveAsImage: {
-              show: true,
-            },
-          },
+              show: true
+            }
+          }
         },
         series: [
           {
             name: "客户量",
             type: "line",
             color: ["#37A2DA"],
-            data: [],
+            data: []
           },
           {
             name: "追踪数",
             type: "line",
             color: ["#fb5858"],
-            data: [],
-          },
-        ],
+            data: []
+          }
+        ]
       },
       orderNo: 0,
       totalCount: "",
@@ -822,21 +854,30 @@ export default {
       hospitalPageSize: 15,
       hospitalPageNo: 1,
       currentPage1: 1,
-      changeEcharts:true,
+      changeEcharts: true,
+      options: [],
+      provinceName: "",
+      provinceId: "",
+      cityName: "",
+      cityId: "",
+      areaName: "",
+      areaId: ""
     };
   },
   activated() {
     let thisValue = this;
+    thisValue.options = area;
+    console.log(thisValue.options);
     // Object.assign(thisValue.$data, thisValue.$options.data());
 
-    thisValue.$axios.post("/crm/login-refresh").then((res) => {
+    thisValue.$axios.post("/crm/login-refresh").then(res => {
       if (res.data.codeMsg) {
         thisValue.$message({
           type: "info",
           message: res.data.codeMsg,
-          onClose: function () {
+          onClose: function() {
             thisValue.$router.push({ path: "/login" });
-          },
+          }
         });
       }
       if (res.data.code == 0) {
@@ -874,22 +915,22 @@ export default {
     thisValue.$nextTick(() => {
       // let nowMOunth = new Date().getMonth();
       // let nowYear = new Date().getFullYear();
-      layui.use("laydate", function () {
+      layui.use("laydate", function() {
         // console.dir(layui.laydate)
         layui.laydate.render({
           elem: "#layDateMonth",
           type: "month",
           // value:nowYear + '-' + nowMOunth,
-          change: function (value, date, endDate) {
-             console.log( thisValue.layuiData )
-             if(thisValue.layuiData==value){
-               $(".layui-laydate").remove();
-               thisValue.changeEcharts=false
-               console.log(thisValue.changeEcharts)
-               return 
-             }
-            thisValue.changeEcharts=true
-            console.log(thisValue.changeEcharts)
+          change: function(value, date, endDate) {
+            console.log(thisValue.layuiData);
+            if (thisValue.layuiData == value) {
+              $(".layui-laydate").remove();
+              thisValue.changeEcharts = false;
+              console.log(thisValue.changeEcharts);
+              return;
+            }
+            thisValue.changeEcharts = true;
+            console.log(thisValue.changeEcharts);
             console.log(value); //得到日期生成的值，如：2017-08-18
             console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
             console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
@@ -900,9 +941,9 @@ export default {
               date.month = "0" + date.month;
             }
             thisValue.layuiData = date.year + "-" + date.month;
-           
+
             $(".layui-laydate").remove();
-          },
+          }
         });
       });
     });
@@ -916,13 +957,67 @@ export default {
   //     }
   //   }
   // },
+  mounted() {
+    this.options = area;
+  },
   methods: {
     // 从头来
 
+    selProvince(e) {
+      console.log(e);
+      this.provinces = [];
+      this.citys = [];
+      this.cityId = "";
+      this.areaId = "";
+      this.provinceId = e;
+      for (var i in this.options) {
+        if (e == this.options[i].value) {
+          this.provinces = this.options[i].children;
+          this.provinceName = this.options[i].label;
+        }
+      }
+      console.log(this.provinces);
+      console.log(this.provinceName, this.provinceId);
+    },
+    selCity(e) {
+      console.log(e);
+      this.citys = [];
+      this.areaId = "";
+      this.cityId = e;
+      for (var i in this.provinces) {
+        if (e == this.provinces[i].value) {
+          this.citys = this.provinces[i].children;
+          this.cityName = this.provinces[i].label;
+        }
+      }
+      console.log(
+        this.provinceName,
+        this.provinceId,
+        this.cityName,
+        this.cityId
+      );
+    },
+    selArea(e) {
+      console.log(e);
+      this.areaId = e;
+      for (var i in this.citys) {
+        if (e == this.citys[i].value) {
+          this.areaName = this.citys[i].label;
+        }
+      }
+      console.log(
+        this.provinceName,
+        this.provinceId,
+        this.cityName,
+        this.cityId,
+        this.areaName,
+        this.areaId
+      );
+    },
     // 筛选下级
     searchMember() {
       this.urgentLevel = [];
-      this.urgentLevel1= [];
+      this.urgentLevel1 = [];
       this.onlysubordinateNum();
       this.allsubordinateNum();
       if (this.activeName == "first") {
@@ -935,14 +1030,12 @@ export default {
       this.memberKeyword = "";
       this.memberorder = "";
       this.membersort = "";
-    //  this.hospitalSort= "",
-    //   this.hospitalOrder= "",
-    if(this.$refs.tableMember1)
-      this.$refs.tableMember1.clearSort()
-      if(this.$refs.tableMember2)
-      this.$refs.tableMember2.clearSort()
+      //  this.hospitalSort= "",
+      //   this.hospitalOrder= "",
+      if (this.$refs.tableMember1) this.$refs.tableMember1.clearSort();
+      if (this.$refs.tableMember2) this.$refs.tableMember2.clearSort();
       this.urgentLevel = [];
-      this.urgentLevel1= [];
+      this.urgentLevel1 = [];
       this.onlysubordinateNum();
       this.allsubordinateNum();
       if (this.activeName == "first") {
@@ -962,20 +1055,19 @@ export default {
     // tabber点击
     handleTabClick(tab, event) {
       console.log(tab, event);
-      console.log(this.activeName)
+      console.log(this.activeName);
       // this.$refs.tableMember1.clearSort()
       // this.$refs.tableMember2.clearSort()
-      if(tab.name == "first"){
-        this.tableShowPeople=true
-         if(this.urgentLevel.length==0){
+      if (tab.name == "first") {
+        this.tableShowPeople = true;
+        if (this.urgentLevel.length == 0) {
           this.getData(this.upperUserId, this.memberorder, this.membersort);
         }
-      }else{
-        this.tableShowPeople=false
-        if(this.urgentLevel1.length==0){
+      } else {
+        this.tableShowPeople = false;
+        if (this.urgentLevel1.length == 0) {
           this.getData1("", this.memberorder, this.membersort);
         }
-        
       }
       // this.urgentLevel = [];
       // if (tab.name == "first") {
@@ -1027,12 +1119,18 @@ export default {
       this.zhuRenCustomerWorkerPhoneHas = "";
       this.zhuRenCustomerWorkerUrgent = "";
       this.zhuRenCustomerWorkerLevel = "";
-       this.currentPage1 = 1;
-       this.hospitalSort= "",
-      this.hospitalOrder= "",
-      this.nature= "",
-      this.$refs.tableHos.clearSort()
-        this.tableData = [];
+      this.provinceId = "";
+      this.provinceName = "";
+      this.cityId = "";
+      this.cityName = "";
+      this.areaId = "";
+      this.areaName = "";
+      this.currentPage1 = 1;
+      (this.hospitalSort = ""),
+        (this.hospitalOrder = ""),
+        (this.nature = ""),
+        this.$refs.tableHos.clearSort();
+      this.tableData = [];
       this.getNumberHosSelect();
       // this.lastPageNo();
       this.lastPage(1);
@@ -1061,84 +1159,83 @@ export default {
       // } else {
       //   this.getData1("", this.memberorder, this.membersort);
       // }
-      if(this.activeName == "first"){
-let listInx = this.urgentLevel.findIndex(
-        (n) => n.userId == _value.userId
-      );
-      console.log(listInx);
-      if (listInx) {
-        this.$axios
-          .post(
-            "/crm/zong-jing-li/update-user",
-            qs.stringify({
-              userId: _value.userId,
-              orderNo: this.orderNo - 1,
-            })
-          )
-          .then((res) => {
-            if (res.data.codeMsg) {
-              this.$message({
-                type: "info",
-                message: res.data.codeMsg,
-              });
-            }
-            if (res.data.code == 0) {
-              this.orderNo--;
-              console.log(123123)
-              console.log(this.urgentLevel)
-              // if()
-              let insertValue = this.urgentLevel[listInx];
-              this.urgentLevel.splice(listInx, 1);
-              this.urgentLevel.splice(0, 0, insertValue);
-              console.log(this.urgentLevel)
-            } else {
-              this.$message({
-                type: "info",
-                message: res.data.codeMsg,
-              });
-            }
-          });
+      if (this.activeName == "first") {
+        let listInx = this.urgentLevel.findIndex(
+          n => n.userId == _value.userId
+        );
+        console.log(listInx);
+        if (listInx) {
+          this.$axios
+            .post(
+              "/crm/zong-jing-li/update-user",
+              qs.stringify({
+                userId: _value.userId,
+                orderNo: this.orderNo - 1
+              })
+            )
+            .then(res => {
+              if (res.data.codeMsg) {
+                this.$message({
+                  type: "info",
+                  message: res.data.codeMsg
+                });
+              }
+              if (res.data.code == 0) {
+                this.orderNo--;
+                console.log(123123);
+                console.log(this.urgentLevel);
+                // if()
+                let insertValue = this.urgentLevel[listInx];
+                this.urgentLevel.splice(listInx, 1);
+                this.urgentLevel.splice(0, 0, insertValue);
+                console.log(this.urgentLevel);
+              } else {
+                this.$message({
+                  type: "info",
+                  message: res.data.codeMsg
+                });
+              }
+            });
+        }
+      } else {
+        let listInx = this.urgentLevel1.findIndex(
+          n => n.userId == _value.userId
+        );
+        console.log(listInx);
+        if (listInx) {
+          this.$axios
+            .post(
+              "/crm/zong-jing-li/update-user",
+              qs.stringify({
+                userId: _value.userId,
+                orderNo: this.orderNo - 1
+              })
+            )
+            .then(res => {
+              if (res.data.codeMsg) {
+                this.$message({
+                  type: "info",
+                  message: res.data.codeMsg
+                });
+              }
+              if (res.data.code == 0) {
+                this.orderNo--;
+                console.log(123123);
+                console.log(this.urgentLevel1);
+                // if()
+                let insertValue = this.urgentLevel1[listInx];
+                this.urgentLevel1.splice(listInx, 1);
+                this.urgentLevel1.splice(0, 0, insertValue);
+                console.log(this.urgentLevel1);
+              } else {
+                this.$message({
+                  type: "info",
+                  message: res.data.codeMsg
+                });
+              }
+            });
+        }
       }
-      }else{
-let listInx = this.urgentLevel1.findIndex(
-        (n) => n.userId == _value.userId
-      );
-      console.log(listInx);
-      if (listInx) {
-        this.$axios
-          .post(
-            "/crm/zong-jing-li/update-user",
-            qs.stringify({
-              userId: _value.userId,
-              orderNo: this.orderNo - 1,
-            })
-          )
-          .then((res) => {
-            if (res.data.codeMsg) {
-              this.$message({
-                type: "info",
-                message: res.data.codeMsg,
-              });
-            }
-            if (res.data.code == 0) {
-              this.orderNo--;
-              console.log(123123)
-              console.log(this.urgentLevel1)
-              // if()
-              let insertValue = this.urgentLevel1[listInx];
-              this.urgentLevel1.splice(listInx, 1);
-              this.urgentLevel1.splice(0, 0, insertValue);
-              console.log(this.urgentLevel1)
-            } else {
-              this.$message({
-                type: "info",
-                message: res.data.codeMsg,
-              });
-            }
-          });
-      }
-      }
-      
     },
     yuanzhang(e) {
       if (e == true) {
@@ -1327,8 +1424,11 @@ let listInx = this.urgentLevel1.findIndex(
       //     time: new Date().getTime(),
       //   },
       // });
-       let routeData = this.$router.resolve({ path: '/record-list', query: {    time: new Date().getTime(), } });
-window.open(routeData.href, '_blank');
+      let routeData = this.$router.resolve({
+        path: "/record-list",
+        query: { time: new Date().getTime() }
+      });
+      window.open(routeData.href, "_blank");
     },
     // create() {
     //   this.$axios.post('/ling-dao/create-user', qs.stringify({
@@ -1354,6 +1454,9 @@ window.open(routeData.href, '_blank');
 
     lastPage(pn) {
       var param = qs.stringify({
+         area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
         paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
         paiBanCustomerWorkerPhoneHas:
           this.paiBanCustomerWorkerPhoneHas == 0
@@ -1383,7 +1486,7 @@ window.open(routeData.href, '_blank');
         nature: this.nature,
         kw: this.searchKeys,
         sort: this.hospitalSort,
-        order: this.hospitalOrder,
+        order: this.hospitalOrder
         // userId: localStorage.getItem('id'),
       });
       let thisValue = this;
@@ -1392,7 +1495,7 @@ window.open(routeData.href, '_blank');
         text: "Loading", //显示在加载图标下方的加载文案
         spinner: "el-icon-loading", //自定义加载图标类名
         background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
-        target: document.querySelector(".table1"), //loading覆盖的dom元素节点
+        target: document.querySelector(".table1") //loading覆盖的dom元素节点
       });
       // hospitalPageNo:1,
       //   hospitalPageSize: 15,
@@ -1413,13 +1516,13 @@ window.open(routeData.href, '_blank');
           "&pn=" +
           pn,
         async: true,
-        success: function (res) {
+        success: function(res) {
           console.dir(res);
           if (res.codeMsg) {
             // console.log(res.data.codeMsg)
             thisValue.$message({
               type: "info",
-              message: res.codeMsg,
+              message: res.codeMsg
             });
             loading.close();
           }
@@ -1455,9 +1558,16 @@ window.open(routeData.href, '_blank');
                 } else {
                   res.data.itemList[i].createTime = "";
                 }
+                 if (res.data.itemList[i].matterUpdateTime) {
+                  res.data.itemList[i].matterUpdateTime = thisValue
+                    .moment(res.data.itemList[i].matterUpdateTime)
+                    .format("YYYY-MM-DD");
+                } else {
+                  res.data.itemList[i].matterUpdateTime = "";
+                }
                 // console.log( res.data.itemList[i].createTime)
                 let level = res.data.itemList[i].level;
-                    
+
                 if (level == 1) {
                   res.data.itemList[i].level = "无兴趣";
                 } else if (level == 2) {
@@ -1514,11 +1624,14 @@ window.open(routeData.href, '_blank');
             }
             loading.close();
           }
-        },
+        }
       });
     },
     lastPageNo(pn) {
       var param = qs.stringify({
+        area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
         paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
         paiBanCustomerWorkerPhoneHas:
           this.paiBanCustomerWorkerPhoneHas == 0
@@ -1546,7 +1659,7 @@ window.open(routeData.href, '_blank');
             ? ""
             : this.zhuRenCustomerWorkerLevel,
         nature: this.nature,
-        kw: this.searchKeys,
+        kw: this.searchKeys
         // userId: localStorage.getItem('id'),
       });
       let thisValue = this;
@@ -1563,7 +1676,7 @@ window.open(routeData.href, '_blank');
           "&ps=15&pn=" +
           pn,
         async: true,
-        success: function (res) {
+        success: function(res) {
           if (res.code == 0) {
             thisValue.totalNum = Math.ceil(res.data.itemCount / 15);
             $("#leader_index .shuju").html(
@@ -1575,16 +1688,16 @@ window.open(routeData.href, '_blank');
               //                totalCount: '合计' + setTotalCount + '条数据', // 条目总数
               slideSpeed: 600, // 缓动速度。单位毫秒
               jump: true, //是否支持跳转
-              callback: function (page) {
+              callback: function(page) {
                 // 回调函数
                 // memberList1(1,page);
                 // var nature = $('#index .nature').val()
                 thisValue.pn = page;
                 thisValue.lastPage(page);
-              },
+              }
             });
           }
-        },
+        }
       });
     },
     // 时间转换
@@ -1631,18 +1744,18 @@ window.open(routeData.href, '_blank');
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-        center: true,
+        center: true
       })
         .then(() => {
           this.$message({
             type: "success",
-            message: "退出成功!",
+            message: "退出成功!"
           });
-          this.$axios.post("/crm/logout").then((res) => {
+          this.$axios.post("/crm/logout").then(res => {
             if (res.data.codeMsg) {
               this.$message({
                 type: "info",
-                message: res.data.codeMsg,
+                message: res.data.codeMsg
               });
             }
             if (res.data.code == 0) {
@@ -1656,7 +1769,7 @@ window.open(routeData.href, '_blank');
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消退出",
+            message: "已取消退出"
           });
         });
     },
@@ -1667,8 +1780,8 @@ window.open(routeData.href, '_blank');
         path: "/leader-lookIndex",
         query: {
           // name: encodeURIComponent(name),
-          time: new Date().getTime(),
-        },
+          time: new Date().getTime()
+        }
       });
     },
 
@@ -1679,7 +1792,7 @@ window.open(routeData.href, '_blank');
         text: "Loading", //显示在加载图标下方的加载文案
         spinner: "el-icon-loading", //自定义加载图标类名
         background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
-        target: document.querySelector(".teammemberList"), //loading覆盖的dom元素节点
+        target: document.querySelector(".teammemberList") //loading覆盖的dom元素节点
       });
       //成功回调函数停止加载
 
@@ -1691,23 +1804,23 @@ window.open(routeData.href, '_blank');
               pn: this.customerPage,
               upperUserId: upperUserId,
               order: order, //"asc",
-              sort: sort, //"orderNo",
+              sort: sort //"orderNo",
             })
         )
-        .then((res) => {
+        .then(res => {
           // console.log(res)
           if (res.data.codeMsg) {
             // console.log(res.data.codeMsg)
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
             loading.close();
           }
           if (res.data.code == 0) {
             if (res.data.data.itemList[0])
               this.orderNo = res.data.data.itemList[0].orderNo;
-              console.log(this.activeName)
+            console.log(this.activeName);
             if (res.data.data.itemList.length > 0) {
               for (let i in res.data.data.itemList) {
                 this.urgentLevel.push(res.data.data.itemList[i]);
@@ -1724,7 +1837,7 @@ window.open(routeData.href, '_blank');
         text: "Loading", //显示在加载图标下方的加载文案
         spinner: "el-icon-loading", //自定义加载图标类名
         background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
-        target: document.querySelector(".teammemberList"), //loading覆盖的dom元素节点
+        target: document.querySelector(".teammemberList") //loading覆盖的dom元素节点
       });
       //成功回调函数停止加载
 
@@ -1736,23 +1849,23 @@ window.open(routeData.href, '_blank');
               pn: this.customerPage,
               // upperUserId: upperUserId,
               order: order, //"asc",
-              sort: sort, //"orderNo",
+              sort: sort //"orderNo",
             })
         )
-        .then((res) => {
+        .then(res => {
           // console.log(res)
           if (res.data.codeMsg) {
             // console.log(res.data.codeMsg)
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
             loading.close();
           }
           if (res.data.code == 0) {
             if (res.data.data.itemList[0])
               this.orderNo = res.data.data.itemList[0].orderNo;
-              console.log(this.activeName)
+            console.log(this.activeName);
             if (res.data.data.itemList.length > 0) {
               for (let i in res.data.data.itemList) {
                 this.urgentLevel1.push(res.data.data.itemList[i]);
@@ -1770,14 +1883,14 @@ window.open(routeData.href, '_blank');
           "/crm/ling-dao/user-list-sum?" +
             qs.stringify({
               upperUserId: thisValue.upperUserId,
-              kw: thisValue.memberKeyword,
+              kw: thisValue.memberKeyword
             })
         )
-        .then((res) => {
+        .then(res => {
           if (res.data.codeMsg) {
             thisValue.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
           if (res.data.code == 0) {
@@ -1791,14 +1904,14 @@ window.open(routeData.href, '_blank');
         .get(
           "/crm/ling-dao/user-list-sum?" +
             qs.stringify({
-              kw: thisValue.memberKeyword,
+              kw: thisValue.memberKeyword
             })
         )
-        .then((res) => {
+        .then(res => {
           if (res.data.codeMsg) {
             thisValue.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
           if (res.data.code == 0) {
@@ -1807,11 +1920,11 @@ window.open(routeData.href, '_blank');
         });
     },
     getDataNumber() {
-      this.$axios.get("/crm/ling-dao/user-list-sum").then((res) => {
+      this.$axios.get("/crm/ling-dao/user-list-sum").then(res => {
         if (res.data.codeMsg) {
           this.$message({
             type: "info",
-            message: res.data.codeMsg,
+            message: res.data.codeMsg
           });
         }
         if (res.data.code == 0) {
@@ -1829,6 +1942,9 @@ window.open(routeData.href, '_blank');
         .get(
           "/crm/ling-dao/customer/customer-list-sum?" +
             qs.stringify({
+                area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
               paiBanCustomerWorkerHas: this.paiBanCustomerWorkerHas,
               paiBanCustomerWorkerPhoneHas: _pai,
               paiBanCustomerWorkerUrgent: this.paiBanCustomerWorkerUrgent,
@@ -1840,15 +1956,15 @@ window.open(routeData.href, '_blank');
               nature: this.nature,
               kw: this.searchKeys,
               createTimeFrom: this.createTimeFrom,
-              createTimeTo: this.createTimeTo,
+              createTimeTo: this.createTimeTo
               // paiBanCustomerWorkerPhoneHas:_paiBanCustomerWorkerPhoneHas
             })
         )
-        .then((res) => {
+        .then(res => {
           if (res.data.codeMsg) {
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
           if (res.data.code == 0) {
@@ -1857,7 +1973,7 @@ window.open(routeData.href, '_blank');
         });
     },
     async getDataNumberHosSelect(_time) {
-      console.log(222)
+      console.log(222);
       let thisValue = this;
       // console.log(thisValue.moment(_time).format("YYYY-MM-DD"));
       let _pai;
@@ -1897,16 +2013,19 @@ window.open(routeData.href, '_blank');
               whatTime: this.createTimeState,
               nature: this.nature,
               kw: this.searchKeys,
+              area1Id: this.provinceId,
+          area2Id: this.cityId,
+           area3Id: this.areaId,
               // createTimeFrom : _time,
               // createTimeTo : _nextTime? _nextTime-1:'',
-              createTimeByMonth: _time,
+              createTimeByMonth: _time
             })
         )
-        .then((res) => {
+        .then(res => {
           if (res.data.codeMsg) {
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
 
@@ -1953,21 +2072,21 @@ window.open(routeData.href, '_blank');
         });
     },
     async getCustomerWorkerTrace(_time) {
-      console.log(111)
+      console.log(111);
       await this.$axios
         .get(
           "/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum-by-month?" +
             qs.stringify({
               createTimeFrom: this.createTimeFrom,
               createTimeTo: this.createTimeTo,
-              createTimeByMonth: _time,
+              createTimeByMonth: _time
             })
         )
-        .then((res) => {
+        .then(res => {
           if (res.data.codeMsg) {
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
           if (res.data.code == 0) {
@@ -2001,29 +2120,28 @@ window.open(routeData.href, '_blank');
     async statisticalAllFn() {
       // this.getNumberHosSelect()
       console.log(this.changeEcharts);
-      if(!this.changeEcharts){
-        if(this.lineData.series[1].data.length)
-          return;
+      if (!this.changeEcharts) {
+        if (this.lineData.series[1].data.length) return;
       }
       const loading = this.$loading({
         lock: true, //lock的修改符--默认是false
         text: "Loading", //显示在加载图标下方的加载文案
         spinner: "el-icon-loading", //自定义加载图标类名
         background: "rgba(0, 0, 0, 0.7)", //遮罩层颜色
-        target: document.querySelector(".popBgWindow"), //loading覆盖的dom元素节点
+        target: document.querySelector(".popBgWindow") //loading覆盖的dom元素节点
       });
       if (this.lineData.xAxis.data.length != 0) {
         this.lineData.xAxis.data = [];
         this.chartsFn();
       }
-      console.log(1230)
+      console.log(1230);
       let nowData = new Date().getDate();
       let nowMOunth = new Date().getMonth() + 1;
       let nowYear = new Date().getFullYear();
-         console.log(this.nowTime,this.layuiData)
-      
+      console.log(this.nowTime, this.layuiData);
+
       // this.barData.xAxis.data = [];
-   
+
       if (this.nowTime) {
         // console.log(this.nowTime);
         nowYear = this.nowTime.year;
@@ -2034,18 +2152,18 @@ window.open(routeData.href, '_blank');
       let _nowTime = new Date(
         nowYear + "-" + nowMOunth + "-" + 1 + " " + "00:00:00"
       ).getTime();
-      console.log(_nowTime)
+      console.log(_nowTime);
       await this.getDataNumberHosSelect(_nowTime);
       await this.getCustomerWorkerTrace(_nowTime);
       this.$echarts
         .init(document.getElementById("main"))
         .setOption(this.lineData, true);
       loading.close();
-      this.changeEcharts=false
+      this.changeEcharts = false;
       // await this.getDataNumberHosSelect(_nowTime, 1)
     },
     chartsFn() {
-      console.log('chartsFn()')
+      console.log("chartsFn()");
       this.lineData.series[0].data = [];
       this.lineData.series[1].data = [];
       // this.lineData.series[1].data = []
@@ -2070,14 +2188,14 @@ window.open(routeData.href, '_blank');
         .get(
           "/crm/ling-dao/customer/customer-list-sum?" +
             qs.stringify({
-              nature: nature,
+              nature: nature
             })
         )
-        .then((res) => {
+        .then(res => {
           if (res.data.codeMsg) {
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
           if (res.data.code == 0) {
@@ -2094,20 +2212,22 @@ window.open(routeData.href, '_blank');
     },
     traceNumber() {
       this.$axios
-        .get("/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum")
-        .then((res) => {
+        .get(
+          "/crm/ling-dao/customer-worker-trace/customer-worker-trace-list-sum"
+        )
+        .then(res => {
           if (res.data.codeMsg) {
             this.$message({
               type: "info",
-              message: res.data.codeMsg,
+              message: res.data.codeMsg
             });
           }
           if (res.data.code == 0) {
             this.traceTotalNumber = res.data.data.itemCount;
           }
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -2120,7 +2240,7 @@ window.open(routeData.href, '_blank');
   min-height: 100%;
   background: rgba(240, 242, 245, 1);
   /* overflow-y: scroll; */
-  overflow:auto;
+  overflow: auto;
 }
 
 .leader_top {
@@ -2538,7 +2658,7 @@ input::-webkit-inner-spin-button {
   display: block;
   height: 64px;
   background-color: #fff;
-    min-width: 1440px;
+  min-width: 1440px;
 }
 >>> .searchResults > div input {
   width: 207px;
@@ -2549,7 +2669,7 @@ input::-webkit-inner-spin-button {
   border-bottom-right-radius: 0;
   /* border-right: 0; */
 }
->>> .searchResults > div .typeName input{
+>>> .searchResults > div .typeName input {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   margin-left: 10px;
@@ -2576,7 +2696,7 @@ input::-webkit-inner-spin-button {
 }
 .screen {
   width: 100%;
-    min-width: 1440px;
+  min-width: 1440px;
   height: 48px;
   background-color: #fff;
 }
@@ -2667,11 +2787,12 @@ input::-webkit-inner-spin-button {
   /* width:90%;  */
 }
 
->>>.el-table td, >>>.el-table th{
+>>> .el-table td,
+>>> .el-table th {
   padding: 8px 0;
 }
-#layDateMonth{
-  float:left;
+#layDateMonth {
+  float: left;
   margin-left: 10px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -2684,11 +2805,11 @@ input::-webkit-inner-spin-button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
->>>.screenRow .el-date-editor{
+>>> .screenRow .el-date-editor {
   margin: 16px 0 0 10px;
 }
->>>.screenRow .el-date-editor .el-range-input{
+>>> .screenRow .el-date-editor .el-range-input {
   height: 30px;
-  line-height:32px;
+  line-height: 32px;
 }
 </style>

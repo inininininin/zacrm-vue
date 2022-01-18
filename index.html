@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head> 
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -117,17 +117,17 @@
       }
 
       $('#btn_conn').click(function(){
-          var data={
-                    callUri:$('#inp_send').val(),
-                    secret :secret
-                  }
-                  sendAjax("makeCall",data,function(e){
-                     if (e["result"]==1) {
+        //   var data={
+        //             callUri:$('#inp_send').val(),
+        //             secret :secret
+        //           }
+                //   sendAjax("makeCall",data,function(e){
+                //      if (e["result"]==1) {
 
-                     }else{
-                        // alert("呼叫失败")
-                     }
-                  })
+                //      }else{
+                //         // alert("呼叫失败")
+                //      }
+                //   })
                 })
 
 			var _left =''

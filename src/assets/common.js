@@ -12,9 +12,6 @@ function loginRefresh(){
         }
         if(res.data.code == 0){
             store.state.loginRefresh = res.data.data
-            if(!res.data.data.extTel){
-                vue.$message('暂未绑定分机号,请联系研发部')
-            }
         }else{
             router.push({path:'/login'})
         }
