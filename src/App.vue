@@ -4,8 +4,8 @@
       <router-view />
     </keep-alive>
 
-    <iframe v-show="$canKtTelephone"  ref="ktTelephone" 
-        style="border:none;resize: none;height:500px;width:300px;position: absolute;bottom:0;right:0;z-index: 999999999;" 
+    <iframe v-show="$canKtTelephone && $store.state.loginRefresh" ref="ktTelephone" 
+        style="resize: none;height:500px;width:300px;position: absolute;bottom:0;right:0;z-index: 999999999;border:1px solid #c5c5c5;" 
         src='./assets/kt-telephone/index.html'></iframe>
   </div>
 </template>
@@ -25,6 +25,7 @@
         ts.$refs.ktTelephone.contentWindow.callRecordUrl='http://192.168.2.100/crm/kt-telephone/call-record'
         ts.$refs.ktTelephone.contentWindow.recordFileUrl='http://192.168.2.100/crm/kt-telephone/record-file'
         ts.$refs.ktTelephone.contentWindow.heartBeatUrl='http://192.168.2.100/crm/kt-telephone/heart-beat'
+       
     },
     created () {
       debugger;

@@ -1,5 +1,3 @@
-wsInit()
-
 var ws;
 function wsInit(val){
 	//重连先关闭
@@ -26,17 +24,24 @@ function wsInit(val){
 		switch(data['cmd']) {
 			// 服务端ping客户端
 			case 'USB':
-				ws.send('{"cmd":"USB","connected":"true","success":"true","message":"成功"}');
-                setCallbackUrl(pid,userWid,callRecordUrl,recordFileUrl,heartBeatUrl)
+                if(data['connected']){
+				    ws.send('{"cmd":"USB","connected":"true","success":"true","message":"成功"}');
+                    setCallbackUrl(pid,userWid,callRecordUrl,recordFileUrl,heartBeatUrl)
+                    showBar()
+                }else{
+                    reactTelephoneFailedLink('话机USB未连接')
+                }
 				break;
             case 'ATD':
-                $('#call,#barCall').hide()
-                $('#hangOff,#barHangOff').show()
-                number=data['number']
-                callId=data['callId']
-                $('.number').text(number)
-                $('#barNumber').val(number)
-                callStatus='on'
+                if(data['success']){
+                    $('#call,#barCall').hide()
+                    $('#hangOff,#barHangOff').show()
+                    number=data['number']
+                    callId=data['callId']
+                    $('.number').text(number)
+                    $('#barNumber').val(number)
+                    callStatus='on'
+                }
                 break;
 			case 'CORG':
 				ws.send('{"cmd":"CORG","number":"10010","success":"true","message":"成功"}');
@@ -96,10 +101,12 @@ function wsInit(val){
 		//出现错误
 		ws.onerror = function(evt){
 			//console.log(evt);
+            reactTelephoneFailedLink('通话服务未打开')
 		}
 		//连接断开
 		ws.onclose = function(evt){
 			//console.log(evt)
+            reactTelephoneFailedLink('通话服务未打开')
 		}
 	} else {
 		// 浏览器不支持 WebSocket
