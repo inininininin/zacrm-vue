@@ -5,8 +5,8 @@ project=crm
 sed -i "s/project='.*'/project='$project'/g" ./src/main.js
 
 versionNote=$1
-if [ -z "$versionMsg" ]; then
- versionMsg='pack 更新'
+if [ -z "$versionNote" ]; then
+ versionNote='pack 更新'
 fi
 
 
@@ -32,7 +32,7 @@ git add .
 echo
 
 echo "-git commit"
-git commit -am "$versionMsg"
+git commit -am "$versionNote"
 echo
 
 echo "-git pull"
