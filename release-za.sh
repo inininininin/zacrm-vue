@@ -4,7 +4,7 @@ project=crm
 
 sed -i "s/project='.*'/project='$project'/g" ./src/main.js
 
-versionMsg=$1
+versionNote=$1
 if [ -z "$versionMsg" ]; then
  versionMsg='pack 更新'
 fi
@@ -19,8 +19,8 @@ echo
 npm run build
 
 echo "-package"
-commitid=`git rev-parse --short HEAD`
-packageName="$group-$project-vue-$version-$commitid.zip"
+commitId=`git rev-parse --short HEAD`
+packageName="$group-$project-vue-$version-$commitId.zip"
 echo $packageName
 cd ./dist
 ../zip -q -r ../packages/$packageName ./
