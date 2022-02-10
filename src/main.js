@@ -4,7 +4,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';   
 let project='crm'
-let version='22021002'
+let version='22021010'
 Vue.prototype.$project = project;
 Vue.prototype.$version = version;
 Vue.prototype.$versionBrief = '修复了已知BUG, 优化了用户体验.';
