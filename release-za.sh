@@ -35,10 +35,6 @@ echo "-git commit"
 git commit -am "$versionNote"
 echo
 
-echo "-git pull"
-git pull
-echo
-
 echo "-git push"
 git push
 echo
