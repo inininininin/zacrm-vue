@@ -57,20 +57,18 @@
         ></el-input>
         <el-date-picker
           v-model="tiaojian.callTimeFrom"
-          default-time="00:00:00"
           type="datetime"
+          default-time="00:00:00"
           placeholder="请选择通话时间from"
           align="right"
-          @change="elmentDataStartFn"
         >
         </el-date-picker>
         <el-date-picker
           v-model="tiaojian.callTimeTo"
-          default-time="23:59:59"
           type="datetime"
+          default-time="23:59:59"
           placeholder="选择结束通话时间To"
           align="right"
-          @change="elmentDataEndFn"
         >
         </el-date-picker>
         <el-select v-model="tiaojian.deleted" placeholder="请选择">
@@ -183,8 +181,14 @@ export default {
         secondTo: "",
         telephoneFrom: "",
         telephoneTo: "",
-        callTimeFrom: "",
-        callTimeTo: "",
+        callTimeFrom:
+          new Date(new Date().getTime())
+            .toLocaleDateString()
+            .replaceAll("/", "-") + " 00:00:00",
+        callTimeTo:
+          new Date(new Date().getTime())
+            .toLocaleDateString()
+            .replaceAll("/", "-") + " 23:59:59",
         kw: "",
         deleted: 0,
         invalidTelephone: 0
@@ -220,6 +224,14 @@ export default {
       tableData: [], // 总数据
       totalNum: 0, // 总条数
       tableIndexNum: 1, // 下标
+      defaultTimeCallTimeFrom:
+        new Date(new Date().getTime())
+          .toLocaleDateString()
+          .replaceAll("/", "-") + " 00:00:00", //请选择通话时间from
+      defaultTimeCallTimeTo:
+        new Date(new Date().getTime())
+          .toLocaleDateString()
+          .replaceAll("/", "-") + " 23:59:59", //选择结束通话时间To
       // 临时数据
       templateDataList: [],
       tempTableIndexNum: 1,
@@ -271,8 +283,14 @@ export default {
       this.tiaojian.secondTo = "";
       this.tiaojian.telephoneFrom = "";
       this.tiaojian.telephoneTo = "";
-      this.tiaojian.callTimeFrom = "";
-      this.tiaojian.callTimeTo = "";
+      this.tiaojian.callTimeFrom =
+        new Date(new Date().getTime())
+          .toLocaleDateString()
+          .replaceAll("/", "-") + " 00:00:00";
+      this.tiaojian.callTimeTo =
+        new Date(new Date().getTime())
+          .toLocaleDateString()
+          .replaceAll("/", "-") + " 23:59:59";
       this.tiaojian.kw = "";
       this.tiaojian.deleted = 0;
       this.tiaojian.invalidTelephone = 0;
@@ -280,8 +298,23 @@ export default {
     },
     // 查询
     handleQuery() {
-      this.initDataList(1);
-      this.initDataListToTal();
+      //开始时间
+      this.tiaojian.callTimeFrom = new Date(
+        this.tiaojian.callTimeFrom
+      ).getTime();
+      // 结束时间
+      this.tiaojian.callTimeTo = new Date(this.tiaojian.callTimeTo).getTime();
+      if (this.tiaojian.callTimeFrom <= this.tiaojian.callTimeTo) {
+        this.totalNum = 0;
+        this.tableData = [];
+        this.initDataList(1);
+        this.initDataListToTal();
+      } else {
+        this.$message({
+          type: "info",
+          message: "开始时间需小于结束时间!"
+        });
+      }
     },
     elmentDataStartFn(_value) {
       // console.log(_value,this.tiaojian.callTimeTo, this.moment(_value).valueOf())
@@ -343,8 +376,8 @@ export default {
           secondTo: this.tiaojian.secondTo,
           telephoneFrom: this.tiaojian.telephoneFrom,
           telephoneTo: this.tiaojian.telephoneTo,
-          callTimeFrom: this.tiaojian.callTimeFrom,
-          callTimeTo: this.tiaojian.callTimeTo,
+          callTimeFrom: new Date(this.tiaojian.callTimeFrom).getTime(),
+          callTimeTo: new Date(this.tiaojian.callTimeTo).getTime(),
           kw: this.tiaojian.kw,
           deleted: this.tiaojian.deleted,
           invalidTelephone: this.tiaojian.invalidTelephone
@@ -360,7 +393,7 @@ export default {
           that.templateDataList.push({
             id: that.tableIndexNum,
             data: res.data.records
-          })
+          });
         }
       });
     },
