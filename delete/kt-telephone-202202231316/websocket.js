@@ -28,7 +28,6 @@ function wsInit(val){
 				    ws.send('{"cmd":"USB","connected":"true","success":"true","message":"成功"}');
                     setCallbackUrl(pid,userWid,callRecordUrl,recordFileUrl,heartBeatUrl)
                     showBar()
-                    Notification.instance.close()
                 }else{
                     reactTelephoneFailedLink('话机USB未连接')
                 }

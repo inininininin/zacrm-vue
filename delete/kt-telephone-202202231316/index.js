@@ -1,8 +1,3 @@
-var parent2,number,callId,callStatus='off',duration=0,timer,pid=1,userWid,callRecordUrl,recordFileUrl,heartBeatUrl;
-
-Notification.requestPermission(function (permission) {
-    debugger;
-});
 $('#delete').css('height','100%')
 $('#clear').hide()
 $('#call,#barCall').show()
@@ -12,22 +7,20 @@ if(window.parent!==window){
     var iframes = window.parent.document.getElementsByTagName('iframe')
     for (const i in iframes) {
         if(iframes[i].contentWindow===window){
-            parent2=iframes[i]
+            parent=iframes[i]
             break;
         }
     }
 }
 
-if(parent2){
-    var innerBorder = getDomAttribute(parent2,'inner-border',0)
+if(parent){
+    var innerBorder = getDomAttribute(parent,'inner-border',0)
     if(innerBorder != 1){
         $('#app').css('border','none')
     }
 }
 
 function getDomAttribute(dom,name,defaultValue){
-    if(!dom)
-        return;
     var value;
     var attribute = dom.attributes[name];
     if(attribute)
@@ -44,68 +37,10 @@ wsInit()
 setInterval(()=>{
     if(ws && ws.readyState ==3)
         wsInit()
-    else {
-        ws.send('{"cmd":"LINK"}');
-    }
 },1000)
 
 
-function showMsgNotification(title, msg) {
-    var Notification = window.Notification || window.mozNotification || window.webkitNotification;
 
-    if(Notification) {//支持桌面通知
-        if(Notification.permission == "granted") {//已经允许通知
-            if(Notification.instance)
-                Notification.instance.close()
-            Notification.instance = new Notification(title, {
-                body: msg,
-                icon: "images/reload.png",
-                renotify:true,
-                tag:'linkStatus',
-            });
-        }else {//第一次询问或已经禁止通知(如果用户之前已经禁止显示通知，那么浏览器不会再次询问用户的意见，Notification.requestPermission()方法无效)
-            Notification.requestPermission(function(status) {
-                if (status === "granted") {//用户允许
-                    var instance = new Notification(title, {
-                        body: msg,
-                        icon: "images/reload.png"
-                    });
-
-                    instance.onclick = function() {
-                        // Something to do
-                    };
-                    instance.onerror = function() {
-                        // Something to do
-                    };
-                    instance.onshow = function() {
-                        // Something to do
-                    };
-                    instance.onclose = function() {
-                        // Something to do
-                    };
-                }else {//用户禁止
-                    return false
-                }
-            });
-        }
-    }else {//不支持(IE等)
-        var index = 0;    
-
-        clearInterval(timer);
-        timer = setInterval(function() {
-            if(index%2) {
-                $('title').text('【　　　】'+ title);//这里是中文全角空格，其他不行
-            }else {
-                $('title').text('【新消息】'+ title);
-            }
-            index++;
-
-            if(index > 20) {
-                clearInterval(timer);
-            }
-        }, 500);
-    }
-}
 
 
 function reactTelephoneFailedLink(message){
@@ -115,8 +50,6 @@ function reactTelephoneFailedLink(message){
     if(message)
         $('#failedLink #failedLinkMessage').text(message)
     parentReact({height:'50px'},['display'])
-
-    showMsgNotification(message)
     // if(window.parent!==window){
     //     var iframes = window.parent.document.getElementsByTagName('iframe')
     //     for (const i in iframes) {
@@ -155,6 +88,7 @@ function reactTelephoneUnlinked(){
     // }
 }
 
+var parent,number,callId,callStatus='off',duration=0,timer,pid=1,userWid,callRecordUrl,recordFileUrl,heartBeatUrl;
 
 
 function showPad(){
@@ -296,29 +230,27 @@ function isNumberOverflow(){
 
 
 function parentReact(style,initialize){
-    if(!parent2)
-        return;
     style=!style?{}:style
     initialize=!initialize?[]:initialize
     if(parent){
-        var reactabble = getDomAttribute(parent2,'reactabble',1) 
+        var reactabble = getDomAttribute(parent,'reactabble',1) 
         if(reactabble == 0)
             return
-        if(!parent2.initialStyle)
-            parent2.initialStyle={}
-        if(!parent2.initialStyle['height'])
-            parent2.initialStyle['height'] = parent2.style['height']||'initial'
-        if(!parent2.initialStyle['display'])
-            parent2.initialStyle['display'] = parent2.style['display']||'initial'
+        if(!parent.initialStyle)
+            parent.initialStyle={}
+        if(!parent.initialStyle['height'])
+            parent.initialStyle['height'] = parent.style['height']||'initial'
+        if(!parent.initialStyle['display'])
+            parent.initialStyle['display'] = parent.style['display']||'initial'
         if(style['height'])
-            parent2.style['height'] = style['height']
+            parent.style['height'] = style['height']
         if(style['display'])
-            parent2.style['display'] = style['display']
+            parent.style['display'] = style['display']
 
-        if(initialize.indexOf('height')>-1 && parent2.initialStyle['height'])
-            parent2.style['height'] = parent2.initialStyle['height']
+        if(initialize.indexOf('height')>-1 && parent.initialStyle['height'])
+            parent.style['height'] = parent.initialStyle['height']
 
-        if(initialize.indexOf('display')>-1 && parent2.initialStyle['display'])
-            parent2.style['display'] = parent2.initialStyle['display']
+        if(initialize.indexOf('display')>-1 && parent.initialStyle['display'])
+            parent.style['display'] = parent.initialStyle['display']
     }
 }
